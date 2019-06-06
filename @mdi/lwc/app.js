@@ -425,7 +425,7 @@ function tmpl($api, $cmp, $slotset, $ctx) {
     key: 23
   }, [api_text("View "), api_element("a", {
     attrs: {
-      "href": "/demo.json"
+      "href": "demo.json"
     },
     key: 24
   }, [api_text("demo.json")])])]), $cmp.isLoading ? api_element("h1", {
