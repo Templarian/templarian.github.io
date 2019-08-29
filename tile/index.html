@@ -172,6 +172,14 @@
       <img src="export/floor-planks.svg" />
     </span>
   </div>
-  <button>Removing</button>
+  <button id="remove" style="margin-top:1rem;">Removing Overlapping</button>
+  <script>
+  document.getElementById('remove').onclick = () => {
+    var items = document.querySelectorAll('div.tiles');
+    [...items].forEach(x => {
+      x.className = '';
+    });
+  };
+  </script>
 </body>
 </html>
