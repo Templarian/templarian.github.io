@@ -137,6 +137,22 @@
       width: 4.5rem;
       height: 4.5rem;
     }
+
+    button.remove {
+      position: absolute;
+      width: 1.5rem;
+      height: 1.75rem;
+      background: #FFF;
+      z-index: 1;
+      left: 2.75rem;
+      top: -1.75rem;
+      border: 0;
+      border-radius: 0.25rem 0.25rem 0 0;
+    }
+    button.remove::before {
+      content: 'x';
+      color: red;
+    }
   </style>
 </head>
 
@@ -425,6 +441,10 @@
       throw new Error('Invalid side');
     };
 
+    function getTile (x, y) {
+      return map.tiles.find(tile => tile.coordinate[0] === x && tile.coordinate[1] === y) || null;
+    }
+
     function getSides(x, y) {
       return [
         map.tiles.find(tile => tile.coordinate[0] === x && tile.coordinate[1] === y - 1) || null,
@@ -455,6 +475,16 @@
       if (sides[3]) { sides[3].id[2] = uuid; }
     }
 
+    function removeTile (x, y) {
+      var tile = getTile(x, y);
+      var sides = getSides(x, y);
+      map.tiles.splice(map.tiles.findIndex(x => x.id[0] === tile.id[0]), 1);
+      if (sides[0]) { sides[0].id[3] = null; }
+      if (sides[1]) { sides[1].id[4] = null; }
+      if (sides[2]) { sides[2].id[1] = null; }
+      if (sides[3]) { sides[3].id[2] = null; }
+    }
+
     var add = [];
 
     var processAdd = function () {}
@@ -469,6 +499,20 @@
       button.style.top = `${y * 4}rem`;
       button.className = 'tile';
       button.title = `Virtual Coordinate ${x}, ${y}`;
+      button.addEventListener('mouseenter', function () {
+        console.log(x, y);
+        var removeButton = document.createElement('button');
+        removeButton.className = 'remove';
+        removeButton.addEventListener('click', function () {
+          removeTile(x, y);
+          redrawMap();
+        });
+        button.appendChild(removeButton);
+        button.addEventListener('mouseleave', function mouseleave () {
+          button.removeChild(removeButton);
+          button.removeEventListener('mouseleave', mouseleave);
+        });
+      });
       mapEle.appendChild(button);
       // Next Tile
       var [id, top, right, bottom, left] = tile.id;
