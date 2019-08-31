@@ -100,7 +100,7 @@
       position: relative;
     }
 
-    .map button {
+    .map button.add {
       position: absolute;
       top: 0;
       left: 0;
@@ -111,6 +111,31 @@
       background: url('export/tile-lines-1.svg');
       border: 0;
       cursor: inherit;
+      background: rgba(0, 0, 100, 0.1);
+    }
+
+    .map button.tile {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0;
+      width: 4rem;
+      height: 4rem;
+      outline: none;
+      background: url('export/tile-lines-1.svg');
+      border: 0;
+      cursor: inherit;
+    }
+    
+    .map button.tile:hover {
+      border: 0.25rem solid #FFF;
+      margin: -0.25rem;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+      border-radius: 4px;
+      width: 4.5rem;
+      height: 4.5rem;
     }
   </style>
 </head>
@@ -442,6 +467,7 @@
       var button = document.createElement('button');
       button.style.left = `${x * 4}rem`;
       button.style.top = `${y * 4}rem`;
+      button.className = 'tile';
       button.title = `Virtual Coordinate ${x}, ${y}`;
       mapEle.appendChild(button);
       // Next Tile
@@ -458,7 +484,7 @@
           var button = document.createElement('button');
           button.style.left = `${cX * 4}rem`;
           button.style.top = `${cY * 4}rem`;
-          button.style.background = 'rgba(0, 0, 100, 0.1)';
+          button.className = 'add';
           button.addEventListener('click', function () {
             addTile(cX, cY);
             redrawMap();
