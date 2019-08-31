@@ -428,6 +428,7 @@
       var button = document.createElement('button');
       button.style.left = `${x * 4}rem`;
       button.style.top = `${y * 4}rem`;
+      button.title = `Virtual Coordinate ${x}, ${y}`;
       mapEle.appendChild(button);
       // Next Tile
       var [id, top, right, bottom, left] = tile.id;
