@@ -416,6 +416,20 @@
       }
     }
 
+    function addTile (x, y) {
+      var sides = getSides(x, y);
+      var uuid = uuidv4();
+      map.tiles.push({
+        id: [uuid, ...sides.map(s => s ? s.id[0] : null)],
+        collision: 0,
+        layer: ['paper-dots']
+      });
+      if (sides[0]) { sides[0].id[3] = uuid; }
+      if (sides[1]) { sides[1].id[4] = uuid; }
+      if (sides[2]) { sides[2].id[1] = uuid; }
+      if (sides[3]) { sides[3].id[2] = uuid; }
+    }
+
     var add = [];
 
     var processAdd = function () {}
@@ -446,17 +460,7 @@
           button.style.top = `${cY * 4}rem`;
           button.style.background = 'rgba(0, 0, 100, 0.1)';
           button.addEventListener('click', function () {
-            var sides = getSides(cX, cY);
-            var uuid = uuidv4();
-            map.tiles.push({
-              id: [uuid, ...sides.map(s => s ? s.id[0] : null)],
-              collision: 0,
-              layer: ['paper-dots']
-            });
-            if (sides[0]) { sides[0].id[3] = uuid; }
-            if (sides[1]) { sides[1].id[4] = uuid; }
-            if (sides[2]) { sides[2].id[1] = uuid; }
-            if (sides[3]) { sides[3].id[2] = uuid; }
+            addTile(cX, cY);
             redrawMap();
           });
           mapEle.appendChild(button);
