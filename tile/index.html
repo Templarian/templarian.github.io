@@ -1,28 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <style>
+    html {
+      height: 100%;
+    }
+
     body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       line-height: 0;
       background: url('export/paper-dots.svg');
       background-repeat: repeat;
-      background-position: 1rem 1rem;
-      padding: 1rem;
       margin: 0;
+      width: 100%;
+      height: 100%;
     }
+
     body.drag {
       cursor: grab;
+      user-select: none;
     }
+
     body.dragging {
       cursor: grabbing;
+      user-select: none;
     }
+
     div.tiles div {
       display: flex;
     }
+
     div.tiles button {
       display: flex;
       border: 0;
@@ -31,24 +45,29 @@
       outline: none;
       cursor: inherit;
     }
+
     div.tiles div button img {
       left: 0;
     }
-    div.tiles div button img + img {
+
+    div.tiles div button img+img {
       margin-left: -64px;
     }
+
     div.tiles div img.tile:hover {
       outline: 1px;
       outline-color: blue;
     }
+
     div.tiles div button:hover {
       border: 4px solid #FFF;
       margin: -4px;
       position: relative;
       z-index: 1;
-      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
       border-radius: 4px;
     }
+
     div.title {
       color: #444;
       position: fixed;
@@ -60,26 +79,48 @@
       padding: 1rem 1.25rem;
       text-align: right;
     }
+
     div.title h1 {
       font-weight: normal;
       font-size: 1.5rem;
       line-height: 1.5rem;
       margin: 0 0 0.5rem 0;
     }
+
     div.title h2 {
       font-weight: normal;
       font-size: 1rem;
       line-height: 1rem;
       margin: 0;
     }
+
+    .map {
+      min-width: 4rem;
+      min-height: 4rem;
+      position: relative;
+    }
+
+    .map button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0;
+      width: 4rem;
+      height: 4rem;
+      outline: none;
+      background: url('export/tile-lines-1.svg');
+      border: 0;
+      cursor: inherit;
+    }
   </style>
 </head>
+
 <body>
   <div class="title">
     <h1>Map Name</h1>
     <h2>Author</h2>
   </div>
-  <div class="tiles">
+  <div class="tiles" style="display: none;">
     <div>
       <button>
         <img src="export/blank.svg" />
@@ -274,56 +315,193 @@
       </button>
     </div>
   </div>
-  <button id="remove" style="margin-top:1rem;">Removing Overlapping</button>
+  <button id="remove" style="margin-top:1rem;display:none;">Removing Overlapping</button>
+  <div class="map"></div>
   <script>
-  document.getElementById('remove').onclick = () => {
-    var items = document.querySelectorAll('div.tiles');
-    [...items].forEach(x => {
-      x.className = '';
+    // Everything below is just a prototype...
+    document.getElementById('remove').onclick = () => {
+      var items = document.querySelectorAll('div.tiles');
+      [...items].forEach(x => {
+        x.className = '';
+      });
+    };
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    };
+    // GET api/map - list all maps
+    // GET api/map/:mapId
+    // Map = { id: '', name: 'foo' }
+    // PUT api/map Map
+    // POST api/map - must have name
+    // POST api/tile - must have map, and at least up, down, left, or right defined
+    // DELETE  api/tile/:tileId
+    // id = [map, id, up, right, down, left]
+    var map = {
+      id: null,
+      name: 'Loading...',
+      author: '...',
+      tiles: []
+    }
+    var isDragging = false;
+    document.addEventListener('keydown', (e) => {
+      if (!isDragging && e.which === 32) {
+        document.body.className = 'drag';
+        isDragging = true;
+        console.log('hnn');
+      }
     });
-  };
-  // GET api/map - list all maps
-  // GET api/map/:mapId
-  // Map = { id: '', name: 'foo' }
-  // PUT api/map Map
-  // POST api/map - must have name
-  // POST api/tile - must have map, and at least up, down, left, or right defined
-  // DELETE  api/tile/:tileId
-  var tiles = [
-    {
-      // map, id, up, right, down, left
-      id: ['', '', null, null, null, null],
-      collision: 0,
-      layer: [
-        'paper-dots'
-      ]
+    document.addEventListener('keyup', (e) => {
+      if (isDragging && e.which === 32) {
+        document.body.className = '';
+        isDragging = false;
+      }
+    });
+    document.addEventListener('mousedown', (e) => {
+      if (isDragging) {
+        document.body.className = 'dragging';
+      }
+    });
+    document.addEventListener('mouseup', (e) => {
+      if (isDragging) {
+        document.body.className = 'drag';
+      }
+    });
+
+    var mapEle = document.querySelector('.map');
+    function updateGrid() {
+      var rect = mapEle.getBoundingClientRect();
+      document.body.style.backgroundPositionX = `${rect.x % 64}px`;
+      document.body.style.backgroundPositionY = `${rect.y % 64}px`;
     }
-  ];
-  var isDragging = false;
-  document.addEventListener('keydown', (e) => {
-    if (!isDragging && e.which === 32) {
-      document.body.className = 'drag';
-      isDragging = true;
-      console.log('hnn');
+    window.addEventListener('resize', updateGrid);
+    updateGrid();
+
+    var Side = {
+      Top: 1,
+      Right: 2,
+      Bottom: 3,
+      Left: 4
+    };
+
+    function getSideCoordinate ([x, y], index) {
+      switch (index) {
+        case 0:
+          return [x, y - 1];
+        case 1:
+          return [x + 1, y];
+        case 2:
+          return [x, y + 1];
+        case 3:
+          return [x - 1, y];
+      }
+      throw new Error('Invalid side');
+    };
+
+    function getSides(x, y) {
+      return [
+        map.tiles.find(tile => tile.coordinate[0] === x && tile.coordinate[1] === y - 1) || null,
+        map.tiles.find(tile => tile.coordinate[0] === x + 1 && tile.coordinate[1] === y) || null,
+        map.tiles.find(tile => tile.coordinate[0] === x && tile.coordinate[1] === y + 1) || null,
+        map.tiles.find(tile => tile.coordinate[0] === x - 1 && tile.coordinate[1] === y) || null
+      ];
     }
-  });
-  document.addEventListener('keyup', (e) => {
-    if (isDragging && e.which === 32) {
-      document.body.className = '';
-      isDragging = false;
+
+    function clearMap() {
+      const myNode = document.querySelector('.map');
+      while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+      }
     }
-  });
-  document.addEventListener('mousedown', (e) => {
-    if (isDragging) {
-      document.body.className = 'dragging';
+
+    var add = [];
+
+    var processAdd = function () {}
+
+    var process = function (tiles, [x, y], tile) {
+      tiles.splice(tiles.findIndex(t => t.id[0] === tile.id[0]), 1);
+      // Current Tile
+      console.log(x, y);
+      tile.coordinate = [x, y];
+      var button = document.createElement('button');
+      button.style.left = `${x * 4}rem`;
+      button.style.top = `${y * 4}rem`;
+      mapEle.appendChild(button);
+      // Next Tile
+      var [id, top, right, bottom, left] = tile.id;
+      [top, right, bottom, left].forEach((side, i) => {
+        var coordinate = getSideCoordinate([x, y], i);
+        if (side === null) {
+          var cX = coordinate[0],
+              cY = coordinate[1];
+          if (add.find(a => a[0] === cX && a[1] === cY)) {
+            return;
+          }
+          add.push(coordinate);
+          var button = document.createElement('button');
+          button.style.left = `${cX * 4}rem`;
+          button.style.top = `${cY * 4}rem`;
+          button.style.background = 'rgba(0, 0, 100, 0.1)';
+          button.addEventListener('click', function () {
+            var sides = getSides(cX, cY);
+            var uuid = uuidv4();
+            map.tiles.push({
+              id: [uuid, ...sides.map(s => s ? s.id[0] : null)],
+              collision: 0,
+              layer: ['paper-dots']
+            });
+            if (sides[0]) { sides[0].id[3] = uuid; }
+            if (sides[1]) { sides[1].id[4] = uuid; }
+            if (sides[2]) { sides[2].id[1] = uuid; }
+            if (sides[3]) { sides[3].id[2] = uuid; }
+            redrawMap();
+          });
+          mapEle.appendChild(button);
+        } else {
+          console.log('----', x, y, coordinate);
+          var nextTile = tiles.find(t => t.id[0] === side);
+          if (nextTile) {
+            process(tiles, coordinate, nextTile);
+          }
+        }
+      });
+    };
+
+    function redrawMap() {
+      add.splice(0, add.length);
+      map.tiles.forEach(t => delete t.coordinate);
+      clearMap();
+      process([...map.tiles], [0, 0], map.tiles[0]);
     }
-  });
-  document.addEventListener('mouseup', (e) => {
-    if (isDragging) {
-      document.body.className = 'drag';
-    }
-  });
+
+    fetch('mock.map.json')
+      .then(res => res.json())
+      .then(data => {
+        map.name = data.name;
+        map.author = data.author;
+        map.description = data.description;
+        map.tiles = data.tiles;
+        process([...data.tiles], [0, 0], data.tiles[0]);
+        console.log('add---------------');
+        if (false) {
+        var sides = getSides(0, -2);
+        var uuid = uuidv4();
+        map.tiles.push({
+          id: [uuid, ...sides.map(s => s ? s.id[0] : null)],
+          collision: 0,
+          layer: ['paper-dots']
+        });
+        if (sides[0]) { sides[0].id[3] = uuid; }
+        if (sides[1]) { sides[1].id[4] = uuid; }
+        if (sides[2]) { sides[2].id[1] = uuid; }
+        if (sides[3]) { sides[3].id[2] = uuid; }
+        redrawMap();
+        }
+      });
   // Sort top left
   </script>
 </body>
+
 </html>
