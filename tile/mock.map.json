@@ -1,0 +1,22 @@
+{
+  "id": "map",
+  "map": "Test Dungeon",
+  "description": "This is an example dungeon testing tile features.",
+  "tiles": [
+    {
+      "id": ["uuid1", "uuid2", null, null, null],
+      "collision": 0,
+      "layer": ["paper-dots"]
+    },
+    {
+      "id": ["uuid2", null, "uuid3", "uuid1", null],
+      "collision": 0,
+      "layer": ["paper-dots"]
+    },
+    {
+      "id": ["uuid3", null, null, null, "uuid2"],
+      "collision": 0,
+      "layer": ["paper-dots"]
+    }
+  ]
+}
