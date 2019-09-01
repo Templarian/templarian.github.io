@@ -5,12 +5,12 @@
   "tiles": [
     {
       "id": ["uuid1", "uuid2", null, null, null],
-      "collision": 0,
+      "collision": 14,
       "layers": ["paper-tan", "tile-lines-1"]
     },
     {
       "id": ["uuid2", null, "uuid3", "uuid1", null],
-      "collision": 0,
+      "collision": 9,
       "layers": ["paper-tan", "tile-lines-1"]
     },
     {
