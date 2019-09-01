@@ -6,17 +6,17 @@
     {
       "id": ["uuid1", "uuid2", null, null, null],
       "collision": 0,
-      "layer": ["paper-dots"]
+      "layers": ["paper-tan", "tile-lines-1"]
     },
     {
       "id": ["uuid2", null, "uuid3", "uuid1", null],
       "collision": 0,
-      "layer": ["paper-dots"]
+      "layers": ["paper-tan", "tile-lines-1"]
     },
     {
       "id": ["uuid3", null, null, null, "uuid2"],
       "collision": 0,
-      "layer": ["paper-dots"]
+      "layers": ["paper-tan", "tile-lines-1"]
     }
   ]
 }

@@ -580,7 +580,7 @@
       map.tiles.push({
         id: [uuid, ...sides.map(s => s ? s.id[0] : null)],
         collision: 0,
-        layers: ['paper-dots']
+        layers: ['paper-tan', 'tile-lines-1']
       });
       if (sides[0]) { sides[0].id[3] = uuid; }
       if (sides[1]) { sides[1].id[4] = uuid; }
