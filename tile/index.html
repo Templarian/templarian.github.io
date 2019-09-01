@@ -607,8 +607,7 @@
         return null;
       }).filter(c => c !== null);
       console.log(counts);
-      return counts.length === 1
-        || counts.every(c => c === counts[0]);
+      return counts.every(c => c === map.tiles.length - 1);
     }
 
     function iterateTiles(startTile, callback, ignoreTiles) {
