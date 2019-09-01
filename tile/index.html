@@ -598,7 +598,7 @@
     }
 
     function canRemove (tile) {
-      if (map.tiles.length < 1) {
+      if (map.tiles.length === 1) {
         return false;
       }
       var sides = getSides(tile);
