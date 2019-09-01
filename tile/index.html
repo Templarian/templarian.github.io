@@ -545,12 +545,21 @@
       return map.tiles.find(tile => tile.coordinate[0] === x && tile.coordinate[1] === y) || null;
     }
 
-    function getSides(x, y) {
+    function getSidesByCoordinate(x, y) {
       return [
-        map.tiles.find(tile => tile.coordinate[0] === x && tile.coordinate[1] === y - 1) || null,
-        map.tiles.find(tile => tile.coordinate[0] === x + 1 && tile.coordinate[1] === y) || null,
-        map.tiles.find(tile => tile.coordinate[0] === x && tile.coordinate[1] === y + 1) || null,
-        map.tiles.find(tile => tile.coordinate[0] === x - 1 && tile.coordinate[1] === y) || null
+        getTile(x, y - 1),
+        getTile(x + 1, y),
+        getTile(x, y + 1),
+        getTile(x - 1, y)
+      ];
+    }
+
+    function getSides(tile) {
+      return [
+        tile.id[1] ? map.tiles.find(t => t.id[0] === tile.id[1]) : null,
+        tile.id[2] ? map.tiles.find(t => t.id[0] === tile.id[2]) : null,
+        tile.id[3] ? map.tiles.find(t => t.id[0] === tile.id[3]) : null,
+        tile.id[4] ? map.tiles.find(t => t.id[0] === tile.id[4]) : null
       ];
     }
 
@@ -562,7 +571,7 @@
     }
 
     function addTile (x, y) {
-      var sides = getSides(x, y);
+      var sides = getSidesByCoordinate(x, y);
       var uuid = uuidv4();
       map.tiles.push({
         id: [uuid, ...sides.map(s => s ? s.id[0] : null)],
@@ -575,9 +584,8 @@
       if (sides[3]) { sides[3].id[2] = uuid; }
     }
 
-    function removeTile (x, y) {
-      var tile = getTile(x, y);
-      var sides = getSides(x, y);
+    function removeTile (tile) {
+      var sides = getSides(tile);
       map.tiles.splice(map.tiles.findIndex(x => x.id[0] === tile.id[0]), 1);
       if (sides[0]) { sides[0].id[3] = null; }
       if (sides[1]) { sides[1].id[4] = null; }
@@ -585,11 +593,44 @@
       if (sides[3]) { sides[3].id[2] = null; }
     }
 
-    function canRemove (x, y) {
-      if (map.tiles.length > 1) {
-        return true;
+    function canRemove (tile) {
+      if (map.tiles.length < 1) {
+        return false;
       }
-      return false;
+      var sides = getSides(tile);
+      var counts = sides.map(side => {
+        if (side) {
+          var i = 0;
+          iterateTiles(side, t => i++, [tile]);
+          return i;
+        }
+        return null;
+      }).filter(c => c !== null);
+      console.log(counts);
+      return counts.length === 1
+        || counts.every(c => c === counts[0]);
+    }
+
+    function iterateTiles(startTile, callback, ignoreTiles) {
+      function iterate(tiles, tile) {
+        tiles.splice(tiles.findIndex(t => t.id[0] === tile.id[0]), 1)[0];
+        callback(tile);
+        var [id, top, right, bottom, left] = tile.id;
+        [top, right, bottom, left].forEach((side, i) => {
+          if (side !== null) {
+            var nextTile = tiles.find(t => t.id[0] === side);
+            if (nextTile) {
+              iterate(tiles, nextTile);
+            }
+          }
+        });
+      }
+      var tiles = [...map.tiles];
+      if (ignoreTiles) {
+        var ignoreIds = ignoreTiles.map(t => t.id[0]);
+        tiles = tiles.filter(t => !ignoreIds.includes(t.id[0]));
+      }
+      iterate(tiles, startTile);
     }
 
     function editTile (tile) {
@@ -612,11 +653,11 @@
         editTile(tile);
       });
       button.addEventListener('mouseenter', function () {
-        if (canRemove(x, y)) {
+        if (canRemove(tile)) {
           var removeButton = document.createElement('button');
           removeButton.className = 'remove';
           removeButton.addEventListener('click', function () {
-            removeTile(x, y);
+            removeTile(tile);
             redrawMap();
           });
           button.appendChild(removeButton);
