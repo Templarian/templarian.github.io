@@ -223,11 +223,83 @@
       border-color: rgba(255, 0, 0, 0.5);
     }
 
+    body.collision .map button::before {
+      content: ' ';
+      border: 0.5rem solid transparent;
+      width: 3rem;
+      height: 3rem;
+      display: block;
+      position: absolute;
+    }
+
+    body.collision .map button.collision-1::before {
+      border-top-color: rgba(255, 0, 0, 0.3);
+    }
+    body.collision .map button.collision-2::before {
+      border-right-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-3::before {
+      border-top-color: rgba(255, 0, 0, 0.5);
+      border-right-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-4::before {
+      border-bottom-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-5::before {
+      border-top-color: rgba(255, 0, 0, 0.5);
+      border-bottom-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-6::before {
+      border-right-color: rgba(255, 0, 0, 0.5);
+      border-bottom-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-7::before {
+      border-top-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-8::before {
+      border-left-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-9::before {
+      border-top-color: rgba(255, 0, 0, 0.5);
+      border-left-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-10::before {
+      border-left-color: rgba(255, 0, 0, 0.5);
+      border-right-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-11::before {
+      border-top-color: rgba(255, 0, 0, 0.5);
+      border-right-color: rgba(255, 0, 0, 0.5);
+      border-left-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-12::before {
+      border-bottom-color: rgba(255, 0, 0, 0.5);
+      border-left-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-13::before {
+      border-top-color: rgba(255, 0, 0, 0.5);
+      border-bottom-color: rgba(255, 0, 0, 0.5);
+      border-left-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-14::before {
+      border-right-color: rgba(255, 0, 0, 0.5);
+      border-bottom-color: rgba(255, 0, 0, 0.5);
+      border-left-color: rgba(255, 0, 0, 0.5);
+    }
+    body.collision .map button.collision-15::before {
+      border-color: rgba(255, 0, 0, 0.5);
+    }
+
     .map button.tile img + img {
       margin-left: -4rem;
     }
 
+    body.collision .map button.tile svg {
+      display: initial;
+    }
+
     .map button.tile svg {
+      display: none;
       width: 4.5rem;
       height: 4.5rem;
       position: absolute;
@@ -508,6 +580,12 @@
         isDragging = true;
       } else if (e.which === 17) {
         document.body.className = 'remove';
+        e.stopPropagation();
+        e.preventDefault();
+      } else if (e.which === 16) {
+        document.body.className = 'collision';
+        e.stopPropagation();
+        e.preventDefault();
       }
     });
     document.addEventListener('keyup', (e) => {
@@ -515,6 +593,8 @@
         document.body.className = '';
         isDragging = false;
       } else if (e.which === 17) {
+        document.body.className = '';
+      } else if (e.which === 16) {
         document.body.className = '';
       }
     });
