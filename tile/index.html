@@ -574,13 +574,13 @@
       }
     }
 
-    function addTile (x, y) {
+    function addTile (x, y, layers) {
       var sides = getSidesByCoordinate(x, y);
       var uuid = uuidv4();
       map.tiles.push({
         id: [uuid, ...sides.map(s => s ? s.id[0] : null)],
         collision: 0,
-        layers: ['paper-tan', 'tile-lines-1']
+        layers: layers || ['paper-tan', 'tile-lines-1']
       });
       if (sides[0]) { sides[0].id[3] = uuid; }
       if (sides[1]) { sides[1].id[4] = uuid; }
@@ -707,6 +707,12 @@
           button.addEventListener('click', function () {
             addTile(cX, cY);
             redrawMap();
+          });
+          button.addEventListener('contextmenu', function (e) {
+            addTile(cX, cY, ['blank']);
+            redrawMap();
+            e.preventDefault();
+            e.stopPropagation();
           });
           mapEle.appendChild(button);
         } else {
