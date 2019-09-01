@@ -40,6 +40,10 @@
       pointer-events: none;
     }
 
+    body.remove button.remove {
+      display: block;
+    }
+
     div.tiles div {
       display: flex;
     }
@@ -77,6 +81,7 @@
 
     div.title {
       color: #444;
+      background: #FFF;
       position: fixed;
       right: 0;
       bottom: 0;
@@ -85,6 +90,7 @@
       border-radius: 0.5rem 0 0 0;
       padding: 1rem 1.25rem;
       text-align: right;
+      cursor: default;
     }
 
     div.title h1 {
@@ -99,6 +105,19 @@
       font-size: 1rem;
       line-height: 1rem;
       margin: 0;
+    }
+
+    div.legend {
+      color: #444;
+      background: #FFF;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      font-family: 'Segoe UI';
+      box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);
+      border-radius: 0 0.5rem 0 0;
+      padding: 1rem 1.25rem;
+      cursor: default;
     }
 
     .map {
@@ -147,19 +166,55 @@
     }
 
     button.remove {
+      display: none;
       position: absolute;
-      width: 1.5rem;
-      height: 1.75rem;
-      background: #FFF;
+      width: 4.5rem;
+      height: 4.5rem;
+      background: transparent;
       z-index: 1;
-      left: 2.75rem;
-      top: -1.75rem;
+      left: -0.25rem;
+      top: -0.25rem;
       border: 0;
       border-radius: 0.25rem 0.25rem 0 0;
     }
-    button.remove::before {
-      content: 'x';
-      color: red;
+    button.remove:hover {
+      background: rgba(255, 0, 0, 0.5);
+    }
+    button.collision {
+      position: absolute;
+      border: 0;
+      background: transparent;
+    }
+    button.collision:hover {
+      background: rgba(255, 0, 0, 0.5);
+    }
+    button.collision-top {
+      width: 4.5rem;
+      height: 1rem;
+      left: -0.25rem;
+      top: -0.25rem;
+      border-radius: 0.25rem 0.25rem 0 0;
+    }
+    button.collision-right {
+      width: 1rem;
+      height: 4.5rem;
+      left: 3.25rem;
+      top: -0.25rem;
+      border-radius: 0 0.25rem 0.25rem 0;
+    }
+    button.collision-bottom {
+      width: 4.5rem;
+      height: 1rem;
+      left: -0.25rem;
+      top: 3.25rem;
+      border-radius: 0 0 0.25rem 0.25rem;
+    }
+    button.collision-left {
+      width: 1rem;
+      height: 4.5rem;
+      left: -0.25rem;
+      top: -0.25rem;
+      border-radius: 0.25rem 0 0 0.25rem;
     }
   </style>
 </head>
@@ -168,6 +223,11 @@
   <div class="title">
     <h1>Map Name</h1>
     <h2>Author</h2>
+  </div>
+  <div class="legend">
+    <h1>Legend</h1>
+    <p><strong>Hold</strong> Space to Drag</p>
+    <p><strong>Hold</strong> CTRL to Enable Delete Mode</p>
   </div>
   <div class="tiles" style="display: none;">
     <div>
@@ -400,12 +460,16 @@
       if (!isDragging && e.which === 32) {
         document.body.className = 'drag';
         isDragging = true;
+      } else if (e.which === 17) {
+        document.body.className = 'remove';
       }
     });
     document.addEventListener('keyup', (e) => {
       if (isDragging && e.which === 32) {
         document.body.className = '';
         isDragging = false;
+      } else if (e.which === 17) {
+        document.body.className = '';
       }
     });
     var mapEle = document.querySelector('.map');
@@ -503,7 +567,7 @@
       map.tiles.push({
         id: [uuid, ...sides.map(s => s ? s.id[0] : null)],
         collision: 0,
-        layer: ['paper-dots']
+        layers: ['paper-dots']
       });
       if (sides[0]) { sides[0].id[3] = uuid; }
       if (sides[1]) { sides[1].id[4] = uuid; }
@@ -528,20 +592,25 @@
       return false;
     }
 
+    function editTile (tile) {
+      tile.layers.push('tile-detail-1');
+    }
+
     var add = [];
 
     var processAdd = function () {}
 
     var process = function (tiles, [x, y], tile) {
-      tiles.splice(tiles.findIndex(t => t.id[0] === tile.id[0]), 1);
+      var tile = tiles.splice(tiles.findIndex(t => t.id[0] === tile.id[0]), 1)[0];
       // Current Tile
-      console.log(x, y);
       tile.coordinate = [x, y];
       var button = document.createElement('button');
       button.style.left = `${x * 4}rem`;
       button.style.top = `${y * 4}rem`;
       button.className = 'tile';
-      button.title = `Virtual Coordinate ${x}, ${y}`;
+      button.addEventListener('click', function () {
+        editTile(tile);
+      });
       button.addEventListener('mouseenter', function () {
         if (canRemove(x, y)) {
           var removeButton = document.createElement('button');
@@ -551,7 +620,20 @@
             redrawMap();
           });
           button.appendChild(removeButton);
+          var collisionButtons = ['top', 'right', 'bottom', 'left'].map(collision => {
+            var collisionButton = document.createElement('button');
+            collisionButton.className = `collision collision-${collision}`;
+            collisionButton.addEventListener('click', function () {
+              var tile = getTile(x, y);
+              tile.collision = 1;
+            });
+            button.appendChild(collisionButton);
+            return collisionButton;
+          });
           button.addEventListener('mouseleave', function mouseleave () {
+            collisionButtons.forEach(btn => {
+              button.removeChild(btn);
+            });
             button.removeChild(removeButton);
             button.removeEventListener('mouseleave', mouseleave);
           });
@@ -579,7 +661,6 @@
           });
           mapEle.appendChild(button);
         } else {
-          console.log('----', x, y, coordinate);
           var nextTile = tiles.find(t => t.id[0] === side);
           if (nextTile) {
             process(tiles, coordinate, nextTile);
@@ -603,21 +684,6 @@
         map.description = data.description;
         map.tiles = data.tiles;
         process([...data.tiles], [0, 0], data.tiles[0]);
-        console.log('add---------------');
-        if (false) {
-        var sides = getSides(0, -2);
-        var uuid = uuidv4();
-        map.tiles.push({
-          id: [uuid, ...sides.map(s => s ? s.id[0] : null)],
-          collision: 0,
-          layer: ['paper-dots']
-        });
-        if (sides[0]) { sides[0].id[3] = uuid; }
-        if (sides[1]) { sides[1].id[4] = uuid; }
-        if (sides[2]) { sides[2].id[1] = uuid; }
-        if (sides[3]) { sides[3].id[2] = uuid; }
-        redrawMap();
-        }
       });
   // Sort top left
   </script>
