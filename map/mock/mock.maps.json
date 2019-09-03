@@ -1,0 +1,11 @@
+[{
+  "id": "map",
+  "map": "Test Dungeon",
+  "description": "This is an example dungeon testing tile features.",
+  "tileCount": 3
+}, {
+  "id": "mapError",
+  "map": "Error Map",
+  "description": "This will throw a loading error.",
+  "tileCount": 6
+}]
