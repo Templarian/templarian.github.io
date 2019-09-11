@@ -1,6 +1,6 @@
 {
   "id": "map",
-  "map": "Test Dungeon",
+  "name": "Test Dungeon",
   "description": "This is an example dungeon testing tile features.",
   "tiles": [
     {
@@ -18,5 +18,6 @@
       "collision": 0,
       "layers": ["paper-tan", "tile-lines-1"]
     }
-  ]
+  ],
+  "tileCount": 3
 }
