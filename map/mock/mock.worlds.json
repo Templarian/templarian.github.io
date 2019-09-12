@@ -1,10 +1,10 @@
 [{
-  "id": "map",
+  "id": "world",
   "name": "Test Dungeon",
   "description": "This is an example dungeon testing tile features.",
   "tileCount": 3
 }, {
-  "id": "mapError",
+  "id": "worldError",
   "name": "Error Map",
   "description": "This will throw a loading error.",
   "tileCount": 6

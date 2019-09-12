@@ -1,5 +1,5 @@
 {
-  "id": "map",
+  "id": "world",
   "name": "Test Dungeon",
   "description": "This is an example dungeon testing tile features.",
   "tiles": [
