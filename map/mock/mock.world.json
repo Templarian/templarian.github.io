@@ -6,7 +6,8 @@
     {
       "id": ["uuid1", "uuid2", null, null, null],
       "collision": 14,
-      "layers": ["paper-tan", "tile-lines-1"]
+      "layers": ["paper-tan", "tile-lines-1"],
+      "comment": "Start your quest here"
     },
     {
       "id": ["uuid2", null, "uuid3", "uuid1", null],
@@ -18,6 +19,5 @@
       "collision": 0,
       "layers": ["paper-tan", "tile-lines-1"]
     }
-  ],
-  "tileCount": 3
+  ]
 }
