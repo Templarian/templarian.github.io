@@ -149,7 +149,7 @@ var mdiGrid = (function () {
 
     var template$1 = "<div part=\"grid\"></div>";
 
-    var style$1 = "[part~=grid] {\n  display: grid;\n  grid-template-columns: repeat(1.5rem);\n  grid-template-rows: repeat(1.5rem);\n  min-height: 1.5rem;\n  overflow: hidden;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n  padding: 0;\n}";
+    var style$1 = "[part~=grid] {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, 1.5rem);\n  grid-template-rows: repeat(1, 1.5rem);\n  min-height: 1.5rem;\n  overflow: hidden;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n  padding: 0;\n}";
 
     let MdiSearch = class MdiSearch extends HTMLElement {
         constructor() {
@@ -158,6 +158,12 @@ var mdiGrid = (function () {
             this.currentCount = 0;
             this.items = [];
             this.svg = 'http://www.w3.org/2000/svg';
+            this.resizeObserver = new ResizeObserver(entries => {
+                console.log(entries[0].contentRect.width);
+            });
+        }
+        connectedCallback() {
+            this.resizeObserver.observe(this.$grid);
         }
         render() {
             const count = this.icons.length;
@@ -177,7 +183,7 @@ var mdiGrid = (function () {
                 this.items.push([btn, path]);
             }
             const columns = Math.floor(this.$grid.offsetWidth / 24);
-            this.$grid.style.gridTemplateColumns = `repeat(${columns}, 1.5rem)`;
+            // this.$grid.style.gridTemplateColumns = `repeat(${columns}, 1.5rem)`;
             const rows = Math.ceil(count / columns);
             this.$grid.style.gridTemplateRows = `repeat(${rows}, 1.5rem)`;
             this.items.forEach(([btn, path], i) => {
