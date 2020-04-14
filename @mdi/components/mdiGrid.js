@@ -147,6 +147,16 @@ var mdiGrid = (function () {
         };
     }
 
+    const debounce = (func, waitFor) => {
+        let timeout;
+        return (...args) => new Promise(resolve => {
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+            timeout = setTimeout(() => resolve(func(...args)), waitFor);
+        });
+    };
+
     var template$1 = "<div part=\"grid\"></div>";
 
     var style$1 = "[part~=grid] {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, 1.5rem);\n  grid-template-rows: repeat(1, 1.5rem);\n  min-height: 1.5rem;\n  overflow: hidden;\n}\n\nbutton {\n  border: 0;\n  background: transparent;\n  padding: 0;\n}";
@@ -159,12 +169,13 @@ var mdiGrid = (function () {
             this.currentCount = 0;
             this.items = [];
             this.svg = 'http://www.w3.org/2000/svg';
+            this.debounceRender = debounce(() => this.render(), 300);
             this.resizeObserver = new ResizeObserver(entries => {
                 const { width } = entries[0].contentRect;
                 const columns = Math.floor(width / this.size);
                 if (this.columns !== columns) {
                     this.columns = columns;
-                    this.render();
+                    this.debounceRender();
                 }
             });
         }
@@ -172,6 +183,7 @@ var mdiGrid = (function () {
             this.resizeObserver.observe(this.$grid);
         }
         render() {
+            console.log('render');
             const count = this.icons.length;
             // Render more grid items
             for (let i = this.currentCount; i < count; i++) {
