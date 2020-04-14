@@ -155,11 +155,17 @@ var mdiGrid = (function () {
         constructor() {
             super(...arguments);
             this.icons = [];
+            this.size = 24;
             this.currentCount = 0;
             this.items = [];
             this.svg = 'http://www.w3.org/2000/svg';
             this.resizeObserver = new ResizeObserver(entries => {
-                console.log(entries[0].contentRect.width);
+                const { width } = entries[0].contentRect;
+                const columns = Math.floor(width / this.size);
+                if (this.columns !== columns) {
+                    this.columns = columns;
+                    this.render();
+                }
             });
         }
         connectedCallback() {
@@ -182,14 +188,12 @@ var mdiGrid = (function () {
                 this.$grid.appendChild(btn);
                 this.items.push([btn, path]);
             }
-            const columns = Math.floor(this.$grid.offsetWidth / 24);
-            // this.$grid.style.gridTemplateColumns = `repeat(${columns}, 1.5rem)`;
-            const rows = Math.ceil(count / columns);
+            const rows = Math.ceil(count / this.columns);
             this.$grid.style.gridTemplateRows = `repeat(${rows}, 1.5rem)`;
             this.items.forEach(([btn, path], i) => {
                 if (this.icons[i]) {
-                    btn.style.gridColumn = `${(i % columns + 1)}`;
-                    btn.style.gridRow = `${Math.ceil((i + 1) / columns)}`;
+                    btn.style.gridColumn = `${(i % this.columns + 1)}`;
+                    btn.style.gridRow = `${Math.ceil((i + 1) / this.columns)}`;
                     path.setAttribute('d', this.icons[i].data);
                     this.icons[i].id = i;
                 }
@@ -203,6 +207,9 @@ var mdiGrid = (function () {
     __decorate([
         Prop()
     ], MdiSearch.prototype, "icons", void 0);
+    __decorate([
+        Prop()
+    ], MdiSearch.prototype, "size", void 0);
     __decorate([
         Part()
     ], MdiSearch.prototype, "$grid", void 0);
