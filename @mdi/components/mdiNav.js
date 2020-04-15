@@ -147,9 +147,9 @@ var mdiNav = (function () {
         };
     }
 
-    var template$1 = "<nav part=\"nav\">\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n  <a href=\"/\">\n\n    <span part=\"name\"></span>\n  </a>\n  Other links here...\n</nav>";
+    var template$1 = "<nav part=\"nav\">\n  <a href=\"/\">\n    <span part=\"name\"></span>\n  </a>\n  <a href=\"/icons\">\n    Icons\n  </a>\n  <a href=\"/icons\">\n    Docs\n  </a>\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n</nav>";
 
-    var style$1 = "svg {\n  width: 1.5rem;\n  height: 1.5rem;\n}";
+    var style$1 = ":host {\n  align-self: center;\n}\nsvg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\nbutton {\n  border: 0;\n  background: transparent;\n}\nbutton > svg {\n  fill: #fff;\n}";
 
     const noIcon = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
     let MdiNav = class MdiNav extends HTMLElement {
