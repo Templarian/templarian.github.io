@@ -147,7 +147,7 @@ var mdiNav = (function () {
         };
     }
 
-    var template$1 = "<nav part=\"nav\">\n  <a href=\"/\">\n    <svg viewBox=\"0 0 24 24\">\n      <path part=\"path\" d=\"\"></path>\n    </svg>\n    <span part=\"name\"></span>\n  </a>\n  Other links here...\n</nav>";
+    var template$1 = "<nav part=\"nav\">\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n  <a href=\"/\">\n\n    <span part=\"name\"></span>\n  </a>\n  Other links here...\n</nav>";
 
     var style$1 = "svg {\n  width: 1.5rem;\n  height: 1.5rem;\n}";
 
@@ -155,26 +155,17 @@ var mdiNav = (function () {
     let MdiNav = class MdiNav extends HTMLElement {
         constructor() {
             super(...arguments);
-            this.logo = noIcon;
-            this.name = 'Default';
+            this.nav = noIcon;
         }
         render() {
-            this.$path.setAttribute('d', this.logo);
-            this.$name.innerText = this.name;
         }
     };
     __decorate([
         Prop()
-    ], MdiNav.prototype, "logo", void 0);
-    __decorate([
-        Prop()
-    ], MdiNav.prototype, "name", void 0);
+    ], MdiNav.prototype, "nav", void 0);
     __decorate([
         Part()
     ], MdiNav.prototype, "$path", void 0);
-    __decorate([
-        Part()
-    ], MdiNav.prototype, "$name", void 0);
     MdiNav = __decorate([
         Component({
             selector: 'mdi-nav',
