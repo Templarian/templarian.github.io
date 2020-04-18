@@ -250,6 +250,7 @@ var mdiGrid = (function () {
         }
         hideTooltip() {
             this.$tooltip.classList.remove('visible');
+            this.index = -1;
         }
         getPositionFromIndex(index) {
             return {
