@@ -178,9 +178,29 @@ var mdiGrid = (function () {
                     this.debounceRender();
                 }
             });
+            this.index = 0;
         }
         connectedCallback() {
             this.resizeObserver.observe(this.$grid);
+            this.addEventListener('mousemove', this.handleTooltip.bind(this));
+            this.addEventListener('mouseleave', this.hideTooltip.bind(this));
+        }
+        handleTooltip(e) {
+            var rect = e.target.getBoundingClientRect();
+            const x = Math.round(e.clientX - rect.left);
+            const y = Math.round(e.clientY - rect.top);
+            const tileX = Math.floor(x / 44);
+            const tileY = Math.floor(y / 44);
+            const index = tileX + (tileY * this.columns);
+            if (this.index !== index) {
+                if (tileX > this.columns - 1) {
+                    this.hideTooltip();
+                }
+                else {
+                    this.showTooltip(this.icons[index], index);
+                    this.index = 0;
+                }
+            }
         }
         render() {
             console.log('render');
@@ -189,14 +209,9 @@ var mdiGrid = (function () {
             for (let i = this.currentCount; i < count; i++) {
                 this.currentCount = i + 1;
                 const btn = document.createElement('button');
+                btn.dataset.index = `${i}`;
                 btn.addEventListener('click', () => {
                     this.handleClick(this.icons[i]);
-                });
-                btn.addEventListener('mouseenter', () => {
-                    this.showTooltip(this.icons[i], i);
-                });
-                btn.addEventListener('mouseleave', () => {
-                    this.hideTooltip();
                 });
                 const svg = document.createElementNS(this.svg, 'svg');
                 svg.setAttribute('viewBox', '0 0 24 24');
