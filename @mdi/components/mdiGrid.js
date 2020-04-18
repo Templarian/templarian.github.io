@@ -242,7 +242,7 @@ var mdiGrid = (function () {
             }));
         }
         showTooltip(icon, index) {
-            this.$tooltipText.innerText = `${icon.name} ${icon.id}`;
+            this.$tooltipText.innerText = icon.name;
             const { x, y } = this.getPositionFromIndex(index);
             this.$tooltip.style.gridColumn = `${x + 1}`;
             this.$tooltip.style.gridRow = `${y + 1}`;

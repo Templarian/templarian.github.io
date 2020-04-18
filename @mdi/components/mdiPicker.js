@@ -1945,21 +1945,71 @@ var mdiPicker = (function () {
       defaultModifiers: defaultModifiers
     }); // eslint-disable-next-line import/no-unused-modules
 
-    var template$2 = "<parent />\n<div part=\"popover\">\n  Popover Content\n</div>";
+    var template$2 = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\"></mdi-grid>\n  </div>\n</div>";
 
-    var style$2 = "";
+    var style$2 = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n}\n[part~=scroll] {\n  overflow-y: auto;\n  width: 28.5rem;\n  height: 12.5rem;\n}\n[part~=scroll]::-webkit-scrollbar {\n  width: 1em;\n}\n\n[part~=scroll]::-webkit-scrollbar-track {\n  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);\n  border-radius: 0.25rem;\n}\n\n[part~=scroll]::-webkit-scrollbar-thumb {\n  background-color: darkgrey;\n  outline: 1px solid slategrey;\n  border-radius: 0.25rem;\n}\n\n[part~=grid] {\n  width: 27.5rem;\n  margin-left: -4px;\n  margin-right: -4px;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
 
     window.process = { env: {} };
     let MdiPicker = class MdiPicker extends MdiButton$1 {
+        constructor() {
+            super(...arguments);
+            this.icons = [];
+            this.isVisible = false;
+            this.search = '';
+        }
         connectedCallback() {
             createPopper(this.$button, this.$popover, {
-                placement: 'right-start',
+                placement: 'bottom-start',
+                modifiers: [
+                    {
+                        name: 'offset',
+                        options: {
+                            offset: [-4, 8],
+                        },
+                    },
+                    {
+                        name: 'arrow',
+                        options: {
+                            element: this.$arrow,
+                            padding: 0,
+                        },
+                    },
+                ]
+            });
+            this.$popover.style.visibility = 'hidden';
+            this.$button.addEventListener('click', () => {
+                this.$popover.style.visibility = this.isVisible ? 'hidden' : 'visible';
+                this.isVisible = !this.isVisible;
+                if (this.isVisible) {
+                    this.$search.focus();
+                }
+            });
+            this.$search.addEventListener('input', (e) => {
+                this.search = e.target.value;
+                this.render();
+            });
+        }
+        render() {
+            this.$grid.icons = this.icons.filter((icon) => {
+                return icon.name.indexOf(this.search) !== -1;
             });
         }
     };
     __decorate([
+        Prop()
+    ], MdiPicker.prototype, "icons", void 0);
+    __decorate([
         Part()
     ], MdiPicker.prototype, "$popover", void 0);
+    __decorate([
+        Part()
+    ], MdiPicker.prototype, "$arrow", void 0);
+    __decorate([
+        Part()
+    ], MdiPicker.prototype, "$search", void 0);
+    __decorate([
+        Part()
+    ], MdiPicker.prototype, "$grid", void 0);
     MdiPicker = __decorate([
         Component({
             selector: 'mdi-picker',
