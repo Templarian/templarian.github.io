@@ -190,7 +190,7 @@ var mdiGrid = (function () {
                 this.currentCount = i + 1;
                 const btn = document.createElement('button');
                 btn.addEventListener('click', () => {
-                    console.log(this.icons[i]);
+                    this.handleClick(this.icons[i]);
                 });
                 btn.addEventListener('mouseenter', () => {
                     this.showTooltip(this.icons[i], i);
@@ -220,6 +220,11 @@ var mdiGrid = (function () {
                 }
             });
             this.$grid.style.height = `${2.75 * rows}rem`;
+        }
+        handleClick(icon) {
+            this.dispatchEvent(new CustomEvent('select', {
+                detail: icon
+            }));
         }
         showTooltip(icon, index) {
             this.$tooltip.innerText = `${icon.name} ${icon.id}`;
