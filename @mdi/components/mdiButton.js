@@ -149,7 +149,7 @@ var mdiButton = (function () {
 
     var template$1 = "<button part=\"button\" class=\"base\"><slot></slot></button>";
 
-    var style$1 = "[part~=button] {\n  display: inline-flex;\n  align-items: center;\n  font-family: var(--mdi-font-family);\n}\n\n[part~=button].base {\n  border: 1px solid #4281E9;\n  background: #4281E9;\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: #FFF;\n}\n\n[part~=button].base-inverse {\n  border: 1px solid #F1F1F1;\n  background: #FFF;\n  color: #4281E9;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: #4281E9;\n}";
+    var style$1 = "[part~=button] {\n  display: inline-flex;\n  align-items: center;\n  font-family: var(--mdi-font-family);\n}\n\n[part~=button]:hover {\n  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);\n}\n\n[part~=button].base {\n  border: 1px solid #4281E9;\n  background: #4281E9;\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: #FFF;\n}\n\n[part~=button].base:hover {\n  background-color: #4F8FF9;\n}\n\n[part~=button].base-inverse {\n  border: 1px solid #F1F1F1;\n  background: #FFF;\n  color: #4281E9;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: #4281E9;\n}";
 
     const DEFAULT_VARIANT = 'base';
     let MdiButton = class MdiButton extends HTMLElement {
