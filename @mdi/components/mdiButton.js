@@ -1,4 +1,4 @@
-var mdiIcon = (function () {
+var mdiButton = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -147,36 +147,43 @@ var mdiIcon = (function () {
         };
     }
 
-    var template$1 = "<svg part=\"svg\" viewBox=\"0 0 24 24\">\n  <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n</svg>";
+    var template$1 = "<button part=\"button\" class=\"base\"><slot></slot></button>";
 
-    var style$1 = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n:host [part~=svg] {\n  width: 1.5rem;\n  height: 1.5rem;\n}";
+    var style$1 = "[part~=button] {\n  display: inline-flex;\n  align-items: center;\n  font-family: var(--mdi-font-family);\n}\n\n[part~=button].base {\n  border: 1px solid #4281E9;\n  background: #4281E9;\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: #FFF;\n}\n\n[part~=button].base-inverse {\n  border: 1px solid #F1F1F1;\n  background: #FFF;\n  color: #4281E9;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: #4281E9;\n}";
 
-    const noIcon = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
-    let MdiIcon = class MdiIcon extends HTMLElement {
+    const DEFAULT_VARIANT = 'base';
+    let MdiButton = class MdiButton extends HTMLElement {
         constructor() {
             super(...arguments);
-            this.path = noIcon;
+            this.variant = DEFAULT_VARIANT;
+            this.oldVariant = DEFAULT_VARIANT;
+        }
+        connectedCallback() {
+            this.$button.addEventListener('click', (e) => this.dispatchEvent(new CustomEvent('click')));
         }
         render() {
-            this.$path.setAttribute('d', this.path);
+            if (this.variant != this.oldVariant) {
+                this.$button.classList.replace(this.oldVariant, this.variant);
+                this.oldVariant = this.variant;
+            }
         }
     };
     __decorate([
         Prop()
-    ], MdiIcon.prototype, "path", void 0);
+    ], MdiButton.prototype, "variant", void 0);
     __decorate([
         Part()
-    ], MdiIcon.prototype, "$path", void 0);
-    MdiIcon = __decorate([
+    ], MdiButton.prototype, "$button", void 0);
+    MdiButton = __decorate([
         Component({
-            selector: 'mdi-icon',
+            selector: 'mdi-button',
             style: style$1,
             template: template$1
         })
-    ], MdiIcon);
-    var MdiIcon$1 = MdiIcon;
+    ], MdiButton);
+    var MdiButton$1 = MdiButton;
 
-    return MdiIcon$1;
+    return MdiButton$1;
 
 }());
-//# sourceMappingURL=mdiIcon.js.map
+//# sourceMappingURL=mdiButton.js.map

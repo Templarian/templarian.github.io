@@ -1,4 +1,4 @@
-var mdiIcon = (function () {
+var mdiPicker = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -103,80 +103,23 @@ var mdiIcon = (function () {
             }
         };
     }
-    function Prop() {
-        return function (target, propertyKey, descriptor) {
-            var constructor = target.constructor;
-            if (!constructor.observedAttributes) {
-                constructor.observedAttributes = [];
-            }
-            var observedAttributes = constructor.observedAttributes;
-            if (!constructor.symbols) {
-                constructor.symbols = {};
-            }
-            var symbols = constructor.symbols;
-            observedAttributes.push(propertyKey);
-            var symbol = Symbol(propertyKey);
-            symbols[propertyKey] = symbol;
-            Object.defineProperty(target, propertyKey, {
-                get: function () {
-                    return this[symbol];
-                },
-                set: function (value) {
-                    var _this = this;
-                    this[symbol] = value;
-                    if (this[init]) {
-                        this[parent].map(function (p) {
-                            if (p.render) {
-                                p.render.call(_this);
-                            }
-                        });
-                    }
-                }
-            });
-        };
-    }
-    function Part() {
-        return function (target, propertyKey, descriptor) {
-            Object.defineProperty(target, propertyKey, {
-                get: function () {
-                    var _a;
-                    var key = propertyKey.replace(/^\$/, '');
-                    return (_a = this.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector("[part~=" + key + "]");
-                }
-            });
-        };
-    }
 
-    var template$1 = "<svg part=\"svg\" viewBox=\"0 0 24 24\">\n  <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n</svg>";
+    var template$1 = "<button part=\"button\"><slot></slot></button>\n<div part=\"popover\">\n  Popover Content\n</div>";
 
-    var style$1 = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n:host [part~=svg] {\n  width: 1.5rem;\n  height: 1.5rem;\n}";
+    var style$1 = "";
 
-    const noIcon = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
-    let MdiIcon = class MdiIcon extends HTMLElement {
-        constructor() {
-            super(...arguments);
-            this.path = noIcon;
-        }
-        render() {
-            this.$path.setAttribute('d', this.path);
-        }
+    let MdiPicker = class MdiPicker extends HTMLElement {
     };
-    __decorate([
-        Prop()
-    ], MdiIcon.prototype, "path", void 0);
-    __decorate([
-        Part()
-    ], MdiIcon.prototype, "$path", void 0);
-    MdiIcon = __decorate([
+    MdiPicker = __decorate([
         Component({
-            selector: 'mdi-icon',
+            selector: 'mdi-picker',
             style: style$1,
             template: template$1
         })
-    ], MdiIcon);
-    var MdiIcon$1 = MdiIcon;
+    ], MdiPicker);
+    var MdiPicker$1 = MdiPicker;
 
-    return MdiIcon$1;
+    return MdiPicker$1;
 
 }());
-//# sourceMappingURL=mdiIcon.js.map
+//# sourceMappingURL=mdiPicker.js.map
