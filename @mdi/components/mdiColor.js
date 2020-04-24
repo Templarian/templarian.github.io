@@ -536,6 +536,7 @@ var mdiColor = (function () {
                     }
                     else if (color.name === 'white') {
                         button.style.gridArea = `11 / 17 / 13 / 20`;
+                        button.classList.add('white');
                     }
                     else {
                         button.style.gridRow = `${colorIndex + 1}`;
