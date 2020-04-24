@@ -516,7 +516,7 @@ var mdiColor = (function () {
 
     var template$1 = "<div part=\"grid\"></div>";
 
-    var style$1 = "button {\n  border: 0;\n  padding: 0;\n  width: 1rem;\n  height: 1rem;\n  outline: 0;\n}\n\nbutton.active {\n  border: 2px solid #fff;\n  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5);\n  order: 1;\n}\n\nbutton.white.active {\n  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5) inset;\n}\n\nbutton.black,\nbutton.white {\n  width: 3rem;\n  height: 2rem;\n}\n\n[part~=grid] {\n  display: grid;\n  grid-template-columns: repeat(19, 1rem);\n  grid-template-rows: repeat(13, 1rem);\n}";
+    var style$1 = "button {\n  border: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbutton.active {\n  border: 2px solid #fff;\n  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5);\n  order: 1;\n}\n\nbutton.white.active {\n  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5) inset;\n}\n\n[part~=grid] {\n  display: grid;\n  grid-template-columns: repeat(19, 1rem);\n  grid-template-rows: repeat(14, 1rem);\n}";
 
     let MdiColor = class MdiColor extends HTMLElement {
         constructor() {
@@ -532,12 +532,10 @@ var mdiColor = (function () {
                     const button = document.createElement('button');
                     button.style.background = `#${color.hex}`;
                     if (color.name === 'black') {
-                        button.style.gridArea = `13 / 17 / 14 / 19`;
-                        button.classList.add('black');
+                        button.style.gridArea = `13 / 17 / 15 / 20`;
                     }
                     else if (color.name === 'white') {
-                        button.style.gridArea = `11 / 17 / 12 / 19`;
-                        button.classList.add('white');
+                        button.style.gridArea = `11 / 17 / 13 / 20`;
                     }
                     else {
                         button.style.gridRow = `${colorIndex + 1}`;
