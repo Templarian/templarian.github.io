@@ -559,18 +559,18 @@ var mdiColor = (function () {
                     this.$grid.appendChild(button);
                 });
             });
+            const setToFalse = () => {
+                this.isMouseDown = false;
+                document.removeEventListener('mouseup', setToFalse);
+            };
             this.$grid.addEventListener('mousedown', (e) => {
                 this.isMouseDown = true;
                 const index = this.buttons.findIndex(([b]) => b === e.target);
                 if (index !== -1) {
                     this.handleSelect(index);
                 }
+                document.addEventListener('mouseup', setToFalse);
             });
-            const setToFalse = () => {
-                this.isMouseDown = false;
-                document.removeEventListener('mouseup', setToFalse);
-            };
-            document.addEventListener('mouseup', setToFalse);
         }
         handleSelect(index) {
             const [button, hex, group] = this.buttons[index];
