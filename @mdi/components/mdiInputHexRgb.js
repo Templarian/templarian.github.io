@@ -147,9 +147,35 @@ var mdiInputHexRgb = (function () {
         };
     }
 
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+    function normalizeHex(hex) {
+        const h = hex.toUpperCase();
+        if (h.length === 7) {
+            return h;
+        }
+        else if (h.length === 4) {
+            return `#${h[1]}${h[1]}${h[2]}${h[2]}${h[3]}${h[3]}`;
+        }
+        return '#000000';
+    }
+    function cToHex(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }
+    function rgbToHex(r, g, b) {
+        return "#" + cToHex(r) + cToHex(g) + cToHex(b);
+    }
+
     var template$1 = "<div>\n  <input part=\"hex\" type=\"text\" />\n  <label part=\"labelRed\">R</label>\n  <input part=\"red\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n  <label part=\"labelGreen\">G</label>\n  <input part=\"green\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n  <label part=\"labelBlue\">B</label>\n  <input part=\"blue\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n</div>";
 
-    var style$1 = "div {\n  display: grid;\n  grid-template-rows: auto 1rem 2rem 1rem 2rem 1rem 2rem;\n  grid-template-rows: 1fr;\n}\n\n[part~=\"hex\"] {\n  grid-row: 1;\n  grid-column: 1;\n}\n\n[part~=\"labelRed\"] {\n  grid-row: 1;\n  grid-column: 2;\n  background: red;\n}\n\n[part~=\"red\"] {\n  grid-row: 1;\n  grid-column: 3;\n}\n\n[part~=\"labelGreen\"] {\n  grid-row: 1;\n  grid-column: 4;\n  background: green;\n  color: white;\n}\n\n[part~=\"green\"] {\n  grid-row: 1;\n  grid-column: 5;\n}\n\n[part~=\"labelBlue\"] {\n  grid-row: 1;\n  grid-column: 6;\n  background: blue;\n  color: white;\n}\n\n[part~=\"blue\"] {\n  grid-row: 1;\n  grid-column: 7;\n}\n\n[part~=\"labelRed\"],\n[part~=\"labelGreen\"],\n[part~=\"labelBlue\"] {\n  display: flex;\n  margin-left: 0.25rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 0.25rem 0 0 0.25rem;\n  color: white;\n  min-width: 1rem;\n}\n\n[part~=\"hex\"] {\n  border-radius: 0.25rem;\n}\n\n[part~=\"hex\"],\n[part~=\"red\"],\n[part~=\"green\"],\n[part~=\"blue\"] {\n  outline: none;\n  font-size: 1rem;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n}\n\n[part~=\"red\"],\n[part~=\"green\"],\n[part~=\"blue\"] {\n  border-radius: 0 0.25rem 0.25rem 0;\n  -moz-appearance: textfield;\n  width: 3rem;\n  width: calc(100% - 1rem);\n}\n\n[part~=\"red\"]::-webkit-inner-spin-button,\n[part~=\"red\"]::-webkit-outer-spin-button,\n[part~=\"green\"]::-webkit-inner-spin-button,\n[part~=\"green\"]::-webkit-outer-spin-button,\n[part~=\"blue\"]::-webkit-inner-spin-button,\n[part~=\"blue\"]::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}";
+    var style$1 = "div {\n  display: grid;\n  grid-template-rows: auto 1rem 2rem 1rem 2rem 1rem 2rem;\n  grid-template-rows: 1fr;\n}\n\n[part~=\"hex\"] {\n  grid-row: 1;\n  grid-column: 1;\n}\n\n[part~=\"labelRed\"] {\n  grid-row: 1;\n  grid-column: 2;\n  background: red;\n}\n\n[part~=\"red\"] {\n  grid-row: 1;\n  grid-column: 3;\n}\n\n[part~=\"labelGreen\"] {\n  grid-row: 1;\n  grid-column: 4;\n  background: green;\n  color: white;\n}\n\n[part~=\"green\"] {\n  grid-row: 1;\n  grid-column: 5;\n}\n\n[part~=\"labelBlue\"] {\n  grid-row: 1;\n  grid-column: 6;\n  background: blue;\n  color: white;\n}\n\n[part~=\"blue\"] {\n  grid-row: 1;\n  grid-column: 7;\n}\n\n[part~=\"labelRed\"],\n[part~=\"labelGreen\"],\n[part~=\"labelBlue\"] {\n  display: flex;\n  margin-left: 0.25rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 0.25rem 0 0 0.25rem;\n  color: white;\n  min-width: 1rem;\n}\n\n[part~=\"hex\"] {\n  border-radius: 0.25rem;\n  min-width: 4rem;\n}\n\n[part~=\"hex\"],\n[part~=\"red\"],\n[part~=\"green\"],\n[part~=\"blue\"] {\n  outline: none;\n  font-size: 1rem;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n  width: calc(100% - 1rem);\n}\n\n[part~=\"red\"],\n[part~=\"green\"],\n[part~=\"blue\"] {\n  border-radius: 0 0.25rem 0.25rem 0;\n  -moz-appearance: textfield;\n  width: calc(100% - 1rem);\n  min-width: 2rem;\n}\n\n[part~=\"red\"]::-webkit-inner-spin-button,\n[part~=\"red\"]::-webkit-outer-spin-button,\n[part~=\"green\"]::-webkit-inner-spin-button,\n[part~=\"green\"]::-webkit-outer-spin-button,\n[part~=\"blue\"]::-webkit-inner-spin-button,\n[part~=\"blue\"]::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}";
 
     let MdiNav = class MdiNav extends HTMLElement {
         constructor() {
@@ -158,6 +184,36 @@ var mdiInputHexRgb = (function () {
         }
         connectedCallback() {
             this.$hex.value = this.value;
+            this.updateRgb();
+            this.$hex.addEventListener('input', this.updateRgb.bind(this));
+            this.$red.addEventListener('input', this.updateHex.bind(this));
+            this.$green.addEventListener('input', this.updateHex.bind(this));
+            this.$blue.addEventListener('input', this.updateHex.bind(this));
+        }
+        updateRgb() {
+            const hex = normalizeHex(this.$hex.value);
+            const rgb = hexToRgb(hex);
+            if (rgb !== null) {
+                this.$red.value = rgb.r.toString();
+                this.$green.value = rgb.g.toString();
+                this.$blue.value = rgb.b.toString();
+            }
+            this.dispatchSelect();
+        }
+        updateHex() {
+            this.$hex.value = rgbToHex(parseInt(this.$red.value), parseInt(this.$green.value), parseInt(this.$blue.value));
+            this.dispatchSelect();
+        }
+        dispatchSelect() {
+            const hex = normalizeHex(this.$hex.value);
+            const rgb = rgbToHex(parseInt(this.$red.value), parseInt(this.$green.value), parseInt(this.$blue.value));
+            this.value = hex;
+            this.dispatchEvent(new CustomEvent('change', {
+                detail: {
+                    hex,
+                    rgb
+                }
+            }));
         }
         render() {
         }
