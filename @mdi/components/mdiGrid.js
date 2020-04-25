@@ -1968,6 +1968,7 @@ var mdiGrid = (function () {
             this.items = [];
             this.svg = 'http://www.w3.org/2000/svg';
             this.debounceRender = debounce$1(() => this.render(), 300);
+            this.color = 'svg';
             this.resizeObserver = new ResizeObserver(entries => {
                 const { width } = entries[0].contentRect;
                 const columns = Math.floor(width / (this.size + 20));
@@ -2001,6 +2002,7 @@ var mdiGrid = (function () {
                     preventSvgColor = false;
                     return;
                 }
+                this.color = 'svg';
                 this.$colorPicker.value = this.cacheSvgColor;
                 const self = this;
                 createPopper(this.$svgColor, this.$color, {
@@ -2034,6 +2036,7 @@ var mdiGrid = (function () {
                     preventPngColor = false;
                     return;
                 }
+                this.color = 'png';
                 this.$colorPicker.value = this.cachePngColor;
                 const self = this;
                 createPopper(this.$pngColor, this.$color, {
@@ -2168,8 +2171,16 @@ var mdiGrid = (function () {
             this.$colorPicker.addEventListener('select', this.handleColorSelect.bind(this));
         }
         handleColorSelect(e) {
-            this.cachePngColor = e.detail.hex;
-            this.$pngColor.style.color = this.cachePngColor;
+            switch (this.color) {
+                case 'svg':
+                    this.cacheSvgColor = e.detail.hex;
+                    this.$svgColor.style.color = this.cacheSvgColor;
+                    break;
+                case 'png':
+                    this.cachePngColor = e.detail.hex;
+                    this.$pngColor.style.color = this.cachePngColor;
+                    break;
+            }
         }
         moveFocus(e, index) {
             console.log(e.which, index);
