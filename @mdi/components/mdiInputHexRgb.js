@@ -201,12 +201,12 @@ var mdiInputHexRgb = (function () {
             this.dispatchSelect();
         }
         updateHex() {
-            this.$hex.value = rgbToHex(parseInt(this.$red.value), parseInt(this.$green.value), parseInt(this.$blue.value));
+            this.$hex.value = rgbToHex(parseInt(this.$red.value || '0', 10), parseInt(this.$green.value || '0', 10), parseInt(this.$blue.value || '0', 10));
             this.dispatchSelect();
         }
         dispatchSelect() {
             const hex = normalizeHex(this.$hex.value);
-            const rgb = rgbToHex(parseInt(this.$red.value), parseInt(this.$green.value), parseInt(this.$blue.value));
+            const rgb = rgbToHex(parseInt(this.$red.value || '0', 10), parseInt(this.$green.value || '0'), parseInt(this.$blue.value || '0'));
             this.value = hex;
             this.dispatchEvent(new CustomEvent('change', {
                 detail: {
