@@ -1932,6 +1932,37 @@ var mdiGrid = (function () {
       defaultModifiers: defaultModifiers
     }); // eslint-disable-next-line import/no-unused-modules
 
+    function uuid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    const ADD = 'mditoastadd';
+    const REMOVE = 'mditoastremove';
+    function addToast(config) {
+        config.key = config.key || uuid();
+        const event = new CustomEvent(ADD, {
+            detail: config
+        });
+        document.body.dispatchEvent(event);
+        setTimeout(() => {
+            removeToast(config.key);
+        }, config.seconds * 1000);
+        return config.key;
+    }
+    function removeToast(key) {
+        const event = new CustomEvent(REMOVE, {
+            detail: { key }
+        });
+        document.body.dispatchEvent(event);
+    }
+    function addInfoToast(message, seconds = 3) {
+        const type = 'info';
+        return addToast({ type, message, seconds });
+    }
+
     const debounce$1 = (func, waitFor) => {
         let timeout;
         return (...args) => new Promise(resolve => {
@@ -1952,6 +1983,10 @@ var mdiGrid = (function () {
             document.body.removeChild(copyFrom);
         }, 1500);
     };
+
+    function getCopySvgInline(icon) {
+        return `<svg viewBox="0 0 24 24"><path fill="currentColor" d="${icon.data}"/></svg>`;
+    }
 
     var template$1 = "<div part=\"grid\"></div>\n<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"arrow\"></div>\n</div>\n<div part=\"contextMenu\">\n  <a part=\"newTab\" href=\"\">Open icon in New Tab</a>\n  <button part=\"copyIconName\">Copy Icon Name</button>\n  <div class=\"section\">Download PNG</div>\n  <div class=\"group\">\n    <button part=\"png24\">24</button>\n    <button part=\"png36\">36</button>\n    <button part=\"png48\">48</button>\n    <button part=\"png96\">96</button>\n  </div>\n  <div class=\"row\" style=\"margin-top: 0.25rem;\">\n    <div class=\"group\">\n      <button part=\"pngBlack\"><span class=\"black\"></span></button>\n      <button part=\"pngWhite\"><span class=\"white\"></span></button>\n      <button part=\"pngColor\">\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"#fff\" d=\"M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z\"/>\n          <path fill=\"currentColor\" d=\"M12.97 8L15.8 10.85L7.67 19L3.71 20.68L3.15 20.11L4.84 16.15L12.97 8Z\"/>\n        </svg>\n      </button>\n    </div>\n    <div class=\"group\">\n      <button part=\"pngDownload\" class=\"download\">\n        PNG\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"currentColor\" d=\"M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z\"/>\n        </svg>\n      </button>\n    </div>\n  </div>\n  <div class=\"section\">SVG</div>\n  <div class=\"row\" style=\"margin-bottom: 0.25rem;\">\n    <div class=\"group\">\n      <button part=\"svgBlack\" class=\"active\"><span class=\"black\"></span></button>\n      <button part=\"svgWhite\"><span class=\"white\"></span></button>\n      <button part=\"svgColor\">\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"#fff\" d=\"M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z\"/>\n          <path fill=\"currentColor\" d=\"M12.97 8L15.8 10.85L7.67 19L3.71 20.68L3.15 20.11L4.84 16.15L12.97 8Z\"/>\n        </svg>\n      </button>\n    </div>\n    <div class=\"group\">\n      <button part=\"svgDownload\" class=\"download\">\n        SVG\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"currentColor\" d=\"M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z\"/>\n        </svg>\n      </button>\n    </div>\n  </div>\n  <button part=\"copySvgInline\">Copy HTML SVG Inline</button>\n  <button part=\"copySvgFile\">Copy SVG File Contents</button>\n  <button part=\"copySvgPath\">Copy SVG Path Data</button>\n  <div class=\"section\">Desktop Font</div>\n  <button part=\"copyUnicode\">Copy Unicode Character</button>\n  <button part=\"copyCodepoint\">Copy Codepoint</button>\n  <div class=\"divider\"></div>\n  <button part=\"copyPreview\">Copy GitHub Preview</button>\n  <div part=\"color\">\n    <mdi-input-hex-rgb part=\"colorHexRgb\"></mdi-input-hex-rgb>\n    <mdi-color part=\"colorPicker\"></mdi-color>\n  </div>\n</div>";
 
@@ -2081,6 +2116,22 @@ var mdiGrid = (function () {
             });
             this.$pngDownload.addEventListener('click', () => {
                 alert(`SVG ${this.cachePngSize} ${this.cachePngColor}`);
+            });
+            this.$copySvgInline.addEventListener('click', () => {
+                const icon = this.icons[this.currentIndex];
+                copyText(getCopySvgInline(icon));
+                this.hideContextMenu();
+                addInfoToast(`Copied inline SVG "${icon.name}" to clipboard.`);
+            });
+            this.$copySvgFile.addEventListener('click', () => {
+            });
+            this.$copySvgPath.addEventListener('click', () => {
+            });
+            this.$copyUnicode.addEventListener('click', () => {
+            });
+            this.$copyCodepoint.addEventListener('click', () => {
+            });
+            this.$copyPreview.addEventListener('click', () => {
             });
         }
         handleTooltip(e) {
@@ -2297,15 +2348,7 @@ var mdiGrid = (function () {
         handleCopyIconName() {
             const icon = this.icons[this.currentIndex];
             copyText(icon.name);
-            this.dispatchEvent(new CustomEvent('toast', {
-                detail: {
-                    type: 'info',
-                    icon: 'content-copy',
-                    message: `Copied "${icon.name}" to clipboard.`
-                },
-                composed: true,
-                bubbles: true
-            }));
+            addInfoToast(`Copied "${icon.name}" to clipboard.`);
             this.hideContextMenu();
         }
         showTooltip(icon, index) {
