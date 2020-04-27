@@ -154,6 +154,14 @@ var mdiToast = (function () {
         });
     }
 
+    const REMOVE = 'mditoastremove';
+    function removeToast(key) {
+        const event = new CustomEvent(REMOVE, {
+            detail: { key }
+        });
+        document.body.dispatchEvent(event);
+    }
+
     var template$1 = "<button part=\"button\">\n  <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n    <path d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n  </svg>\n  <span part=\"message\"></span>\n  <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n    <path d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n  </svg>\n</button>";
 
     var style$1 = "[part~=button] {\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n  background: #FFF;\n  border: 1px solid blue;\n}";
@@ -170,6 +178,7 @@ var mdiToast = (function () {
         }
         connectedCallback() {
             this.$button.addEventListener('click', () => {
+                removeToast(this.key);
             });
         }
         render() {
