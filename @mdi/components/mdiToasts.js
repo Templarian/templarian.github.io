@@ -103,6 +103,17 @@ var mdiToasts = (function () {
             }
         };
     }
+    function Part() {
+        return function (target, propertyKey, descriptor) {
+            Object.defineProperty(target, propertyKey, {
+                get: function () {
+                    var _a;
+                    var key = propertyKey.replace(/^\$/, '');
+                    return (_a = this.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector("[part~=" + key + "]");
+                }
+            });
+        };
+    }
 
     const ADD = 'mditoastadd';
     const REMOVE = 'mditoastremove';
@@ -115,9 +126,9 @@ var mdiToasts = (function () {
         });
     }
 
-    var template$1 = "";
+    var template$1 = "<div part=\"container\"></div>";
 
-    var style$1 = "";
+    var style$1 = "[part~=container] {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: flex-end;\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n}";
 
     let MdiToasts = class MdiToasts extends HTMLElement {
         constructor() {
@@ -135,28 +146,31 @@ var mdiToasts = (function () {
                     const index = this.toasts.findIndex(t => t.key === key);
                     if (index !== -1) {
                         var [toast] = this.toasts.splice(index, 1);
-                        console.log(toast, 'hmm');
-                        (_a = document.querySelector(`[key="${toast.key}"]`)) === null || _a === void 0 ? void 0 : _a.remove();
+                        (_a = this.$container.querySelector(`[key="${toast.key}"]`)) === null || _a === void 0 ? void 0 : _a.remove();
                     }
                 }
             });
         }
         render() {
-            console.log(this.toasts);
             this.toasts.forEach((toast) => {
-                const existing = document.querySelector(`[key="${toast.key}"]`);
+                const existing = this.$container.querySelector(`[key="${toast.key}"]`);
                 if (existing) {
                     existing.message = toast.message;
+                    existing.loading = toast.loading;
                 }
                 else {
                     const ele = document.createElement('mdi-toast');
                     ele.setAttribute('key', toast.key);
                     ele.message = toast.message;
-                    this.appendChild(ele);
+                    ele.loading = toast.loading;
+                    this.$container.appendChild(ele);
                 }
             });
         }
     };
+    __decorate([
+        Part()
+    ], MdiToasts.prototype, "$container", void 0);
     MdiToasts = __decorate([
         Component({
             selector: 'mdi-toasts',

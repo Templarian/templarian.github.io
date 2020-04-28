@@ -162,16 +162,15 @@ var mdiToast = (function () {
         document.body.dispatchEvent(event);
     }
 
-    var template$1 = "<button part=\"button\">\n  <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n    <path d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n  </svg>\n  <span part=\"message\"></span>\n  <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n    <path d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n  </svg>\n</button>";
+    var template$1 = "<button part=\"button\">\n  <span part=\"loading\">\n    <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n    </svg>\n  </span>\n  <span part=\"message\"></span>\n  <span part=\"close\">\n    <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n    </svg>\n  </span>\n</button>";
 
-    var style$1 = "[part~=button] {\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n  background: #FFF;\n  border: 1px solid blue;\n}";
+    var style$1 = "[part~=button] {\n  display: flex;\n  background: #737E9E;\n  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);\n  border-radius: 0.25rem;\n  border: 1px solid #737E9E;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  color: #FFF;\n  align-items: center;\n  outline: 0;\n  transition: border-color 0.1s ease-in;\n  margin-bottom: 0.5rem;\n  max-width: 18rem;\n  font-size: 1rem;\n  align-items: center;\n}\n\n[part~=loading] {\n  padding-right: 0.5rem;\n  height: 1.5rem;\n}\n\n[part~=button]:hover {\n  border: 1px solid rgba(255, 255, 255, 0.75);\n}\n\n[part~=close] {\n  height: 1rem;\n}\n\n[part~=closeIcon] {\n  width: 1rem;\n  height: 1rem;\n}\n\n[part~=loadingIcon] {\n  animation: spin 2s infinite linear;\n  width: 1.5rem;\n  height: 1.5rem;\n  margin: -0.25rem 0 -0.25rem -0.25rem;\n}\n\n@keyframes progress {\n  from {\n    width: 0;\n  }\n  to {\n    width: 20rem;\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part~=closeIcon] {\n  margin-left: 0.5rem;\n  color: rgba(255, 255, 255, 0.5);\n  transition: color 0.1s ease-in;\n}\n\n[part~=button]:hover [part~=closeIcon] {\n  color: #fff;\n}\n\n.hide {\n  display: none;\n}";
 
     let MdiToast = class MdiToast extends HTMLElement {
         constructor() {
             super(...arguments);
             this.loading = false;
             this.message = '';
-            this.seconds = '3';
             this.type = 'default';
             this.key = uuid();
             this.toasts = [];
@@ -183,6 +182,7 @@ var mdiToast = (function () {
         }
         render() {
             this.$message.innerText = this.message;
+            this.$loading.classList.toggle('hide', !this.loading);
         }
     };
     __decorate([
@@ -191,9 +191,6 @@ var mdiToast = (function () {
     __decorate([
         Prop()
     ], MdiToast.prototype, "message", void 0);
-    __decorate([
-        Prop()
-    ], MdiToast.prototype, "seconds", void 0);
     __decorate([
         Prop()
     ], MdiToast.prototype, "type", void 0);
@@ -212,6 +209,9 @@ var mdiToast = (function () {
     __decorate([
         Part()
     ], MdiToast.prototype, "$message", void 0);
+    __decorate([
+        Part()
+    ], MdiToast.prototype, "$loading", void 0);
     MdiToast = __decorate([
         Component({
             selector: 'mdi-toast',
