@@ -4487,10 +4487,18 @@ var mdiIndexeddb = (function () {
         }
     }
 
-    async function get(request, params = {}) {
+    const isLocal = window.location.href.match(/localhost/);
+    async function get(request, options = {}) {
+        const { params = {} } = options;
         const keys = Object.keys(params);
         const p = `?${keys.map(k => `${k}=${params[k]}`).join('&')}`;
-        const response = await fetch(`${request}${p === '?' ? '' : p}`);
+        if (isLocal) {
+            const mock = keys.map(k => `${k}/${params[k]}`).join('/');
+            if (mock) {
+                request += `/_/${mock}`;
+            }
+        }
+        const response = await fetch(isLocal ? `${request}/mock.get.json` : `${request}${p === '?' ? '' : p}`);
         try {
             return response.json();
         }
