@@ -4841,6 +4841,9 @@ var mdiIndexeddb = (function () {
             }
             return icons.map(icon => this.convert(icon));
         }
+        async getCount() {
+            return await this.db.icons.where('fontId').equals('D051337E-BC7E-11E5-A4E9-842B2B6CFE1B').count();
+        }
         async delete() {
             await this.db.delete();
         }
@@ -4849,8 +4852,10 @@ var mdiIndexeddb = (function () {
     const db = new DatabaseService();
     let MdiNav = class MdiNav extends HTMLElement {
         connectedCallback() {
-            this.$sync.addEventListener('click', () => {
-                db.sync();
+            this.$sync.addEventListener('click', async () => {
+                await db.sync();
+                const count = await db.getCount();
+                console.log('Total Icons', count);
             });
         }
         render() {
