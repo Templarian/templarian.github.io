@@ -2184,6 +2184,14 @@ var mdiGrid = (function () {
                 this.$grid.appendChild(btn);
                 this.items.push([btn, path]);
             }
+            if (count < this.currentCount) {
+                this.items.forEach(([btn]) => {
+                    btn.style.display = 'none';
+                });
+            }
+            this.items.slice(0, count).forEach(([btn]) => {
+                btn.style.display = 'block';
+            });
             const rows = Math.ceil(count / this.columns);
             this.$grid.style.gridTemplateRows = `repeat(${rows}, 2.75rem)`;
             this.items.forEach(([btn, path], i) => {
