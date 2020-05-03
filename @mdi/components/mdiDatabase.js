@@ -4508,7 +4508,7 @@ var mdiDatabase = (function () {
         }
     }
 
-    const isLocal = window.location.href.match(/localhost/);
+    const isLocal = window.location.href.match(/localhost|templarian\.github\.io/);
     async function get(request, options = {}) {
         const { params = {} } = options;
         const keys = Object.keys(params);
