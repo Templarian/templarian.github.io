@@ -4508,18 +4508,22 @@ var mdiDatabase = (function () {
         }
     }
 
-    const isLocal = window.location.href.match(/localhost|templarian\.github\.io/);
+    const isLocal = window.location.href.match(/localhost/);
+    const isGitHub = window.location.href.match(/templarian\.github\.io/);
     async function get(request, options = {}) {
         const { params = {} } = options;
         const keys = Object.keys(params);
         const p = `?${keys.map(k => `${k}=${params[k]}`).join('&')}`;
-        if (isLocal) {
+        if (isLocal || isGitHub) {
             const mock = keys.map(k => `${k}/${params[k]}`).join('/');
             if (mock) {
                 request += `/_/${mock}`;
             }
+            if (isGitHub) {
+                request = request.replace(/^\//, '');
+            }
         }
-        const response = await fetch(isLocal ? `${request}/mock.get.json` : `${request}${p === '?' ? '' : p}`);
+        const response = await fetch((isLocal || isGitHub) ? `${request}/mock.get.json` : `${request}${p === '?' ? '' : p}`);
         try {
             return response.json();
         }
