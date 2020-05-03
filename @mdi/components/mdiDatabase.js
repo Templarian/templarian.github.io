@@ -4752,8 +4752,12 @@ var mdiDatabase = (function () {
                 return result;
             }
         }
+        async exists(fontId) {
+            const count = await this.getCount(fontId);
+            return count > 0;
+        }
         async resync(fontId) {
-            console.log('start');
+            let modified = false;
             const font = new Font().from({
                 id: fontId
             });
@@ -4778,6 +4782,9 @@ var mdiDatabase = (function () {
                 }
             });
             await this.db.icons.bulkDelete(removeIds);
+            if (modifiedIds.length > 0 || removeIds.length > 0) {
+                modified = true;
+            }
             if (modifiedIds.length < 500) {
                 // Do a partial update patch of data
                 let i, j, chunkIds = [], chunk = 100;
@@ -4824,13 +4831,15 @@ var mdiDatabase = (function () {
             }
             await this.db.hashes.bulkPut(hashIds.map(id => ({ id, hash: hashes[id] })));
             await this.db.hashes.bulkDelete(removeIds);
-            console.log('done');
+            return modified;
         }
         async sync(fontId) {
             if (!this.synced) {
-                await this.resync(fontId);
+                const modified = await this.resync(fontId);
                 this.synced = true;
+                return modified;
             }
+            return false;
         }
         convert(local) {
             const icon = new Icon();
@@ -4884,12 +4893,26 @@ var mdiDatabase = (function () {
         }
         async render() {
             if (this.font !== '') {
-                await db.sync(this.font);
-                this.dispatchEvent(new CustomEvent('sync', {
-                    detail: {
-                        db
-                    }
-                }));
+                const exists = await db.exists(this.font);
+                let delay = true;
+                if (exists) {
+                    this.dispatchEvent(new CustomEvent('sync', {
+                        detail: {
+                            db,
+                            delay
+                        }
+                    }));
+                }
+                const modified = await db.sync(this.font);
+                if (modified) {
+                    delay = false;
+                    this.dispatchEvent(new CustomEvent('sync', {
+                        detail: {
+                            db,
+                            delay
+                        }
+                    }));
+                }
             }
         }
     };
