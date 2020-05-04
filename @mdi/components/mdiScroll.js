@@ -125,6 +125,7 @@ var mdiScroll = (function () {
             this.columns = 10;
             this.size = 44;
             this.visible = false;
+            this.offsetRows = 0;
             this.resizeObserver = new ResizeObserver(entries => {
                 const { width } = entries[0].contentRect;
                 this.columns = Math.floor(width / (this.size + 20));
@@ -150,7 +151,6 @@ var mdiScroll = (function () {
         calculateScroll() {
             const { visible, y, height, offsetRows } = this.getView();
             if (visible) {
-                this.$text.innerText = `Offset Rows: ${offsetRows}`;
                 this.$scroll.style.transform = `translateY(${y}px)`;
                 this.$scroll.style.height = `${height}px`;
             }
@@ -163,6 +163,14 @@ var mdiScroll = (function () {
                     this.leaveView();
                 }
             }
+            if (this.offsetRows !== offsetRows) {
+                this.offsetRows = offsetRows;
+                this.updateRows();
+            }
+        }
+        updateRows() {
+            console.log('Update Rows', this.offsetRows);
+            this.$text.innerText = `Offset Rows: ${this.offsetRows}`;
         }
         enterView() {
             console.log('Enter View');
