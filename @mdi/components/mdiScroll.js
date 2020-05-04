@@ -115,7 +115,7 @@ var mdiScroll = (function () {
         };
     }
 
-    var template$1 = "<div part=\"scroll\">\n  Slot Content Here\n</div>";
+    var template$1 = "<div part=\"scroll\">\n  <div part=\"text\">Slot Content Here</div>\n  <button part=\"small\">Small</button> <button part=\"large\">Larger</button>\n</div>";
 
     var style$1 = ":host {\n  display: block;\n}\n\ndiv {\n  transition: translateY(0);\n  background: red;\n}";
 
@@ -135,17 +135,19 @@ var mdiScroll = (function () {
             const { y, height } = this.getBoundingClientRect();
             const top = y < 0 ? -1 * y : 0;
             const maxHeight = height > innerHeight ? innerHeight : height;
+            const minHeight = y + height - innerHeight > 0 ? maxHeight : maxHeight + y + height - innerHeight;
+            const calcY = height - top - innerHeight < 0 ? height - innerHeight : top;
             return {
                 visible: y < innerHeight && height + y > 0,
-                y: top,
-                height: y + height - innerHeight > 0 ? maxHeight : maxHeight + y + height - innerHeight,
-                offsetRows: Math.floor(top / 44)
+                y: calcY,
+                height: height > innerHeight && minHeight < innerHeight ? innerHeight : minHeight,
+                offsetRows: Math.floor(calcY / 44)
             };
         }
         calculateScroll() {
             const { visible, y, height, offsetRows } = this.getView();
             if (visible) {
-                this.$scroll.innerText = `Offset Rows: ${offsetRows}`;
+                this.$text.innerText = `Offset Rows: ${offsetRows}`;
                 this.$scroll.style.transform = `translateY(${y}px)`;
                 this.$scroll.style.height = `${height}px`;
             }
@@ -171,11 +173,31 @@ var mdiScroll = (function () {
                 this.calculateScroll();
             });
             this.calculateScroll();
+            // Debug
+            this.$small.addEventListener('click', () => {
+                this.style.height = '500px';
+                this.$scroll.style.height = `44px`;
+                this.calculateScroll();
+            });
+            this.$large.addEventListener('click', () => {
+                this.style.height = '2000px';
+                this.$scroll.style.height = `44px`;
+                this.calculateScroll();
+            });
         }
     };
     __decorate([
         Part()
     ], MdiScroll.prototype, "$scroll", void 0);
+    __decorate([
+        Part()
+    ], MdiScroll.prototype, "$text", void 0);
+    __decorate([
+        Part()
+    ], MdiScroll.prototype, "$small", void 0);
+    __decorate([
+        Part()
+    ], MdiScroll.prototype, "$large", void 0);
     MdiScroll = __decorate([
         Component({
             selector: 'mdi-scroll',
