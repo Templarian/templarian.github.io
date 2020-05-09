@@ -117,7 +117,7 @@ var mdiScroll = (function () {
 
     var template$1 = "<div part=\"scroll\">\n  <slot></slot>\n</div>";
 
-    var style$1 = ":host {\n  display: block;\n}\n\ndiv {\n  transition: translateY(0);\n}";
+    var style$1 = ":host {\n  display: block;\n}\n\ndiv {\n  transform: translateY(0);\n}";
 
     let MdiScroll = class MdiScroll extends HTMLElement {
         constructor() {
@@ -190,6 +190,7 @@ var mdiScroll = (function () {
                 const { height } = e.detail;
                 this.style.height = `${height}px`;
                 this.height = parseInt(height, 10);
+                this.y = -1;
                 this.calculateScroll();
             });
             this.style.height = `${this.height}px`;
