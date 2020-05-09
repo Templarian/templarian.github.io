@@ -117,7 +117,7 @@ var mdiScroll = (function () {
 
     var template$1 = "<div part=\"scroll\">\n  <slot></slot>\n</div>";
 
-    var style$1 = ":host {\n  display: block;\n}\n\ndiv {\n  transition: translateY(0);\n  background: red;\n}";
+    var style$1 = ":host {\n  display: block;\n}\n\ndiv {\n  transition: translateY(0);\n}";
 
     let MdiScroll = class MdiScroll extends HTMLElement {
         constructor() {
@@ -141,15 +141,18 @@ var mdiScroll = (function () {
                 : top;
             const calcHeight = height < innerHeight
                 ? height
-                : y + height - innerHeight > 0 ? innerHeight : y + height - innerHeight;
+                : y + height - innerHeight > 0
+                    ? innerHeight
+                    : y + height - innerHeight;
             return {
                 visible: y < innerHeight && height + y > 0,
                 y: calcY,
-                height: calcHeight
+                height: calcHeight < 0 ? innerHeight : calcHeight,
+                atEnd: calcHeight < 0
             };
         }
         calculateScroll() {
-            const { visible, y, height } = this.getView();
+            const { visible, y, height, atEnd } = this.getView();
             if (visible) {
                 this.$scroll.style.transform = `translateY(${y}px)`;
                 this.$scroll.style.height = `${height}px`;
@@ -168,7 +171,8 @@ var mdiScroll = (function () {
                     detail: {
                         offsetY: y,
                         viewHeight: height,
-                        height: this.height
+                        height: this.height,
+                        atEnd
                     }
                 }));
                 this.y = y;
