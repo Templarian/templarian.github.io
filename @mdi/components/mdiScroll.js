@@ -132,9 +132,28 @@ var mdiScroll = (function () {
                 this.columns = Math.floor(width / (this.size + 20));
             });
         }
+        getInnerHeight() {
+            let parentElement = this.parentElement;
+            while (parentElement) {
+                if (parentElement.style.overflow === 'auto') {
+                    return parentElement.getBoundingClientRect().height;
+                }
+                parentElement = parentElement.parentElement;
+            }
+            return window.innerHeight;
+        }
+        get isWindow() {
+            return this.scrollElement === window;
+        }
         getView() {
-            const { innerHeight } = window;
-            const { y, height } = this.getBoundingClientRect();
+            const innerHeight = this.getInnerHeight();
+            const container = this.getBoundingClientRect();
+            const { y, height } = this.isWindow
+                ? { y: container.y, height: container.height }
+                : {
+                    y: container.y - this.scrollElement.getBoundingClientRect().y,
+                    height: container.height
+                };
             const top = y < 0 ? -1 * y : 0;
             const calcY = height - top - innerHeight < 0
                 ? height - innerHeight < 0 ? 0 : height - innerHeight
@@ -145,14 +164,14 @@ var mdiScroll = (function () {
                     ? innerHeight
                     : y + height - innerHeight;
             return {
-                visible: y < innerHeight && height + y > 0,
+                visible: (y < innerHeight && height + y > 0) || !this.isWindow,
                 y: calcY,
                 height: calcHeight < 0 ? innerHeight : calcHeight,
                 atEnd: calcHeight < 0
             };
         }
         calculateScroll() {
-            const { visible, y, height, atEnd } = this.getView();
+            const { visible, y, height } = this.getView();
             if (visible) {
                 this.$scroll.style.transform = `translateY(${y}px)`;
                 this.$scroll.style.height = `${height}px`;
@@ -171,8 +190,7 @@ var mdiScroll = (function () {
                     detail: {
                         offsetY: y,
                         viewHeight: height,
-                        height: this.height,
-                        atEnd
+                        height: this.height
                     }
                 }));
                 this.y = y;
@@ -184,24 +202,35 @@ var mdiScroll = (function () {
         leaveView() {
             this.dispatchEvent(new CustomEvent('leave'));
         }
+        getParentElement() {
+            let parentElement = this.parentElement;
+            while (parentElement) {
+                if (parentElement.style.overflow === 'auto') {
+                    return parentElement;
+                }
+                parentElement = parentElement.parentElement;
+            }
+            return window;
+        }
         connectedCallback() {
             this.addEventListener('height', (e) => {
                 e.preventDefault();
+                this.scrollElement = this.getParentElement();
+                this.scrollElement.addEventListener('scroll', () => {
+                    this.calculateScroll();
+                });
+                window.addEventListener('resize', () => {
+                    this.y = -1;
+                    this.calculateScroll();
+                });
                 const { height } = e.detail;
                 this.style.height = `${height}px`;
                 this.height = parseInt(height, 10);
                 this.y = -1;
                 this.calculateScroll();
             });
-            this.style.height = `${this.height}px`;
-            window.addEventListener('scroll', () => {
-                this.calculateScroll();
-            });
-            window.addEventListener('resize', () => {
-                this.y = -1;
-                this.calculateScroll();
-            });
-            this.calculateScroll();
+            // this.style.height = `${this.height}px`;
+            // this.calculateScroll();
         }
     };
     __decorate([
