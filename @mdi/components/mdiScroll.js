@@ -103,6 +103,38 @@ var mdiScroll = (function () {
             }
         };
     }
+    function Prop() {
+        return function (target, propertyKey, descriptor) {
+            var constructor = target.constructor;
+            if (!constructor.observedAttributes) {
+                constructor.observedAttributes = [];
+            }
+            var observedAttributes = constructor.observedAttributes;
+            if (!constructor.symbols) {
+                constructor.symbols = {};
+            }
+            var symbols = constructor.symbols;
+            observedAttributes.push(propertyKey);
+            var symbol = Symbol(propertyKey);
+            symbols[propertyKey] = symbol;
+            Object.defineProperty(target, propertyKey, {
+                get: function () {
+                    return this[symbol];
+                },
+                set: function (value) {
+                    var _this = this;
+                    this[symbol] = value;
+                    if (this[init]) {
+                        this[parent].map(function (p) {
+                            if (p.render) {
+                                p.render.call(_this);
+                            }
+                        });
+                    }
+                }
+            });
+        };
+    }
     function Part() {
         return function (target, propertyKey, descriptor) {
             Object.defineProperty(target, propertyKey, {
@@ -123,6 +155,7 @@ var mdiScroll = (function () {
         constructor() {
             super(...arguments);
             this.height = 16;
+            this.currentHeight = -1;
             this.columns = 10;
             this.size = 44;
             this.visible = false;
@@ -212,27 +245,31 @@ var mdiScroll = (function () {
             }
             return window;
         }
-        connectedCallback() {
-            this.addEventListener('height', (e) => {
-                e.preventDefault();
-                this.scrollElement = this.getParentElement();
-                this.scrollElement.addEventListener('scroll', () => {
-                    this.calculateScroll();
-                });
-                window.addEventListener('resize', () => {
-                    this.y = -1;
-                    this.calculateScroll();
-                });
-                const { height } = e.detail;
-                this.style.height = `${height}px`;
-                this.height = parseInt(height, 10);
+        updateHeight() {
+            this.scrollElement = this.getParentElement();
+            this.scrollElement.addEventListener('scroll', () => {
+                this.calculateScroll();
+            });
+            window.addEventListener('resize', () => {
                 this.y = -1;
                 this.calculateScroll();
             });
-            // this.style.height = `${this.height}px`;
-            // this.calculateScroll();
+            this.style.height = `${this.currentHeight}px`;
+            this.y = -1;
+            this.calculateScroll();
+        }
+        render() {
+            const height = parseInt(this.height, 10);
+            console.log(height);
+            if (this.currentHeight !== height) {
+                this.currentHeight = height;
+                this.updateHeight();
+            }
         }
     };
+    __decorate([
+        Prop()
+    ], MdiScroll.prototype, "height", void 0);
     __decorate([
         Part()
     ], MdiScroll.prototype, "$scroll", void 0);
