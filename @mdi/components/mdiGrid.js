@@ -2194,6 +2194,7 @@ var mdiGrid = (function () {
             let x = gap;
             let y = gap;
             this.items.forEach(([btn, svg], i) => {
+                // ToDo: actually remove elements
                 btn.style.display = i < this.currentCount ? 'block' : 'none';
                 btn.style.padding = `${padding}px`;
                 btn.style.width = `${width}px`;
@@ -2224,6 +2225,7 @@ var mdiGrid = (function () {
                     const index = i + (row * this.columns);
                     if (index < count) {
                         path.setAttribute('d', this.icons[index].data);
+                        btn.style.display = 'block';
                     }
                     else {
                         btn.style.display = 'none';
