@@ -260,7 +260,6 @@ var mdiScroll = (function () {
         }
         render() {
             const height = parseInt(this.height, 10);
-            console.log(height);
             if (this.currentHeight !== height) {
                 this.currentHeight = height;
                 this.updateHeight();
