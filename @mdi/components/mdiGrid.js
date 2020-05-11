@@ -2195,7 +2195,9 @@ var mdiGrid = (function () {
                 this.$grid.removeChild(ele[0]);
                 this.currentCount--;
             }
-            const { size, padding, gap, width, height } = this.getIconMetrics();
+            const { size, padding, gap, width, height, rowHeight, scrollWidth } = this.getIconMetrics();
+            const extra = (scrollWidth - gap - (rowHeight * this.columns)) / (this.columns - 1);
+            console.log(extra);
             let x = gap;
             let y = gap;
             this.items.forEach(([btn, svg], i) => {
@@ -2205,7 +2207,7 @@ var mdiGrid = (function () {
                 btn.style.transform = `translate(${x}px, ${y}px)`;
                 svg.style.width = `${size}px`;
                 svg.style.height = `${size}px`;
-                x += width + gap;
+                x += width + gap + extra;
                 if (i % this.columns === this.columns - 1) {
                     y += height + gap;
                     x = gap;
@@ -2240,13 +2242,15 @@ var mdiGrid = (function () {
             const size = parseInt(this.size, 10);
             const padding = parseInt(this.padding, 10);
             const gap = parseInt(this.gap, 10);
+            const { width: scrollWidth } = this.$scroll.getBoundingClientRect();
             return {
                 size,
                 padding,
                 gap,
                 width: size + (padding * 2),
                 height: size + (padding * 2),
-                rowHeight: size + (padding * 2) + gap
+                rowHeight: size + (padding * 2) + gap,
+                scrollWidth
             };
         }
         calculateColumns(width, rowHeight) {
@@ -2255,7 +2259,7 @@ var mdiGrid = (function () {
         }
         render() {
             // Calculate Icon Size
-            const { size, padding, gap, rowHeight } = this.getIconMetrics();
+            const { size, padding, gap, rowHeight, scrollWidth } = this.getIconMetrics();
             if (this.currentSize !== size || this.currentPadding !== padding || this.currentGap !== gap) {
                 this.currentSize = size;
                 this.currentPadding = padding;
@@ -2263,8 +2267,7 @@ var mdiGrid = (function () {
                 this.rowHeight = rowHeight;
             }
             // Calculate Columns
-            const { width } = this.$scroll.getBoundingClientRect();
-            const columns = this.calculateColumns(width, rowHeight);
+            const columns = this.calculateColumns(scrollWidth, rowHeight);
             if (this.columns !== columns) {
                 this.columns = columns;
             }
