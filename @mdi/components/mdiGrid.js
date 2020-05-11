@@ -2170,10 +2170,12 @@ var mdiGrid = (function () {
                 const btn = document.createElement('button');
                 btn.dataset.index = `${i}`;
                 btn.addEventListener('click', () => {
-                    this.handleClick(this.icons[i]);
+                    const index = i + (this.columns * this.currentRow);
+                    this.handleClick(this.icons[index]);
                 });
                 btn.addEventListener('keydown', (e) => {
-                    this.moveFocus(e, i);
+                    const index = i + (this.columns * this.currentRow);
+                    this.moveFocus(e, index);
                 });
                 btn.addEventListener('contextmenu', (e) => {
                     var rect = this.$grid.getBoundingClientRect();
