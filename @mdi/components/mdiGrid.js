@@ -2190,12 +2190,15 @@ var mdiGrid = (function () {
                 this.$grid.appendChild(btn);
                 this.items.push([btn, svg, path]);
             }
+            for (let i = this.currentCount; i > count; i--) {
+                const ele = this.items.pop();
+                this.$grid.removeChild(ele[0]);
+                this.currentCount--;
+            }
             const { size, padding, gap, width, height } = this.getIconMetrics();
             let x = gap;
             let y = gap;
             this.items.forEach(([btn, svg], i) => {
-                // ToDo: actually remove elements
-                btn.style.display = i < this.currentCount ? 'block' : 'none';
                 btn.style.padding = `${padding}px`;
                 btn.style.width = `${width}px`;
                 btn.style.height = `${height}px`;
@@ -2216,7 +2219,6 @@ var mdiGrid = (function () {
             const row = Math.floor(offsetY / rowHeight);
             this.$grid.style.transform = `translateY(${-1 * offsetY % rowHeight}px)`;
             if (this.cacheHeight !== height) {
-                console.log('syncVirtual');
                 this.syncVirtual(rows * this.columns);
                 this.cacheHeight = height;
             }
@@ -2466,9 +2468,6 @@ var mdiGrid = (function () {
     __decorate([
         Part()
     ], MdiGrid.prototype, "$grid", void 0);
-    __decorate([
-        Part()
-    ], MdiGrid.prototype, "$grids", void 0);
     __decorate([
         Part()
     ], MdiGrid.prototype, "$contextMenu", void 0);
