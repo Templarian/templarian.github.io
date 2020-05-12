@@ -675,10 +675,17 @@ var mdiScroll = (function () {
             this.size = 44;
             this.visible = false;
             this.y = -1;
-            this.resizeObserver = new ResizeObserver(entries => {
+            this.width = 0;
+            this.resizeObserver = new ResizeObserver(throttle((entries) => {
                 const { width } = entries[0].contentRect;
                 this.columns = Math.floor(width / (this.size + 20));
-            });
+                this.y = -1;
+                this.width = width;
+                this.calculateScroll();
+            }, 100));
+        }
+        connectedCallback() {
+            this.resizeObserver.observe(this.$scroll);
         }
         getInnerHeight() {
             let parentElement = this.parentElement;
@@ -737,6 +744,7 @@ var mdiScroll = (function () {
                 this.dispatchEvent(new CustomEvent('calculate', {
                     detail: {
                         offsetY: y,
+                        viewWidth: this.width,
                         viewHeight: height,
                         height: this.height
                     }
@@ -763,10 +771,6 @@ var mdiScroll = (function () {
         updateHeight() {
             this.scrollElement = this.getParentElement();
             this.scrollElement.addEventListener('scroll', throttle(() => {
-                this.calculateScroll();
-            }, 100));
-            window.addEventListener('resize', throttle(() => {
-                this.y = -1;
                 this.calculateScroll();
             }, 100));
             this.style.height = `${this.currentHeight}px`;
