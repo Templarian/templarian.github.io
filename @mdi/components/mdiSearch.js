@@ -147,9 +147,9 @@ var mdiSearch = (function () {
         };
     }
 
-    var template$1 = "<div>\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <ul part=\"list\"></ul>\n</div>";
+    var template$1 = "<div>\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n  </div>\n</div>";
 
-    var style$1 = ":host {\n  align-self: center;\n  width: 10rem;\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n}\ninput:focus + svg path {\n  fill: #ccc;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  fill: #555;\n  transition: fill 0.3s ease-in-out;\n}\nul {\n  display: none;\n  flex-direction: column;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  z-index: 1;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}";
+    var style$1 = ":host {\n  align-self: center;\n  width: 10rem;\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n}\ninput:focus + svg path {\n  fill: #ccc;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  fill: #555;\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.3);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover {\n  background: #f1f1f1;\n}\nul > li:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}";
 
     const noIcon = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
     let MdiSearch = class MdiSearch extends HTMLElement {
@@ -158,12 +158,15 @@ var mdiSearch = (function () {
             this.path = noIcon;
             this.items = [];
             this.isOpen = false;
+            this.isOver = false;
             this.term = '';
         }
         connectedCallback() {
             this.$input.addEventListener('input', this.handleInput.bind(this));
             this.$input.addEventListener('focus', this.handleFocus.bind(this));
             this.$input.addEventListener('blur', this.handleBlur.bind(this));
+            this.$list.addEventListener('mouseenter', this.handleListEnter.bind(this));
+            this.$list.addEventListener('mouseleave', this.handleListLeave.bind(this));
         }
         handleInput(e) {
             const target = e.target;
@@ -173,11 +176,19 @@ var mdiSearch = (function () {
         }
         handleFocus() {
             this.isOpen = true;
-            this.$list.style.display = 'flex';
+            this.$menu.style.display = 'block';
         }
         handleBlur() {
-            this.isOpen = false;
-            this.$list.style.display = 'none';
+            if (!this.isOver) {
+                this.isOpen = false;
+                this.$menu.style.display = 'none';
+            }
+        }
+        handleListEnter() {
+            this.isOver = true;
+        }
+        handleListLeave() {
+            this.isOver = false;
         }
         highlight(text) {
             var normalized = text;
@@ -237,6 +248,9 @@ var mdiSearch = (function () {
     __decorate([
         Prop()
     ], MdiSearch.prototype, "items", void 0);
+    __decorate([
+        Part()
+    ], MdiSearch.prototype, "$menu", void 0);
     __decorate([
         Part()
     ], MdiSearch.prototype, "$input", void 0);
