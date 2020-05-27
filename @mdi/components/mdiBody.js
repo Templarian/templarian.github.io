@@ -104,9 +104,9 @@ var mdiBody = (function () {
         };
     }
 
-    var template$1 = "<slot></slot>";
+    var template$1 = "<svg class=\"top\" viewBox=\"0 0 1000 20\">\n  <path fill=\"#F9D9A0\" fill-opacity=\"1\" stroke-linejoin=\"round\" d=\"M 1000,10L -4.35511e-005,20L -4.35511e-005,1.90735e-006L 1000,1.90735e-006L 1000,10 Z \"/>\n</svg>\n<slot></slot>\n<svg class=\"bottom\" viewBox=\"0 0 1000 20\">\n\t<path fill=\"#F9D9A0\" fill-opacity=\"1\" stroke-linejoin=\"round\" d=\"M 0,10L 1000,0L 1000,20L 0,20L 0,10 Z \"/>\n\t<linearGradient id=\"SVGID_Fill1_\" gradientUnits=\"objectBoundingBox\" x1=\"0.00104167\" y1=\"0.499994\" x2=\"0.500527\" y2=\"0.499994\" gradientTransform=\"rotate(63.411339 0.001042 0.499994)\">\n\t\t<stop offset=\"0\" stop-color=\"#000000\" stop-opacity=\"0.34902\"/>\n\t\t<stop offset=\"0.10559\" stop-color=\"#000000\" stop-opacity=\"0.301961\"/>\n\t\t<stop offset=\"0.195652\" stop-color=\"#000000\" stop-opacity=\"0.2\"/>\n\t\t<stop offset=\"0.304348\" stop-color=\"#000000\" stop-opacity=\"0.129412\"/>\n\t\t<stop offset=\"0.403727\" stop-color=\"#000000\" stop-opacity=\"0.101961\"/>\n\t\t<stop offset=\"0.503106\" stop-color=\"#000000\" stop-opacity=\"0.0509804\"/>\n\t\t<stop offset=\"0.596273\" stop-color=\"#000000\" stop-opacity=\"0.0509804\"/>\n\t\t<stop offset=\"0.704969\" stop-color=\"#000000\" stop-opacity=\"0.0156863\"/>\n\t\t<stop offset=\"1\" stop-color=\"#000000\" stop-opacity=\"0\"/>\n\t</linearGradient>\n\t<path fill=\"url(#SVGID_Fill1_)\" stroke-linejoin=\"round\" d=\"M -1.33594e-021,10L 1000,-0.0206203L 1000,9.97938L 1.33595e-021,20L -1.33594e-021,10 Z \"/>\n</svg>";
 
-    var style$1 = ":host {\n  display: block;\n  background: linear-gradient(135deg, #ffffff 0%,#f6ede4 100%);\n}";
+    var style$1 = ":host {\n  display: block;\n  background: linear-gradient(135deg, #ffffff 0%,#f6ede4 100%);\n}\n.top {\n  width: 100%;\n  vertical-align: top;\n}\n.bottom {\n  width: 100%;\n  vertical-align: bottom;\n}";
 
     let MdiBody = class MdiBody extends HTMLElement {
     };
