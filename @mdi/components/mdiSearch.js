@@ -164,7 +164,15 @@ var mdiSearch = (function () {
     function iconFilter(icons, term, limit = 5) {
         const termRegex = new RegExp(term, 'i');
         const list = filter(icons, (icon) => {
-            return icon.name.match(termRegex);
+            var match = icon.name.match(termRegex) !== null;
+            if (!match) {
+                for (var i = 0, c = icon.aliases.length; i < c; i++) {
+                    if (icon.aliases[i].name.match(termRegex) !== null) {
+                        return true;
+                    }
+                }
+            }
+            return match;
         }, limit);
         return Array.from(list);
     }
@@ -278,6 +286,14 @@ var mdiSearch = (function () {
                     li.appendChild(a);
                     this.$list.appendChild(li);
                 });
+                if (icons.length === 5) {
+                    var li = document.createElement('li');
+                    var a = document.createElement('a');
+                    a.href = `/icons?search=${this.term}`;
+                    a.innerText = `Show results for "${this.term}"`;
+                    li.appendChild(a);
+                    this.$list.appendChild(li);
+                }
             }
         }
         render() {
