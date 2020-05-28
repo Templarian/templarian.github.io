@@ -163,18 +163,27 @@ var mdiSearch = (function () {
     }
     function iconFilter(icons, term, limit = 5) {
         const termRegex = new RegExp(term, 'i');
-        const list = filter(icons, (icon) => {
-            var match = icon.name.match(termRegex) !== null;
-            if (!match) {
+        const iconsByName = filter(icons, (icon) => {
+            return icon.name.match(termRegex) !== null;
+        }, limit);
+        const list = Array.from(iconsByName);
+        const skip = list.map(icon => icon.id);
+        if (list.length < limit) {
+            var iconsByAliases = filter(icons, (icon) => {
+                if (skip.includes(icon.id)) {
+                    return false;
+                }
                 for (var i = 0, c = icon.aliases.length; i < c; i++) {
                     if (icon.aliases[i].name.match(termRegex) !== null) {
                         return true;
                     }
                 }
-            }
-            return match;
-        }, limit);
-        return Array.from(list);
+                return false;
+            }, limit - list.length);
+            const list2 = Array.from(iconsByAliases);
+            list2.forEach(icon => list.push(icon));
+        }
+        return list;
     }
 
     var template$1 = "<div>\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n  </div>\n</div>";
