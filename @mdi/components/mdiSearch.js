@@ -174,7 +174,12 @@ var mdiSearch = (function () {
                     return false;
                 }
                 for (var i = 0, c = icon.aliases.length; i < c; i++) {
+                    if (icon.aliases[i].name == null) {
+                        console.log(icon.name, icon.aliases);
+                        return false;
+                    }
                     if (icon.aliases[i].name.match(termRegex) !== null) {
+                        icon.aliases[i].match = true;
                         return true;
                     }
                 }
@@ -290,7 +295,17 @@ var mdiSearch = (function () {
                     var li = document.createElement('li');
                     var a = document.createElement('a');
                     a.href = `/icon/${icon.name}`;
-                    var text = this.highlight(icon.name || '');
+                    var additional = icon.aliases.reduce((arr, icon) => {
+                        if (icon.match) {
+                            arr.push(icon.name || '');
+                        }
+                        return arr;
+                    }, []);
+                    var aliasText = '';
+                    if (additional.length) {
+                        aliasText = ` (${additional.join(', ')})`;
+                    }
+                    const text = this.highlight(`${icon.name}${aliasText}`);
                     a.appendChild(text);
                     li.appendChild(a);
                     this.$list.appendChild(li);

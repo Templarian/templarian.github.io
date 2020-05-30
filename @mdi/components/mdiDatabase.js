@@ -4541,11 +4541,17 @@ var mdiDatabase = (function () {
         constructor(id, name) {
             this.id = id;
             this.name = name;
+            this.match = false;
         }
         from(alias) {
             this.id = alias.id;
             this.name = alias.name;
             return this;
+        }
+        to() {
+            return {
+                name: this.name
+            };
         }
     }
 
@@ -4591,6 +4597,13 @@ var mdiDatabase = (function () {
             this.url = tag.url;
             this.count = tag.count;
             return this;
+        }
+        to() {
+            return {
+                name: this.name,
+                url: this.url,
+                count: this.count
+            };
         }
     }
 
@@ -4661,6 +4674,21 @@ var mdiDatabase = (function () {
                 this.codepoint = icon.codepoint;
             }
             return this;
+        }
+        to() {
+            const { id, name, description, data, version, fontIcon, packageId, baseIconId, aliases, tags } = this;
+            return {
+                id,
+                name,
+                description,
+                data,
+                version,
+                fontIcon,
+                packageId,
+                baseIconId,
+                aliases: aliases.map(alias => alias.to()),
+                tags: tags.map(tag => tag.to())
+            };
         }
     }
 
@@ -4828,8 +4856,8 @@ var mdiDatabase = (function () {
                         data: icon.data,
                         version: icon.version,
                         codepoint: icon.codepoint,
-                        aliases: JSON.stringify(icon.aliases),
-                        tags: JSON.stringify(icon.tags)
+                        aliases: JSON.stringify(icon.aliases.map(alias => ({ name: alias.name }))),
+                        tags: JSON.stringify(icon.tags.map(tag => ({ name: tag.name, url: tag.url })))
                     })));
                 }));
             }
