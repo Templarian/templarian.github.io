@@ -205,7 +205,7 @@ var mdiSearch = (function () {
 
     var template$1 = "<div>\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n  </div>\n</div>";
 
-    var style$1 = ":host {\n  align-self: center;\n  width: 10rem;\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n}\ninput:focus + svg path {\n  fill: #ccc;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  fill: #555;\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.3);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover {\n  background: #DAF4FB;\n}\nul > li:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}";
+    var style$1 = ":host {\n  align-self: center;\n  width: 10rem;\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n}\ninput:focus + svg path {\n  fill: #ccc;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  fill: #555;\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-radius: 0.25rem 0.25rem 0 0;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}";
 
     function removeDiacritics(str) {
         var defaultDiacriticsRemovalMap = [
@@ -377,14 +377,20 @@ var mdiSearch = (function () {
         updateList() {
             this.clearList();
             const termRegex = new RegExp(this.term, 'i');
-            this.items
-                .filter((item) => item.name.match(termRegex))
-                .forEach((item) => {
+            const filtered = this.items.filter((item) => item.name.match(termRegex));
+            filtered.forEach((item, i) => {
                 var li = document.createElement('li');
+                li.classList.add('item');
+                li.classList.toggle('first', i === 0);
+                li.classList.toggle('last', i === filtered.length - 1);
                 var a = document.createElement('a');
                 a.href = item.url;
                 var text = this.highlight(item.name);
                 a.appendChild(text);
+                var type = document.createElement('span');
+                type.innerText = item.type;
+                type.classList.add('type');
+                a.appendChild(type);
                 li.appendChild(a);
                 this.$list.appendChild(li);
             });
@@ -396,8 +402,11 @@ var mdiSearch = (function () {
                     li.classList.add('section');
                     this.$list.appendChild(li);
                 }
-                icons.forEach((icon) => {
+                icons.forEach((icon, i) => {
                     var li = document.createElement('li');
+                    li.classList.add('icon');
+                    li.classList.toggle('first', i === 0);
+                    li.classList.toggle('last', i === icons.length - 1);
                     var a = document.createElement('a');
                     a.href = `/icon/${icon.name}`;
                     var additional = icon.aliases.reduce((arr, icon) => {
@@ -417,9 +426,14 @@ var mdiSearch = (function () {
                 });
                 if (icons.length === 5) {
                     var li = document.createElement('li');
+                    li.classList.add('all');
                     var a = document.createElement('a');
                     a.href = `/icons?search=${this.term}`;
-                    a.innerText = `Show results for "${this.term}"`;
+                    a.appendChild(document.createTextNode('All results for "'));
+                    var strong = document.createElement('strong');
+                    strong.innerText = this.term;
+                    a.appendChild(strong);
+                    a.appendChild(document.createTextNode('"'));
                     li.appendChild(a);
                     this.$list.appendChild(li);
                 }
