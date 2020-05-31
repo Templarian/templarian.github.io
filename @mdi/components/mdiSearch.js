@@ -321,7 +321,7 @@ var mdiSearch = (function () {
         handleInput(e) {
             const target = e.target;
             const { value } = target;
-            this.term = removeDiacritics(value);
+            this.term = removeDiacritics(value.toLowerCase());
             this.updateList();
         }
         handleFocus() {
