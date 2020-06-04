@@ -147,66 +147,6 @@ var mdiSearch = (function () {
         };
     }
 
-    function* filter(array, condition, maxSize) {
-        if (!maxSize || maxSize > array.length) {
-            maxSize = array.length;
-        }
-        let count = 0;
-        let i = 0;
-        while (count < maxSize && i < array.length) {
-            if (condition(array[i])) {
-                yield array[i];
-                count++;
-            }
-            i++;
-        }
-    }
-    function iconFilter(icons, term, limit = 5) {
-        const iconsByName = filter(icons, (icon) => {
-            var _a;
-            return ((_a = icon.name) === null || _a === void 0 ? void 0 : _a.toLowerCase().indexOf(term)) === 0;
-        }, limit);
-        const list = Array.from(iconsByName);
-        let skip = list.map(icon => icon.id);
-        if (list.length < limit) {
-            var more = filter(icons, (icon) => {
-                var _a;
-                if (skip.includes(icon.id)) {
-                    return false;
-                }
-                return ((_a = icon.name) === null || _a === void 0 ? void 0 : _a.toLowerCase().indexOf(term)) !== -1;
-            }, limit - list.length);
-            var more2 = Array.from(more);
-            more2.forEach(icon => list.push(icon));
-        }
-        skip = list.map(icon => icon.id);
-        if (list.length < limit) {
-            var iconsByAliases = filter(icons, (icon) => {
-                if (skip.includes(icon.id)) {
-                    return false;
-                }
-                for (var i = 0, c = icon.aliases.length; i < c; i++) {
-                    if (icon.aliases[i].name == null) {
-                        console.error(`Invalid alias in ${icon.name}`);
-                        return false;
-                    }
-                    if (icon.aliases[i].name.indexOf(term) !== -1) {
-                        icon.aliases[i].match = true;
-                        return true;
-                    }
-                }
-                return false;
-            }, limit - list.length);
-            const list2 = Array.from(iconsByAliases);
-            list2.forEach(icon => list.push(icon));
-        }
-        return list;
-    }
-
-    var template$1 = "<div>\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n  </div>\n</div>";
-
-    var style$1 = ":host {\n  align-self: center;\n  width: 10rem;\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n}\ninput:focus + svg path {\n  fill: #ccc;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n.icon svg {\n  color: #453C4F;\n  margin-right: 0.345rem;\n  margin-left: -0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}";
-
     function removeDiacritics(str) {
         var defaultDiacriticsRemovalMap = [
             { 'base': 'A', 'letters': /[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g },
@@ -300,6 +240,77 @@ var mdiSearch = (function () {
         return str;
     }
 
+    function* filter(array, condition, maxSize) {
+        if (!maxSize || maxSize > array.length) {
+            maxSize = array.length;
+        }
+        let count = 0;
+        let i = 0;
+        while (count < maxSize && i < array.length) {
+            if (condition(array[i])) {
+                yield array[i];
+                count++;
+            }
+            i++;
+        }
+    }
+    function exactMatch(icons, term) {
+        var _a;
+        for (var i = 0, c = icons.length; i < c; i++) {
+            if (((_a = icons[i].name) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === term) {
+                icons.unshift(icons.splice(i, 1)[0]);
+                return icons;
+            }
+        }
+        return icons;
+    }
+    function iconFilter(icons, term, limit = 5) {
+        term = removeDiacritics(term.toLowerCase());
+        const iconsByName = filter(icons, (icon) => {
+            var _a;
+            return ((_a = icon.name) === null || _a === void 0 ? void 0 : _a.toLowerCase().indexOf(term)) === 0;
+        }, limit);
+        const list = Array.from(iconsByName);
+        let skip = list.map(icon => icon.id);
+        if (list.length < limit) {
+            var more = filter(icons, (icon) => {
+                var _a;
+                if (skip.includes(icon.id)) {
+                    return false;
+                }
+                return ((_a = icon.name) === null || _a === void 0 ? void 0 : _a.toLowerCase().indexOf(term)) !== -1;
+            }, limit - list.length);
+            var more2 = Array.from(more);
+            more2.forEach(icon => list.push(icon));
+        }
+        skip = list.map(icon => icon.id);
+        if (list.length < limit) {
+            var iconsByAliases = filter(icons, (icon) => {
+                if (skip.includes(icon.id)) {
+                    return false;
+                }
+                for (var i = 0, c = icon.aliases.length; i < c; i++) {
+                    if (icon.aliases[i].name == null) {
+                        console.error(`Invalid alias in ${icon.name}`);
+                        return false;
+                    }
+                    if (icon.aliases[i].name.indexOf(term) !== -1) {
+                        icon.aliases[i].match = true;
+                        return true;
+                    }
+                }
+                return false;
+            }, limit - list.length);
+            const list2 = Array.from(iconsByAliases);
+            list2.forEach(icon => list.push(icon));
+        }
+        return exactMatch(list, term);
+    }
+
+    var template$1 = "<div>\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n  </div>\n</div>";
+
+    var style$1 = ":host {\n  align-self: center;\n  width: 10rem;\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n}\ninput:focus + svg path {\n  fill: #ccc;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n.icon svg {\n  color: #453C4F;\n  margin-right: 0.345rem;\n  margin-left: -0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}";
+
     const noIcon = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
     let MdiSearch = class MdiSearch extends HTMLElement {
         constructor() {
@@ -321,7 +332,7 @@ var mdiSearch = (function () {
         handleInput(e) {
             const target = e.target;
             const { value } = target;
-            this.term = removeDiacritics(value.toLowerCase());
+            this.term = value;
             this.updateList();
         }
         handleFocus() {
