@@ -264,8 +264,11 @@ var mdiSearch = (function () {
         }
         return icons;
     }
+    function sanitizeTerm(term) {
+        return removeDiacritics(term.trim().toLowerCase()).replace(/(\w) (\w)/g, "$1-$2");
+    }
     function iconFilter(icons, term, limit = 5) {
-        term = removeDiacritics(term.toLowerCase());
+        term = sanitizeTerm(term);
         const iconsByName = filter(icons, (icon) => {
             var _a;
             return ((_a = icon.name) === null || _a === void 0 ? void 0 : _a.toLowerCase().indexOf(term)) === 0;
@@ -354,13 +357,14 @@ var mdiSearch = (function () {
         }
         highlight(text) {
             var normalized = text;
-            var span = document.createElement('span');
+            const span = document.createElement('span');
+            const term = sanitizeTerm(this.term);
             if (this.term === '') {
                 span.innerText = text;
                 return span;
             }
             while (normalized) {
-                var index = normalized.toLowerCase().indexOf(this.term);
+                var index = normalized.toLowerCase().indexOf(term);
                 if (index === -1) {
                     const end = document.createElement('span');
                     end.innerText = normalized.substr(0, normalized.length);
@@ -374,9 +378,9 @@ var mdiSearch = (function () {
                         span.appendChild(start);
                     }
                     const strong = document.createElement('strong');
-                    strong.innerText = normalized.substr(index, this.term.length);
+                    strong.innerText = normalized.substr(index, term.length);
                     span.appendChild(strong);
-                    normalized = normalized.substr(index + this.term.length, normalized.length);
+                    normalized = normalized.substr(index + term.length, normalized.length);
                 }
             }
             return span;
@@ -462,7 +466,6 @@ var mdiSearch = (function () {
                     empty = true;
                 }
             }
-            console.log(empty);
             this.$empty.classList.toggle('hide', empty);
         }
         render() {
