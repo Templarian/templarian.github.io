@@ -74,7 +74,9 @@ var mdiHeader = (function () {
                 }
                 this[parent].map(function (p) {
                     if (p.render) {
-                        p.render.call(_this);
+                        p.render.call(_this, cls.observedAttributes
+                            ? cls.observedAttributes.reduce(function (a, c) { a[c] = true; return a; }, {})
+                            : {});
                     }
                 });
                 this[init] = true;
@@ -126,8 +128,9 @@ var mdiHeader = (function () {
                     this[symbol] = value;
                     if (this[init]) {
                         this[parent].map(function (p) {
+                            var _a;
                             if (p.render) {
-                                p.render.call(_this);
+                                p.render.call(_this, (_a = {}, _a[propertyKey] = true, _a));
                             }
                         });
                     }

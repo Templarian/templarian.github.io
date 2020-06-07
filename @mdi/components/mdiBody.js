@@ -74,7 +74,9 @@ var mdiBody = (function () {
                 }
                 this[parent].map(function (p) {
                     if (p.render) {
-                        p.render.call(_this);
+                        p.render.call(_this, cls.observedAttributes
+                            ? cls.observedAttributes.reduce(function (a, c) { a[c] = true; return a; }, {})
+                            : {});
                     }
                 });
                 this[init] = true;
