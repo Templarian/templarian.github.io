@@ -342,6 +342,7 @@ var mdiSearch = (function () {
             this.updateList();
         }
         handleFocus() {
+            this.keyIndex = -1;
             this.updateList();
             this.isOpen = true;
             this.$menu.style.display = 'block';
