@@ -47,6 +47,9 @@ var mdiInputRange = (function () {
                 cls.prototype[style] = config.style || '';
                 cls.prototype[template] = config.template || '';
             }
+            if (!cls.symbols) {
+                cls.symbols = {};
+            }
             var connectedCallback = cls.prototype.connectedCallback || (function () { });
             var disconnectedCallback = cls.prototype.disconnectedCallback || (function () { });
             cls.prototype.connectedCallback = function () {
