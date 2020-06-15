@@ -710,9 +710,9 @@ var mdiScroll = (function () {
             const innerHeight = this.getInnerHeight();
             const container = this.getBoundingClientRect();
             const { y, height } = this.isWindow
-                ? { y: container.y, height: container.height }
+                ? { y: container.top, height: container.height }
                 : {
-                    y: container.y - this.scrollElement.getBoundingClientRect().y,
+                    y: container.top - this.scrollElement.getBoundingClientRect().top,
                     height: container.height
                 };
             const top = y < 0 ? -1 * y : 0;
