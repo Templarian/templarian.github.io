@@ -4539,8 +4539,23 @@ var mdiDatabase = (function () {
         }
         return Promise.reject();
     }
+    async function asset(request, options = {}) {
+        const { params = {} } = options;
+        const keys = Object.keys(params);
+        const p = `?${keys.map(k => `${k}=${params[k]}`).join('&')}`;
+        const response = await fetch(`${request}${p === '?' ? '' : p}`);
+        try {
+            return response.text();
+        }
+        catch (ex) { }
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+        return Promise.reject();
+    }
     const http = {
-        get
+        get,
+        asset
     };
 
     class Alias {

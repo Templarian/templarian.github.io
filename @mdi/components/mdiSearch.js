@@ -437,7 +437,9 @@ var mdiSearch = (function () {
             this.clearList();
             let empty = false;
             const termRegex = new RegExp(this.term, 'i');
-            const filtered = this.items.filter((item) => item.name.match(termRegex));
+            const filtered = Array.from(filter(this.items, (item) => {
+                return item.name.match(termRegex);
+            }, 5));
             filtered.forEach((item, i) => {
                 var li = document.createElement('li');
                 li.classList.add('item');

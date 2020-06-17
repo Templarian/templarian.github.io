@@ -5143,8 +5143,23 @@ async function get(request, options = {}) {
     }
     return Promise.reject();
 }
+async function asset(request, options = {}) {
+    const { params = {} } = options;
+    const keys = Object.keys(params);
+    const p = `?${keys.map(k => `${k}=${params[k]}`).join('&')}`;
+    const response = await fetch(`${request}${p === '?' ? '' : p}`);
+    try {
+        return response.text();
+    }
+    catch (ex) { }
+    if (!response.ok) {
+        throw new Error(response.statusText);
+    }
+    return Promise.reject();
+}
 const http = {
-    get
+    get,
+    asset
 };
 
 class Alias {
@@ -18619,7 +18634,9 @@ let MdiSearch = class MdiSearch extends HTMLElement {
         this.clearList();
         let empty = false;
         const termRegex = new RegExp(this.term, 'i');
-        const filtered = this.items.filter((item) => item.name.match(termRegex));
+        const filtered = Array.from(filter(this.items, (item) => {
+            return item.name.match(termRegex);
+        }, 5));
         filtered.forEach((item, i) => {
             var li = document.createElement('li');
             li.classList.add('item');
