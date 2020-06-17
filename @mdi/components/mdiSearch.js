@@ -260,6 +260,7 @@ var mdiSearch = (function () {
             i++;
         }
     }
+
     function exactMatch(icons, term) {
         var _a;
         for (var i = 0, c = icons.length; i < c; i++) {
