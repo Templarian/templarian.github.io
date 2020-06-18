@@ -17561,29 +17561,45 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
 
 var template$b = "<div part=\"content\"></div>";
 
-var style$b = ":host {\n  color: #453C4F;\n}\n\nblockquote {\n  border-left: 4px solid #453C4F;\n  padding: 0 0.5rem;\n  margin: 0;\n}\n\npre {\n  background: #222;\n  padding: 0.5rem;\n  border-radius: 0.25rem;\n}\n\n/* PrismJS 1.15.0\n/**\n * prism.js Visual Studio Code Theme\n * @author Visual Studio Code\n */\n\n code[class*=\"language-\"],\n pre[class*=\"language-\"] {\n   color: #9CDCFE;\n   background: none;\n   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;\n   text-align: left;\n   white-space: pre;\n   word-spacing: normal;\n   word-break: normal;\n   word-wrap: normal;\n   line-height: 1.5;\n\n   -moz-tab-size: 4;\n   -o-tab-size: 4;\n   tab-size: 4;\n\n   -webkit-hyphens: none;\n   -moz-hyphens: none;\n   -ms-hyphens: none;\n   hyphens: none;\n\n }\n\n /* Code blocks */\n pre[class*=\"language-\"] {\n   padding: 1em;\n   margin: .5em 0;\n   overflow: auto;\n }\n\n :not(pre) > code[class*=\"language-\"],\n pre[class*=\"language-\"] {\n   background: #1E1E1E;\n }\n\n /* Inline code */\n :not(pre) > code[class*=\"language-\"] {\n   padding: .1em;\n   border-radius: .3em;\n   white-space: normal;\n }\n\n .token.comment,\n .token.block-comment,\n .token.prolog,\n .token.doctype,\n .token.cdata {\n   color: #608B4E;\n }\n\n .token.punctuation {\n   color: #ccc;\n }\n\n .token.tag,\n .token.namespace,\n .token.deleted {\n   color: #4EC9B0;\n }\n\n .token.attr-name {\n   color: #9CDCFE;\n }\n\n .token.function-name {\n   color: #6196cc;\n }\n\n .token.boolean {\n   color: #569CD6;\n }\n .token.number {\n   color: #B5CEA8;\n }\n .token.function {\n   color: #DCDCAA;\n }\n\n .token.property,\n .token.constant,\n .token.symbol {\n   color: #f8c555;\n }\n\n .token.class-name {\n   color: #4EC9B0;\n }\n\n .token.selector,\n .token.important,\n .token.atrule,\n .token.keyword,\n .token.builtin {\n   color: #C586C0;\n }\n\n .token.string,\n .token.char,\n .token.attr-value,\n .token.regex,\n .token.variable {\n   color: #CE9169;\n }\n\n .token.operator {\n   color: #D4D4D4;\n }\n .token.entity,\n .token.url {\n   color: #67cdcc;\n }\n\n .token.important,\n .token.bold {\n   font-weight: bold;\n }\n .token.italic {\n   font-style: italic;\n }\n\n .token.entity {\n   cursor: help;\n }\n\n .token.inserted {\n   color: green;\n }\n /* TypeScript */\n .language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword,\n .language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword + .token.class-name + .token.keyword,\n .language-jsx .token.function-variable.function + .token.operator + .token.keyword {\n   color: #569CD6;\n }\n /* JSX */\n .language-jsx .language-javascript {\n   color: #9CDCFE;\n }\n .language-jsx .language-javascript .token.string {\n   color: #CE9169;\n }\n .language-jsx .language-javascript .token.punctuation {\n   color: #3F9CD6;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation {\n   color: #D4D4D4;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation {\n   color: #D4D4D4;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation + .token.punctuation {\n   color: #3F9CD6;\n }\n";
+var style$b = ":host {\n  color: #453C4F;\n}\n\nblockquote {\n  border-left: 4px solid #453C4F;\n  padding: 0 0.5rem;\n  margin: 0;\n}\n\npre {\n  background: #222;\n  padding: 0.5rem;\n  border-radius: 0.25rem;\n  color: #EEE;\n  font-size: 0.875rem;\n}\n\ntable {\n  border-radius: 0.25rem;\n  border-spacing: 0;\n  margin: 1rem 0;\n}\ntable tr th {\n  text-align: left;\n  padding: 0.125rem 0.25rem;\n}\ntable tr td {\n  padding: 0.125rem 0.25rem;\n}\ntable tr:nth-child(1) td {\n  border-top: 1px solid #453C4F;\n}\ntable tr:nth-child(1) td:first-child {\n  border-radius: 0.25rem 0 0 0;\n}\ntable tr:nth-child(1) td:last-child {\n  border-radius: 0 0.25rem 0 0;\n}\ntable tr td:first-child {\n  border-left: 1px solid #453C4F;\n}\ntable tr:last-child td {\n  border-bottom: 1px solid #453C4F;\n}\ntable tr td:last-child {\n  border-right: 1px solid #453C4F;\n}\ntable tr:last-child td:first-child {\n  border-radius: 0 0 0 0.25rem;\n}\ntable tr:last-child td:last-child {\n  border-radius: 0 0 0.25rem 0;\n}\ntable tr:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\ntable tr td:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\n\np {\n  font-size: 1.125rem;\n}\n\np code,\ntable code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n}\n\ntable code {\n  transform: translateY(-1px);\n}\n\n/* PrismJS 1.15.0\n/**\n * prism.js Visual Studio Code Theme\n * @author Visual Studio Code\n */\n\n code[class*=\"language-\"],\n pre[class*=\"language-\"] {\n   color: #9CDCFE;\n   background: none;\n   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;\n   text-align: left;\n   white-space: pre;\n   word-spacing: normal;\n   word-break: normal;\n   word-wrap: normal;\n   line-height: 1.5;\n\n   -moz-tab-size: 4;\n   -o-tab-size: 4;\n   tab-size: 4;\n\n   -webkit-hyphens: none;\n   -moz-hyphens: none;\n   -ms-hyphens: none;\n   hyphens: none;\n\n }\n\n /* Code blocks */\n pre[class*=\"language-\"] {\n   padding: 1em;\n   margin: .5em 0;\n   overflow: auto;\n }\n\n :not(pre) > code[class*=\"language-\"],\n pre[class*=\"language-\"] {\n   background: #1E1E1E;\n }\n\n /* Inline code */\n :not(pre) > code[class*=\"language-\"] {\n   padding: .1em;\n   border-radius: .3em;\n   white-space: normal;\n }\n\n .token.comment,\n .token.block-comment,\n .token.prolog,\n .token.doctype,\n .token.cdata {\n   color: #608B4E;\n }\n\n .token.punctuation {\n   color: #ccc;\n }\n\n .token.tag,\n .token.namespace,\n .token.deleted {\n   color: #4EC9B0;\n }\n\n .token.attr-name {\n   color: #9CDCFE;\n }\n\n .token.function-name {\n   color: #6196cc;\n }\n\n .token.boolean {\n   color: #569CD6;\n }\n .token.number {\n   color: #B5CEA8;\n }\n .token.function {\n   color: #DCDCAA;\n }\n\n .token.property,\n .token.constant,\n .token.symbol {\n   color: #f8c555;\n }\n\n .token.class-name {\n   color: #4EC9B0;\n }\n\n .token.selector,\n .token.important,\n .token.atrule,\n .token.keyword,\n .token.builtin {\n   color: #C586C0;\n }\n\n .token.string,\n .token.char,\n .token.attr-value,\n .token.regex,\n .token.variable {\n   color: #CE9169;\n }\n\n .token.operator {\n   color: #D4D4D4;\n }\n .token.entity,\n .token.url {\n   color: #67cdcc;\n }\n\n .token.important,\n .token.bold {\n   font-weight: bold;\n }\n .token.italic {\n   font-style: italic;\n }\n\n .token.entity {\n   cursor: help;\n }\n\n .token.inserted {\n   color: green;\n }\n /* TypeScript */\n .language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword,\n .language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword + .token.class-name + .token.keyword,\n .language-jsx .token.function-variable.function + .token.operator + .token.keyword {\n   color: #569CD6;\n }\n /* JSX */\n .language-jsx .language-javascript {\n   color: #9CDCFE;\n }\n .language-jsx .language-javascript .token.string {\n   color: #CE9169;\n }\n .language-jsx .language-javascript .token.punctuation {\n   color: #3F9CD6;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation {\n   color: #D4D4D4;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation {\n   color: #D4D4D4;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation + .token.punctuation {\n   color: #3F9CD6;\n }\n";
 
 let MdiMarkdown = class MdiMarkdown extends HTMLElement {
     constructor() {
         super(...arguments);
         this.text = '';
+        this.replace = [];
     }
     render(changes) {
         if (changes.text) {
-            const md = new Remarkable();
-            this.$content.innerHTML = md.render(this.text);
+            const md = new Remarkable({
+                html: true
+            });
+            let html = md.render(this.text);
+            this.replace.forEach(o => {
+                html = html.replace(o.find, o.replace);
+            });
+            this.$content.innerHTML = html;
             const blocks = this.$content.querySelectorAll('code[class*="language-"]');
             for (let i = 0; i < blocks.length; i++) {
                 const block = blocks[i];
                 const language = block.classList.value.replace('language-', '');
                 block.innerHTML = Prism.highlight(block.innerText, Prism.languages[language], language);
             }
+            // Additional Rendering
+            this.replace.forEach(o => {
+                if (o.render) {
+                    o.render(this.$content);
+                }
+            });
         }
     }
 };
 __decorate([
     Prop()
 ], MdiMarkdown.prototype, "text", void 0);
+__decorate([
+    Prop()
+], MdiMarkdown.prototype, "replace", void 0);
 __decorate([
     Part()
 ], MdiMarkdown.prototype, "$content", void 0);
