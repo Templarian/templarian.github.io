@@ -1,4 +1,4 @@
-var mdiPicker = (function () {
+var mdiDropdown = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -108,39 +108,6 @@ var mdiPicker = (function () {
             }
         };
     }
-    function Prop() {
-        return function (target, propertyKey, descriptor) {
-            var constructor = target.constructor;
-            if (!constructor.observedAttributes) {
-                constructor.observedAttributes = [];
-            }
-            var observedAttributes = constructor.observedAttributes;
-            if (!constructor.symbols) {
-                constructor.symbols = {};
-            }
-            var symbols = constructor.symbols;
-            observedAttributes.push(propertyKey);
-            var symbol = Symbol(propertyKey);
-            symbols[propertyKey] = symbol;
-            Object.defineProperty(target, propertyKey, {
-                get: function () {
-                    return this[symbol];
-                },
-                set: function (value) {
-                    var _this = this;
-                    this[symbol] = value;
-                    if (this[init]) {
-                        this[parent].map(function (p) {
-                            var _a;
-                            if (p.render) {
-                                p.render.call(_this, (_a = {}, _a[propertyKey] = true, _a));
-                            }
-                        });
-                    }
-                }
-            });
-        };
-    }
     function Part() {
         return function (target, propertyKey, descriptor) {
             Object.defineProperty(target, propertyKey, {
@@ -152,42 +119,6 @@ var mdiPicker = (function () {
             });
         };
     }
-
-    var template$1 = "<button part=\"button\" class=\"base\"><slot></slot></button>";
-
-    var style$1 = "[part~=button] {\n  display: inline-flex;\n  align-items: center;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n}\n\n[part~=button]:hover {\n  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);\n}\n\n[part~=button].base {\n  border: 1px solid #4281E9;\n  background: #4281E9;\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: #FFF;\n}\n\n[part~=button].base:hover {\n  background-color: #4F8FF9;\n}\n\n[part~=button].base-inverse {\n  border: 1px solid #F1F1F1;\n  background: #FFF;\n  color: #4281E9;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: #4281E9;\n}";
-
-    const DEFAULT_VARIANT = 'base';
-    let MdiButton = class MdiButton extends HTMLElement {
-        constructor() {
-            super(...arguments);
-            this.variant = DEFAULT_VARIANT;
-            this.oldVariant = DEFAULT_VARIANT;
-        }
-        connectedCallback() {
-            this.$button.addEventListener('click', (e) => this.dispatchEvent(new CustomEvent('click')));
-        }
-        render() {
-            if (this.variant != this.oldVariant) {
-                this.$button.classList.replace(this.oldVariant, this.variant);
-                this.oldVariant = this.variant;
-            }
-        }
-    };
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "variant", void 0);
-    __decorate([
-        Part()
-    ], MdiButton.prototype, "$button", void 0);
-    MdiButton = __decorate([
-        Component({
-            selector: 'mdi-button',
-            style: style$1,
-            template: template$1
-        })
-    ], MdiButton);
-    var MdiButton$1 = MdiButton;
 
     function getBoundingClientRect(element) {
       var rect = element.getBoundingClientRect();
@@ -1999,20 +1930,27 @@ var mdiPicker = (function () {
       defaultModifiers: defaultModifiers
     }); // eslint-disable-next-line import/no-unused-modules
 
-    var template$2 = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\" height=\"12rem\"></mdi-grid>\n  </div>\n</div>";
+    var template$1 = "<slot part=\"main\"></slot>\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <slot name=\"popover\"></slot>\n</div>";
 
-    var style$2 = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n  outline: none;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
+    var style$1 = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid var(--mdi-dropdown-border-color);\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid var(--mdi-dropdown-border-color);\n  border-right: 4px solid var(--mdi-dropdown-border-color);\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid var(--mdi-dropdown-border-color);\n  border-left: 4px solid var(--mdi-dropdown-border-color);\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
 
     window.process = { env: {} };
-    let MdiPicker = class MdiPicker extends MdiButton$1 {
+    let MdiDropdown = class MdiDropdown extends HTMLElement {
         constructor() {
             super(...arguments);
-            this.icons = [];
             this.isVisible = false;
-            this.search = '';
         }
         connectedCallback() {
-            createPopper(this.$button, this.$popover, {
+            this.$main.addEventListener('slotchange', (e) => {
+                var nodes = this.$main.assignedElements();
+                for (var i = 0; i < nodes.length; i++) {
+                    var node = nodes[i];
+                    this.wireUpPopover(node);
+                }
+            });
+        }
+        wireUpPopover(node) {
+            createPopper(node, this.$popover, {
                 placement: 'bottom-start',
                 modifiers: [
                     {
@@ -2031,49 +1969,34 @@ var mdiPicker = (function () {
                 ]
             });
             this.$popover.style.visibility = 'hidden';
-            this.$button.addEventListener('click', () => {
+            node.addEventListener('click', (e) => {
                 this.$popover.style.visibility = this.isVisible ? 'hidden' : 'visible';
                 this.isVisible = !this.isVisible;
-                if (this.isVisible) {
-                    this.$search.focus();
-                }
-            });
-            this.$search.addEventListener('input', (e) => {
-                this.search = e.target.value;
-                this.render();
+                e.preventDefault();
             });
         }
         render() {
-            this.$grid.icons = this.icons.filter((icon) => {
-                return icon.name.indexOf(this.search) !== -1;
-            });
         }
     };
     __decorate([
-        Prop()
-    ], MdiPicker.prototype, "icons", void 0);
+        Part()
+    ], MdiDropdown.prototype, "$main", void 0);
     __decorate([
         Part()
-    ], MdiPicker.prototype, "$popover", void 0);
+    ], MdiDropdown.prototype, "$popover", void 0);
     __decorate([
         Part()
-    ], MdiPicker.prototype, "$arrow", void 0);
-    __decorate([
-        Part()
-    ], MdiPicker.prototype, "$search", void 0);
-    __decorate([
-        Part()
-    ], MdiPicker.prototype, "$grid", void 0);
-    MdiPicker = __decorate([
+    ], MdiDropdown.prototype, "$arrow", void 0);
+    MdiDropdown = __decorate([
         Component({
-            selector: 'mdi-picker',
-            style: style$2,
-            template: template$2
+            selector: 'mdi-dropdown',
+            style: style$1,
+            template: template$1
         })
-    ], MdiPicker);
-    var MdiPicker$1 = MdiPicker;
+    ], MdiDropdown);
+    var MdiDropdown$1 = MdiDropdown;
 
-    return MdiPicker$1;
+    return MdiDropdown$1;
 
 }());
-//# sourceMappingURL=mdiPicker.js.map
+//# sourceMappingURL=mdiDropdown.js.map
