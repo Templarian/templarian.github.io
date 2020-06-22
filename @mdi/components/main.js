@@ -8110,7 +8110,7 @@ MdiGrid = __decorate([
     })
 ], MdiGrid);
 
-var template$8 = "<header>\n  <a href=\"/\">\n    <svg viewBox=\"0 0 24 24\">\n      <path part=\"path\" fill=\"currentColor\" d=\"\"></path>\n    </svg>\n    <span part=\"name\"></span>\n  </a>\n  <div>\n    <slot name=\"nav\"></slot>\n    <slot name=\"search\"></slot>\n  </div>\n</header>";
+var template$8 = "<header>\n  <a href=\"/\">\n    <svg viewBox=\"0 0 24 24\">\n      <path part=\"path\" fill=\"currentColor\" d=\"\"></path>\n    </svg>\n    <span part=\"name\"></span>\n  </a>\n  <div>\n    <slot name=\"nav\"></slot>\n    <slot name=\"search\"></slot>\n    <slot name=\"menu\"></slot>\n  </div>\n</header>";
 
 var style$8 = "header {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  grid-template-rows: 1fr;\n  grid-row: 1;\n  grid-column: 1 / span 2;\n  background: #fff;\n  color: var(--mdi-header-color);\n  height: 3rem;\n}\nheader > a {\n  grid-column: 1;\n  display: inline-flex;\n  color: var(--mdi-header-color);\n  text-decoration: none;\n  align-items: center;\n}\nheader > a > svg {\n  display: inline-flex;\n  width: 1.75rem;\n  height: 1.75rem;\n  margin: 0 0.75rem 0 1rem;\n}\nheader > a > span {\n  display: inline-flex;\n  color: var(--mdi-header-color);\n  font-size: 1.5rem;\n  margin: 0;\n  font-weight: normal;\n  padding-bottom: 1px;\n}\nheader > div {\n  display: flex;\n  grid-column: 2;\n  justify-self: right;\n  margin-right: 1rem;\n}";
 
@@ -17672,9 +17672,208 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
 
 }(Prism));
 
+(function(Prism) {
+	// $ set | grep '^[A-Z][^[:space:]]*=' | cut -d= -f1 | tr '\n' '|'
+	// + LC_ALL, RANDOM, REPLY, SECONDS.
+	// + make sure PS1..4 are here as they are not always set,
+	// - some useless things.
+	var envVars = '\\b(?:BASH|BASHOPTS|BASH_ALIASES|BASH_ARGC|BASH_ARGV|BASH_CMDS|BASH_COMPLETION_COMPAT_DIR|BASH_LINENO|BASH_REMATCH|BASH_SOURCE|BASH_VERSINFO|BASH_VERSION|COLORTERM|COLUMNS|COMP_WORDBREAKS|DBUS_SESSION_BUS_ADDRESS|DEFAULTS_PATH|DESKTOP_SESSION|DIRSTACK|DISPLAY|EUID|GDMSESSION|GDM_LANG|GNOME_KEYRING_CONTROL|GNOME_KEYRING_PID|GPG_AGENT_INFO|GROUPS|HISTCONTROL|HISTFILE|HISTFILESIZE|HISTSIZE|HOME|HOSTNAME|HOSTTYPE|IFS|INSTANCE|JOB|LANG|LANGUAGE|LC_ADDRESS|LC_ALL|LC_IDENTIFICATION|LC_MEASUREMENT|LC_MONETARY|LC_NAME|LC_NUMERIC|LC_PAPER|LC_TELEPHONE|LC_TIME|LESSCLOSE|LESSOPEN|LINES|LOGNAME|LS_COLORS|MACHTYPE|MAILCHECK|MANDATORY_PATH|NO_AT_BRIDGE|OLDPWD|OPTERR|OPTIND|ORBIT_SOCKETDIR|OSTYPE|PAPERSIZE|PATH|PIPESTATUS|PPID|PS1|PS2|PS3|PS4|PWD|RANDOM|REPLY|SECONDS|SELINUX_INIT|SESSION|SESSIONTYPE|SESSION_MANAGER|SHELL|SHELLOPTS|SHLVL|SSH_AUTH_SOCK|TERM|UID|UPSTART_EVENTS|UPSTART_INSTANCE|UPSTART_JOB|UPSTART_SESSION|USER|WINDOWID|XAUTHORITY|XDG_CONFIG_DIRS|XDG_CURRENT_DESKTOP|XDG_DATA_DIRS|XDG_GREETER_DATA_DIR|XDG_MENU_PREFIX|XDG_RUNTIME_DIR|XDG_SEAT|XDG_SEAT_PATH|XDG_SESSION_DESKTOP|XDG_SESSION_ID|XDG_SESSION_PATH|XDG_SESSION_TYPE|XDG_VTNR|XMODIFIERS)\\b';
+	var insideString = {
+		'environment': {
+			pattern: RegExp("\\$" + envVars),
+			alias: 'constant'
+		},
+		'variable': [
+			// [0]: Arithmetic Environment
+			{
+				pattern: /\$?\(\([\s\S]+?\)\)/,
+				greedy: true,
+				inside: {
+					// If there is a $ sign at the beginning highlight $(( and )) as variable
+					'variable': [
+						{
+							pattern: /(^\$\(\([\s\S]+)\)\)/,
+							lookbehind: true
+						},
+						/^\$\(\(/
+					],
+					'number': /\b0x[\dA-Fa-f]+\b|(?:\b\d+\.?\d*|\B\.\d+)(?:[Ee]-?\d+)?/,
+					// Operators according to https://www.gnu.org/software/bash/manual/bashref.html#Shell-Arithmetic
+					'operator': /--?|-=|\+\+?|\+=|!=?|~|\*\*?|\*=|\/=?|%=?|<<=?|>>=?|<=?|>=?|==?|&&?|&=|\^=?|\|\|?|\|=|\?|:/,
+					// If there is no $ sign at the beginning highlight (( and )) as punctuation
+					'punctuation': /\(\(?|\)\)?|,|;/
+				}
+			},
+			// [1]: Command Substitution
+			{
+				pattern: /\$\((?:\([^)]+\)|[^()])+\)|`[^`]+`/,
+				greedy: true,
+				inside: {
+					'variable': /^\$\(|^`|\)$|`$/
+				}
+			},
+			// [2]: Brace expansion
+			{
+				pattern: /\$\{[^}]+\}/,
+				greedy: true,
+				inside: {
+					'operator': /:[-=?+]?|[!\/]|##?|%%?|\^\^?|,,?/,
+					'punctuation': /[\[\]]/,
+					'environment': {
+						pattern: RegExp("(\\{)" + envVars),
+						lookbehind: true,
+						alias: 'constant'
+					}
+				}
+			},
+			/\$(?:\w+|[#?*!@$])/
+		],
+		// Escape sequences from echo and printf's manuals, and escaped quotes.
+		'entity': /\\(?:[abceEfnrtv\\"]|O?[0-7]{1,3}|x[0-9a-fA-F]{1,2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})/
+	};
+
+	Prism.languages.bash = {
+		'shebang': {
+			pattern: /^#!\s*\/.*/,
+			alias: 'important'
+		},
+		'comment': {
+			pattern: /(^|[^"{\\$])#.*/,
+			lookbehind: true
+		},
+		'function-name': [
+			// a) function foo {
+			// b) foo() {
+			// c) function foo() {
+			// but not “foo {”
+			{
+				// a) and c)
+				pattern: /(\bfunction\s+)\w+(?=(?:\s*\(?:\s*\))?\s*\{)/,
+				lookbehind: true,
+				alias: 'function'
+			},
+			{
+				// b)
+				pattern: /\b\w+(?=\s*\(\s*\)\s*\{)/,
+				alias: 'function'
+			}
+		],
+		// Highlight variable names as variables in for and select beginnings.
+		'for-or-select': {
+			pattern: /(\b(?:for|select)\s+)\w+(?=\s+in\s)/,
+			alias: 'variable',
+			lookbehind: true
+		},
+		// Highlight variable names as variables in the left-hand part
+		// of assignments (“=” and “+=”).
+		'assign-left': {
+			pattern: /(^|[\s;|&]|[<>]\()\w+(?=\+?=)/,
+			inside: {
+				'environment': {
+					pattern: RegExp("(^|[\\s;|&]|[<>]\\()" + envVars),
+					lookbehind: true,
+					alias: 'constant'
+				}
+			},
+			alias: 'variable',
+			lookbehind: true
+		},
+		'string': [
+			// Support for Here-documents https://en.wikipedia.org/wiki/Here_document
+			{
+				pattern: /((?:^|[^<])<<-?\s*)(\w+?)\s*(?:\r?\n|\r)[\s\S]*?(?:\r?\n|\r)\2/,
+				lookbehind: true,
+				greedy: true,
+				inside: insideString
+			},
+			// Here-document with quotes around the tag
+			// → No expansion (so no “inside”).
+			{
+				pattern: /((?:^|[^<])<<-?\s*)(["'])(\w+)\2\s*(?:\r?\n|\r)[\s\S]*?(?:\r?\n|\r)\3/,
+				lookbehind: true,
+				greedy: true
+			},
+			// “Normal” string
+			{
+				pattern: /(^|[^\\](?:\\\\)*)(["'])(?:\\[\s\S]|\$\([^)]+\)|`[^`]+`|(?!\2)[^\\])*\2/,
+				lookbehind: true,
+				greedy: true,
+				inside: insideString
+			}
+		],
+		'environment': {
+			pattern: RegExp("\\$?" + envVars),
+			alias: 'constant'
+		},
+		'variable': insideString.variable,
+		'function': {
+			pattern: /(^|[\s;|&]|[<>]\()(?:add|apropos|apt|aptitude|apt-cache|apt-get|aspell|automysqlbackup|awk|basename|bash|bc|bconsole|bg|bzip2|cal|cat|cfdisk|chgrp|chkconfig|chmod|chown|chroot|cksum|clear|cmp|column|comm|cp|cron|crontab|csplit|curl|cut|date|dc|dd|ddrescue|debootstrap|df|diff|diff3|dig|dir|dircolors|dirname|dirs|dmesg|du|egrep|eject|env|ethtool|expand|expect|expr|fdformat|fdisk|fg|fgrep|file|find|fmt|fold|format|free|fsck|ftp|fuser|gawk|git|gparted|grep|groupadd|groupdel|groupmod|groups|grub-mkconfig|gzip|halt|head|hg|history|host|hostname|htop|iconv|id|ifconfig|ifdown|ifup|import|install|ip|jobs|join|kill|killall|less|link|ln|locate|logname|logrotate|look|lpc|lpr|lprint|lprintd|lprintq|lprm|ls|lsof|lynx|make|man|mc|mdadm|mkconfig|mkdir|mke2fs|mkfifo|mkfs|mkisofs|mknod|mkswap|mmv|more|most|mount|mtools|mtr|mutt|mv|nano|nc|netstat|nice|nl|nohup|notify-send|npm|nslookup|op|open|parted|passwd|paste|pathchk|ping|pkill|pnpm|popd|pr|printcap|printenv|ps|pushd|pv|quota|quotacheck|quotactl|ram|rar|rcp|reboot|remsync|rename|renice|rev|rm|rmdir|rpm|rsync|scp|screen|sdiff|sed|sendmail|seq|service|sftp|sh|shellcheck|shuf|shutdown|sleep|slocate|sort|split|ssh|stat|strace|su|sudo|sum|suspend|swapon|sync|tac|tail|tar|tee|time|timeout|top|touch|tr|traceroute|tsort|tty|umount|uname|unexpand|uniq|units|unrar|unshar|unzip|update-grub|uptime|useradd|userdel|usermod|users|uudecode|uuencode|v|vdir|vi|vim|virsh|vmstat|wait|watch|wc|wget|whereis|which|who|whoami|write|xargs|xdg-open|yarn|yes|zenity|zip|zsh|zypper)(?=$|[)\s;|&])/,
+			lookbehind: true
+		},
+		'keyword': {
+			pattern: /(^|[\s;|&]|[<>]\()(?:if|then|else|elif|fi|for|while|in|case|esac|function|select|do|done|until)(?=$|[)\s;|&])/,
+			lookbehind: true
+		},
+		// https://www.gnu.org/software/bash/manual/html_node/Shell-Builtin-Commands.html
+		'builtin': {
+			pattern: /(^|[\s;|&]|[<>]\()(?:\.|:|break|cd|continue|eval|exec|exit|export|getopts|hash|pwd|readonly|return|shift|test|times|trap|umask|unset|alias|bind|builtin|caller|command|declare|echo|enable|help|let|local|logout|mapfile|printf|read|readarray|source|type|typeset|ulimit|unalias|set|shopt)(?=$|[)\s;|&])/,
+			lookbehind: true,
+			// Alias added to make those easier to distinguish from strings.
+			alias: 'class-name'
+		},
+		'boolean': {
+			pattern: /(^|[\s;|&]|[<>]\()(?:true|false)(?=$|[)\s;|&])/,
+			lookbehind: true
+		},
+		'file-descriptor': {
+			pattern: /\B&\d\b/,
+			alias: 'important'
+		},
+		'operator': {
+			// Lots of redirections here, but not just that.
+			pattern: /\d?<>|>\||\+=|==?|!=?|=~|<<[<-]?|[&\d]?>>|\d?[<>]&?|&[>&]?|\|[&|]?|<=?|>=?/,
+			inside: {
+				'file-descriptor': {
+					pattern: /^\d/,
+					alias: 'important'
+				}
+			}
+		},
+		'punctuation': /\$?\(\(?|\)\)?|\.\.|[{}[\];\\]/,
+		'number': {
+			pattern: /(^|\s)(?:[1-9]\d*|0)(?:[.,]\d+)?\b/,
+			lookbehind: true
+		}
+	};
+
+	/* Patterns in command substitution. */
+	var toBeCopied = [
+		'comment',
+		'function-name',
+		'for-or-select',
+		'assign-left',
+		'string',
+		'environment',
+		'function',
+		'keyword',
+		'builtin',
+		'boolean',
+		'file-descriptor',
+		'operator',
+		'punctuation',
+		'number'
+	];
+	var inside = insideString.variable[1].inside;
+	for(var i = 0; i < toBeCopied.length; i++) {
+		inside[toBeCopied[i]] = Prism.languages.bash[toBeCopied[i]];
+	}
+
+	Prism.languages.shell = Prism.languages.bash;
+})(Prism);
+
 var template$c = "<div part=\"content\"></div>";
 
-var style$c = ":host {\n  color: #453C4F;\n}\n\nblockquote {\n  border-left: 4px solid #453C4F;\n  padding: 0 0.5rem;\n  margin: 0;\n}\n\npre {\n  background: #222;\n  padding: 0.5rem;\n  border-radius: 0.25rem;\n  color: #EEE;\n  font-size: 0.875rem;\n}\n\ntable {\n  border-radius: 0.25rem;\n  border-spacing: 0;\n  margin: 1rem 0;\n}\ntable tr th {\n  text-align: left;\n  padding: 0.125rem 0.25rem;\n}\ntable tr td {\n  padding: 0.125rem 0.25rem;\n}\ntable tr:nth-child(1) td {\n  border-top: 1px solid #453C4F;\n}\ntable tr:nth-child(1) td:first-child {\n  border-radius: 0.25rem 0 0 0;\n}\ntable tr:nth-child(1) td:last-child {\n  border-radius: 0 0.25rem 0 0;\n}\ntable tr td:first-child {\n  border-left: 1px solid #453C4F;\n}\ntable tr:last-child td {\n  border-bottom: 1px solid #453C4F;\n}\ntable tr td:last-child {\n  border-right: 1px solid #453C4F;\n}\ntable tr:last-child td:first-child {\n  border-radius: 0 0 0 0.25rem;\n}\ntable tr:last-child td:last-child {\n  border-radius: 0 0 0.25rem 0;\n}\ntable tr:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\ntable tr td:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\n\np {\n  font-size: 1.125rem;\n}\n\np code,\ntable code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n}\n\ntable code {\n  transform: translateY(-1px);\n}\n\np > svg.icon,\nblockquote > svg.icon,\np > a.icon > svg.icon,\nblockquote > a.icon > svg.icon  {\n  width: 1.5rem;\n  height: 1.5rem;\n  vertical-align: middle;\n}\n\np > a.button {\n  display: inline-flex;\n  padding: 0.25rem 0.5rem;\n  background: linear-gradient(to bottom, #775b75 0%,#453C4F 100%);\n  border-radius: 0.25rem;\n  color: #fff;\n  text-decoration: none;\n  font-size: 1rem;\n}\n\np > a.button:hover {\n  background: linear-gradient(to bottom, #7952b3 0%,#6c47a3 100%);\n}\n\np > a.button > svg.icon {\n  width: 1.5rem;\n  height: 1.5rem;\n  margin-left: -0.25rem;\n  margin-right: 0.25rem;\n}\n\n/* PrismJS 1.15.0\n/**\n * prism.js Visual Studio Code Theme\n * @author Visual Studio Code\n */\n\n code[class*=\"language-\"],\n pre[class*=\"language-\"] {\n   color: #9CDCFE;\n   background: none;\n   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;\n   text-align: left;\n   white-space: pre;\n   word-spacing: normal;\n   word-break: normal;\n   word-wrap: normal;\n   line-height: 1.5;\n\n   -moz-tab-size: 4;\n   -o-tab-size: 4;\n   tab-size: 4;\n\n   -webkit-hyphens: none;\n   -moz-hyphens: none;\n   -ms-hyphens: none;\n   hyphens: none;\n\n }\n\n /* Code blocks */\n pre[class*=\"language-\"] {\n   padding: 1em;\n   margin: .5em 0;\n   overflow: auto;\n }\n\n :not(pre) > code[class*=\"language-\"],\n pre[class*=\"language-\"] {\n   background: #1E1E1E;\n }\n\n /* Inline code */\n :not(pre) > code[class*=\"language-\"] {\n   padding: .1em;\n   border-radius: .3em;\n   white-space: normal;\n }\n\n .token.comment,\n .token.block-comment,\n .token.prolog,\n .token.doctype,\n .token.cdata {\n   color: #608B4E;\n }\n\n .token.punctuation {\n   color: #ccc;\n }\n\n .token.tag,\n .token.namespace,\n .token.deleted {\n   color: #4EC9B0;\n }\n\n .token.attr-name {\n   color: #9CDCFE;\n }\n\n .token.function-name {\n   color: #6196cc;\n }\n\n .token.boolean {\n   color: #569CD6;\n }\n .token.number {\n   color: #B5CEA8;\n }\n .token.function {\n   color: #DCDCAA;\n }\n\n .token.property,\n .token.constant,\n .token.symbol {\n   color: #f8c555;\n }\n\n .token.class-name {\n   color: #4EC9B0;\n }\n\n .token.selector,\n .token.important,\n .token.atrule,\n .token.keyword,\n .token.builtin {\n   color: #C586C0;\n }\n\n .token.string,\n .token.char,\n .token.attr-value,\n .token.regex,\n .token.variable {\n   color: #CE9169;\n }\n\n .token.operator {\n   color: #D4D4D4;\n }\n .token.entity,\n .token.url {\n   color: #67cdcc;\n }\n\n .token.important,\n .token.bold {\n   font-weight: bold;\n }\n .token.italic {\n   font-style: italic;\n }\n\n .token.entity {\n   cursor: help;\n }\n\n .token.inserted {\n   color: green;\n }\n /* TypeScript */\n .language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword,\n .language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword + .token.class-name + .token.keyword,\n .language-jsx .token.function-variable.function + .token.operator + .token.keyword {\n   color: #569CD6;\n }\n /* JSX */\n .language-jsx .language-javascript {\n   color: #9CDCFE;\n }\n .language-jsx .language-javascript .token.string {\n   color: #CE9169;\n }\n .language-jsx .language-javascript .token.punctuation {\n   color: #3F9CD6;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation {\n   color: #D4D4D4;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation {\n   color: #D4D4D4;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation + .token.punctuation {\n   color: #3F9CD6;\n }\n";
+var style$c = ":host {\n  color: #453C4F;\n}\n\nblockquote {\n  border-left: 4px solid #453C4F;\n  padding: 0 0.5rem;\n  margin: 0;\n}\n\npre {\n  background: #222;\n  padding: 0.5rem;\n  border-radius: 0.25rem;\n  color: #EEE;\n  font-size: 0.875rem;\n}\n\ntable {\n  border-radius: 0.25rem;\n  border-spacing: 0;\n  margin: 1rem 0;\n}\ntable tr th {\n  text-align: left;\n  padding: 0.125rem 0.25rem;\n}\ntable tr td {\n  padding: 0.125rem 0.25rem;\n}\ntable tr:nth-child(1) td {\n  border-top: 1px solid #453C4F;\n}\ntable tr:nth-child(1) td:first-child {\n  border-radius: 0.25rem 0 0 0;\n}\ntable tr:nth-child(1) td:last-child {\n  border-radius: 0 0.25rem 0 0;\n}\ntable tr td:first-child {\n  border-left: 1px solid #453C4F;\n}\ntable tr:last-child td {\n  border-bottom: 1px solid #453C4F;\n}\ntable tr td:last-child {\n  border-right: 1px solid #453C4F;\n}\ntable tr:last-child td:first-child {\n  border-radius: 0 0 0 0.25rem;\n}\ntable tr:last-child td:last-child {\n  border-radius: 0 0 0.25rem 0;\n}\ntable tr:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\ntable tr td:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\n\np {\n  font-size: 1.125rem;\n}\n\na {\n  color: #278eca;\n}\n\np code,\nul code,\ntable code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n}\n\np code a,\nul code a,\ntable code a {\n  text-decoration: underline;\n}\n\ntable code {\n  transform: translateY(-1px);\n}\n\np > svg.icon,\nblockquote > svg.icon,\np > a.icon > svg.icon,\nblockquote > a.icon > svg.icon,\nth > svg.icon,\nth > a.icon > svg.icon,\ntd > svg.icon,\ntd > a.icon > svg.icon {\n  width: 1.5rem;\n  height: 1.5rem;\n  vertical-align: middle;\n}\n\np > a.button {\n  display: inline-flex;\n  padding: 0.25rem 0.5rem;\n  background: linear-gradient(to bottom, #775b75 0%,#453C4F 100%);\n  border-radius: 0.25rem;\n  color: #fff;\n  text-decoration: none;\n  font-size: 1rem;\n}\n\np > a.button:hover {\n  background: linear-gradient(to bottom, #7952b3 0%,#6c47a3 100%);\n}\n\np > a.button > svg.icon {\n  width: 1.5rem;\n  height: 1.5rem;\n  margin-left: -0.125rem;\n  margin-right: 0.25rem;\n}\n\n/* PrismJS 1.15.0\n/**\n * prism.js Visual Studio Code Theme\n * @author Visual Studio Code\n */\n\n code[class*=\"language-\"],\n pre[class*=\"language-\"] {\n   color: #9CDCFE;\n   background: none;\n   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;\n   text-align: left;\n   white-space: pre;\n   word-spacing: normal;\n   word-break: normal;\n   word-wrap: normal;\n   line-height: 1.5;\n\n   -moz-tab-size: 4;\n   -o-tab-size: 4;\n   tab-size: 4;\n\n   -webkit-hyphens: none;\n   -moz-hyphens: none;\n   -ms-hyphens: none;\n   hyphens: none;\n\n }\n\n /* Code blocks */\n pre[class*=\"language-\"] {\n   padding: 1em;\n   margin: .5em 0;\n   overflow: auto;\n }\n\n :not(pre) > code[class*=\"language-\"],\n pre[class*=\"language-\"] {\n   background: #1E1E1E;\n }\n\n /* Inline code */\n :not(pre) > code[class*=\"language-\"] {\n   padding: .1em;\n   border-radius: .3em;\n   white-space: normal;\n }\n\n .token.comment,\n .token.block-comment,\n .token.prolog,\n .token.doctype,\n .token.cdata {\n   color: #608B4E;\n }\n\n .token.punctuation {\n   color: #ccc;\n }\n\n .token.tag,\n .token.namespace,\n .token.deleted {\n   color: #4EC9B0;\n }\n\n .token.attr-name {\n   color: #9CDCFE;\n }\n\n .token.function-name {\n   color: #6196cc;\n }\n\n .token.boolean {\n   color: #569CD6;\n }\n .token.number {\n   color: #B5CEA8;\n }\n .token.function {\n   color: #DCDCAA;\n }\n\n .token.property,\n .token.constant,\n .token.symbol {\n   color: #f8c555;\n }\n\n .token.class-name {\n   color: #4EC9B0;\n }\n\n .token.selector,\n .token.important,\n .token.atrule,\n .token.keyword,\n .token.builtin {\n   color: #C586C0;\n }\n\n .token.string,\n .token.char,\n .token.attr-value,\n .token.regex,\n .token.variable {\n   color: #CE9169;\n }\n\n .token.operator {\n   color: #D4D4D4;\n }\n .token.entity,\n .token.url {\n   color: #67cdcc;\n }\n\n .token.important,\n .token.bold {\n   font-weight: bold;\n }\n .token.italic {\n   font-style: italic;\n }\n\n .token.entity {\n   cursor: help;\n }\n\n .token.inserted {\n   color: green;\n }\n /* TypeScript */\n .language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword,\n .language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword + .token.class-name + .token.keyword,\n .language-jsx .token.function-variable.function + .token.operator + .token.keyword {\n   color: #569CD6;\n }\n /* JSX */\n .language-jsx .language-javascript {\n   color: #9CDCFE;\n }\n .language-jsx .language-javascript .token.string {\n   color: #CE9169;\n }\n .language-jsx .language-javascript .token.punctuation {\n   color: #3F9CD6;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation {\n   color: #D4D4D4;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation {\n   color: #D4D4D4;\n }\n .language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation + .token.punctuation {\n   color: #3F9CD6;\n }\n";
 
 let MdiMarkdown = class MdiMarkdown extends HTMLElement {
     constructor() {
