@@ -756,7 +756,7 @@ var style$5 = "";
  *
  * By David Fahlander, david.fahlander@gmail.com
  *
- * Version 3.0.0-rc.7, Wed Apr 08 2020
+ * Version 3.0.1, Thu May 07 2020
  *
  * http://dexie.org
  *
@@ -1551,31 +1551,6 @@ props(DexiePromise, {
             values.map(function (value) { return DexiePromise.resolve(value).then(resolve, reject); });
         });
     },
-    allSettled: function () {
-        var possiblePromises = getArrayOf.apply(null, arguments).map(onPossibleParallellAsync);
-        return new DexiePromise(function (resolve) {
-            if (possiblePromises.length === 0)
-                resolve([]);
-            var remaining = possiblePromises.length;
-            var results = new Array(remaining);
-            possiblePromises.forEach(function (p, i) { return DexiePromise.resolve(p).then(function (value) { return results[i] = { status: "fulfilled", value: value }; }, function (reason) { return results[i] = { status: "rejected", reason: reason }; })
-                .then(function () { return --remaining || resolve(results); }); });
-        });
-    },
-    any: function () {
-        var possiblePromises = getArrayOf.apply(null, arguments).map(onPossibleParallellAsync);
-        return new DexiePromise(function (resolve, reject) {
-            if (possiblePromises.length === 0)
-                reject(new AggregateError([]));
-            var remaining = possiblePromises.length;
-            var failures = new Array(remaining);
-            possiblePromises.forEach(function (p, i) { return DexiePromise.resolve(p).then(function (value) { return resolve(value); }, function (failure) {
-                failures[i] = failure;
-                if (!--remaining)
-                    reject(new AggregateError(failures));
-            }); });
-        });
-    },
     PSD: {
         get: function () { return PSD; },
         set: function (value) { return PSD = value; }
@@ -1607,6 +1582,35 @@ props(DexiePromise, {
         });
     }
 });
+if (NativePromise) {
+    if (NativePromise.allSettled)
+        setProp(DexiePromise, "allSettled", function () {
+            var possiblePromises = getArrayOf.apply(null, arguments).map(onPossibleParallellAsync);
+            return new DexiePromise(function (resolve) {
+                if (possiblePromises.length === 0)
+                    resolve([]);
+                var remaining = possiblePromises.length;
+                var results = new Array(remaining);
+                possiblePromises.forEach(function (p, i) { return DexiePromise.resolve(p).then(function (value) { return results[i] = { status: "fulfilled", value: value }; }, function (reason) { return results[i] = { status: "rejected", reason: reason }; })
+                    .then(function () { return --remaining || resolve(results); }); });
+            });
+        });
+    if (NativePromise.any && typeof AggregateError !== 'undefined')
+        setProp(DexiePromise, "any", function () {
+            var possiblePromises = getArrayOf.apply(null, arguments).map(onPossibleParallellAsync);
+            return new DexiePromise(function (resolve, reject) {
+                if (possiblePromises.length === 0)
+                    reject(new AggregateError([]));
+                var remaining = possiblePromises.length;
+                var failures = new Array(remaining);
+                possiblePromises.forEach(function (p, i) { return DexiePromise.resolve(p).then(function (value) { return resolve(value); }, function (failure) {
+                    failures[i] = failure;
+                    if (!--remaining)
+                        reject(new AggregateError(failures));
+                }); });
+            });
+        });
+}
 function executePromiseTask(promise, fn) {
     try {
         fn(function (value) {
@@ -1930,8 +1934,10 @@ function switchToZone(targetZone, bEnteringZone) {
             GlobalPromise_1.race = targetEnv.race;
             GlobalPromise_1.resolve = targetEnv.resolve;
             GlobalPromise_1.reject = targetEnv.reject;
-            GlobalPromise_1.allSettled = targetEnv.allSettled;
-            GlobalPromise_1.any = targetEnv.any;
+            if (targetEnv.allSettled)
+                GlobalPromise_1.allSettled = targetEnv.allSettled;
+            if (targetEnv.any)
+                GlobalPromise_1.any = targetEnv.any;
         }
     }
 }
@@ -2045,7 +2051,7 @@ function tempTransaction(db, mode, storeNames, fn) {
     }
 }
 
-var DEXIE_VERSION = '3.0.0-rc.7';
+var DEXIE_VERSION = '3.0.1';
 var maxString = String.fromCharCode(65535);
 var minKey = -Infinity;
 var INVALID_KEY_ARGUMENT = "Invalid key provided. Keys must be of type string, number, Date or Array<string | number | Date>.";
@@ -3965,7 +3971,12 @@ function setApiOnPlace(db, objs, tableNames, dbschema) {
         objs.forEach(function (obj) {
             if (!(tableName in obj)) {
                 if (obj === db.Transaction.prototype || obj instanceof db.Transaction) {
-                    setProp(obj, tableName, { get: function () { return this.table(tableName); } });
+                    setProp(obj, tableName, {
+                        get: function () { return this.table(tableName); },
+                        set: function (value) {
+                            defineProperty(this, tableName, { value: value, writable: true, configurable: true, enumerable: true });
+                        }
+                    });
                 }
                 else {
                     obj[tableName] = new db.Table(tableName, schema);
@@ -4284,26 +4295,28 @@ function createVersionConstructor(db) {
 
 var databaseEnumerator;
 function DatabaseEnumerator(indexedDB) {
-    var getDatabaseNamesNative = indexedDB && (indexedDB.getDatabaseNames || indexedDB.webkitGetDatabaseNames);
+    var hasDatabasesNative = indexedDB && typeof indexedDB.databases === 'function';
     var dbNamesTable;
-    if (!getDatabaseNamesNative) {
+    if (!hasDatabasesNative) {
         var db = new Dexie(DBNAMES_DB, { addons: [] });
         db.version(1).stores({ dbnames: 'name' });
         dbNamesTable = db.table('dbnames');
     }
     return {
         getDatabaseNames: function () {
-            return getDatabaseNamesNative ? new DexiePromise(function (resolve, reject) {
-                var req = getDatabaseNamesNative.call(indexedDB);
-                req.onsuccess = function (event) { return resolve(slice(event.target.result, 0)); };
-                req.onerror = eventRejectHandler(reject);
-            }) : dbNamesTable.toCollection().primaryKeys();
+            return hasDatabasesNative
+                ?
+                    DexiePromise.resolve(indexedDB.databases()).then(function (infos) { return infos
+                        .map(function (info) { return info.name; })
+                        .filter(function (name) { return name !== DBNAMES_DB; }); })
+                :
+                    dbNamesTable.toCollection().primaryKeys();
         },
         add: function (name) {
-            return !getDatabaseNamesNative && name !== DBNAMES_DB && dbNamesTable.put({ name: name }).catch(nop);
+            return !hasDatabasesNative && name !== DBNAMES_DB && dbNamesTable.put({ name: name }).catch(nop);
         },
         remove: function (name) {
-            return !getDatabaseNamesNative && name !== DBNAMES_DB && dbNamesTable.delete(name).catch(nop);
+            return !hasDatabasesNative && name !== DBNAMES_DB && dbNamesTable.delete(name).catch(nop);
         }
     };
 }
@@ -7461,45 +7474,6 @@ MdiDropdown = __decorate([
     })
 ], MdiDropdown);
 
-function uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
-
-const ADD = 'mditoastadd';
-const REMOVE = 'mditoastremove';
-function observeToasts({ add, remove }) {
-    document.body.addEventListener(ADD, (e) => {
-        add(e.detail);
-    });
-    document.body.addEventListener(REMOVE, (e) => {
-        remove(e.detail.key);
-    });
-}
-function addToast(config) {
-    config.key = config.key || uuid();
-    const event = new CustomEvent(ADD, {
-        detail: config
-    });
-    document.body.dispatchEvent(event);
-    setTimeout(() => {
-        removeToast(config.key);
-    }, config.seconds * 1000);
-    return config.key;
-}
-function removeToast(key) {
-    const event = new CustomEvent(REMOVE, {
-        detail: { key }
-    });
-    document.body.dispatchEvent(event);
-}
-function addInfoToast(message, seconds = 3) {
-    const type = 'info';
-    return addToast({ type, message, seconds });
-}
-
 const debounce$1 = (func, waitFor) => {
     let timeout;
     return (...args) => new Promise(resolve => {
@@ -7509,25 +7483,10 @@ const debounce$1 = (func, waitFor) => {
         timeout = setTimeout(() => resolve(func(...args)), waitFor);
     });
 };
-const copyText = (text) => {
-    var copyFrom = document.createElement('textarea');
-    copyFrom.setAttribute("style", "position:fixed;opacity:0;top:100px;left:100px;");
-    copyFrom.value = text;
-    document.body.appendChild(copyFrom);
-    copyFrom.select();
-    document.execCommand('copy');
-    setTimeout(function () {
-        document.body.removeChild(copyFrom);
-    }, 1500);
-};
 
-function getCopySvgInline(icon) {
-    return `<svg viewBox="0 0 24 24"><path fill="currentColor" d="${icon.data}"/></svg>`;
-}
+var template$7 = "<mdi-scroll part=\"scroll\">\n  <div part=\"grid\"></div>\n</mdi-scroll>";
 
-var template$7 = "<mdi-scroll part=\"scroll\">\n  <div part=\"grid\"></div>\n</mdi-scroll>\n<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"tooltipArrow\"></div>\n</div>\n<div part=\"contextMenu\">\n  <a part=\"newTab\" href=\"\">Open icon in New Tab</a>\n  <button part=\"copyIconName\">Copy Icon Name</button>\n  <div class=\"section\">Download PNG</div>\n  <div class=\"group\">\n    <button part=\"png24\">24</button>\n    <button part=\"png36\">36</button>\n    <button part=\"png48\">48</button>\n    <button part=\"png96\">96</button>\n  </div>\n  <div class=\"row\" style=\"margin-top: 0.25rem;\">\n    <div class=\"group\">\n      <button part=\"pngBlack\"><span class=\"black\"></span></button>\n      <button part=\"pngWhite\"><span class=\"white\"></span></button>\n      <button part=\"pngColor\">\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"#fff\" d=\"M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z\"/>\n          <path fill=\"currentColor\" d=\"M12.97 8L15.8 10.85L7.67 19L3.71 20.68L3.15 20.11L4.84 16.15L12.97 8Z\"/>\n        </svg>\n      </button>\n    </div>\n    <div class=\"group\">\n      <button part=\"pngDownload\" class=\"download\">\n        PNG\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"currentColor\" d=\"M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z\"/>\n        </svg>\n      </button>\n    </div>\n  </div>\n  <div class=\"section\">SVG</div>\n  <div class=\"row\" style=\"margin-bottom: 0.25rem;\">\n    <div class=\"group\">\n      <button part=\"svgBlack\" class=\"active\"><span class=\"black\"></span></button>\n      <button part=\"svgWhite\"><span class=\"white\"></span></button>\n      <button part=\"svgColor\">\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"#fff\" d=\"M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z\"/>\n          <path fill=\"currentColor\" d=\"M12.97 8L15.8 10.85L7.67 19L3.71 20.68L3.15 20.11L4.84 16.15L12.97 8Z\"/>\n        </svg>\n      </button>\n    </div>\n    <div class=\"group\">\n      <button part=\"svgDownload\" class=\"download\">\n        SVG\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"currentColor\" d=\"M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z\"/>\n        </svg>\n      </button>\n    </div>\n  </div>\n  <button part=\"copySvgInline\">Copy HTML SVG Inline</button>\n  <button part=\"copySvgFile\">Copy SVG File Contents</button>\n  <button part=\"copySvgPath\">Copy SVG Path Data</button>\n  <div class=\"section\">Desktop Font</div>\n  <button part=\"copyUnicode\">Copy Unicode Character</button>\n  <button part=\"copyCodepoint\">Copy Codepoint</button>\n  <div class=\"divider\"></div>\n  <button part=\"copyPreview\">Copy GitHub Preview</button>\n  <div part=\"color\">\n    <mdi-input-hex-rgb part=\"colorHexRgb\"></mdi-input-hex-rgb>\n    <mdi-color part=\"colorPicker\"></mdi-color>\n  </div>\n</div>";
-
-var style$7 = "* {\n  font-family: var(--mdi-font-family);\n}\n\n:host {\n  display: block;\n}\n\n[part~=grid] {\n  position: relative;\n}\n\n[part~=grid] > button {\n  border: 0;\n  background: transparent;\n  padding: 0.625rem;\n  outline: none;\n  width: 2.75rem;\n  height: 2.75rem;\n  position: absolute;\n  left: 0;\n  top: 0;\n  border: 0;\n  border-radius: 0.25rem;\n}\n\n[part~=grid] > button:hover {\n  background: rgba(0, 0, 0, 0.1);\n}\n\n[part~=grid] > button:active {\n  background: rgba(0, 0, 0, 0.15);\n  box-shadow: 0 0.0125rem 0.25rem rgba(0, 0, 0, 0.2) inset;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n}\n\n[part~=tooltip] {\n  will-change: transform;\n  opacity: 0;\n  transition: opacity 0.2s ease-in;\n  pointer-events: none;\n  visibility: hidden;\n}\n\n[part~=tooltip].visible {\n  visibility: visible;\n  opacity: 1;\n}\n\n[part~=tooltipText] {\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n}\n\n[part~=tooltipArrow] {\n  left: 18px;\n  bottom: -26px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}\n\n[part~=grid]::-webkit-scrollbar {\n  width: 1em;\n}\n\n[part~=grid]::-webkit-scrollbar-track {\n  box-shadow: inset 0 0 6px rgba(0,0,0,0.2);\n  border-radius: 0.25rem;\n}\n\n[part~=grid]::-webkit-scrollbar-thumb {\n  background-color: #453C4F;\n  outline: 1px solid slategrey;\n  border-radius: 0.25rem;\n}\n\n[part~=contextMenu] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  width: 12rem;\n  display: flex;\n  flex-direction: column;\n  padding: 0.25rem 0;\n  visibility: hidden;\n  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);\n}\n\n[part~=contextMenu] > div.section {\n  color: #FFF;\n  font-size: 0.875rem;\n  padding: 0.25rem 0.5rem;\n  cursor: default;\n  font-weight: bold;\n}\n\n[part~=contextMenu] > div.section:not(:first-child) {\n  border-top: 1px solid rgba(255, 255, 255, 0.3);\n  margin-top: 0.5rem;\n}\n\n[part~=contextMenu] > div.group {\n  margin: 0 0.5rem;\n  border: 1px solid rgba(255, 255, 255, 0.2);\n  border-radius: 0.25rem;\n  display: flex;\n  flex-direction: row;\n  overflow: hidden;\n}\n[part~=contextMenu] > div.row > div.group {\n  border: 1px solid rgba(255, 255, 255, 0.2);\n  border-radius: 0.25rem;\n  display: flex;\n  flex-direction: row;\n  flex: 1;\n  overflow: hidden;\n}\n\n[part~=contextMenu] > div.row > div.group:first-child {\n  margin-left: 0.5rem;\n  margin-right: 0.25rem;\n}\n\n[part~=contextMenu] > div.row > div.group:last-child {\n  margin-right: 0.5rem;\n}\n\n[part~=contextMenu] > div.group > button,\n[part~=contextMenu] > div.row > div.group > button {\n  display: flex;\n  flex: 1;\n  padding: 0.25rem;\n  justify-content: center;\n  border: 0;\n  margin: 0;\n  background: transparent;\n  color: #FFF;\n  font-size: 1rem;\n  line-height: 1.25rem;\n  align-items: center;\n  outline: none;\n}\n\n[part~=contextMenu] > button,\n[part~=contextMenu] > a {\n  display: flex;\n  border: 0;\n  margin: 0;\n  padding: 0.125rem 0.5rem;\n  background: transparent;\n  text-align: left;\n  color: #FFF;\n  font-size: 1rem;\n  text-decoration: none;\n  cursor: default;\n  outline: none;\n}\n\n[part~=contextMenu] > div.group > button.active,\n[part~=contextMenu] > div.row > div.group > button.active {\n  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.1);\n}\n\n[part~=contextMenu] > div.group > button.active:hover,\n[part~=contextMenu] > div.row > div.group > button.active:hover {\n  background: rgba(0, 0, 0, 0.2);\n}\n\n[part~=contextMenu] > div.group > button:not(:first-child),\n[part~=contextMenu] > div.row > div.group > button:not(:first-child) {\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n}\n\n[part~=contextMenu] > div.row > div.group > button > svg,\n[part~=contextMenu] > div.group > button > svg,\n[part~=contextMenu] > div.row > button > svg,\n[part~=contextMenu] > button > svg {\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n}\n\n[part~=contextMenu] > div.row > div.group > button:hover,\n[part~=contextMenu] > div.group > button:hover,\n[part~=contextMenu] > button:hover,\n[part~=contextMenu] > a:hover {\n  background: rgba(255, 255, 255, 0.2);\n}\n\n[part~=contextMenu] > div.row > div.group > button:active,\n[part~=contextMenu] > div.group > button:active {\n  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.2);\n}\n[part~=contextMenu] > button:active,\n[part~=contextMenu] > a:active {\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.2);\n}\n\n.row {\n  display: flex;\n}\n\n.divider {\n  border-top: 1px solid rgba(255, 255, 255, 0.3);\n  margin-top: 0.5rem;\n  height: 0.4375rem;\n}\n\n.black {\n  display: inline-flex;\n  border-radius: 50%;\n  width: 1rem;\n  height: 1rem;\n  background: #000;\n}\n\n.white {\n  display: inline-flex;\n  border-radius: 50%;\n  width: 1rem;\n  height: 1rem;\n  background: #FFF;\n}\n\n.download svg {\n  margin-bottom: -0.125rem;\n  margin-left: 0.25rem;\n}\n\n[part~=color] {\n  position: absolute;\n  padding: 0.25rem;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  box-shadow: 0 1px 16px rgba(0, 0, 0, 0.6);\n}\n\n[part~=colorHexRgb] {\n  margin-bottom: 0.25rem;\n}";
+var style$7 = "* {\n  font-family: var(--mdi-font-family);\n}\n\n:host {\n  display: block;\n}\n\n[part~=grid] {\n  position: relative;\n}\n\n[part~=grid] > button {\n  border: 0;\n  background: transparent;\n  padding: 0.625rem;\n  outline: none;\n  width: 2.75rem;\n  height: 2.75rem;\n  position: absolute;\n  left: 0;\n  top: 0;\n  border: 0;\n  border-radius: 0.25rem;\n}\n\n[part~=grid] > button:hover {\n  background: rgba(0, 0, 0, 0.1);\n}\n\n[part~=grid] > button:active {\n  background: rgba(0, 0, 0, 0.15);\n  box-shadow: 0 0.0125rem 0.25rem rgba(0, 0, 0, 0.2) inset;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n}\n\n[part~=grid]::-webkit-scrollbar {\n  width: 1em;\n}\n\n[part~=grid]::-webkit-scrollbar-track {\n  box-shadow: inset 0 0 6px rgba(0,0,0,0.2);\n  border-radius: 0.25rem;\n}\n\n[part~=grid]::-webkit-scrollbar-thumb {\n  background-color: #453C4F;\n  outline: 1px solid slategrey;\n  border-radius: 0.25rem;\n}";
 
 let MdiGrid = class MdiGrid extends HTMLElement {
     constructor() {
@@ -7562,143 +7521,93 @@ let MdiGrid = class MdiGrid extends HTMLElement {
     connectedCallback() {
         this.resizeObserver.observe(this.$grid);
         this.addEventListener('mousemove', this.handleTooltip.bind(this));
-        this.addEventListener('mouseleave', this.hideTooltip.bind(this));
-        // Wire Up Context Menu
-        this.$copyIconName.addEventListener('click', this.handleCopyIconName.bind(this));
-        this.$svgBlack.addEventListener('click', () => {
-            this.cacheSvgColor = '#000000';
-            this.render();
-        });
-        this.$svgWhite.addEventListener('click', () => {
-            this.cacheSvgColor = '#FFFFFF';
-            this.render();
-        });
-        let preventSvgColor = false;
-        this.$svgColor.addEventListener('click', () => {
-            if (preventSvgColor) {
-                preventSvgColor = false;
-                return;
-            }
-            this.color = 'svg';
-            this.$colorPicker.value = this.cacheSvgColor;
-            this.$colorHexRgb.value = this.cacheSvgColor;
-            const self = this;
-            /*createPopper(this.$svgColor, this.$color, {
-              placement: 'bottom-start'
-            });*/
-            this.$color.style.visibility = 'visible';
-            let outside = true;
-            function handleMouseDown(e) {
-                if (outside) {
-                    self.$color.style.visibility = 'hidden';
-                    document.removeEventListener('mousedown', handleMouseDown);
-                    preventSvgColor = true;
-                    self.render();
-                    setTimeout(() => preventSvgColor = false, 500);
-                }
-            }
-            this.$color.addEventListener('mouseenter', () => outside = false);
-            this.$color.addEventListener('mouseleave', () => outside = true);
-            document.addEventListener('mousedown', handleMouseDown);
-        });
-        this.$pngBlack.addEventListener('click', () => {
-            this.cachePngColor = '#000000';
-            this.render();
-        });
-        this.$pngWhite.addEventListener('click', () => {
-            this.cachePngColor = '#FFFFFF';
-            this.render();
-        });
-        let preventPngColor = false;
-        this.$pngColor.addEventListener('click', () => {
-            if (preventPngColor) {
-                preventPngColor = false;
-                return;
-            }
-            this.color = 'png';
-            this.$colorPicker.value = this.cachePngColor;
-            this.$colorHexRgb.value = this.cachePngColor;
-            const self = this;
-            /*createPopper(this.$pngColor, this.$color, {
-              placement: 'bottom-start'
-            });*/
-            this.$color.style.visibility = 'visible';
-            let outside = true;
-            function handleMouseDown(e) {
-                if (outside) {
-                    self.$color.style.visibility = 'hidden';
-                    document.removeEventListener('mousedown', handleMouseDown);
-                    preventPngColor = true;
-                    self.render();
-                    setTimeout(() => preventPngColor = false, 500);
-                }
-            }
-            this.$color.addEventListener('mouseenter', () => outside = false);
-            this.$color.addEventListener('mouseleave', () => outside = true);
-            document.addEventListener('mousedown', handleMouseDown);
-        });
-        this.$png24.addEventListener('click', () => {
-            this.cachePngSize = '24';
-            this.render();
-        });
-        this.$png36.addEventListener('click', () => {
-            this.cachePngSize = '36';
-            this.render();
-        });
-        this.$png48.addEventListener('click', () => {
-            this.cachePngSize = '48';
-            this.render();
-        });
-        this.$png96.addEventListener('click', () => {
-            this.cachePngSize = '96';
-            this.render();
-        });
-        this.$svgDownload.addEventListener('click', () => {
-            alert(`SVG ${this.cacheSvgColor}`);
-        });
-        this.$pngDownload.addEventListener('click', () => {
-            alert(`SVG ${this.cachePngSize} ${this.cachePngColor}`);
-        });
-        this.$copySvgInline.addEventListener('click', () => {
-            const icon = this.icons[this.currentIndex];
-            copyText(getCopySvgInline(icon));
-            this.hideContextMenu();
-            addInfoToast(`Copied inline SVG "${icon.name}" to clipboard.`);
-        });
-        this.$copySvgFile.addEventListener('click', () => {
-        });
-        this.$copySvgPath.addEventListener('click', () => {
-        });
-        this.$copyUnicode.addEventListener('click', () => {
-        });
-        this.$copyCodepoint.addEventListener('click', () => {
-        });
-        this.$copyPreview.addEventListener('click', () => {
+        this.addEventListener('mouseleave', (e) => {
+            this.handleTooltip(e, true);
         });
         this.$scroll.addEventListener('calculate', (e) => {
             const { offsetY, height, viewWidth, viewHeight } = e.detail;
             this.calculate(offsetY, height, viewWidth, viewHeight);
         });
     }
-    handleTooltip(e) {
+    /**
+     * Simplify all the mouse to usable data.
+     *
+     * @param e MouseEvent
+     */
+    getMetaFromMouse(e) {
+        const { width, height, gap, extra } = this.getIconMetrics();
         var rect = e.target.getBoundingClientRect();
-        const x = Math.floor(e.clientX - rect.left);
-        const y = Math.floor(e.clientY - rect.top);
-        const tileX = Math.floor(x / 44);
-        const tileY = Math.floor(y / 44);
-        const index = tileX + (tileY * this.columns);
-        if (this.index !== index) {
-            if (this.icons[index]) {
-                if (tileX > this.columns - 1) {
-                    this.hideTooltip();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const column = this.getColumnFromX(x, width, gap, extra);
+        const row = this.getRowFromY(y, height, gap, extra);
+        const index = column !== -1 && row !== -1 ? column + (row * this.columns) : -1;
+        const gridX = (column * width) + ((column + 1) * (gap + extra));
+        const gridY = (row * height) + ((row + 1) * gap);
+        return {
+            gridX,
+            gridY,
+            x: gridX + rect.left,
+            y: gridY + rect.top,
+            width,
+            height,
+            column,
+            row,
+            gap,
+            extra,
+            index,
+            icon: this.icons[index]
+        };
+    }
+    getColumnFromX(x, width, gap, extra) {
+        x = Math.round(x);
+        if (x < gap) {
+            return -1;
+        }
+        if (x <= width + gap) {
+            return 0;
+        }
+        const column = Math.floor((x - width - gap) / (width + gap + extra)) + 1;
+        const space = x - (column * (width + gap + extra));
+        if (space < (gap + extra)) {
+            return -1;
+        }
+        return column;
+    }
+    getRowFromY(y, height, gap, extra) {
+        if (y < gap) {
+            return -1;
+        }
+        if (y <= height + gap) {
+            return 0;
+        }
+        const row = Math.floor((y - height - gap) / (height + gap)) + 1;
+        const space = y - (row * (height + gap));
+        if (space < gap) {
+            return -1;
+        }
+        return row;
+    }
+    handleTooltip(e, close) {
+        const mouseMeta = this.getMetaFromMouse(e);
+        const { column, row, index } = mouseMeta;
+        if (close || index === -1) {
+            this.hideTooltip(this.icons[index], mouseMeta);
+        }
+        else {
+            if (this.index !== index) {
+                if (this.icons[index]) {
+                    if (column > this.columns - 1) {
+                        this.hideTooltip(this.icons[this.index], mouseMeta);
+                    }
+                    else {
+                        this.showTooltip(this.icons[index], mouseMeta);
+                        this.index = index;
+                    }
                 }
                 else {
-                    this.showTooltip(this.icons[index], index);
+                    this.hideTooltip(this.icons[this.index], mouseMeta);
                 }
-                this.index = index;
-            }
-            else {
-                this.hideTooltip();
             }
         }
     }
@@ -7736,8 +7645,7 @@ let MdiGrid = class MdiGrid extends HTMLElement {
             this.$grid.removeChild(ele[0]);
             this.currentCount--;
         }
-        const { size, padding, gap, width, height, rowHeight, scrollWidth } = this.getIconMetrics();
-        const extra = (scrollWidth - gap - (rowHeight * this.columns)) / (this.columns - 1);
+        const { size, padding, gap, width, height, rowHeight, scrollWidth, extra } = this.getIconMetrics();
         let x = gap;
         let y = gap;
         this.items.forEach(([btn, svg], i) => {
@@ -7784,13 +7692,17 @@ let MdiGrid = class MdiGrid extends HTMLElement {
         const padding = parseInt(this.padding, 10);
         const gap = parseInt(this.gap, 10);
         const { width: scrollWidth } = this.$scroll.getBoundingClientRect();
+        const sizePadding = size + (padding * 2);
+        const rowHeight = sizePadding + gap;
+        const extra = (scrollWidth - gap - (rowHeight * this.columns)) / (this.columns - 1);
         return {
             size,
             padding,
             gap,
-            width: size + (padding * 2),
-            height: size + (padding * 2),
-            rowHeight: size + (padding * 2) + gap,
+            width: sizePadding,
+            height: sizePadding,
+            rowHeight,
+            extra,
             scrollWidth
         };
     }
@@ -7817,58 +7729,6 @@ let MdiGrid = class MdiGrid extends HTMLElement {
         const rows = Math.ceil(count / this.columns);
         this.currentRow = -1;
         this.$scroll.height = gap + (rows * rowHeight);
-        // Context Menu
-        this.$svgBlack.classList.toggle('active', this.cacheSvgColor === '#000000');
-        this.$svgWhite.classList.toggle('active', this.cacheSvgColor === '#FFFFFF');
-        this.$svgColor.classList.toggle('active', this.cacheSvgColor !== '#000000' && this.cacheSvgColor !== '#FFFFFF');
-        this.$pngBlack.classList.toggle('active', this.cachePngColor === '#000000');
-        this.$pngWhite.classList.toggle('active', this.cachePngColor === '#FFFFFF');
-        this.$pngColor.classList.toggle('active', this.cachePngColor !== '#000000' && this.cachePngColor !== '#FFFFFF');
-        this.$png24.classList.toggle('active', this.cachePngSize === '24');
-        this.$png36.classList.toggle('active', this.cachePngSize === '36');
-        this.$png48.classList.toggle('active', this.cachePngSize === '48');
-        this.$png96.classList.toggle('active', this.cachePngSize === '96');
-        this.$colorPicker.addEventListener('select', this.handleColorSelect.bind(this));
-        this.$colorHexRgb.addEventListener('change', this.handleHexRgbChange.bind(this));
-        this.syncEyedropper();
-    }
-    handleColorSelect(e) {
-        switch (this.color) {
-            case 'svg':
-                this.cacheSvgColor = e.detail.hex;
-                break;
-            case 'png':
-                this.cachePngColor = e.detail.hex;
-                break;
-        }
-        this.$colorHexRgb.value = e.detail.hex;
-        this.syncEyedropper();
-    }
-    handleHexRgbChange(e) {
-        switch (this.color) {
-            case 'svg':
-                this.cacheSvgColor = e.detail.hex;
-                break;
-            case 'png':
-                this.cachePngColor = e.detail.hex;
-                break;
-        }
-        this.$colorPicker.value = e.detail.hex;
-        this.syncEyedropper();
-    }
-    syncEyedropper() {
-        if (this.cachePngColor !== '#000000' && this.cachePngColor !== '#FFFFFF') {
-            this.$pngColor.style.color = this.cachePngColor;
-        }
-        else {
-            this.$pngColor.style.color = 'transparent';
-        }
-        if (this.cacheSvgColor !== '#000000' && this.cacheSvgColor !== '#FFFFFF') {
-            this.$svgColor.style.color = this.cacheSvgColor;
-        }
-        else {
-            this.$svgColor.style.color = 'transparent';
-        }
     }
     moveFocus(e, index) {
         console.log(e.which, index);
@@ -7914,72 +7774,27 @@ let MdiGrid = class MdiGrid extends HTMLElement {
         }));
     }
     showContextMenu(index, x, y) {
-        const gridRect = this.$grid.getBoundingClientRect();
-        const cmRect = this.$contextMenu.getBoundingClientRect();
-        if (y + gridRect.top + cmRect.height + 4 > window.innerHeight
-            && x + gridRect.left + cmRect.width + 24 > window.innerWidth) {
-            y = y - cmRect.height;
-            x -= x + gridRect.left + cmRect.width + 24 - window.innerWidth;
-        }
-        else if (y + gridRect.top + cmRect.height + 4 > window.innerHeight) {
-            y -= y + gridRect.top + cmRect.height + 4 - window.innerHeight;
-        }
-        else if (x + gridRect.left + cmRect.width + 24 > window.innerWidth) {
-            x -= x + gridRect.left + cmRect.width + 24 - window.innerWidth;
-        }
-        this.currentIndex = index;
-        var icon = this.icons[index];
-        this.$newTab.href = `icons/${icon.name}`;
-        this.$contextMenu.style.left = `${x}px`;
-        this.$contextMenu.style.top = `${y}px`;
-        this.$contextMenu.style.visibility = 'visible';
-        this.hideTooltip();
-        this.canOpenTooltip = false;
-        const self = this;
-        this.$contextMenu.addEventListener('mouseenter', () => {
-            this.preventClose = true;
-        });
-        this.$contextMenu.addEventListener('mouseleave', () => {
-            this.preventClose = false;
-        });
-        function handleMouseDown(e) {
-            if (!self.preventClose) {
-                self.hideContextMenu();
-                document.removeEventListener('mousedown', handleMouseDown);
-            }
-        }
-        this.preventClose = false;
-        document.addEventListener('mousedown', handleMouseDown);
-        this.$color.style.visibility = 'hidden';
+        this.dispatchEvent(new CustomEvent('openmenu'));
     }
     hideContextMenu() {
-        this.$contextMenu.style.visibility = 'hidden';
-        this.$color.style.visibility = 'hidden';
+        this.dispatchEvent(new CustomEvent('closemenu'));
         this.canOpenTooltip = true;
     }
-    handleCopyIconName() {
-        const icon = this.icons[this.currentIndex];
-        copyText(icon.name);
-        addInfoToast(`Copied "${icon.name}" to clipboard.`);
-        this.hideContextMenu();
-    }
-    showTooltip(icon, index) {
+    showTooltip(icon, mouseMeta) {
         if (!this.canOpenTooltip) {
             return;
         }
-        this.$tooltipText.innerText = icon.name;
-        const { x, y } = this.getPositionFromIndex(index);
-        const half = Math.ceil(this.columns / 2);
-        if (x >= half) {
-            const { width } = this.$tooltip.getBoundingClientRect();
-        }
-        //this.$tooltip.style.transform = `translate(${x * 44 + offsetX}px, ${(y * 44 + 5)}px`;
-        //this.$tooltipArrow.style.transform = `translate(${16 + (-1 * offsetX)}px, 0)`;
-        //this.$tooltip.classList.add('visible');
+        this.dispatchEvent(new CustomEvent('entericon', {
+            detail: mouseMeta
+        }));
+        // this.$tooltip.style.transform = `translate(${x * 44 + offsetX}px, ${(y * 44 + 5)}px`;
+        // this.$tooltipArrow.style.transform = `translate(${16 + (-1 * offsetX)}px, 0)`;
+        // this.$tooltip.classList.add('visible');
     }
-    hideTooltip() {
-        this.$tooltip.classList.remove('visible');
-        this.index = -1;
+    hideTooltip(icon, mouseMeta) {
+        this.dispatchEvent(new CustomEvent('leaveicon', {
+            detail: mouseMeta
+        }));
     }
     getPositionFromIndex(index) {
         return {
@@ -8012,96 +7827,6 @@ __decorate([
 __decorate([
     Part()
 ], MdiGrid.prototype, "$grid", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$contextMenu", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$newTab", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$copyIconName", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$pngBlack", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$pngWhite", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$pngColor", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$png24", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$png36", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$png48", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$png96", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$pngDownload", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$svgBlack", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$svgWhite", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$svgColor", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$svgDownload", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$copySvgInline", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$copySvgFile", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$copySvgPath", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$copyUnicode", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$copyCodepoint", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$copyPreview", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$tooltip", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$tooltipText", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$tooltipArrow", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$color", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$colorPicker", void 0);
-__decorate([
-    Part()
-], MdiGrid.prototype, "$colorHexRgb", void 0);
-__decorate([
-    Local('#000000')
-], MdiGrid.prototype, "cachePngColor", void 0);
-__decorate([
-    Local('24')
-], MdiGrid.prototype, "cachePngSize", void 0);
-__decorate([
-    Local('#000000')
-], MdiGrid.prototype, "cacheSvgColor", void 0);
 MdiGrid = __decorate([
     Component({
         selector: 'mdi-grid',
@@ -17926,9 +17651,104 @@ MdiMarkdown = __decorate([
     })
 ], MdiMarkdown);
 
-var template$d = "<nav part=\"nav\">\n  <a href=\"/\">\n    <span part=\"name\"></span>\n  </a>\n  <a href=\"/icons\">\n    Icons\n  </a>\n  <a href=\"/icons\">\n    Docs\n  </a>\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n</nav>";
+var template$d = "<div part=\"contextMenu\">\n  <a part=\"newTab\" href=\"\">Open icon in New Tab</a>\n  <button part=\"copyIconName\">Copy Icon Name</button>\n  <div class=\"section\">Download PNG</div>\n  <div class=\"group\">\n    <button part=\"png24\">24</button>\n    <button part=\"png36\">36</button>\n    <button part=\"png48\">48</button>\n    <button part=\"png96\">96</button>\n  </div>\n  <div class=\"row\" style=\"margin-top: 0.25rem;\">\n    <div class=\"group\">\n      <button part=\"pngBlack\"><span class=\"black\"></span></button>\n      <button part=\"pngWhite\"><span class=\"white\"></span></button>\n      <button part=\"pngColor\">\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"#fff\" d=\"M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z\"/>\n          <path fill=\"currentColor\" d=\"M12.97 8L15.8 10.85L7.67 19L3.71 20.68L3.15 20.11L4.84 16.15L12.97 8Z\"/>\n        </svg>\n      </button>\n    </div>\n    <div class=\"group\">\n      <button part=\"pngDownload\" class=\"download\">\n        PNG\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"currentColor\" d=\"M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z\"/>\n        </svg>\n      </button>\n    </div>\n  </div>\n  <div class=\"section\">SVG</div>\n  <div class=\"row\" style=\"margin-bottom: 0.25rem;\">\n    <div class=\"group\">\n      <button part=\"svgBlack\" class=\"active\"><span class=\"black\"></span></button>\n      <button part=\"svgWhite\"><span class=\"white\"></span></button>\n      <button part=\"svgColor\">\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"#fff\" d=\"M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z\"/>\n          <path fill=\"currentColor\" d=\"M12.97 8L15.8 10.85L7.67 19L3.71 20.68L3.15 20.11L4.84 16.15L12.97 8Z\"/>\n        </svg>\n      </button>\n    </div>\n    <div class=\"group\">\n      <button part=\"svgDownload\" class=\"download\">\n        SVG\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"currentColor\" d=\"M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z\"/>\n        </svg>\n      </button>\n    </div>\n  </div>\n  <button part=\"copySvgInline\">Copy HTML SVG Inline</button>\n  <button part=\"copySvgFile\">Copy SVG File Contents</button>\n  <button part=\"copySvgPath\">Copy SVG Path Data</button>\n  <div class=\"section\">Desktop Font</div>\n  <button part=\"copyUnicode\">Copy Unicode Character</button>\n  <button part=\"copyCodepoint\">Copy Codepoint</button>\n  <div class=\"divider\"></div>\n  <button part=\"copyPreview\">Copy GitHub Preview</button>\n  <div part=\"color\">\n    <mdi-input-hex-rgb part=\"colorHexRgb\"></mdi-input-hex-rgb>\n    <mdi-color part=\"colorPicker\"></mdi-color>\n  </div>\n</div>";
 
-var style$d = ":host {\n  align-self: center;\n}\nsvg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\nbutton {\n  border: 0;\n  background: transparent;\n}\nbutton > svg {\n  fill: #fff;\n}";
+var style$d = "\n[part~=contextMenu] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  width: 12rem;\n  display: flex;\n  flex-direction: column;\n  padding: 0.25rem 0;\n  visibility: hidden;\n  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);\n}\n\n[part~=contextMenu] > div.section {\n  color: #FFF;\n  font-size: 0.875rem;\n  padding: 0.25rem 0.5rem;\n  cursor: default;\n  font-weight: bold;\n}\n\n[part~=contextMenu] > div.section:not(:first-child) {\n  border-top: 1px solid rgba(255, 255, 255, 0.3);\n  margin-top: 0.5rem;\n}\n\n[part~=contextMenu] > div.group {\n  margin: 0 0.5rem;\n  border: 1px solid rgba(255, 255, 255, 0.2);\n  border-radius: 0.25rem;\n  display: flex;\n  flex-direction: row;\n  overflow: hidden;\n}\n[part~=contextMenu] > div.row > div.group {\n  border: 1px solid rgba(255, 255, 255, 0.2);\n  border-radius: 0.25rem;\n  display: flex;\n  flex-direction: row;\n  flex: 1;\n  overflow: hidden;\n}\n\n[part~=contextMenu] > div.row > div.group:first-child {\n  margin-left: 0.5rem;\n  margin-right: 0.25rem;\n}\n\n[part~=contextMenu] > div.row > div.group:last-child {\n  margin-right: 0.5rem;\n}\n\n[part~=contextMenu] > div.group > button,\n[part~=contextMenu] > div.row > div.group > button {\n  display: flex;\n  flex: 1;\n  padding: 0.25rem;\n  justify-content: center;\n  border: 0;\n  margin: 0;\n  background: transparent;\n  color: #FFF;\n  font-size: 1rem;\n  line-height: 1.25rem;\n  align-items: center;\n  outline: none;\n}\n\n[part~=contextMenu] > button,\n[part~=contextMenu] > a {\n  display: flex;\n  border: 0;\n  margin: 0;\n  padding: 0.125rem 0.5rem;\n  background: transparent;\n  text-align: left;\n  color: #FFF;\n  font-size: 1rem;\n  text-decoration: none;\n  cursor: default;\n  outline: none;\n}\n\n[part~=contextMenu] > div.group > button.active,\n[part~=contextMenu] > div.row > div.group > button.active {\n  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.1);\n}\n\n[part~=contextMenu] > div.group > button.active:hover,\n[part~=contextMenu] > div.row > div.group > button.active:hover {\n  background: rgba(0, 0, 0, 0.2);\n}\n\n[part~=contextMenu] > div.group > button:not(:first-child),\n[part~=contextMenu] > div.row > div.group > button:not(:first-child) {\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n}\n\n[part~=contextMenu] > div.row > div.group > button > svg,\n[part~=contextMenu] > div.group > button > svg,\n[part~=contextMenu] > div.row > button > svg,\n[part~=contextMenu] > button > svg {\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n}\n\n[part~=contextMenu] > div.row > div.group > button:hover,\n[part~=contextMenu] > div.group > button:hover,\n[part~=contextMenu] > button:hover,\n[part~=contextMenu] > a:hover {\n  background: rgba(255, 255, 255, 0.2);\n}\n\n[part~=contextMenu] > div.row > div.group > button:active,\n[part~=contextMenu] > div.group > button:active {\n  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.2);\n}\n[part~=contextMenu] > button:active,\n[part~=contextMenu] > a:active {\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.2);\n}\n\n.row {\n  display: flex;\n}\n\n.divider {\n  border-top: 1px solid rgba(255, 255, 255, 0.3);\n  margin-top: 0.5rem;\n  height: 0.4375rem;\n}\n\n.black {\n  display: inline-flex;\n  border-radius: 50%;\n  width: 1rem;\n  height: 1rem;\n  background: #000;\n}\n\n.white {\n  display: inline-flex;\n  border-radius: 50%;\n  width: 1rem;\n  height: 1rem;\n  background: #FFF;\n}\n\n.download svg {\n  margin-bottom: -0.125rem;\n  margin-left: 0.25rem;\n}\n\n[part~=color] {\n  position: absolute;\n  padding: 0.25rem;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  box-shadow: 0 1px 16px rgba(0, 0, 0, 0.6);\n}\n\n[part~=colorHexRgb] {\n  margin-bottom: 0.25rem;\n}";
+
+let MdiMenuIcon = class MdiMenuIcon extends HTMLElement {
+};
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$contextMenu", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$newTab", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$copyIconName", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$pngBlack", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$pngWhite", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$pngColor", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$png24", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$png36", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$png48", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$png96", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$pngDownload", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$svgBlack", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$svgWhite", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$svgColor", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$svgDownload", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$copySvgInline", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$copySvgFile", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$copySvgPath", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$copyUnicode", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$copyCodepoint", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$copyPreview", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$color", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$colorPicker", void 0);
+__decorate([
+    Part()
+], MdiMenuIcon.prototype, "$colorHexRgb", void 0);
+__decorate([
+    Local('#000000')
+], MdiMenuIcon.prototype, "cachePngColor", void 0);
+__decorate([
+    Local('24')
+], MdiMenuIcon.prototype, "cachePngSize", void 0);
+__decorate([
+    Local('#000000')
+], MdiMenuIcon.prototype, "cacheSvgColor", void 0);
+MdiMenuIcon = __decorate([
+    Component({
+        selector: 'mdi-menu-icon',
+        style: style$d,
+        template: template$d
+    })
+], MdiMenuIcon);
+
+var template$e = "<nav part=\"nav\">\n  <a href=\"/\">\n    <span part=\"name\"></span>\n  </a>\n  <a href=\"/icons\">\n    Icons\n  </a>\n  <a href=\"/icons\">\n    Docs\n  </a>\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n</nav>";
+
+var style$e = ":host {\n  align-self: center;\n}\nsvg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\nbutton {\n  border: 0;\n  background: transparent;\n}\nbutton > svg {\n  fill: #fff;\n}";
 
 const noIcon$2 = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
 let MdiNav$3 = class MdiNav extends HTMLElement {
@@ -17948,14 +17768,14 @@ __decorate([
 MdiNav$3 = __decorate([
     Component({
         selector: 'mdi-nav',
-        style: style$d,
-        template: template$d
+        style: style$e,
+        template: template$e
     })
 ], MdiNav$3);
 
-var template$e = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\" height=\"12rem\"></mdi-grid>\n  </div>\n</div>";
+var template$f = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\" height=\"12rem\"></mdi-grid>\n  </div>\n</div>";
 
-var style$e = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n  outline: none;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
+var style$f = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n  outline: none;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
 
 window.process = { env: {} };
 let MdiPicker = class MdiPicker extends MdiButton$1 {
@@ -18021,8 +17841,8 @@ __decorate([
 MdiPicker = __decorate([
     Component({
         selector: 'mdi-picker',
-        style: style$e,
-        template: template$e
+        style: style$f,
+        template: template$f
     })
 ], MdiPicker);
 
@@ -18541,9 +18361,9 @@ function throttle(func, wait, options) {
   });
 }
 
-var template$f = "<div part=\"scroll\">\n  <slot></slot>\n</div>";
+var template$g = "<div part=\"scroll\">\n  <slot></slot>\n</div>";
 
-var style$f = ":host {\n  display: block;\n}\n\ndiv {\n  transform: translateY(0);\n}";
+var style$g = ":host {\n  display: block;\n}\n\ndiv {\n  transform: translateY(0);\n}";
 
 let MdiScroll = class MdiScroll extends HTMLElement {
     constructor() {
@@ -18676,8 +18496,8 @@ __decorate([
 MdiScroll = __decorate([
     Component({
         selector: 'mdi-scroll',
-        style: style$f,
-        template: template$f
+        style: style$g,
+        template: template$g
     })
 ], MdiScroll);
 
@@ -18845,9 +18665,9 @@ function iconFilter(icons, term, limit = 5) {
     return exactMatch(list, term);
 }
 
-var template$g = "<div part=\"grid\">\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n    <section part=\"empty\">\n      <strong>No Results</strong>\n      <a part=\"reqIcon\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Icon+Request&template=1_icon_request.md&title=\" target=\"_blank\">\n        Request an Icon\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n      <a part=\"reqDoc\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Documentation&template=6_doc_guide_request.md&title=\" target=\"_blank\">\n        Request Documentation\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n    </section>\n  </div>\n</div>";
+var template$h = "<div part=\"grid\">\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n    <section part=\"empty\">\n      <strong>No Results</strong>\n      <a part=\"reqIcon\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Icon+Request&template=1_icon_request.md&title=\" target=\"_blank\">\n        Request an Icon\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n      <a part=\"reqDoc\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Documentation&template=6_doc_guide_request.md&title=\" target=\"_blank\">\n        Request Documentation\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n    </section>\n  </div>\n</div>";
 
-var style$g = ":host {\n  display: block;\n  align-self: center;\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n  border: .0625rem solid var(--mdi-search-border-color);\n}\n.active input + svg path {\n  fill: #453C4F;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover,\nul > li > a:active,\nul > li > a:focus {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n  align-self: end;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n.icon svg {\n  color: #453C4F;\n  margin-right: 0.345rem;\n  margin-left: -0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}\n\n[part~=empty] {\n  background: #453C4F;\n  border-radius: 0.25rem;\n  padding: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\n[part~=empty] strong {\n  color: #fff;\n  padding: 0 0.25rem;\n}\n[part~=empty] a {\n  display: block;\n  background: #fff;\n  color: #453C4F;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  margin-top: 0.25rem;\n}\n[part~=empty] a:hover,\n[part~=empty] a:active,\n[part~=empty] a:focus {\n  background: #DAF4FB;\n}\n[part~=empty] a svg {\n  vertical-align: middle;\n  width: 1.5rem;\n  height: 1.5rem;\n  float: right;\n  margin: -0.125rem -0.25rem 0 0;\n}\n\n.hide {\n  display: none;\n}";
+var style$h = ":host {\n  display: block;\n  align-self: center;\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n  border: .0625rem solid var(--mdi-search-border-color);\n}\n.active input + svg path {\n  fill: #453C4F;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover,\nul > li > a:active,\nul > li > a:focus {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n  align-self: end;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n.icon svg {\n  color: #453C4F;\n  margin-right: 0.345rem;\n  margin-left: -0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}\n\n[part~=empty] {\n  background: #453C4F;\n  border-radius: 0.25rem;\n  padding: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\n[part~=empty] strong {\n  color: #fff;\n  padding: 0 0.25rem;\n}\n[part~=empty] a {\n  display: block;\n  background: #fff;\n  color: #453C4F;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  margin-top: 0.25rem;\n}\n[part~=empty] a:hover,\n[part~=empty] a:active,\n[part~=empty] a:focus {\n  background: #DAF4FB;\n}\n[part~=empty] a svg {\n  vertical-align: middle;\n  width: 1.5rem;\n  height: 1.5rem;\n  float: right;\n  margin: -0.125rem -0.25rem 0 0;\n}\n\n.hide {\n  display: none;\n}";
 
 let MdiSearch = class MdiSearch extends HTMLElement {
     constructor() {
@@ -19079,14 +18899,38 @@ __decorate([
 MdiSearch = __decorate([
     Component({
         selector: 'mdi-search',
-        style: style$g,
-        template: template$g
+        style: style$h,
+        template: template$h
     })
 ], MdiSearch);
 
-var template$h = "<button part=\"button\">\n  <span part=\"loading\">\n    <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n    </svg>\n  </span>\n  <span part=\"message\"></span>\n  <span part=\"close\">\n    <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n    </svg>\n  </span>\n</button>";
+function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
 
-var style$h = "[part~=button] {\n  display: flex;\n  background: #737E9E;\n  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);\n  border-radius: 0.25rem;\n  border: 1px solid #737E9E;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  color: #FFF;\n  align-items: center;\n  outline: 0;\n  transition: border-color 0.1s ease-in;\n  margin-bottom: 0.5rem;\n  max-width: 18rem;\n  font-size: 1rem;\n  align-items: center;\n}\n\n[part~=loading] {\n  height: 1.5rem;\n  margin: -0.25rem 0.5rem -0.25rem -0.25rem;\n}\n\n[part~=button]:hover {\n  border: 1px solid rgba(255, 255, 255, 0.75);\n}\n\n[part~=close] {\n  height: 1rem;\n}\n\n[part~=closeIcon] {\n  width: 1rem;\n  height: 1rem;\n}\n\n[part~=loadingIcon] {\n  animation: spin 2s infinite linear;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n@keyframes progress {\n  from {\n    width: 0;\n  }\n  to {\n    width: 20rem;\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part~=closeIcon] {\n  margin-left: 0.5rem;\n  color: rgba(255, 255, 255, 0.5);\n  transition: color 0.1s ease-in;\n}\n\n[part~=button]:hover [part~=closeIcon] {\n  color: #fff;\n}\n\n.hide {\n  display: none;\n}\n\n/* Error */\n\n[part~=button].error {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part~=button].error [part~=closeIcon] {\n  color: rgba(114, 28, 36, 0.6);\n}\n\n[part~=button].error:hover {\n  border-color: #721c24;\n}\n\n[part~=button].error:hover [part~=closeIcon] {\n  color: #721c24;\n}\n\n/* Warning */\n\n[part~=button].warning {\n  color: #856404;\n  background-color: #fff3cd;\n  border-color: #ffeeba;\n}\n\n[part~=button].warning [part~=closeIcon] {\n  color: rgba(133, 101, 4, 0.6);\n}\n\n[part~=button].warning:hover {\n  border-color: #856404;\n}\n\n[part~=button].warning:hover [part~=closeIcon] {\n  color: #856404;\n}";
+const ADD = 'mditoastadd';
+const REMOVE = 'mditoastremove';
+function observeToasts({ add, remove }) {
+    document.body.addEventListener(ADD, (e) => {
+        add(e.detail);
+    });
+    document.body.addEventListener(REMOVE, (e) => {
+        remove(e.detail.key);
+    });
+}
+function removeToast(key) {
+    const event = new CustomEvent(REMOVE, {
+        detail: { key }
+    });
+    document.body.dispatchEvent(event);
+}
+
+var template$i = "<button part=\"button\">\n  <span part=\"loading\">\n    <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n    </svg>\n  </span>\n  <span part=\"message\"></span>\n  <span part=\"close\">\n    <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n    </svg>\n  </span>\n</button>";
+
+var style$i = "[part~=button] {\n  display: flex;\n  background: #737E9E;\n  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);\n  border-radius: 0.25rem;\n  border: 1px solid #737E9E;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  color: #FFF;\n  align-items: center;\n  outline: 0;\n  transition: border-color 0.1s ease-in;\n  margin-bottom: 0.5rem;\n  max-width: 18rem;\n  font-size: 1rem;\n  align-items: center;\n}\n\n[part~=loading] {\n  height: 1.5rem;\n  margin: -0.25rem 0.5rem -0.25rem -0.25rem;\n}\n\n[part~=button]:hover {\n  border: 1px solid rgba(255, 255, 255, 0.75);\n}\n\n[part~=close] {\n  height: 1rem;\n}\n\n[part~=closeIcon] {\n  width: 1rem;\n  height: 1rem;\n}\n\n[part~=loadingIcon] {\n  animation: spin 2s infinite linear;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n@keyframes progress {\n  from {\n    width: 0;\n  }\n  to {\n    width: 20rem;\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part~=closeIcon] {\n  margin-left: 0.5rem;\n  color: rgba(255, 255, 255, 0.5);\n  transition: color 0.1s ease-in;\n}\n\n[part~=button]:hover [part~=closeIcon] {\n  color: #fff;\n}\n\n.hide {\n  display: none;\n}\n\n/* Error */\n\n[part~=button].error {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part~=button].error [part~=closeIcon] {\n  color: rgba(114, 28, 36, 0.6);\n}\n\n[part~=button].error:hover {\n  border-color: #721c24;\n}\n\n[part~=button].error:hover [part~=closeIcon] {\n  color: #721c24;\n}\n\n/* Warning */\n\n[part~=button].warning {\n  color: #856404;\n  background-color: #fff3cd;\n  border-color: #ffeeba;\n}\n\n[part~=button].warning [part~=closeIcon] {\n  color: rgba(133, 101, 4, 0.6);\n}\n\n[part~=button].warning:hover {\n  border-color: #856404;\n}\n\n[part~=button].warning:hover [part~=closeIcon] {\n  color: #856404;\n}";
 
 let MdiToast = class MdiToast extends HTMLElement {
     constructor() {
@@ -19139,14 +18983,14 @@ __decorate([
 MdiToast = __decorate([
     Component({
         selector: 'mdi-toast',
-        style: style$h,
-        template: template$h
+        style: style$i,
+        template: template$i
     })
 ], MdiToast);
 
-var template$i = "<div part=\"container\"></div>";
+var template$j = "<div part=\"container\"></div>";
 
-var style$i = "[part~=container] {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: flex-end;\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n}";
+var style$j = "[part~=container] {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: flex-end;\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n}";
 
 let MdiToasts = class MdiToasts extends HTMLElement {
     constructor() {
@@ -19194,7 +19038,57 @@ __decorate([
 MdiToasts = __decorate([
     Component({
         selector: 'mdi-toasts',
-        style: style$i,
-        template: template$i
+        style: style$j,
+        template: template$j
     })
 ], MdiToasts);
+
+var template$k = "<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"tooltipArrow\"></div>\n</div>";
+
+var style$k = ":host {\n  pointer-events: none;\n}\n\n[part~=tooltip] {\n  position: relative;\n}\n\n[part~=tooltipText] {\n  position: absolute;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n  left: 0;\n  top: 0;\n}\n\n[part~=tooltipArrow] {\n  left: 16px;\n  top: -7px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}";
+
+let MdiTooltip = class MdiTooltip extends HTMLElement {
+    constructor() {
+        super(...arguments);
+        this.text = '';
+        this.position = 'bottom-center';
+        this.width = '32';
+        this.height = '32';
+    }
+    render() {
+        this.$tooltipText.innerText = this.text;
+        const arrow = Math.floor(parseInt(this.width, 10) / 2) - 5;
+        const height = parseInt(this.height, 10);
+        this.$tooltipArrow.style.left = `${arrow}px`;
+        this.$tooltipArrow.style.top = `${height}px`;
+        this.$tooltipText.style.top = `${height + 5}px`;
+    }
+};
+__decorate([
+    Prop()
+], MdiTooltip.prototype, "text", void 0);
+__decorate([
+    Prop()
+], MdiTooltip.prototype, "position", void 0);
+__decorate([
+    Prop()
+], MdiTooltip.prototype, "width", void 0);
+__decorate([
+    Prop()
+], MdiTooltip.prototype, "height", void 0);
+__decorate([
+    Part()
+], MdiTooltip.prototype, "$tooltip", void 0);
+__decorate([
+    Part()
+], MdiTooltip.prototype, "$tooltipText", void 0);
+__decorate([
+    Part()
+], MdiTooltip.prototype, "$tooltipArrow", void 0);
+MdiTooltip = __decorate([
+    Component({
+        selector: 'mdi-tooltip',
+        style: style$k,
+        template: template$k
+    })
+], MdiTooltip);

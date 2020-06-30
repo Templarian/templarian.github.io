@@ -152,7 +152,7 @@ var mdiDatabase = (function () {
      *
      * By David Fahlander, david.fahlander@gmail.com
      *
-     * Version 3.0.0-rc.7, Wed Apr 08 2020
+     * Version 3.0.1, Thu May 07 2020
      *
      * http://dexie.org
      *
@@ -947,31 +947,6 @@ var mdiDatabase = (function () {
                 values.map(function (value) { return DexiePromise.resolve(value).then(resolve, reject); });
             });
         },
-        allSettled: function () {
-            var possiblePromises = getArrayOf.apply(null, arguments).map(onPossibleParallellAsync);
-            return new DexiePromise(function (resolve) {
-                if (possiblePromises.length === 0)
-                    resolve([]);
-                var remaining = possiblePromises.length;
-                var results = new Array(remaining);
-                possiblePromises.forEach(function (p, i) { return DexiePromise.resolve(p).then(function (value) { return results[i] = { status: "fulfilled", value: value }; }, function (reason) { return results[i] = { status: "rejected", reason: reason }; })
-                    .then(function () { return --remaining || resolve(results); }); });
-            });
-        },
-        any: function () {
-            var possiblePromises = getArrayOf.apply(null, arguments).map(onPossibleParallellAsync);
-            return new DexiePromise(function (resolve, reject) {
-                if (possiblePromises.length === 0)
-                    reject(new AggregateError([]));
-                var remaining = possiblePromises.length;
-                var failures = new Array(remaining);
-                possiblePromises.forEach(function (p, i) { return DexiePromise.resolve(p).then(function (value) { return resolve(value); }, function (failure) {
-                    failures[i] = failure;
-                    if (!--remaining)
-                        reject(new AggregateError(failures));
-                }); });
-            });
-        },
         PSD: {
             get: function () { return PSD; },
             set: function (value) { return PSD = value; }
@@ -1003,6 +978,35 @@ var mdiDatabase = (function () {
             });
         }
     });
+    if (NativePromise) {
+        if (NativePromise.allSettled)
+            setProp(DexiePromise, "allSettled", function () {
+                var possiblePromises = getArrayOf.apply(null, arguments).map(onPossibleParallellAsync);
+                return new DexiePromise(function (resolve) {
+                    if (possiblePromises.length === 0)
+                        resolve([]);
+                    var remaining = possiblePromises.length;
+                    var results = new Array(remaining);
+                    possiblePromises.forEach(function (p, i) { return DexiePromise.resolve(p).then(function (value) { return results[i] = { status: "fulfilled", value: value }; }, function (reason) { return results[i] = { status: "rejected", reason: reason }; })
+                        .then(function () { return --remaining || resolve(results); }); });
+                });
+            });
+        if (NativePromise.any && typeof AggregateError !== 'undefined')
+            setProp(DexiePromise, "any", function () {
+                var possiblePromises = getArrayOf.apply(null, arguments).map(onPossibleParallellAsync);
+                return new DexiePromise(function (resolve, reject) {
+                    if (possiblePromises.length === 0)
+                        reject(new AggregateError([]));
+                    var remaining = possiblePromises.length;
+                    var failures = new Array(remaining);
+                    possiblePromises.forEach(function (p, i) { return DexiePromise.resolve(p).then(function (value) { return resolve(value); }, function (failure) {
+                        failures[i] = failure;
+                        if (!--remaining)
+                            reject(new AggregateError(failures));
+                    }); });
+                });
+            });
+    }
     function executePromiseTask(promise, fn) {
         try {
             fn(function (value) {
@@ -1326,8 +1330,10 @@ var mdiDatabase = (function () {
                 GlobalPromise_1.race = targetEnv.race;
                 GlobalPromise_1.resolve = targetEnv.resolve;
                 GlobalPromise_1.reject = targetEnv.reject;
-                GlobalPromise_1.allSettled = targetEnv.allSettled;
-                GlobalPromise_1.any = targetEnv.any;
+                if (targetEnv.allSettled)
+                    GlobalPromise_1.allSettled = targetEnv.allSettled;
+                if (targetEnv.any)
+                    GlobalPromise_1.any = targetEnv.any;
             }
         }
     }
@@ -1441,7 +1447,7 @@ var mdiDatabase = (function () {
         }
     }
 
-    var DEXIE_VERSION = '3.0.0-rc.7';
+    var DEXIE_VERSION = '3.0.1';
     var maxString = String.fromCharCode(65535);
     var minKey = -Infinity;
     var INVALID_KEY_ARGUMENT = "Invalid key provided. Keys must be of type string, number, Date or Array<string | number | Date>.";
@@ -3361,7 +3367,12 @@ var mdiDatabase = (function () {
             objs.forEach(function (obj) {
                 if (!(tableName in obj)) {
                     if (obj === db.Transaction.prototype || obj instanceof db.Transaction) {
-                        setProp(obj, tableName, { get: function () { return this.table(tableName); } });
+                        setProp(obj, tableName, {
+                            get: function () { return this.table(tableName); },
+                            set: function (value) {
+                                defineProperty(this, tableName, { value: value, writable: true, configurable: true, enumerable: true });
+                            }
+                        });
                     }
                     else {
                         obj[tableName] = new db.Table(tableName, schema);
@@ -3680,26 +3691,28 @@ var mdiDatabase = (function () {
 
     var databaseEnumerator;
     function DatabaseEnumerator(indexedDB) {
-        var getDatabaseNamesNative = indexedDB && (indexedDB.getDatabaseNames || indexedDB.webkitGetDatabaseNames);
+        var hasDatabasesNative = indexedDB && typeof indexedDB.databases === 'function';
         var dbNamesTable;
-        if (!getDatabaseNamesNative) {
+        if (!hasDatabasesNative) {
             var db = new Dexie(DBNAMES_DB, { addons: [] });
             db.version(1).stores({ dbnames: 'name' });
             dbNamesTable = db.table('dbnames');
         }
         return {
             getDatabaseNames: function () {
-                return getDatabaseNamesNative ? new DexiePromise(function (resolve, reject) {
-                    var req = getDatabaseNamesNative.call(indexedDB);
-                    req.onsuccess = function (event) { return resolve(slice(event.target.result, 0)); };
-                    req.onerror = eventRejectHandler(reject);
-                }) : dbNamesTable.toCollection().primaryKeys();
+                return hasDatabasesNative
+                    ?
+                        DexiePromise.resolve(indexedDB.databases()).then(function (infos) { return infos
+                            .map(function (info) { return info.name; })
+                            .filter(function (name) { return name !== DBNAMES_DB; }); })
+                    :
+                        dbNamesTable.toCollection().primaryKeys();
             },
             add: function (name) {
-                return !getDatabaseNamesNative && name !== DBNAMES_DB && dbNamesTable.put({ name: name }).catch(nop);
+                return !hasDatabasesNative && name !== DBNAMES_DB && dbNamesTable.put({ name: name }).catch(nop);
             },
             remove: function (name) {
-                return !getDatabaseNamesNative && name !== DBNAMES_DB && dbNamesTable.delete(name).catch(nop);
+                return !hasDatabasesNative && name !== DBNAMES_DB && dbNamesTable.delete(name).catch(nop);
             }
         };
     }
