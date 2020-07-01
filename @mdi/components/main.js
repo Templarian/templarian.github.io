@@ -7522,7 +7522,7 @@ let MdiGrid = class MdiGrid extends HTMLElement {
         this.resizeObserver.observe(this.$grid);
         this.addEventListener('mousemove', this.handleTooltip.bind(this));
         this.addEventListener('mouseleave', (e) => {
-            this.index = -1;
+            this.index = -2;
             this.handleTooltip(e);
         });
         this.$scroll.addEventListener('calculate', (e) => {
