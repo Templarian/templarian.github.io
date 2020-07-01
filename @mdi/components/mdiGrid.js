@@ -189,6 +189,7 @@ var mdiGrid = (function () {
                 this.debounceRender();
             });
             this.index = 0;
+            this.hoverLast = 0;
             this.currentRow = 0;
             this.timeouts = [];
             this.cacheHeight = 0;
@@ -279,13 +280,13 @@ var mdiGrid = (function () {
         handleTooltip(e) {
             const mouseMeta = this.getMetaFromMouse(e);
             const { column, index } = mouseMeta;
-            var prevGridIndex = this.index - (this.currentRow * this.columns);
-            if (prevGridIndex >= 0) {
-                this.items[prevGridIndex][0].classList.toggle('hover', false);
+            if (this.hoverLast >= 0) {
+                this.items[this.hoverLast][0].classList.toggle('hover', false);
             }
             var gridIndex = index - (this.currentRow * this.columns);
             if (gridIndex >= 0) {
                 this.items[gridIndex][0].classList.toggle('hover', true);
+                this.hoverLast = gridIndex;
             }
             if (this.index !== index) {
                 if (index === -1 || this.index === -2) {
