@@ -7543,7 +7543,8 @@ let MdiGrid = class MdiGrid extends HTMLElement {
         const column = this.getColumnFromX(x, width, gap, extra);
         const row = this.getRowFromY(y, height, gap, extra);
         const index = column !== -1 && row !== -1 ? column + (row * this.columns) : -1;
-        const gridX = (column * width) + ((column + 1) * (gap + extra));
+        // First Column + [Other Columns + Extra Space] x column
+        const gridX = (width + gap) + ((column - 1) * width) + (column * (gap + extra));
         const gridY = (row * height) + ((row + 1) * gap);
         return {
             gridX,
@@ -7589,11 +7590,18 @@ let MdiGrid = class MdiGrid extends HTMLElement {
         }
         return row;
     }
+    /**
+     * Handle Tooltip
+     *
+     * this.index
+     * -1 = closed
+     * -2 = force close
+     */
     handleTooltip(e) {
         const mouseMeta = this.getMetaFromMouse(e);
         const { column, row, index } = mouseMeta;
         if (this.index !== index) {
-            if (index === -1) {
+            if (index === -1 || this.index === -2) {
                 mouseMeta.index = this.index;
                 this.hideTooltip(this.icons[this.index], mouseMeta);
                 this.index = -1;
