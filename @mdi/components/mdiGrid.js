@@ -201,7 +201,8 @@ var mdiGrid = (function () {
             this.resizeObserver.observe(this.$grid);
             this.addEventListener('mousemove', this.handleTooltip.bind(this));
             this.addEventListener('mouseleave', (e) => {
-                this.handleTooltip(e, true);
+                this.index = -1;
+                this.handleTooltip(e);
             });
             this.$scroll.addEventListener('calculate', (e) => {
                 const { offsetY, height, viewWidth, viewHeight } = e.detail;
@@ -267,25 +268,26 @@ var mdiGrid = (function () {
             }
             return row;
         }
-        handleTooltip(e, close) {
+        handleTooltip(e) {
             const mouseMeta = this.getMetaFromMouse(e);
             const { column, row, index } = mouseMeta;
-            if (close || index === -1) {
-                this.hideTooltip(this.icons[index], mouseMeta);
-            }
-            else {
-                if (this.index !== index) {
+            if (this.index !== index) {
+                if (index === -1) {
+                    mouseMeta.index = this.index;
+                    this.hideTooltip(this.icons[this.index], mouseMeta);
+                    this.index = -1;
+                }
+                else {
                     if (this.icons[index]) {
                         if (column > this.columns - 1) {
+                            mouseMeta.index = this.index;
                             this.hideTooltip(this.icons[this.index], mouseMeta);
+                            this.index = -1;
                         }
                         else {
                             this.showTooltip(this.icons[index], mouseMeta);
                             this.index = index;
                         }
-                    }
-                    else {
-                        this.hideTooltip(this.icons[this.index], mouseMeta);
                     }
                 }
             }
@@ -466,9 +468,6 @@ var mdiGrid = (function () {
             this.dispatchEvent(new CustomEvent('entericon', {
                 detail: mouseMeta
             }));
-            // this.$tooltip.style.transform = `translate(${x * 44 + offsetX}px, ${(y * 44 + 5)}px`;
-            // this.$tooltipArrow.style.transform = `translate(${16 + (-1 * offsetX)}px, 0)`;
-            // this.$tooltip.classList.add('visible');
         }
         hideTooltip(icon, mouseMeta) {
             this.dispatchEvent(new CustomEvent('leaveicon', {
