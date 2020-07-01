@@ -7486,7 +7486,7 @@ const debounce$1 = (func, waitFor) => {
 
 var template$7 = "<mdi-scroll part=\"scroll\">\n  <div part=\"grid\"></div>\n</mdi-scroll>";
 
-var style$7 = "* {\n  font-family: var(--mdi-font-family);\n}\n\n:host {\n  display: block;\n}\n\n[part~=grid] {\n  position: relative;\n}\n\n[part~=grid] > button {\n  border: 0;\n  background: transparent;\n  padding: 0.625rem;\n  outline: none;\n  width: 2.75rem;\n  height: 2.75rem;\n  position: absolute;\n  left: 0;\n  top: 0;\n  border: 0;\n  border-radius: 0.25rem;\n}\n\n[part~=grid] > button:hover {\n  background: rgba(0, 0, 0, 0.1);\n}\n\n[part~=grid] > button:active {\n  background: rgba(0, 0, 0, 0.15);\n  box-shadow: 0 0.0125rem 0.25rem rgba(0, 0, 0, 0.2) inset;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n}\n\n[part~=grid]::-webkit-scrollbar {\n  width: 1em;\n}\n\n[part~=grid]::-webkit-scrollbar-track {\n  box-shadow: inset 0 0 6px rgba(0,0,0,0.2);\n  border-radius: 0.25rem;\n}\n\n[part~=grid]::-webkit-scrollbar-thumb {\n  background-color: #453C4F;\n  outline: 1px solid slategrey;\n  border-radius: 0.25rem;\n}";
+var style$7 = "* {\n  font-family: var(--mdi-font-family);\n}\n\n:host {\n  display: block;\n}\n\n[part~=grid] {\n  position: relative;\n}\n\n[part~=grid] > button {\n  border: 0;\n  background: transparent;\n  padding: 0.625rem;\n  outline: none;\n  width: 2.75rem;\n  height: 2.75rem;\n  position: absolute;\n  left: 0;\n  top: 0;\n  border: 0;\n  border-radius: 0.25rem;\n}\n\n[part~=grid] > button.hover {\n  background: rgba(0, 0, 0, 0.1);\n}\n\n[part~=grid] > button:focus,\n[part~=grid] > button:active {\n  background: rgba(0, 0, 0, 0.15);\n  box-shadow: 0 0.0125rem 0.25rem rgba(0, 0, 0, 0.2) inset;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n}\n\n[part~=grid]::-webkit-scrollbar {\n  width: 1em;\n}\n\n[part~=grid]::-webkit-scrollbar-track {\n  box-shadow: inset 0 0 6px rgba(0,0,0,0.2);\n  border-radius: 0.25rem;\n}\n\n[part~=grid]::-webkit-scrollbar-thumb {\n  background-color: #453C4F;\n  outline: 1px solid slategrey;\n  border-radius: 0.25rem;\n}";
 
 let MdiGrid = class MdiGrid extends HTMLElement {
     constructor() {
@@ -7599,7 +7599,13 @@ let MdiGrid = class MdiGrid extends HTMLElement {
      */
     handleTooltip(e) {
         const mouseMeta = this.getMetaFromMouse(e);
-        const { column, row, index } = mouseMeta;
+        const { column, index } = mouseMeta;
+        if (this.index !== -1 && this.index !== -2) {
+            this.items[this.index][0].classList.toggle('hover', false);
+        }
+        if (index !== -1) {
+            this.items[index][0].classList.toggle('hover', true);
+        }
         if (this.index !== index) {
             if (index === -1 || this.index === -2) {
                 mouseMeta.index = this.index;
@@ -7621,8 +7627,10 @@ let MdiGrid = class MdiGrid extends HTMLElement {
             }
         }
     }
+    updateHover() {
+        this.items[this.index][0].classList.toggle('hover', false);
+    }
     syncVirtual(count) {
-        console.log('syncVirtual');
         for (let i = this.currentCount; i < count; i++) {
             this.currentCount = i + 1;
             const btn = document.createElement('button');
