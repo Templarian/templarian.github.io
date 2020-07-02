@@ -183,7 +183,7 @@ var mdiGrid = (function () {
             this.rowHeight = 0;
             this.items = [];
             this.svg = 'http://www.w3.org/2000/svg';
-            this.debounceRender = debounce(() => this.render(), 300);
+            this.debounceRender = debounce(() => this.render({}), 300);
             this.color = 'svg';
             this.resizeObserver = new ResizeObserver(() => {
                 this.debounceRender();
@@ -410,7 +410,7 @@ var mdiGrid = (function () {
             let w = width - this.currentGap;
             return Math.floor(w / rowHeight);
         }
-        render() {
+        render(changes) {
             // Calculate Icon Size
             const { size, padding, gap, rowHeight, scrollWidth } = this.getIconMetrics();
             if (this.currentSize !== size || this.currentPadding !== padding || this.currentGap !== gap) {
@@ -425,10 +425,12 @@ var mdiGrid = (function () {
                 this.columns = columns;
             }
             // Virtual Grid
-            const count = this.icons.length;
-            const rows = Math.ceil(count / this.columns);
-            this.currentRow = -1;
-            this.$scroll.height = gap + (rows * rowHeight);
+            if (changes.icons) {
+                const count = this.icons.length;
+                const rows = Math.ceil(count / this.columns);
+                this.currentRow = -1;
+                this.$scroll.height = gap + (rows * rowHeight);
+            }
         }
         moveFocus(e, index) {
             console.log(e.which, index);
