@@ -1,4 +1,4 @@
-var mdiIcon = (function () {
+var mdiPreview = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -153,19 +153,32 @@ var mdiIcon = (function () {
         };
     }
 
-    var template$1 = "<svg part=\"svg\" viewBox=\"0 0 24 24\">\n  <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n</svg>";
+    var template$1 = "<div part=\"grid\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n  </svg>\n</div>";
 
-    var style$1 = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n:host [part~=svg] {\n  width: 1.5rem;\n  height: 1.5rem;\n}";
+    var style$1 = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n[part=svg] {\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n[part=\"grid\"] {\n  background-image:\n    repeating-linear-gradient(#ccc 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, #ccc 0 2px, transparent 2px 100%);\n  background-size: var(--mdi-preview-size, 4px) var(--mdi-preview-size, 4px);\n  background-position: calc(var(--mdi-preview-size, 4px) - 1px) calc(var(--mdi-preview-size, 4px) - 1px);\n}";
 
     const noIcon = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
     let MdiIcon = class MdiIcon extends HTMLElement {
         constructor() {
             super(...arguments);
             this.path = noIcon;
+            this.width = 24;
+            this.height = 24;
+            this.size = 4;
         }
         render(changes) {
             if (changes.path) {
                 this.$path.setAttribute('d', this.path);
+            }
+            if (changes.size) {
+                const width = parseInt(`${this.width}`, 10);
+                const height = parseInt(`${this.height}`, 10);
+                const size = parseInt(`${this.size}`, 10);
+                this.$svg.style.width = `${width * size}px`;
+                this.$svg.style.height = `${height * size}px`;
+                this.$grid.style.width = `${width * size}px`;
+                this.$grid.style.height = `${height * size}px`;
+                this.$grid.style.setProperty('--mdi-preview-size', `${size}px`);
             }
         }
     };
@@ -173,11 +186,26 @@ var mdiIcon = (function () {
         Prop()
     ], MdiIcon.prototype, "path", void 0);
     __decorate([
+        Prop()
+    ], MdiIcon.prototype, "width", void 0);
+    __decorate([
+        Prop()
+    ], MdiIcon.prototype, "height", void 0);
+    __decorate([
+        Prop()
+    ], MdiIcon.prototype, "size", void 0);
+    __decorate([
+        Part()
+    ], MdiIcon.prototype, "$svg", void 0);
+    __decorate([
         Part()
     ], MdiIcon.prototype, "$path", void 0);
+    __decorate([
+        Part()
+    ], MdiIcon.prototype, "$grid", void 0);
     MdiIcon = __decorate([
         Component({
-            selector: 'mdi-icon',
+            selector: 'mdi-preview',
             style: style$1,
             template: template$1
         })
@@ -187,4 +215,4 @@ var mdiIcon = (function () {
     return MdiIcon$1;
 
 }());
-//# sourceMappingURL=mdiIcon.js.map
+//# sourceMappingURL=mdiPreview.js.map
