@@ -155,7 +155,7 @@ var mdiIcon = (function () {
 
     var template$1 = "<svg part=\"svg\" viewBox=\"0 0 24 24\">\n  <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n</svg>";
 
-    var style$1 = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n:host [part~=svg] {\n  width: 1.5rem;\n  height: 1.5rem;\n}";
+    var style$1 = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #453C4F);\n}\n\n:host [part~=svg] {\n  width: var(--mdi-icon-width, 1.5rem);\n  height: var(--mdi-icon-height, 1.5rem);\n}";
 
     const noIcon = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
     let MdiIcon = class MdiIcon extends HTMLElement {

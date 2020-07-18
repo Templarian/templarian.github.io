@@ -153,30 +153,27 @@ var mdiButton = (function () {
         };
     }
 
-    var template$1 = "<button part=\"button\" class=\"base\"><slot></slot></button>";
+    var template$1 = "<button part=\"button\">\n  <slot></slot>\n</button>";
 
-    var style$1 = "[part~=button] {\n  display: inline-flex;\n  align-items: center;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n}\n\n[part~=button]:hover {\n  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);\n}\n\n[part~=button].base {\n  border: 1px solid #4281E9;\n  background: #4281E9;\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: #FFF;\n}\n\n[part~=button].base:hover {\n  background-color: #4F8FF9;\n}\n\n[part~=button].base-inverse {\n  border: 1px solid #F1F1F1;\n  background: #FFF;\n  color: #4281E9;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: #4281E9;\n}";
+    var style$1 = "[part=\"button\"] {\n  display: inline-flex;\n  align-items: center;\n  align-content: center;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n}\n\n[part=\"button\"]:hover {\n  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);\n}\n\n[part=\"button\"] {\n  border: 1px solid var(--mdi-button-border-color, #453C4F);\n  background-color: var(--mdi-button-background-color, #fff);\n  color: var(--mdi-button-color, #453C4F);\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"button\"]:hover {\n  border: 1px solid var(--mdi-button-hover-border-color, #453C4F);\n  background-color: var(--mdi-button-hover-background-color, #453C4F);\n  color: var(--mdi-hover-button-color, #fff);\n  --mdi-icon-color: var(--mdi-button-hover-color, #fff);\n}\n\n::slotted {\n  align-self: center;\n}";
 
-    const DEFAULT_VARIANT = 'base';
     let MdiButton = class MdiButton extends HTMLElement {
         constructor() {
             super(...arguments);
-            this.variant = DEFAULT_VARIANT;
-            this.oldVariant = DEFAULT_VARIANT;
+            this.active = false;
         }
         connectedCallback() {
             this.$button.addEventListener('click', (e) => this.dispatchEvent(new CustomEvent('click')));
         }
-        render() {
-            if (this.variant != this.oldVariant) {
-                this.$button.classList.replace(this.oldVariant, this.variant);
-                this.oldVariant = this.variant;
+        render(changes) {
+            if (changes.active) {
+                this.$button.classList.toggle('active', this.active === 'true' || !!this.active);
             }
         }
     };
     __decorate([
         Prop()
-    ], MdiButton.prototype, "variant", void 0);
+    ], MdiButton.prototype, "active", void 0);
     __decorate([
         Part()
     ], MdiButton.prototype, "$button", void 0);

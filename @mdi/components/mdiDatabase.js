@@ -4653,6 +4653,22 @@ var mdiDatabase = (function () {
         }
     }
 
+    class FontIcon {
+        from(tag) {
+            this.id = tag.id;
+            this.codepoint = tag.codepoint;
+            this.font = tag.font;
+            return this;
+        }
+        to() {
+            return {
+                id: this.id,
+                codepoint: this.codepoint,
+                font: this.font
+            };
+        }
+    }
+
     class Icon {
         constructor(name, data) {
             this.id = null;
@@ -4669,6 +4685,7 @@ var mdiDatabase = (function () {
             this.published = true;
             this.deprecated = false;
             this.codepoint = null;
+            this.fontIcons = [];
             this.fontIcon = null;
             this.name = name || null;
             this.data = data || null;
@@ -4706,6 +4723,9 @@ var mdiDatabase = (function () {
             }
             if (icon.codepoint) {
                 this.codepoint = icon.codepoint;
+            }
+            if (icon.fontIcons) {
+                this.fontIcons = icon.fontIcons.map(t => new FontIcon().from(t));
             }
             return this;
         }
