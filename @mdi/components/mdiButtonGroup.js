@@ -1,4 +1,4 @@
-var mdiButton = (function () {
+var mdiButtonGroup = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -108,39 +108,6 @@ var mdiButton = (function () {
             }
         };
     }
-    function Prop() {
-        return function (target, propertyKey, descriptor) {
-            var constructor = target.constructor;
-            if (!constructor.observedAttributes) {
-                constructor.observedAttributes = [];
-            }
-            var observedAttributes = constructor.observedAttributes;
-            if (!constructor.symbols) {
-                constructor.symbols = {};
-            }
-            var symbols = constructor.symbols;
-            observedAttributes.push(propertyKey);
-            var symbol = Symbol(propertyKey);
-            symbols[propertyKey] = symbol;
-            Object.defineProperty(target, propertyKey, {
-                get: function () {
-                    return this[symbol];
-                },
-                set: function (value) {
-                    var _this = this;
-                    this[symbol] = value;
-                    if (this[init]) {
-                        this[parent].map(function (p) {
-                            var _a;
-                            if (p.render) {
-                                p.render.call(_this, (_a = {}, _a[propertyKey] = true, _a));
-                            }
-                        });
-                    }
-                }
-            });
-        };
-    }
     function Part() {
         return function (target, propertyKey, descriptor) {
             Object.defineProperty(target, propertyKey, {
@@ -153,62 +120,50 @@ var mdiButton = (function () {
         };
     }
 
-    var template$1 = "<button part=\"button\">\n  <slot></slot>\n</button>";
+    var template$1 = "<slot part=\"slot\"></slot>";
 
-    var style$1 = "[part=\"button\"] {\n  display: inline-flex;\n  align-items: center;\n  align-content: center;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n}\n\n[part=\"button\"] {\n  border: 1px solid var(--mdi-button-border-color, #453C4F);\n  background-color: var(--mdi-button-background-color, #fff);\n  color: var(--mdi-button-color, #453C4F);\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"button\"]:hover {\n  border: 1px solid var(--mdi-button-hover-border-color, #453C4F);\n  background-color: var(--mdi-button-hover-background-color, #453C4F);\n  color: var(--mdi-hover-button-color, #fff);\n  --mdi-icon-color: var(--mdi-button-hover-color, #fff);\n}\n\n[part=\"button\"].start {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n  margin-right: -1px;\n}\n\n[part=\"button\"].center {\n  border-radius: 0;\n  margin-right: -1px;\n}\n\n[part=\"button\"].end {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n\n[part=\"button\"].active,\n[part=\"button\"].active:hover {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  background-color: rgba(69, 60, 79, 0.1);\n  color: var(--mdi-button-color, #453C4F);\n}\n\n::slotted {\n  align-self: center;\n}";
+    var style$1 = ":host {\n  display: inline-flex;\n  flex-direction: row;\n}";
 
-    let MdiButton = class MdiButton extends HTMLElement {
-        constructor() {
-            super(...arguments);
-            this.active = false;
-            this.start = false;
-            this.center = false;
-            this.end = false;
-        }
+    const MDI_BUTTON = 'MDI-BUTTON';
+    let MdiButtonGroup = class MdiButtonGroup extends HTMLElement {
         connectedCallback() {
-            this.$button.addEventListener('click', (e) => this.dispatchEvent(new CustomEvent('click')));
+            this.$slot.addEventListener('slotchange', this.handleSlotChange.bind(this));
+        }
+        handleSlotChange(e) {
+            const elements = this.$slot.assignedElements();
+            if (elements.length !== 0) {
+                const first = elements[0];
+                if (first.tagName === MDI_BUTTON) {
+                    first.start = true;
+                }
+                const last = elements[elements.length - 1];
+                if (last.tagName === MDI_BUTTON) {
+                    last.end = true;
+                }
+                for (let i = 0; i < elements.length; i++) {
+                    const element = elements[i];
+                    if (element.tagName === MDI_BUTTON) {
+                        element.center = !element.start && !element.end;
+                    }
+                }
+            }
         }
         render(changes) {
-            const t = [true, 'true', ''];
-            if (changes.active) {
-                this.$button.classList.toggle('active', t.includes(this.active));
-            }
-            if (changes.start) {
-                this.$button.classList.toggle('start', t.includes(this.start));
-            }
-            if (changes.end) {
-                this.$button.classList.toggle('end', t.includes(this.end));
-            }
-            if (changes.center) {
-                this.$button.classList.toggle('center', t.includes(this.center));
-            }
         }
     };
     __decorate([
-        Prop()
-    ], MdiButton.prototype, "active", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "start", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "center", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "end", void 0);
-    __decorate([
         Part()
-    ], MdiButton.prototype, "$button", void 0);
-    MdiButton = __decorate([
+    ], MdiButtonGroup.prototype, "$slot", void 0);
+    MdiButtonGroup = __decorate([
         Component({
-            selector: 'mdi-button',
+            selector: 'mdi-button-group',
             style: style$1,
             template: template$1
         })
-    ], MdiButton);
-    var MdiButton$1 = MdiButton;
+    ], MdiButtonGroup);
+    var MdiButtonGroup$1 = MdiButtonGroup;
 
-    return MdiButton$1;
+    return MdiButtonGroup$1;
 
 }());
-//# sourceMappingURL=mdiButton.js.map
+//# sourceMappingURL=mdiButtonGroup.js.map
