@@ -4654,17 +4654,19 @@ var mdiDatabase = (function () {
     }
 
     class FontIcon {
-        from(tag) {
-            this.id = tag.id;
-            this.codepoint = tag.codepoint;
-            this.font = tag.font;
+        from(fontIcon) {
+            this.id = fontIcon.id;
+            this.codepoint = fontIcon.codepoint;
+            this.font = fontIcon.font;
+            this.version = fontIcon.version;
             return this;
         }
         to() {
             return {
                 id: this.id,
                 codepoint: this.codepoint,
-                font: this.font
+                font: this.font,
+                version: this.version
             };
         }
     }

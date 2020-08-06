@@ -160,32 +160,40 @@ var mdiTooltip = (function () {
     let MdiTooltip = class MdiTooltip extends HTMLElement {
         constructor() {
             super(...arguments);
+            this.visible = false;
+            this.rect = null;
             this.text = '';
             this.position = 'bottom-center';
-            this.width = '32';
-            this.height = '32';
         }
-        render() {
+        render(changes) {
             this.$tooltipText.innerText = this.text;
-            const arrow = Math.floor(parseInt(this.width, 10) / 2) - 5;
-            const height = parseInt(this.height, 10);
-            this.$tooltipArrow.style.left = `${arrow}px`;
-            this.$tooltipArrow.style.top = `${height}px`;
-            this.$tooltipText.style.top = `${height + 5}px`;
+            if (changes.visible) {
+                this.style.display = this.visible ? 'inline-flex' : 'none';
+            }
+            if (changes.rect && this.rect) {
+                const { top, right, bottom, left, width, height } = this.rect;
+                this.style.position = 'fixed';
+                this.style.left = `${this.rect.left}px`;
+                this.style.top = `${this.rect.top + 5}px`;
+                const arrow = Math.floor(width / 2) - 5;
+                this.$tooltipArrow.style.left = `${arrow}px`;
+                this.$tooltipArrow.style.top = `${height}px`;
+                this.$tooltipText.style.top = `${height + 5}px`;
+            }
         }
     };
+    __decorate([
+        Prop()
+    ], MdiTooltip.prototype, "visible", void 0);
+    __decorate([
+        Prop()
+    ], MdiTooltip.prototype, "rect", void 0);
     __decorate([
         Prop()
     ], MdiTooltip.prototype, "text", void 0);
     __decorate([
         Prop()
     ], MdiTooltip.prototype, "position", void 0);
-    __decorate([
-        Prop()
-    ], MdiTooltip.prototype, "width", void 0);
-    __decorate([
-        Prop()
-    ], MdiTooltip.prototype, "height", void 0);
     __decorate([
         Part()
     ], MdiTooltip.prototype, "$tooltip", void 0);
