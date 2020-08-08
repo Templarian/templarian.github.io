@@ -155,7 +155,7 @@ var mdiInputText = (function () {
 
     var template$1 = "<input part=\"input\" type=\"text\" />";
 
-    var style$1 = ":host {\n  display: block;\n}\n\n[part=\"input\"] {\n  border: 1px solid var(--mdi-input-text-border-color, #453C4F);\n  border-radius: 0.125rem;\n  padding: calc(0.5rem - 1px) 0.75rem;\n  font-size: 1rem;\n  outline: 0;\n  width: calc(100% - 1.5rem - 2px);\n}\n\n[part=\"input\"]:active,\n[part=\"input\"]:focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-text-focus-color, rgb(79, 143, 249, 0.5));\n}";
+    var style$1 = ":host {\n  display: block;\n}\n\n[part=\"input\"] {\n  border: 1px solid var(--mdi-input-text-border-color, #453C4F);\n  border-radius: 0.125rem;\n  padding: calc(0.5rem - 1px) 0.75rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1.5rem - 2px);\n}\n\n[part=\"input\"]:active {\n  box-shadow: 0 0 0 3px var(--mdi-input-text-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"input\"]:focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-text-focus-glow, rgb(79, 143, 249, 0.5));\n}";
 
     let MdiInputText = class MdiInputText extends HTMLElement {
         constructor() {
