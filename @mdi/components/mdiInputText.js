@@ -1,4 +1,4 @@
-var mdiInputHexRgb = (function () {
+var mdiInputText = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -153,111 +153,66 @@ var mdiInputHexRgb = (function () {
         };
     }
 
-    function hexToRgb(hex) {
-        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-        } : null;
-    }
-    function normalizeHex(hex) {
-        const h = hex.toUpperCase();
-        if (h.length === 7) {
-            return h;
-        }
-        else if (h.length === 4) {
-            return `#${h[1]}${h[1]}${h[2]}${h[2]}${h[3]}${h[3]}`;
-        }
-        return '#000000';
-    }
-    function cToHex(c) {
-        var hex = c.toString(16);
-        return hex.length == 1 ? "0" + hex : hex;
-    }
-    function rgbToHex(r, g, b) {
-        return "#" + cToHex(r) + cToHex(g) + cToHex(b);
-    }
+    var template$1 = "<input part=\"input\" type=\"text\" />";
 
-    var template$1 = "<div>\n  <input part=\"hex\" type=\"text\" />\n  <label part=\"labelRed\">R</label>\n  <input part=\"red\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n  <label part=\"labelGreen\">G</label>\n  <input part=\"green\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n  <label part=\"labelBlue\">B</label>\n  <input part=\"blue\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n</div>";
+    var style$1 = ":host {\n  display: block;\n}\n\n[part=\"input\"] {\n  border: 1px solid var(--mdi-input-text-border-color, #453C4F);\n  border-radius: 0.125rem;\n  padding: calc(0.5rem - 1px) 0.75rem;\n  font-size: 1rem;\n  outline: 0;\n  width: calc(100% - 1.5rem - 2px);\n}\n\n[part=\"input\"]:active,\n[part=\"input\"]:focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-text-focus-color, rgb(79, 143, 249, 0.5));\n}";
 
-    var style$1 = ":host {\n  display: block;\n}\n\n:host > div {\n  display: grid;\n  grid-template-rows: auto 1rem 2rem 1rem 2rem 1rem 2rem;\n  grid-template-rows: 1fr;\n}\n\n[part~=\"hex\"] {\n  grid-row: 1;\n  grid-column: 1;\n}\n\n[part~=\"labelRed\"] {\n  grid-row: 1;\n  grid-column: 2;\n  background: red;\n}\n\n[part~=\"red\"] {\n  grid-row: 1;\n  grid-column: 3;\n}\n\n[part~=\"labelGreen\"] {\n  grid-row: 1;\n  grid-column: 4;\n  background: green;\n  color: white;\n}\n\n[part~=\"green\"] {\n  grid-row: 1;\n  grid-column: 5;\n}\n\n[part~=\"labelBlue\"] {\n  grid-row: 1;\n  grid-column: 6;\n  background: blue;\n  color: white;\n}\n\n[part~=\"blue\"] {\n  grid-row: 1;\n  grid-column: 7;\n}\n\n[part~=\"labelRed\"],\n[part~=\"labelGreen\"],\n[part~=\"labelBlue\"] {\n  display: flex;\n  margin-left: 0.25rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 0.25rem 0 0 0.25rem;\n  color: white;\n  min-width: 1rem;\n}\n\n[part~=\"hex\"] {\n  border-radius: 0.25rem;\n  min-width: 4rem;\n}\n\n[part~=\"hex\"],\n[part~=\"red\"],\n[part~=\"green\"],\n[part~=\"blue\"] {\n  outline: none;\n  font-size: 1rem;\n  padding: 0.25rem 0.5rem;\n  border: 0;\n  width: calc(100% - 1rem);\n}\n\n[part~=\"red\"],\n[part~=\"green\"],\n[part~=\"blue\"] {\n  border-radius: 0 0.25rem 0.25rem 0;\n  -moz-appearance: textfield;\n  width: calc(100% - 1rem);\n  min-width: 2rem;\n}\n\n[part~=\"red\"]::-webkit-inner-spin-button,\n[part~=\"red\"]::-webkit-outer-spin-button,\n[part~=\"green\"]::-webkit-inner-spin-button,\n[part~=\"green\"]::-webkit-outer-spin-button,\n[part~=\"blue\"]::-webkit-inner-spin-button,\n[part~=\"blue\"]::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}";
-
-    let MdiInputHexRgb = class MdiInputHexRgb extends HTMLElement {
+    let MdiInputText = class MdiInputText extends HTMLElement {
         constructor() {
             super(...arguments);
-            this.value = '#000000';
+            this.name = '';
+            this.value = '';
+            this.skipValue = false;
         }
         connectedCallback() {
-            this.$hex.value = this.value;
-            this.updateRgb();
-            this.$hex.addEventListener('input', this.updateRgbDispatch.bind(this));
-            this.$red.addEventListener('input', this.updateHexDispatch.bind(this));
-            this.$green.addEventListener('input', this.updateHexDispatch.bind(this));
-            this.$blue.addEventListener('input', this.updateHexDispatch.bind(this));
+            this.$input.addEventListener('input', this.handleInput.bind(this));
+            this.$input.addEventListener('change', this.handleChange.bind(this));
         }
-        updateRgb() {
-            const hex = normalizeHex(this.$hex.value);
-            const rgb = hexToRgb(hex);
-            if (rgb !== null) {
-                this.$red.value = rgb.r.toString();
-                this.$green.value = rgb.g.toString();
-                this.$blue.value = rgb.b.toString();
+        render(changes) {
+            if (changes.value && !this.skipValue) {
+                this.$input.value = this.value;
             }
+            this.skipValue = false;
         }
-        updateRgbDispatch() {
-            this.updateRgb();
-            this.dispatchSelect();
-        }
-        updateHexDispatch() {
-            this.$hex.value = rgbToHex(parseInt(this.$red.value || '0', 10), parseInt(this.$green.value || '0', 10), parseInt(this.$blue.value || '0', 10));
-            this.dispatchSelect();
-        }
-        dispatchSelect() {
-            const hex = normalizeHex(this.$hex.value);
-            const rgb = rgbToHex(parseInt(this.$red.value || '0', 10), parseInt(this.$green.value || '0'), parseInt(this.$blue.value || '0'));
-            this.value = hex;
-            this.dispatchEvent(new CustomEvent('change', {
+        handleInput(e) {
+            e.stopPropagation();
+            this.skipValue = true;
+            this.value = e.target.value;
+            this.dispatchEvent(new CustomEvent('input', {
                 detail: {
-                    hex,
-                    rgb
+                    value: e.target.value,
+                    name: e.name
                 }
             }));
         }
-        render() {
-            const hex = normalizeHex(this.value);
-            const rgb = hexToRgb(hex);
-            this.$hex.value = hex;
-            this.$red.value = `${rgb ? rgb.r : 0}`;
-            this.$green.value = `${rgb ? rgb.g : 0}`;
-            this.$blue.value = `${rgb ? rgb.b : 0}`;
+        handleChange(e) {
+            this.dispatchEvent(new CustomEvent('change', {
+                detail: {
+                    value: e.target.value,
+                    name: e.name
+                }
+            }));
         }
     };
     __decorate([
         Prop()
-    ], MdiInputHexRgb.prototype, "value", void 0);
+    ], MdiInputText.prototype, "name", void 0);
+    __decorate([
+        Prop()
+    ], MdiInputText.prototype, "value", void 0);
     __decorate([
         Part()
-    ], MdiInputHexRgb.prototype, "$hex", void 0);
-    __decorate([
-        Part()
-    ], MdiInputHexRgb.prototype, "$red", void 0);
-    __decorate([
-        Part()
-    ], MdiInputHexRgb.prototype, "$green", void 0);
-    __decorate([
-        Part()
-    ], MdiInputHexRgb.prototype, "$blue", void 0);
-    MdiInputHexRgb = __decorate([
+    ], MdiInputText.prototype, "$input", void 0);
+    MdiInputText = __decorate([
         Component({
-            selector: 'mdi-input-hex-rgb',
+            selector: 'mdi-input-text',
             style: style$1,
             template: template$1
         })
-    ], MdiInputHexRgb);
-    var MdiInputHexRgb$1 = MdiInputHexRgb;
+    ], MdiInputText);
+    var MdiInputText$1 = MdiInputText;
 
-    return MdiInputHexRgb$1;
+    return MdiInputText$1;
 
 }());
-//# sourceMappingURL=mdiInputHexRgb.js.map
+//# sourceMappingURL=mdiInputText.js.map

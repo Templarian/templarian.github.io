@@ -4976,7 +4976,7 @@ var mdiDatabase = (function () {
     }
 
     const db = new DatabaseService();
-    let MdiNav = class MdiNav extends HTMLElement {
+    let MdiDatabase = class MdiDatabase extends HTMLElement {
         constructor() {
             super(...arguments);
             this.font = '';
@@ -5008,17 +5008,17 @@ var mdiDatabase = (function () {
     };
     __decorate([
         Prop()
-    ], MdiNav.prototype, "font", void 0);
-    MdiNav = __decorate([
+    ], MdiDatabase.prototype, "font", void 0);
+    MdiDatabase = __decorate([
         Component({
             selector: 'mdi-database',
             style: style$1,
             template: template$1
         })
-    ], MdiNav);
-    var MdiNav$1 = MdiNav;
+    ], MdiDatabase);
+    var MdiDatabase$1 = MdiDatabase;
 
-    return MdiNav$1;
+    return MdiDatabase$1;
 
 }());
 //# sourceMappingURL=mdiDatabase.js.map

@@ -155,9 +155,9 @@ var mdiInputSelect = (function () {
 
     var template$1 = "<div part=\"wrapper\">\n  <select part=\"select\"></select>\n  <svg part=\"chevron\" viewBox=\"0 0 24 24\"><path d=\"M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z\" /></svg>\n</div>";
 
-    var style$1 = "[part=\"wrapper\"] {\n  display: grid;\n  grid-template-rows: auto;\n  grid-template-columns: 100% 0;\n}\n\n[part=\"select\"] {\n  grid-row: 1;\n  grid-column: 1;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  padding: 0.5rem 0.75rem;\n  width: 100%;\n  font-size: 1rem;\n  outline: 0;\n  -webkit-appearance: none;\n}\n\n[part=\"chevron\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  transform: translate(-2rem, 0);\n}";
+    var style$1 = "[part=\"wrapper\"] {\n  display: grid;\n  grid-template-rows: auto;\n  grid-template-columns: 100% 0;\n}\n\n[part=\"select\"] {\n  grid-row: 1;\n  grid-column: 1;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  padding: 0.5rem 0.75rem;\n  width: 100%;\n  font-size: 1rem;\n  outline: 0;\n  -webkit-appearance: none;\n}\n\n[part=\"select\"]:focus {\n  box-shadow: 0 0 0 3px #4F8FF9;\n}\n\n[part=\"chevron\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  transform: translate(-2rem, 0);\n}";
 
-    let MdiNav = class MdiNav extends HTMLElement {
+    let MdiInputSelect = class MdiInputSelect extends HTMLElement {
         constructor() {
             super(...arguments);
             this.options = [];
@@ -183,23 +183,23 @@ var mdiInputSelect = (function () {
     };
     __decorate([
         Prop()
-    ], MdiNav.prototype, "options", void 0);
+    ], MdiInputSelect.prototype, "options", void 0);
     __decorate([
         Prop()
-    ], MdiNav.prototype, "value", void 0);
+    ], MdiInputSelect.prototype, "value", void 0);
     __decorate([
         Part()
-    ], MdiNav.prototype, "$select", void 0);
-    MdiNav = __decorate([
+    ], MdiInputSelect.prototype, "$select", void 0);
+    MdiInputSelect = __decorate([
         Component({
             selector: 'mdi-input-select',
             style: style$1,
             template: template$1
         })
-    ], MdiNav);
-    var MdiNav$1 = MdiNav;
+    ], MdiInputSelect);
+    var MdiInputSelect$1 = MdiInputSelect;
 
-    return MdiNav$1;
+    return MdiInputSelect$1;
 
 }());
 //# sourceMappingURL=mdiInputSelect.js.map

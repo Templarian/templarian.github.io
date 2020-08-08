@@ -157,7 +157,7 @@ var mdiInputRange = (function () {
 
     var style$1 = "";
 
-    let MdiNav = class MdiNav extends HTMLElement {
+    let MdiInputRange = class MdiInputRange extends HTMLElement {
         constructor() {
             super(...arguments);
             this.min = '0';
@@ -172,26 +172,26 @@ var mdiInputRange = (function () {
     };
     __decorate([
         Prop()
-    ], MdiNav.prototype, "min", void 0);
+    ], MdiInputRange.prototype, "min", void 0);
     __decorate([
         Prop()
-    ], MdiNav.prototype, "max", void 0);
+    ], MdiInputRange.prototype, "max", void 0);
     __decorate([
         Prop()
-    ], MdiNav.prototype, "step", void 0);
+    ], MdiInputRange.prototype, "step", void 0);
     __decorate([
         Part()
-    ], MdiNav.prototype, "$input", void 0);
-    MdiNav = __decorate([
+    ], MdiInputRange.prototype, "$input", void 0);
+    MdiInputRange = __decorate([
         Component({
             selector: 'mdi-input-range',
             style: style$1,
             template: template$1
         })
-    ], MdiNav);
-    var MdiNav$1 = MdiNav;
+    ], MdiInputRange);
+    var MdiInputRange$1 = MdiInputRange;
 
-    return MdiNav$1;
+    return MdiInputRange$1;
 
 }());
 //# sourceMappingURL=mdiInputRange.js.map
