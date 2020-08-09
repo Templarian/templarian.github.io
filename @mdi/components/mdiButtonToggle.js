@@ -1,4 +1,4 @@
-var mdiButton = (function () {
+var mdiButtonToggle = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -216,9 +216,58 @@ var mdiButton = (function () {
             template: template$1
         })
     ], MdiButton);
-    var MdiButton$1 = MdiButton;
 
-    return MdiButton$1;
+    var template$2 = "<mdi-button part=\"button\">\n  <slot part=\"expand\" name=\"active\"></slot>\n  <slot part=\"collapse\" name=\"inactive\"></slot>\n</mdi-button>";
+
+    var style$2 = ":host {\n  display: inline-flex;\n}\n\n::slotted(*) {\n  align-self: center;\n  display: flex;\n}";
+
+    const t = [true, 'true', ''];
+    let MdiButtonToggle = class MdiButtonToggle extends HTMLElement {
+        constructor() {
+            super(...arguments);
+            this.active = false;
+        }
+        connectedCallback() {
+            this.$button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.active = !t.includes(this.active);
+                this.dispatchEvent(new CustomEvent('click', {
+                    detail: {
+                        active: this.active
+                    }
+                }));
+            });
+        }
+        render(changes) {
+            if (changes.active) {
+                this.$button.active = t.includes(this.active);
+                this.$expand.style.display = this.$button.active ? 'initial' : 'none';
+                this.$collapse.style.display = this.$button.active ? 'none' : 'initial';
+            }
+        }
+    };
+    __decorate([
+        Prop()
+    ], MdiButtonToggle.prototype, "active", void 0);
+    __decorate([
+        Part()
+    ], MdiButtonToggle.prototype, "$button", void 0);
+    __decorate([
+        Part()
+    ], MdiButtonToggle.prototype, "$expand", void 0);
+    __decorate([
+        Part()
+    ], MdiButtonToggle.prototype, "$collapse", void 0);
+    MdiButtonToggle = __decorate([
+        Component({
+            selector: 'mdi-button-toggle',
+            style: style$2,
+            template: template$2
+        })
+    ], MdiButtonToggle);
+    var MdiButtonToggle$1 = MdiButtonToggle;
+
+    return MdiButtonToggle$1;
 
 }());
-//# sourceMappingURL=mdiButton.js.map
+//# sourceMappingURL=mdiButtonToggle.js.map
