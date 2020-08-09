@@ -125,6 +125,10 @@ var mdiButtonGroup = (function () {
     var style$1 = ":host {\n  display: inline-flex;\n  flex-direction: row;\n}";
 
     const MDI_BUTTON = 'MDI-BUTTON';
+    const MDI_BUTTON_LINK = 'MDI-BUTTON-LINK';
+    function isButton(ele) {
+        return ele.tagName === MDI_BUTTON || ele.tagName === MDI_BUTTON_LINK;
+    }
     let MdiButtonGroup = class MdiButtonGroup extends HTMLElement {
         connectedCallback() {
             this.$slot.addEventListener('slotchange', this.handleSlotChange.bind(this));
@@ -133,16 +137,16 @@ var mdiButtonGroup = (function () {
             const elements = this.$slot.assignedElements();
             if (elements.length !== 0) {
                 const first = elements[0];
-                if (first.tagName === MDI_BUTTON) {
+                if (isButton(first)) {
                     first.start = true;
                 }
                 const last = elements[elements.length - 1];
-                if (last.tagName === MDI_BUTTON) {
+                if (isButton(last)) {
                     last.end = true;
                 }
                 for (let i = 0; i < elements.length; i++) {
                     const element = elements[i];
-                    if (element.tagName === MDI_BUTTON) {
+                    if (isButton(element)) {
                         element.center = !element.start && !element.end;
                     }
                 }

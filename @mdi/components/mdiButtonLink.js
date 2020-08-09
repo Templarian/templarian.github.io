@@ -1,4 +1,4 @@
-var mdiButton = (function () {
+var mdiButtonLink = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -153,13 +153,14 @@ var mdiButton = (function () {
         };
     }
 
-    var template$1 = "<button part=\"button\">\n  <slot></slot>\n</button>";
+    var template$1 = "<a part=\"button\">\n  <slot></slot>\n</a>";
 
-    var style$1 = ":host {\n  display: flex;\n}\n\n[part=\"button\"] {\n  display: inline-flex;\n  align-items: center;\n  align-content: center;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n}\n\n[part=\"button\"] {\n  border: 1px solid var(--mdi-button-border-color, #453C4F);\n  background-color: var(--mdi-button-background-color, #fff);\n  color: var(--mdi-button-color, #453C4F);\n  padding: var(--mdi-button-padding, 0.25rem 0.5rem);\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"button\"]:hover {\n  border: 1px solid var(--mdi-button-hover-border-color, #453C4F);\n  background-color: var(--mdi-button-hover-background-color, #453C4F);\n  color: var(--mdi-hover-button-color, #fff);\n  --mdi-icon-color: var(--mdi-button-hover-color, #fff);\n}\n\n[part=\"button\"]:active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  position: relative;\n}\n\n[part=\"button\"]:focus {\n  position: relative;\n}\n\n[part=\"button\"]:active::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"button\"]:focus::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n\n[part=\"button\"].start {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n  margin-right: -1px;\n}\n\n[part=\"button\"].center {\n  border-radius: 0;\n  margin-right: -1px;\n}\n\n[part=\"button\"].end {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n\n[part=\"button\"].active,\n[part=\"button\"].active:hover {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  background-color: rgba(69, 60, 79, 0.1);\n  color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"button\"].block {\n  flex: 1;\n}\n\n::slotted {\n  align-self: center;\n}";
+    var style$1 = ":host {\n  display: flex;\n}\n\n[part=\"button\"] {\n  display: inline-flex;\n  align-items: center;\n  align-content: center;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n  text-decoration: none;\n}\n\n[part=\"button\"] {\n  border: 1px solid var(--mdi-button-border-color, #453C4F);\n  background-color: var(--mdi-button-background-color, #fff);\n  color: var(--mdi-button-color, #453C4F);\n  padding: var(--mdi-button-padding, 0.25rem 0.5rem);\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"button\"]:hover {\n  border: 1px solid var(--mdi-button-hover-border-color, #453C4F);\n  background-color: var(--mdi-button-hover-background-color, #453C4F);\n  color: var(--mdi-hover-button-color, #fff);\n  --mdi-icon-color: var(--mdi-button-hover-color, #fff);\n}\n\n[part=\"button\"]:active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  position: relative;\n}\n\n[part=\"button\"]:focus {\n  position: relative;\n}\n\n[part=\"button\"]:active::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"button\"]:focus::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n\n[part=\"button\"].start {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n  margin-right: -1px;\n}\n\n[part=\"button\"].center {\n  border-radius: 0;\n  margin-right: -1px;\n}\n\n[part=\"button\"].end {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n\n[part=\"button\"].active,\n[part=\"button\"].active:hover {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  background-color: rgba(69, 60, 79, 0.1);\n  color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"button\"].block {\n  flex: 1;\n}\n\n::slotted(*) {\n  align-self: center;\n}\n";
 
-    let MdiButton = class MdiButton extends HTMLElement {
+    let MdiButtonLink = class MdiButtonLink extends HTMLElement {
         constructor() {
             super(...arguments);
+            this.href = '';
             this.active = false;
             this.block = false;
             this.start = false;
@@ -170,6 +171,9 @@ var mdiButton = (function () {
             this.$button.addEventListener('click', (e) => this.dispatchEvent(new CustomEvent('click')));
         }
         render(changes) {
+            if (changes.href) {
+                this.$button.href = this.href;
+            }
             const t = [true, 'true', ''];
             if (changes.active) {
                 this.$button.classList.toggle('active', t.includes(this.active));
@@ -190,32 +194,35 @@ var mdiButton = (function () {
     };
     __decorate([
         Prop()
-    ], MdiButton.prototype, "active", void 0);
+    ], MdiButtonLink.prototype, "href", void 0);
     __decorate([
         Prop()
-    ], MdiButton.prototype, "block", void 0);
+    ], MdiButtonLink.prototype, "active", void 0);
     __decorate([
         Prop()
-    ], MdiButton.prototype, "start", void 0);
+    ], MdiButtonLink.prototype, "block", void 0);
     __decorate([
         Prop()
-    ], MdiButton.prototype, "center", void 0);
+    ], MdiButtonLink.prototype, "start", void 0);
     __decorate([
         Prop()
-    ], MdiButton.prototype, "end", void 0);
+    ], MdiButtonLink.prototype, "center", void 0);
+    __decorate([
+        Prop()
+    ], MdiButtonLink.prototype, "end", void 0);
     __decorate([
         Part()
-    ], MdiButton.prototype, "$button", void 0);
-    MdiButton = __decorate([
+    ], MdiButtonLink.prototype, "$button", void 0);
+    MdiButtonLink = __decorate([
         Component({
-            selector: 'mdi-button',
+            selector: 'mdi-button-link',
             style: style$1,
             template: template$1
         })
-    ], MdiButton);
-    var MdiButton$1 = MdiButton;
+    ], MdiButtonLink);
+    var MdiButtonLink$1 = MdiButtonLink;
 
-    return MdiButton$1;
+    return MdiButtonLink$1;
 
 }());
-//# sourceMappingURL=mdiButton.js.map
+//# sourceMappingURL=mdiButtonLink.js.map
