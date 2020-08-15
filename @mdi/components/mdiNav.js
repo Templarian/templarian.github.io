@@ -66,10 +66,7 @@ var mdiNav = (function () {
                     }
                 }
                 else if (this[init] && config.style) ;
-                else if (this[init] && config.template) {
-                    throw new Error('template from base class cannot be overriden. Fix: remove template from @Component');
-                }
-                else if (config.template) {
+                else if (this[init] && !config.template) {
                     throw new Error('You need to pass a template for the element');
                 }
                 if (this.componentWillMount) {

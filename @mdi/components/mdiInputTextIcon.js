@@ -1,4 +1,4 @@
-var mdiInputRange = (function () {
+var mdiInputTextIcon = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -150,45 +150,133 @@ var mdiInputRange = (function () {
         };
     }
 
-    var template$1 = "<input part=\"input\" type=\"range\" />";
+    var template$1 = "<div part=\"grid\">\n  <parent/>\n  <mdi-icon part=\"icon\"></mdi-icon>\n</div>";
 
-    var style$1 = "";
+    var style$1 = ":host {\n  display: block;\n}\n\n[part=\"grid\"] {\n  display: grid;\n  grid-template-columns: auto 1.5rem;\n}\n\n[part=\"icon\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n  transform: translate(calc(-0.35rem + 1px), calc(0.25rem + 1px));\n}\n\n[part=\"input\"] {\n  grid-row: 1;\n  grid-column: 1 / span 2;\n}\n\n[part=\"input\"]:focus + [part=\"icon\"] {\n  --mdi-icon-color: #4f8ff9;\n}";
 
-    let MdiInputRange = class MdiInputRange extends HTMLElement {
+    var template$2 = "<input part=\"input\" type=\"text\" />";
+
+    var style$2 = ":host {\n  display: block;\n}\n\n[part=\"input\"] {\n  border: 1px solid var(--mdi-input-text-border-color, #453C4F);\n  border-radius: 0.125rem;\n  padding: calc(0.5rem - 1px) 0.75rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1.5rem - 2px);\n}\n\n[part=\"input\"]:active {\n  box-shadow: 0 0 0 3px var(--mdi-input-text-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"input\"]:focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-text-focus-glow, rgb(79, 143, 249, 0.5));\n}";
+
+    let MdiInputText = class MdiInputText extends HTMLElement {
         constructor() {
             super(...arguments);
-            this.min = '0';
-            this.max = '100';
-            this.step = '1';
+            this.name = '';
+            this.value = '';
+            this.placeholder = '';
+            this.skipValue = false;
         }
-        render() {
-            this.$input.min = this.min;
-            this.$input.max = this.max;
-            this.$input.step = this.step;
+        connectedCallback() {
+            this.$input.addEventListener('input', this.handleInput.bind(this));
+            this.$input.addEventListener('change', this.handleChange.bind(this));
+        }
+        render(changes) {
+            if (changes.value && !this.skipValue) {
+                this.$input.value = this.value;
+            }
+            if (changes.placeholder) {
+                this.$input.placeholder = this.placeholder;
+            }
+            this.skipValue = false;
+        }
+        handleInput(e) {
+            e.stopPropagation();
+            this.skipValue = true;
+            this.value = e.target.value;
+            this.dispatchEvent(new CustomEvent('input', {
+                detail: {
+                    value: e.target.value,
+                    name: e.name
+                }
+            }));
+        }
+        handleChange(e) {
+            this.dispatchEvent(new CustomEvent('change', {
+                detail: {
+                    value: e.target.value,
+                    name: e.name
+                }
+            }));
         }
     };
     __decorate([
         Prop()
-    ], MdiInputRange.prototype, "min", void 0);
+    ], MdiInputText.prototype, "name", void 0);
     __decorate([
         Prop()
-    ], MdiInputRange.prototype, "max", void 0);
+    ], MdiInputText.prototype, "value", void 0);
     __decorate([
         Prop()
-    ], MdiInputRange.prototype, "step", void 0);
+    ], MdiInputText.prototype, "placeholder", void 0);
     __decorate([
         Part()
-    ], MdiInputRange.prototype, "$input", void 0);
-    MdiInputRange = __decorate([
+    ], MdiInputText.prototype, "$input", void 0);
+    MdiInputText = __decorate([
         Component({
-            selector: 'mdi-input-range',
+            selector: 'mdi-input-text',
+            style: style$2,
+            template: template$2
+        })
+    ], MdiInputText);
+    var MdiInputText$1 = MdiInputText;
+
+    var template$3 = "<svg part=\"svg\" viewBox=\"0 0 24 24\">\n  <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n</svg>";
+
+    var style$3 = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #453C4F);\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-width, 1.5rem);\n  height: var(--mdi-icon-height, 1.5rem);\n}";
+
+    const noIcon = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
+    let MdiIcon = class MdiIcon extends HTMLElement {
+        constructor() {
+            super(...arguments);
+            this.path = noIcon;
+        }
+        render(changes) {
+            if (changes.path) {
+                this.$path.setAttribute('d', this.path);
+            }
+        }
+    };
+    __decorate([
+        Prop()
+    ], MdiIcon.prototype, "path", void 0);
+    __decorate([
+        Part()
+    ], MdiIcon.prototype, "$path", void 0);
+    MdiIcon = __decorate([
+        Component({
+            selector: 'mdi-icon',
+            style: style$3,
+            template: template$3
+        })
+    ], MdiIcon);
+
+    let MdiInputTextIcon = class MdiInputTextIcon extends MdiInputText$1 {
+        constructor() {
+            super(...arguments);
+            this.path = 'M3,3V21H21V3';
+        }
+        render(changes) {
+            if (changes.path) {
+                this.$icon.path = this.path;
+            }
+        }
+    };
+    __decorate([
+        Prop()
+    ], MdiInputTextIcon.prototype, "path", void 0);
+    __decorate([
+        Part()
+    ], MdiInputTextIcon.prototype, "$icon", void 0);
+    MdiInputTextIcon = __decorate([
+        Component({
+            selector: 'mdi-input-text-icon',
             style: style$1,
             template: template$1
         })
-    ], MdiInputRange);
-    var MdiInputRange$1 = MdiInputRange;
+    ], MdiInputTextIcon);
+    var MdiInputTextIcon$1 = MdiInputTextIcon;
 
-    return MdiInputRange$1;
+    return MdiInputTextIcon$1;
 
 }());
-//# sourceMappingURL=mdiInputRange.js.map
+//# sourceMappingURL=mdiInputTextIcon.js.map

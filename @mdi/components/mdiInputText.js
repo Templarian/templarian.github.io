@@ -66,10 +66,7 @@ var mdiInputText = (function () {
                     }
                 }
                 else if (this[init] && config.style) ;
-                else if (this[init] && config.template) {
-                    throw new Error('template from base class cannot be overriden. Fix: remove template from @Component');
-                }
-                else if (config.template) {
+                else if (this[init] && !config.template) {
                     throw new Error('You need to pass a template for the element');
                 }
                 if (this.componentWillMount) {
@@ -162,6 +159,7 @@ var mdiInputText = (function () {
             super(...arguments);
             this.name = '';
             this.value = '';
+            this.placeholder = '';
             this.skipValue = false;
         }
         connectedCallback() {
@@ -171,6 +169,9 @@ var mdiInputText = (function () {
         render(changes) {
             if (changes.value && !this.skipValue) {
                 this.$input.value = this.value;
+            }
+            if (changes.placeholder) {
+                this.$input.placeholder = this.placeholder;
             }
             this.skipValue = false;
         }
@@ -200,6 +201,9 @@ var mdiInputText = (function () {
     __decorate([
         Prop()
     ], MdiInputText.prototype, "value", void 0);
+    __decorate([
+        Prop()
+    ], MdiInputText.prototype, "placeholder", void 0);
     __decorate([
         Part()
     ], MdiInputText.prototype, "$input", void 0);
