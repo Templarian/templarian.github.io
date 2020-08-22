@@ -1,4 +1,4 @@
-var mdiPicker = (function () {
+var mdiInputUserSelect = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -149,71 +149,6 @@ var mdiPicker = (function () {
             });
         };
     }
-
-    var template$1 = "<button part=\"button\">\n  <slot></slot>\n</button>";
-
-    var style$1 = ":host {\n  display: flex;\n}\n\n[part=\"button\"] {\n  display: inline-flex;\n  align-items: center;\n  align-content: center;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n}\n\n[part=\"button\"] {\n  border: 1px solid var(--mdi-button-border-color, #453C4F);\n  background-color: var(--mdi-button-background-color, #fff);\n  color: var(--mdi-button-color, #453C4F);\n  padding: var(--mdi-button-padding, 0.25rem 0.5rem);\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"button\"]:hover {\n  border: 1px solid var(--mdi-button-hover-border-color, #453C4F);\n  background-color: var(--mdi-button-hover-background-color, #453C4F);\n  color: var(--mdi-button-hover-color, #fff);\n  --mdi-icon-color: var(--mdi-button-hover-color, #fff);\n}\n\n[part=\"button\"]:active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  position: relative;\n}\n\n[part=\"button\"]:focus {\n  position: relative;\n}\n\n[part=\"button\"]:active::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"button\"]:focus::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n\n[part=\"button\"].start {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n  margin-right: -1px;\n}\n\n[part=\"button\"].center {\n  border-radius: 0;\n  margin-right: -1px;\n}\n\n[part=\"button\"].end {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n\n[part=\"button\"].active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  background-color: rgba(69, 60, 79, 0.1);\n  color: var(--mdi-button-color, #453C4F);\n}\n[part=\"button\"].active:hover {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  background-color: var(--mdi-button-color, #453C4F);\n  color: var(--mdi-button-hover-color, #fff);\n}\n\n[part=\"button\"].block {\n  flex: 1;\n}\n\n::slotted {\n  align-self: center;\n}";
-
-    let MdiButton = class MdiButton extends HTMLElement {
-        constructor() {
-            super(...arguments);
-            this.active = false;
-            this.block = false;
-            this.start = false;
-            this.center = false;
-            this.end = false;
-        }
-        connectedCallback() {
-            this.$button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.dispatchEvent(new CustomEvent('click'));
-            });
-        }
-        render(changes) {
-            const t = [true, 'true', ''];
-            if (changes.active) {
-                this.$button.classList.toggle('active', t.includes(this.active));
-            }
-            if (changes.start) {
-                this.$button.classList.toggle('start', t.includes(this.start));
-            }
-            if (changes.end) {
-                this.$button.classList.toggle('end', t.includes(this.end));
-            }
-            if (changes.center) {
-                this.$button.classList.toggle('center', t.includes(this.center));
-            }
-            if (changes.block) {
-                this.$button.classList.toggle('block', t.includes(this.block));
-            }
-        }
-    };
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "active", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "block", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "start", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "center", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "end", void 0);
-    __decorate([
-        Part()
-    ], MdiButton.prototype, "$button", void 0);
-    MdiButton = __decorate([
-        Component({
-            selector: 'mdi-button',
-            style: style$1,
-            template: template$1
-        })
-    ], MdiButton);
-    var MdiButton$1 = MdiButton;
 
     function getBoundingClientRect(element) {
       var rect = element.getBoundingClientRect();
@@ -2025,81 +1960,99 @@ var mdiPicker = (function () {
       defaultModifiers: defaultModifiers
     }); // eslint-disable-next-line import/no-unused-modules
 
-    var template$2 = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\" height=\"12rem\"></mdi-grid>\n  </div>\n</div>";
+    var template$1 = "<div part=\"wrapper\">\n  <button part=\"select\">\n    <img part=\"selectedAvatar\" />\n    <span part=\"selectedName\">First Last</span>\n    <svg part=\"githubIcon\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z\" /></svg>\n    <span part=\"selectedGithub\">GitHub</span>\n    <svg part=\"countIcon\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M11,13.5V21.5H3V13.5H11M12,2L17.5,11H6.5L12,2M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13Z\" /></svg>\n    <span part=\"selectedCount\">9999</span>\n  </button>\n  <div part=\"dropdown\"></div>\n  <svg part=\"loading\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" /></svg>\n  <svg part=\"chevron\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z\" /></svg>\n</div>";
 
-    var style$2 = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n  outline: none;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
+    var style$1 = "[part=\"wrapper\"] {\n  display: grid;\n  grid-template-rows: auto;\n  grid-template-columns: 100% 0;\n}\n\n[part=\"select\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1.75rem auto 2.75rem 1fr;\n  grid-template-rows: auto;\n  grid-row: 1;\n  grid-column: 1;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  padding: 0.5rem 0.75rem;\n  width: 100%;\n  font-size: 1rem;\n  outline: 0;\n  text-align: left;\n  background: var(--mdi-input-select-background, #fff);\n}\n\n[part=\"select\"]:focus {\n  box-shadow: 0 0 0 3px rgba(79, 143, 249, 0.5);\n}\n\n[part=\"chevron\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  transform: translate(-2rem, 0);\n}\n\n.githubIcon,\n[part=\"githubIcon\"] {\n  grid-row: 2;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  color: var(--mdi-input-select-border-color, #453C4F);\n}\n\n.avatar,\n[part=\"selectedAvatar\"] {\n  grid-row: 1 / span 2;\n  grid-column: 1;\n  width: 3rem;\n  height: 3rem;\n  border-radius: 50%;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n}\n\n.name,\n[part=\"selectedName\"] {\n  grid-row: 1;\n  grid-column: 2 / span 4;\n  align-self: center;\n}\n\n.github,\n[part=\"selectedGithub\"] {\n  grid-row: 2;\n  grid-column: 3;\n  align-self: center;\n}\n\n.countIcon,\n[part=\"countIcon\"] {\n  grid-row: 2;\n  grid-column: 4;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  margin-left: 1rem;\n  color: var(--mdi-input-select-border-color, #453C4F);\n}\n\n.iconCount,\n[part=\"selectedCount\"] {\n  grid-row: 2;\n  grid-column: 5;\n  align-self: center;\n  font-weight: bold;\n}\n\n[part=\"dropdown\"].open {\n  display: flex;\n}\n\n[part=\"dropdown\"] {\n  display: none;\n  flex-direction: column;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  background: #fff;\n}\n\n[part=\"dropdown\"] button {\n  display: grid;\n  grid-template-columns: 3.5rem 1.75rem auto 2.75rem 1fr;\n  grid-template-rows: auto;\n  border: 0;\n  padding: 0.5rem 0.75rem;\n  text-align: left;\n  background: #fff;\n}\n\n[part=\"dropdown\"] button:hover {\n  color: #fff;\n  background: #1E90FF;\n}\n\n[part=\"dropdown\"] button:hover .githubIcon,\n[part=\"dropdown\"] button:hover .countIcon {\n  color: #fff;\n}\n\n[part=\"dropdown\"] button:first-child {\n  border-radius: 0.25rem 0.25rem 0 0;\n}\n\n[part=\"dropdown\"] button:last-child {\n  border-radius: 0 0 0.25rem 0.25rem;\n}";
 
-    window.process = { env: {} };
-    let MdiPicker = class MdiPicker extends MdiButton$1 {
+    function createIcon(d, className) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', d);
+        path.setAttribute('fill', 'currentColor');
+        svg.appendChild(path);
+        svg.classList.add(className);
+        return svg;
+    }
+    const mdiGithub = 'M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z';
+    const mdiShape = 'M11,13.5V21.5H3V13.5H11M12,2L17.5,11H6.5L12,2M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13Z';
+    let MdiInputSelect = class MdiInputSelect extends HTMLElement {
         constructor() {
             super(...arguments);
-            this.icons = [];
-            this.isVisible = false;
-            this.search = '';
+            this.options = [];
+            this.isOpen = false;
         }
         connectedCallback() {
-            createPopper(this.$button, this.$popover, {
-                placement: 'bottom-start',
-                modifiers: [
-                    {
-                        name: 'offset',
-                        options: {
-                            offset: [-4, 8],
-                        },
-                    },
-                    {
-                        name: 'arrow',
-                        options: {
-                            element: this.$arrow,
-                            padding: 0,
-                        },
-                    },
-                ]
+            createPopper(this.$select, this.$dropdown, {
+                placement: 'bottom-start'
             });
-            this.$popover.style.visibility = 'hidden';
-            this.$button.addEventListener('click', () => {
-                this.$popover.style.visibility = this.isVisible ? 'hidden' : 'visible';
-                this.isVisible = !this.isVisible;
-                if (this.isVisible) {
-                    this.$search.focus();
-                }
-            });
-            this.$search.addEventListener('input', (e) => {
-                this.search = e.target.value;
-                this.render();
-            });
+            this.$select.addEventListener('click', this.handleClick.bind(this));
         }
-        render() {
-            this.$grid.icons = this.icons.filter((icon) => {
-                return icon.name.indexOf(this.search) !== -1;
-            });
+        handleClick() {
+            this.isOpen = !this.isOpen;
+            this.$dropdown.classList.toggle('open', this.isOpen);
+        }
+        render(changes) {
+            if (changes.options) {
+                this.options.forEach(o => {
+                    const button = document.createElement('button');
+                    const img = document.createElement('img');
+                    img.src = `${o.base64}`;
+                    img.classList.add('avatar');
+                    button.appendChild(img);
+                    const spanName = document.createElement('span');
+                    spanName.innerText = `${o.name}`;
+                    spanName.classList.add('name');
+                    button.appendChild(spanName);
+                    const spanGitHub = document.createElement('span');
+                    spanGitHub.innerText = `${o.github}`;
+                    spanGitHub.classList.add('github');
+                    button.appendChild(spanGitHub);
+                    const spanIconCount = document.createElement('span');
+                    spanIconCount.innerText = `${o.iconCount}`;
+                    spanIconCount.classList.add('iconCount');
+                    button.appendChild(spanIconCount);
+                    button.dataset.id = `${o.id}`;
+                    button.appendChild(createIcon(mdiGithub, 'githubIcon'));
+                    button.appendChild(createIcon(mdiShape, 'countIcon'));
+                    this.$dropdown.appendChild(button);
+                });
+                //if (this.$select.value !== this.value) {
+                //  this.$select.value = this.value;
+                //}
+            }
+            if (changes.value) {
+                if (changes.value && this.value) {
+                    this.$selectedAvatar.src = this.value.base64 || '';
+                }
+            }
         }
     };
     __decorate([
         Prop()
-    ], MdiPicker.prototype, "icons", void 0);
+    ], MdiInputSelect.prototype, "options", void 0);
+    __decorate([
+        Prop()
+    ], MdiInputSelect.prototype, "value", void 0);
     __decorate([
         Part()
-    ], MdiPicker.prototype, "$popover", void 0);
+    ], MdiInputSelect.prototype, "$select", void 0);
     __decorate([
         Part()
-    ], MdiPicker.prototype, "$arrow", void 0);
+    ], MdiInputSelect.prototype, "$selectedAvatar", void 0);
     __decorate([
         Part()
-    ], MdiPicker.prototype, "$search", void 0);
-    __decorate([
-        Part()
-    ], MdiPicker.prototype, "$grid", void 0);
-    MdiPicker = __decorate([
+    ], MdiInputSelect.prototype, "$dropdown", void 0);
+    MdiInputSelect = __decorate([
         Component({
-            selector: 'mdi-picker',
-            style: style$2,
-            template: template$2
+            selector: 'mdi-input-user-select',
+            style: style$1,
+            template: template$1
         })
-    ], MdiPicker);
-    var MdiPicker$1 = MdiPicker;
+    ], MdiInputSelect);
+    var MdiInputSelect$1 = MdiInputSelect;
 
-    return MdiPicker$1;
+    return MdiInputSelect$1;
 
 }());
-//# sourceMappingURL=mdiPicker.js.map
+//# sourceMappingURL=mdiInputUserSelect.js.map

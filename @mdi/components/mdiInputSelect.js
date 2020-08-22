@@ -116,7 +116,7 @@ var mdiInputSelect = (function () {
                 constructor.symbols = {};
             }
             var symbols = constructor.symbols;
-            observedAttributes.push(propertyKey);
+            constructor.observedAttributes = observedAttributes.concat([propertyKey]);
             var symbol = Symbol(propertyKey);
             symbols[propertyKey] = symbol;
             Object.defineProperty(target, propertyKey, {
@@ -152,7 +152,7 @@ var mdiInputSelect = (function () {
 
     var template$1 = "<div part=\"wrapper\">\n  <select part=\"select\"></select>\n  <svg part=\"chevron\" viewBox=\"0 0 24 24\"><path d=\"M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z\" /></svg>\n</div>";
 
-    var style$1 = "[part=\"wrapper\"] {\n  display: grid;\n  grid-template-rows: auto;\n  grid-template-columns: 100% 0;\n}\n\n[part=\"select\"] {\n  grid-row: 1;\n  grid-column: 1;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  padding: 0.5rem 0.75rem;\n  width: 100%;\n  font-size: 1rem;\n  outline: 0;\n  -webkit-appearance: none;\n}\n\n[part=\"select\"]:focus {\n  box-shadow: 0 0 0 3px #4F8FF9;\n}\n\n[part=\"chevron\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  transform: translate(-2rem, 0);\n}";
+    var style$1 = ":host {\n  display: block;\n  font-family: var(--mdi-font-family);\n}\n\n[part=\"wrapper\"] {\n  display: grid;\n  grid-template-rows: auto;\n  grid-template-columns: 100% 0;\n}\n\n[part=\"select\"] {\n  grid-row: 1;\n  grid-column: 1;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  padding: 0.5rem 0.75rem;\n  width: 100%;\n  font-size: 1rem;\n  outline: 0;\n  -webkit-appearance: none;\n}\n\n[part=\"select\"]:focus {\n  box-shadow: 0 0 0 3px rgba(79, 143, 249, 0.5);\n}\n\n[part=\"chevron\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  transform: translate(-2rem, 0);\n}";
 
     let MdiInputSelect = class MdiInputSelect extends HTMLElement {
         constructor() {

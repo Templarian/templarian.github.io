@@ -116,7 +116,7 @@ var mdiPreview = (function () {
                 constructor.symbols = {};
             }
             var symbols = constructor.symbols;
-            observedAttributes.push(propertyKey);
+            constructor.observedAttributes = observedAttributes.concat([propertyKey]);
             var symbol = Symbol(propertyKey);
             symbols[propertyKey] = symbol;
             Object.defineProperty(target, propertyKey, {
