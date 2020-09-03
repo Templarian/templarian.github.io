@@ -35,6 +35,9 @@ var mdiButtonGroup = (function () {
             return "" + base + (append || '');
         }
     }
+    function dashToCamel(str) {
+        return str.replace(/-([a-z])/g, function (m) { return m[1].toUpperCase(); });
+    }
     function Component(config) {
         return function (cls) {
             if (cls.prototype[parent]) {
@@ -75,7 +78,11 @@ var mdiButtonGroup = (function () {
                 this[parent].map(function (p) {
                     if (p.render) {
                         p.render.call(_this, cls.observedAttributes
-                            ? cls.observedAttributes.reduce(function (a, c) { a[c] = true; return a; }, {})
+                            ? cls.observedAttributes.reduce(function (a, c) {
+                                var n = dashToCamel(c);
+                                a[n] = true;
+                                return a;
+                            }, {})
                             : {});
                     }
                 });
@@ -95,10 +102,8 @@ var mdiButtonGroup = (function () {
                 }
             };
             cls.prototype.attributeChangedCallback = function (name, oldValue, newValue) {
-                this[name] = newValue;
-                // if (this.attributeChangedCallback) {
-                // this.attributeChangedCallback(name, oldValue, newValue);
-                // }
+                var normalizedName = dashToCamel(name);
+                this[normalizedName] = newValue;
             };
             if (!window.customElements.get(config.selector)) {
                 window.customElements.define(config.selector, cls);

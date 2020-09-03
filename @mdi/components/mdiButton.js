@@ -35,6 +35,12 @@ var mdiButton = (function () {
             return "" + base + (append || '');
         }
     }
+    function camelToDash(str) {
+        return str.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
+    }
+    function dashToCamel(str) {
+        return str.replace(/-([a-z])/g, function (m) { return m[1].toUpperCase(); });
+    }
     function Component(config) {
         return function (cls) {
             if (cls.prototype[parent]) {
@@ -75,7 +81,11 @@ var mdiButton = (function () {
                 this[parent].map(function (p) {
                     if (p.render) {
                         p.render.call(_this, cls.observedAttributes
-                            ? cls.observedAttributes.reduce(function (a, c) { a[c] = true; return a; }, {})
+                            ? cls.observedAttributes.reduce(function (a, c) {
+                                var n = dashToCamel(c);
+                                a[n] = true;
+                                return a;
+                            }, {})
                             : {});
                     }
                 });
@@ -95,10 +105,8 @@ var mdiButton = (function () {
                 }
             };
             cls.prototype.attributeChangedCallback = function (name, oldValue, newValue) {
-                this[name] = newValue;
-                // if (this.attributeChangedCallback) {
-                // this.attributeChangedCallback(name, oldValue, newValue);
-                // }
+                var normalizedName = dashToCamel(name);
+                this[normalizedName] = newValue;
             };
             if (!window.customElements.get(config.selector)) {
                 window.customElements.define(config.selector, cls);
@@ -116,7 +124,8 @@ var mdiButton = (function () {
                 constructor.symbols = {};
             }
             var symbols = constructor.symbols;
-            constructor.observedAttributes = observedAttributes.concat([propertyKey]);
+            var normalizedPropertyKey = camelToDash(propertyKey);
+            constructor.observedAttributes = observedAttributes.concat([normalizedPropertyKey]);
             var symbol = Symbol(propertyKey);
             symbols[propertyKey] = symbol;
             Object.defineProperty(target, propertyKey, {
