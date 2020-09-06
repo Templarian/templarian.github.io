@@ -1,4 +1,4 @@
-var mdiButtonToggle = (function () {
+var mdiInputFileLocal = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -159,121 +159,84 @@ var mdiButtonToggle = (function () {
         };
     }
 
-    var template$1 = "<button part=\"button\">\n  <slot></slot>\n</button>";
+    var template$1 = "<label part=\"label\">\n  <input type=\"file\" part=\"file\" />\n  <svg part=\"icon\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z\" /></svg>\n  <span part=\"text\">Upload a File...</span>\n</label>";
 
-    var style$1 = ":host {\n  display: flex;\n}\n\n[part=\"button\"] {\n  display: inline-flex;\n  align-items: center;\n  align-content: center;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n  border: 1px solid var(--mdi-button-border-color, #453C4F);\n  background-color: var(--mdi-button-background-color, #fff);\n  color: var(--mdi-button-color, #453C4F);\n  padding: var(--mdi-button-padding, 0.25rem 0.5rem);\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"button\"]:hover {\n  border: 1px solid var(--mdi-button-hover-border-color, #453C4F);\n  background-color: var(--mdi-button-hover-background-color, #453C4F);\n  color: var(--mdi-button-hover-color, #fff);\n  --mdi-icon-color: var(--mdi-button-hover-color, #fff);\n}\n\n[part=\"button\"]:active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  position: relative;\n}\n\n[part=\"button\"]:focus {\n  position: relative;\n}\n\n[part=\"button\"]:active::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"button\"]:focus::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n\n[part=\"button\"].start {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n  margin-right: -1px;\n}\n\n[part=\"button\"].center {\n  border-radius: 0;\n  margin-right: -1px;\n}\n\n[part=\"button\"].end {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n\n[part=\"button\"].active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  background-color: rgba(69, 60, 79, 0.1);\n  color: var(--mdi-button-color, #453C4F);\n}\n[part=\"button\"].active:hover {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  background-color: var(--mdi-button-color, #453C4F);\n  color: var(--mdi-button-hover-color, #fff);\n}\n\n[part=\"button\"].block {\n  flex: 1;\n}\n\n::slotted {\n  align-self: center;\n}";
+    var style$1 = ":host {\n  display: block;\n}\n\n[part=\"label\"] {\n  display: grid;\n  grid-template-columns: 1.5rem auto;\n  grid-template-rows: auto;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n  border: 1px solid var(--mdi-button-border-color, #453C4F);\n  background-color: var(--mdi-button-background-color, #fff);\n  color: var(--mdi-button-color, #453C4F);\n  padding: var(--mdi-button-padding, 0.25rem 0.5rem);\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"label\"]:hover {\n  border: 1px solid var(--mdi-button-hover-border-color, #453C4F);\n  background-color: var(--mdi-button-hover-background-color, #453C4F);\n  color: var(--mdi-button-hover-color, #fff);\n  --mdi-icon-color: var(--mdi-button-hover-color, #fff);\n}\n\n[part=\"label\"]:active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  position: relative;\n}\n\n[part=\"label\"]:focus {\n  position: relative;\n}\n\n[part=\"label\"]:active::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.6));\n}\n\n[part=\"label\"]:focus::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n\n[part=\"file\"] {\n  width: 100%;\n  border: 0;\n  outline: 0;\n  height: 1.5rem;\n  grid-row: 1;\n  grid-column: 1 / span 2;\n  visibility: hidden;\n}\n\n[part=\"icon\"] {\n  grid-row: 1;\n  grid-column: 1;\n  transform: translate(-0.25rem, 0.075rem);\n  pointer-events: none;\n}\n\n[part=\"text\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n}";
 
-    let MdiButton = class MdiButton extends HTMLElement {
+    let MdiInputFileLocal = class MdiInputFileLocal extends HTMLElement {
         constructor() {
             super(...arguments);
-            this.active = false;
-            this.block = false;
-            this.start = false;
-            this.center = false;
-            this.end = false;
+            this.acceptsFileType = '';
         }
         connectedCallback() {
-            this.$button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.dispatchEvent(new CustomEvent('click'));
+            this.$file.addEventListener('change', () => {
+                if (this.$file.files === null || this.$file.files.length === 0) {
+                    alert('Error : No file selected');
+                    return;
+                }
+                // first file selected by user
+                var file = this.$file.files[0];
+                // perform validation on file type & size if required
+                if (this.acceptsFileType) {
+                    var types = this.acceptsFileType.split(',').join('|');
+                    var regex = new RegExp(`(${types})$`, 'i');
+                    if (file.name.match(regex) === null) {
+                        alert(`${this.acceptsFileType} file only`);
+                        return;
+                    }
+                }
+                // read the file
+                var reader = new FileReader();
+                // file reading started
+                reader.addEventListener('loadstart', function () {
+                    console.log('File reading started');
+                });
+                // file reading finished successfully
+                reader.addEventListener('load', (e) => {
+                    // contents of file in variable
+                    var text = e.target.result;
+                    console.log(text);
+                    this.dispatchEvent(new CustomEvent('change', {
+                        detail: {
+                            value: text,
+                            name: file.name
+                        }
+                    }));
+                });
+                // file reading failed
+                reader.addEventListener('error', function () {
+                    alert('Error : Failed to read file');
+                });
+                // file read progress
+                reader.addEventListener('progress', function (e) {
+                    if (e.lengthComputable == true) {
+                        var percent_read = Math.floor((e.loaded / e.total) * 100);
+                        console.log(percent_read + '% read');
+                    }
+                });
+                // read as text file
+                reader.readAsText(file);
             });
         }
         render(changes) {
-            const t = [true, 'true', ''];
-            if (changes.active) {
-                this.$button.classList.toggle('active', t.includes(this.active));
-            }
-            if (changes.start) {
-                this.$button.classList.toggle('start', t.includes(this.start));
-            }
-            if (changes.end) {
-                this.$button.classList.toggle('end', t.includes(this.end));
-            }
-            if (changes.center) {
-                this.$button.classList.toggle('center', t.includes(this.center));
-            }
-            if (changes.block) {
-                this.$button.classList.toggle('block', t.includes(this.block));
-            }
         }
     };
     __decorate([
         Prop()
-    ], MdiButton.prototype, "active", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "block", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "start", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "center", void 0);
-    __decorate([
-        Prop()
-    ], MdiButton.prototype, "end", void 0);
+    ], MdiInputFileLocal.prototype, "acceptsFileType", void 0);
     __decorate([
         Part()
-    ], MdiButton.prototype, "$button", void 0);
-    MdiButton = __decorate([
+    ], MdiInputFileLocal.prototype, "$file", void 0);
+    MdiInputFileLocal = __decorate([
         Component({
-            selector: 'mdi-button',
+            selector: 'mdi-input-file-local',
             style: style$1,
             template: template$1
         })
-    ], MdiButton);
+    ], MdiInputFileLocal);
+    var MdiInputFileLocal$1 = MdiInputFileLocal;
 
-    var template$2 = "<mdi-button part=\"button\">\n  <slot part=\"expand\" name=\"active\"></slot>\n  <slot part=\"collapse\" name=\"inactive\"></slot>\n</mdi-button>";
-
-    var style$2 = ":host {\n  display: inline-flex;\n}\n\n::slotted(*) {\n  align-self: center;\n  display: flex;\n}";
-
-    const t = [true, 'true', ''];
-    let MdiButtonToggle = class MdiButtonToggle extends HTMLElement {
-        constructor() {
-            super(...arguments);
-            this.active = false;
-        }
-        connectedCallback() {
-            this.$button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.active = !t.includes(this.active);
-                this.dispatchEvent(new CustomEvent('click', {
-                    detail: {
-                        active: this.active
-                    }
-                }));
-            });
-        }
-        render(changes) {
-            if (changes.active) {
-                this.$button.active = t.includes(this.active);
-                this.$expand.style.display = this.$button.active ? 'initial' : 'none';
-                this.$collapse.style.display = this.$button.active ? 'none' : 'initial';
-            }
-        }
-    };
-    __decorate([
-        Prop()
-    ], MdiButtonToggle.prototype, "active", void 0);
-    __decorate([
-        Part()
-    ], MdiButtonToggle.prototype, "$button", void 0);
-    __decorate([
-        Part()
-    ], MdiButtonToggle.prototype, "$expand", void 0);
-    __decorate([
-        Part()
-    ], MdiButtonToggle.prototype, "$collapse", void 0);
-    MdiButtonToggle = __decorate([
-        Component({
-            selector: 'mdi-button-toggle',
-            style: style$2,
-            template: template$2
-        })
-    ], MdiButtonToggle);
-    var MdiButtonToggle$1 = MdiButtonToggle;
-
-    return MdiButtonToggle$1;
+    return MdiInputFileLocal$1;
 
 }());
-//# sourceMappingURL=mdiButtonToggle.js.map
+//# sourceMappingURL=mdiInputFileLocal.js.map
