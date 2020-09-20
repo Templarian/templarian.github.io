@@ -8153,9 +8153,9 @@ MdiGrid = __decorate([
     })
 ], MdiGrid);
 
-var template$b = "<header>\n  <a href=\"/\">\n    <svg viewBox=\"0 0 24 24\">\n      <path part=\"path\" fill=\"currentColor\" d=\"\"></path>\n    </svg>\n    <span part=\"name\"></span>\n  </a>\n  <div>\n    <slot name=\"nav\"></slot>\n    <slot name=\"search\"></slot>\n    <slot name=\"menu\"></slot>\n  </div>\n</header>";
+var template$b = "<header>\n  <a href=\"/\">\n    <slot name=\"logo\">\n      <svg viewBox=\"0 0 24 24\">\n        <path part=\"path\" fill=\"currentColor\" d=\"\"></path>\n      </svg>\n    </slot>\n    <span part=\"name\"></span>\n  </a>\n  <div>\n    <slot name=\"nav\"></slot>\n    <slot name=\"search\"></slot>\n    <slot name=\"menu\"></slot>\n  </div>\n</header>";
 
-var style$b = "header {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  grid-template-rows: 1fr;\n  grid-row: 1;\n  grid-column: 1 / span 2;\n  background: #fff;\n  color: var(--mdi-header-color);\n  height: 3rem;\n}\nheader > a {\n  grid-column: 1;\n  display: inline-flex;\n  color: var(--mdi-header-color);\n  text-decoration: none;\n  align-items: center;\n}\nheader > a > svg {\n  display: inline-flex;\n  width: 1.75rem;\n  height: 1.75rem;\n  margin: 0 0.75rem 0 1rem;\n}\nheader > a > span {\n  display: inline-flex;\n  color: var(--mdi-header-color);\n  font-size: 1.5rem;\n  margin: 0;\n  font-weight: normal;\n  padding-bottom: 1px;\n}\nheader > div {\n  display: flex;\n  grid-column: 2;\n  justify-self: right;\n  margin-right: 1rem;\n}";
+var style$b = ":host {\n  display: block;\n}\nheader {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  grid-template-rows: 1fr;\n  grid-row: 1;\n  grid-column: 1 / span 2;\n  background: var(--mdi-header-background, #fff);\n  color: var(--mdi-header-color, #453C4F);\n  font-family: var(--mdi-font-family);\n  height: 3rem;\n}\nheader > a {\n  grid-column: 1;\n  display: inline-flex;\n  color: var(--mdi-header-color, #453C4F);\n  text-decoration: none;\n  align-items: center;\n}\nheader > a svg,\nheader > a slot::slotted(svg) {\n  display: inline-flex;\n  width: 1.75rem;\n  height: 1.75rem;\n  margin: 0 0.75rem 0 1rem;\n}\nheader > a > span {\n  display: inline-flex;\n  color: var(--mdi-header-color, #453C4F);\n  font-size: 1.5rem;\n  margin: 0;\n  font-weight: normal;\n  padding-bottom: 1px;\n}\nheader > div {\n  display: flex;\n  grid-column: 2;\n  justify-self: right;\n  margin-right: 1rem;\n}";
 
 const noIcon = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
 let MdiHeader = class MdiHeader extends HTMLElement {
@@ -8164,9 +8164,13 @@ let MdiHeader = class MdiHeader extends HTMLElement {
         this.logo = noIcon;
         this.name = 'Default';
     }
-    render() {
-        this.$path.setAttribute('d', this.logo);
-        this.$name.innerText = this.name;
+    render(changes) {
+        if (changes.logo) {
+            this.$path.setAttribute('d', this.logo);
+        }
+        if (changes.name) {
+            this.$name.innerText = this.name;
+        }
     }
 };
 __decorate([
@@ -22307,6 +22311,351 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
 	Prism.languages.shell = Prism.languages.bash;
 })(Prism);
 
+(function (Prism) {
+
+	// Allow only one line break
+	var inner = /(?:\\.|[^\\\n\r]|(?:\n|\r\n?)(?!\n|\r\n?))/.source;
+
+	/**
+	 * This function is intended for the creation of the bold or italic pattern.
+	 *
+	 * This also adds a lookbehind group to the given pattern to ensure that the pattern is not backslash-escaped.
+	 *
+	 * _Note:_ Keep in mind that this adds a capturing group.
+	 *
+	 * @param {string} pattern
+	 * @param {boolean} starAlternative Whether to also add an alternative where all `_`s are replaced with `*`s.
+	 * @returns {RegExp}
+	 */
+	function createInline(pattern, starAlternative) {
+		pattern = pattern.replace(/<inner>/g, function () { return inner; });
+		if (starAlternative) {
+			pattern = pattern + '|' + pattern.replace(/_/g, '\\*');
+		}
+		return RegExp(/((?:^|[^\\])(?:\\{2})*)/.source + '(?:' + pattern + ')');
+	}
+
+
+	var tableCell = /(?:\\.|``.+?``|`[^`\r\n]+`|[^\\|\r\n`])+/.source;
+	var tableRow = /\|?__(?:\|__)+\|?(?:(?:\n|\r\n?)|$)/.source.replace(/__/g, function () { return tableCell; });
+	var tableLine = /\|?[ \t]*:?-{3,}:?[ \t]*(?:\|[ \t]*:?-{3,}:?[ \t]*)+\|?(?:\n|\r\n?)/.source;
+
+
+	Prism.languages.markdown = Prism.languages.extend('markup', {});
+	Prism.languages.insertBefore('markdown', 'prolog', {
+		'blockquote': {
+			// > ...
+			pattern: /^>(?:[\t ]*>)*/m,
+			alias: 'punctuation'
+		},
+		'table': {
+			pattern: RegExp('^' + tableRow + tableLine + '(?:' + tableRow + ')*', 'm'),
+			inside: {
+				'table-data-rows': {
+					pattern: RegExp('^(' + tableRow + tableLine + ')(?:' + tableRow + ')*$'),
+					lookbehind: true,
+					inside: {
+						'table-data': {
+							pattern: RegExp(tableCell),
+							inside: Prism.languages.markdown
+						},
+						'punctuation': /\|/
+					}
+				},
+				'table-line': {
+					pattern: RegExp('^(' + tableRow + ')' + tableLine + '$'),
+					lookbehind: true,
+					inside: {
+						'punctuation': /\||:?-{3,}:?/
+					}
+				},
+				'table-header-row': {
+					pattern: RegExp('^' + tableRow + '$'),
+					inside: {
+						'table-header': {
+							pattern: RegExp(tableCell),
+							alias: 'important',
+							inside: Prism.languages.markdown
+						},
+						'punctuation': /\|/
+					}
+				}
+			}
+		},
+		'code': [
+			{
+				// Prefixed by 4 spaces or 1 tab and preceded by an empty line
+				pattern: /((?:^|\n)[ \t]*\n|(?:^|\r\n?)[ \t]*\r\n?)(?: {4}|\t).+(?:(?:\n|\r\n?)(?: {4}|\t).+)*/,
+				lookbehind: true,
+				alias: 'keyword'
+			},
+			{
+				// `code`
+				// ``code``
+				pattern: /``.+?``|`[^`\r\n]+`/,
+				alias: 'keyword'
+			},
+			{
+				// ```optional language
+				// code block
+				// ```
+				pattern: /^```[\s\S]*?^```$/m,
+				greedy: true,
+				inside: {
+					'code-block': {
+						pattern: /^(```.*(?:\n|\r\n?))[\s\S]+?(?=(?:\n|\r\n?)^```$)/m,
+						lookbehind: true
+					},
+					'code-language': {
+						pattern: /^(```).+/,
+						lookbehind: true
+					},
+					'punctuation': /```/
+				}
+			}
+		],
+		'title': [
+			{
+				// title 1
+				// =======
+
+				// title 2
+				// -------
+				pattern: /\S.*(?:\n|\r\n?)(?:==+|--+)(?=[ \t]*$)/m,
+				alias: 'important',
+				inside: {
+					punctuation: /==+$|--+$/
+				}
+			},
+			{
+				// # title 1
+				// ###### title 6
+				pattern: /(^\s*)#+.+/m,
+				lookbehind: true,
+				alias: 'important',
+				inside: {
+					punctuation: /^#+|#+$/
+				}
+			}
+		],
+		'hr': {
+			// ***
+			// ---
+			// * * *
+			// -----------
+			pattern: /(^\s*)([*-])(?:[\t ]*\2){2,}(?=\s*$)/m,
+			lookbehind: true,
+			alias: 'punctuation'
+		},
+		'list': {
+			// * item
+			// + item
+			// - item
+			// 1. item
+			pattern: /(^\s*)(?:[*+-]|\d+\.)(?=[\t ].)/m,
+			lookbehind: true,
+			alias: 'punctuation'
+		},
+		'url-reference': {
+			// [id]: http://example.com "Optional title"
+			// [id]: http://example.com 'Optional title'
+			// [id]: http://example.com (Optional title)
+			// [id]: <http://example.com> "Optional title"
+			pattern: /!?\[[^\]]+\]:[\t ]+(?:\S+|<(?:\\.|[^>\\])+>)(?:[\t ]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?/,
+			inside: {
+				'variable': {
+					pattern: /^(!?\[)[^\]]+/,
+					lookbehind: true
+				},
+				'string': /(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\))$/,
+				'punctuation': /^[\[\]!:]|[<>]/
+			},
+			alias: 'url'
+		},
+		'bold': {
+			// **strong**
+			// __strong__
+
+			// allow one nested instance of italic text using the same delimiter
+			pattern: createInline(/__(?:(?!_)<inner>|_(?:(?!_)<inner>)+_)+__/.source, true),
+			lookbehind: true,
+			greedy: true,
+			inside: {
+				'content': {
+					pattern: /(^..)[\s\S]+(?=..$)/,
+					lookbehind: true,
+					inside: {} // see below
+				},
+				'punctuation': /\*\*|__/
+			}
+		},
+		'italic': {
+			// *em*
+			// _em_
+
+			// allow one nested instance of bold text using the same delimiter
+			pattern: createInline(/_(?:(?!_)<inner>|__(?:(?!_)<inner>)+__)+_/.source, true),
+			lookbehind: true,
+			greedy: true,
+			inside: {
+				'content': {
+					pattern: /(^.)[\s\S]+(?=.$)/,
+					lookbehind: true,
+					inside: {} // see below
+				},
+				'punctuation': /[*_]/
+			}
+		},
+		'strike': {
+			// ~~strike through~~
+			// ~strike~
+			pattern: createInline(/(~~?)(?:(?!~)<inner>)+?\2/.source, false),
+			lookbehind: true,
+			greedy: true,
+			inside: {
+				'content': {
+					pattern: /(^~~?)[\s\S]+(?=\1$)/,
+					lookbehind: true,
+					inside: {} // see below
+				},
+				'punctuation': /~~?/
+			}
+		},
+		'url': {
+			// [example](http://example.com "Optional title")
+			// [example][id]
+			// [example] [id]
+			pattern: createInline(/!?\[(?:(?!\])<inner>)+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)| ?\[(?:(?!\])<inner>)+\])/.source, false),
+			lookbehind: true,
+			greedy: true,
+			inside: {
+				'variable': {
+					pattern: /(\[)[^\]]+(?=\]$)/,
+					lookbehind: true
+				},
+				'content': {
+					pattern: /(^!?\[)[^\]]+(?=\])/,
+					lookbehind: true,
+					inside: {} // see below
+				},
+				'string': {
+					pattern: /"(?:\\.|[^"\\])*"(?=\)$)/
+				}
+			}
+		}
+	});
+
+	['url', 'bold', 'italic', 'strike'].forEach(function (token) {
+		['url', 'bold', 'italic', 'strike'].forEach(function (inside) {
+			if (token !== inside) {
+				Prism.languages.markdown[token].inside.content.inside[inside] = Prism.languages.markdown[inside];
+			}
+		});
+	});
+
+	Prism.hooks.add('after-tokenize', function (env) {
+		if (env.language !== 'markdown' && env.language !== 'md') {
+			return;
+		}
+
+		function walkTokens(tokens) {
+			if (!tokens || typeof tokens === 'string') {
+				return;
+			}
+
+			for (var i = 0, l = tokens.length; i < l; i++) {
+				var token = tokens[i];
+
+				if (token.type !== 'code') {
+					walkTokens(token.content);
+					continue;
+				}
+
+				/*
+				 * Add the correct `language-xxxx` class to this code block. Keep in mind that the `code-language` token
+				 * is optional. But the grammar is defined so that there is only one case we have to handle:
+				 *
+				 * token.content = [
+				 *     <span class="punctuation">```</span>,
+				 *     <span class="code-language">xxxx</span>,
+				 *     '\n', // exactly one new lines (\r or \n or \r\n)
+				 *     <span class="code-block">...</span>,
+				 *     '\n', // exactly one new lines again
+				 *     <span class="punctuation">```</span>
+				 * ];
+				 */
+
+				var codeLang = token.content[1];
+				var codeBlock = token.content[3];
+
+				if (codeLang && codeBlock &&
+					codeLang.type === 'code-language' && codeBlock.type === 'code-block' &&
+					typeof codeLang.content === 'string') {
+
+					// this might be a language that Prism does not support
+
+					// do some replacements to support C++, C#, and F#
+					var lang = codeLang.content.replace(/\b#/g, 'sharp').replace(/\b\+\+/g, 'pp');
+					// only use the first word
+					lang = (/[a-z][\w-]*/i.exec(lang) || [''])[0].toLowerCase();
+					var alias = 'language-' + lang;
+
+					// add alias
+					if (!codeBlock.alias) {
+						codeBlock.alias = [alias];
+					} else if (typeof codeBlock.alias === 'string') {
+						codeBlock.alias = [codeBlock.alias, alias];
+					} else {
+						codeBlock.alias.push(alias);
+					}
+				}
+			}
+		}
+
+		walkTokens(env.tokens);
+	});
+
+	Prism.hooks.add('wrap', function (env) {
+		if (env.type !== 'code-block') {
+			return;
+		}
+
+		var codeLang = '';
+		for (var i = 0, l = env.classes.length; i < l; i++) {
+			var cls = env.classes[i];
+			var match = /language-(.+)/.exec(cls);
+			if (match) {
+				codeLang = match[1];
+				break;
+			}
+		}
+
+		var grammar = Prism.languages[codeLang];
+
+		if (!grammar) {
+			if (codeLang && codeLang !== 'none' && Prism.plugins.autoloader) {
+				var id = 'md-' + new Date().valueOf() + '-' + Math.floor(Math.random() * 1e16);
+				env.attributes['id'] = id;
+
+				Prism.plugins.autoloader.loadLanguages(codeLang, function () {
+					var ele = document.getElementById(id);
+					if (ele) {
+						ele.innerHTML = Prism.highlight(ele.textContent, Prism.languages[codeLang], codeLang);
+					}
+				});
+			}
+		} else {
+			// reverse Prism.util.encode
+			var code = env.content.replace(/&lt;/g, '<').replace(/&amp;/g, '&');
+
+			env.content = Prism.highlight(code, grammar, codeLang);
+		}
+	});
+
+	Prism.languages.md = Prism.languages.markdown;
+
+}(Prism));
+
 var template$k = "<div part=\"content\"></div>";
 
 var style$k = ":host {\n  display: block;\n  color: #453C4F;\n}\n\nh1 {\n  font-size: 2rem;\n  margin-top: 1rem;\n  margin-bottom: 0.75rem;\n}\n\nh2 {\n  font-size: 1.75rem;\n  margin-top: 2rem;\n  margin-bottom: 0.75rem;\n}\n\nh2 + p {\n  margin-top: 0.75rem;\n}\n\nh3 {\n  font-size: 1.5rem;\n  margin-top: 1.5rem;\n  margin-bottom: 0.5rem;\n}\n\nh4 {\n  font-size: 1.25rem;\n  margin-top: 1.5rem;\n  margin-bottom: 0.5rem;\n}\n\nblockquote {\n  border-left: 4px solid #453C4F;\n  padding: 0.25rem 0.5rem;\n  margin: 1rem 0;\n}\n\nblockquote p:first-child {\n  margin-top: 0;\n}\n\nblockquote p:last-child {\n  margin-bottom: 0;\n}\n\nblockquote.note {\n  background: #FFFF88;\n  color: rgba(0, 0, 0, 0.8);\n  border-color: rgba(0, 0, 0, 0.3);\n  border-top: 1px solid rgba(0, 0, 0, 0.2);\n  border-right: 1px solid rgba(0, 0, 0, 0.2);\n  border-bottom: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 0.25rem;\n}\n\nblockquote.warning {\n  background: #fff3cd;\n  color: #856404;\n  border-color: #856404;\n  border-top: 1px solid #ffeeba;\n  border-right: 1px solid #ffeeba;\n  border-bottom: 1px solid #ffeeba;\n  border-radius: 0.25rem;\n}\n\nblockquote.good,\nblockquote.success {\n  background: #d4edda;\n  color: #155724;\n  border-color: #155724;\n  border-top: 1px solid #c3e6cb;\n  border-right: 1px solid #c3e6cb;\n  border-bottom: 1px solid #c3e6cb;\n  border-radius: 0.25rem;\n}\n\nblockquote.bad,\nblockquote.danger,\nblockquote.alert {\n  background: #f8d7da;\n  color: #721c24;\n  border-color: #721c24;\n  border-top: 1px solid #f5c6cb;\n  border-right: 1px solid #f5c6cb;\n  border-bottom: 1px solid #f5c6cb;\n  border-radius: 0.25rem;\n}\n\nblockquote.information,\nblockquote.attention {\n  background: #cfe2ff;\n  color: #073984;\n  border-color: #073984;\n  border-top: 1px solid #bbd6fe;\n  border-right: 1px solid #bbd6fe;\n  border-bottom: 1px solid #bbd6fe;\n  border-radius: 0.25rem;\n}\n\npre {\n  background: #222;\n  padding: 0.75rem;\n  border-radius: 0.25rem;\n  color: #EEE;\n  overflow: auto;\n  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1) inset;\n}\n\ntable {\n  border-radius: 0.25rem;\n  border-spacing: 0;\n  margin: 1rem 0;\n}\ntable tr th {\n  text-align: left;\n  padding: 0.125rem 0.25rem;\n}\ntable tr td {\n  padding: 0.125rem 0.25rem;\n}\ntable tr:nth-child(1) td {\n  border-top: 1px solid #453C4F;\n}\ntable tr:nth-child(1) td:first-child {\n  border-radius: 0.25rem 0 0 0;\n}\ntable tr:nth-child(1) td:last-child {\n  border-radius: 0 0.25rem 0 0;\n}\ntable tr td:first-child {\n  border-left: 1px solid #453C4F;\n}\ntable tr:last-child td {\n  border-bottom: 1px solid #453C4F;\n}\ntable tr td:last-child {\n  border-right: 1px solid #453C4F;\n}\ntable tr:last-child td:first-child {\n  border-radius: 0 0 0 0.25rem;\n}\ntable tr:last-child td:last-child {\n  border-radius: 0 0 0.25rem 0;\n}\ntable tr:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\ntable tr td:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\n\np {\n  font-size: 1.125rem;\n  line-height: 1.75rem;\n  margin: 1rem 0;\n}\n\nimg {\n  border: 0.25rem solid var(--mdi-markdown-img-border-color, #453C4F);\n  border-radius: 0.25rem;\n}\n\na {\n  color: #278eca;\n}\n\n[part=content] > ul,\n.tab-content > ul {\n  list-style: square;\n  padding-left: 2rem;\n  line-height: 1.75rem;\n}\n\n[part=content] > ul > li > ul,\n.tab-content > ul > li > ul {\n  list-style: square;\n  padding-left: 1.25rem;\n  line-height: 1.75rem;\n}\n\ndl dd {\n  margin-left: 2rem;\n}\n\n[part=content] > p code,\n[part=content] > ul code,\n[part=content] > table code,\n.tab-content > p code,\n.tab-content > ul code,\n.tab-content > table code{\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n\n[part=content] > p a > code,\n[part=content] > ul a > code,\n[part=content] > table a > code,\n.tab-content > p a > code,\n.tab-content > ul a > code,\n.tab-content > table a > code {\n  text-decoration: none;\n}\n\n[part=content] > p a:hover > code,\n[part=content] > ul a:hover > code,\n[part=content] > table a:hover > code,\n.tab-content > p a:hover > code,\n.tab-content > ul a:hover > code,\n.tab-content > table a:hover > code {\n  border-color: #278eca;\n}\n\ntable code {\n  transform: translateY(-1px);\n}\n\np > svg.icon,\nblockquote > svg.icon,\np > a.icon > svg.icon,\nblockquote > a.icon > svg.icon,\nth > svg.icon,\nth > a.icon > svg.icon,\ntd > svg.icon,\ntd > a.icon > svg.icon {\n  width: 1.5rem;\n  height: 1.5rem;\n  vertical-align: middle;\n}\n\np > a.button {\n  display: inline-flex;\n  padding: 0.25rem 0.5rem;\n  background: transparent;\n  border-radius: 0.25rem;\n  color: #fff;\n  text-decoration: none;\n  font-size: 1rem;\n  color: var(--mdi-markdown-button-color, #453C4F);\n  border: 1px solid var(--mdi-markdown-button-color, #453C4F);\n}\n\np > a.button:hover {\n  background: var(--mdi-markdown-button-hover-background, #453C4F);\n  color: var(--mdi-markdown-button-hover-color, #fff);\n}\n\np > a.button:active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.4) inset;\n}\n\np > a.button > svg.icon {\n  width: 1.5rem;\n  height: 1.5rem;\n  margin-left: -0.125rem;\n  margin-right: 0.25rem;\n  align-self: center;\n}\n\n/* PrismJS 1.15.0\n/**\n * prism.js Visual Studio Code Theme\n * @author Visual Studio Code\n */\n\ncode[class*=\"language-\"],\npre[class*=\"language-\"] {\n  color: #9CDCFE;\n  background: none;\n  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;\n  text-align: left;\n  white-space: pre;\n  word-spacing: normal;\n  word-break: normal;\n  word-wrap: normal;\n  line-height: 1.5;\n\n  -moz-tab-size: 4;\n  -o-tab-size: 4;\n  tab-size: 4;\n\n  -webkit-hyphens: none;\n  -moz-hyphens: none;\n  -ms-hyphens: none;\n  hyphens: none;\n\n}\n\n/* Code blocks */\npre[class*=\"language-\"] {\n  margin: .5em 0;\n  overflow: auto;\n}\n\n:not(pre) > code[class*=\"language-\"],\npre[class*=\"language-\"] {\n  background: #1E1E1E;\n}\n\n/* Inline code */\n:not(pre) > code[class*=\"language-\"] {\n  padding: .1em;\n  border-radius: .3em;\n  white-space: normal;\n}\n\n.token.comment,\n.token.block-comment,\n.token.prolog,\n.token.doctype,\n.token.cdata {\n  color: #608B4E;\n}\n\n.token.punctuation {\n  color: #ccc;\n}\n\n.token.tag,\n.token.namespace,\n.token.deleted {\n  color: #4EC9B0;\n}\n\n.token.attr-name {\n  color: #9CDCFE;\n}\n\n.token.function-name {\n  color: #6196cc;\n}\n\n.token.boolean {\n  color: #569CD6;\n}\n.token.number {\n  color: #B5CEA8;\n}\n.token.function {\n  color: #DCDCAA;\n}\n\n.token.property,\n.token.constant,\n.token.symbol {\n  color: #f8c555;\n}\n\n.token.class-name {\n  color: #4EC9B0;\n}\n\n.token.selector,\n.token.important,\n.token.atrule,\n.token.keyword,\n.token.builtin {\n  color: #C586C0;\n}\n\n.token.string,\n.token.char,\n.token.attr-value,\n.token.regex,\n.token.variable {\n  color: #CE9169;\n}\n\n.token.operator {\n  color: #D4D4D4;\n}\n.token.entity,\n.token.url {\n  color: #67cdcc;\n}\n\n.token.important,\n.token.bold {\n  font-weight: bold;\n}\n.token.italic {\n  font-style: italic;\n}\n\n.token.entity {\n  cursor: help;\n}\n\n.token.inserted {\n  color: green;\n}\n/* TypeScript */\n.language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword,\n.language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword + .token.class-name + .token.keyword,\n.language-jsx .token.function-variable.function + .token.operator + .token.keyword {\n  color: #569CD6;\n}\n/* JSX */\n.language-jsx .language-javascript {\n  color: #9CDCFE;\n}\n.language-jsx .language-javascript .token.string {\n  color: #CE9169;\n}\n.language-jsx .language-javascript .token.punctuation {\n  color: #3F9CD6;\n}\n.language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation {\n  color: #D4D4D4;\n}\n.language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation {\n  color: #D4D4D4;\n}\n.language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation + .token.punctuation {\n  color: #3F9CD6;\n}\n\n/* Fancy Language Labels */\n\npre {\n  position: relative;\n  font-size: 0.875rem;\n}\n\npre code:not([class]) {\n  font-size: 0.875rem;\n}\n\npre.language-text::before {\n  content: 'Text';\n}\npre.language-html::before {\n  content: 'HTML';\n}\npre.language-typescript::before {\n  content: 'TypeScript';\n}\npre.language-javascript::before {\n  content: 'JavaScript';\n}\npre.language-jsx::before {\n  content: 'JavaScript / JSX';\n}\npre.language-tsx::before {\n  content: 'TypeScript / TSX';\n}\npre.language-xml::before {\n  content: 'XML';\n}\npre.language-css::before {\n  content: 'CSS';\n}\npre.language-scss::before {\n  content: 'SCSS';\n}\npre.language-php::before {\n  content: 'PHP';\n}\npre.language-yaml::before {\n  content: 'YAML';\n}\npre.language-groovy::before {\n  content: 'Groovy';\n}\n\npre.language-text::before,\npre.language-html::before,\npre.language-typescript::before,\npre.language-javascript::before,\npre.language-tsx::before,\npre.language-jsx::before,\npre.language-xml::before,\npre.language-css::before,\npre.language-scss::before,\npre.language-php::before,\npre.language-yaml::before,\npre.language-groovy::before {\n  display: var(--mdi-markdown-language-display, 'block');\n  font-size: 12px;\n  border-radius: 0 0 0 4px;\n  position: absolute;\n  top: 0;\n  right: 0;\n  color: #453C4F;\n  background: #FFF;\n  padding: 2px 4px 2px 6px;\n  pointer-events: none;\n  border-bottom: 1px solid #000;\n  border-left: 1px solid #000;\n}\n\n/* YAML */\ndiv.yaml + pre.language-yaml {\n  margin-top: 0;\n}\n.yaml-preview {\n  position: relative;\n  background: #1e1e1e;\n  color: #fff;\n  padding: 0.75rem 1.25rem;\n  border-radius: 0.25rem;\n  margin-bottom: 1rem;\n}\n.yaml-preview code {\n  border: none;\n  color: #fff;\n  font-size: 1rem;\n  padding: 0;\n}\n.yaml-preview ul {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 0;\n  margin-top: 0;\n}\n.yaml-preview ul li button {\n  position: relative;\n  top: 1px;\n  background: #fff;\n  color: #444;\n  border: none;\n  border-radius: 2px;\n  padding: 0;\n  width: 1rem;\n  line-height: 1rem;\n  font-weight: bold;\n  margin-left: -1rem;\n  margin-right: 0.75rem;\n  cursor: pointer;\n}\n.yaml-preview ul li button:focus {\n  outline: none;\n}\n.yaml-preview ul li button:hover {\n  color: #000;\n  background: #f1f1f1;\n}\n.yaml-preview ul li ul {\n  padding-left: 1rem;\n}\n.yaml-preview ul li ul > li {\n  border-left: 1px solid rgba(255, 255, 255, 0.05);\n  padding-left: 0.5rem;\n}\n.yaml-preview ul > li {\n  border-left: 1px solid transparent;\n  padding-left: 0.5rem;\n}\n.yaml-preview .yaml-end {\n  padding-left: 0.75rem;\n}\n.yaml-preview .yaml-prop {\n  padding-left: 0.75rem;\n}\n.yaml-preview .yaml-type {\n  color: #9cdcfe;\n}\n.yaml-preview .yaml-error {\n  color: #e91e63;\n}\n.yaml-preview .yaml-key {\n  color: #c586c0;\n}\n.yaml-preview .yaml-auth {\n  width: 1rem;\n  height: 1rem;\n  fill: #d7b558;\n  margin-left: -0.5rem;\n  margin-right: -0.1rem;\n  margin-bottom: -0.1rem;\n}\n.yaml-preview .yaml-example {\n  color: #666;\n}\n.yaml-preview::before {\n  content: 'JSON Preview';\n  font-size: 12px;\n  border-radius: 0 4px 0 4px;\n  position: absolute;\n  top: 0;\n  right: 0;\n  color: #453C4F;\n  background: #fff;\n  padding: 2px 4px 2px 6px;\n  pointer-events: none;\n  border-bottom: 1px solid #000;\n  border-left: 1px solid #000;\n}\n.yaml-toolbar button {\n  margin-right: 0.25rem;\n  padding: 0.25rem 0.75rem 0.25rem 0.75rem;\n  background: #eee;\n  border: 1px solid #ddd;\n  color: #444;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: pointer;\n}\n.yaml-toolbar button:focus {\n  outline: none;\n}\n.yaml-toolbar button:hover {\n  border-color: #bbb;\n}\n.yaml-toolbar button.active {\n  margin-right: 0.25rem;\n  padding: 0.25rem 0.75rem 0.25rem 0.75rem;\n  background: #1e1e1e;\n  border: 1px solid #1e1e1e;\n  color: #fff;\n  border-radius: 0.25rem 0.25rem 0 0;\n  position: relative;\n  z-index: 1;\n  cursor: default;\n}\n.yaml-toolbar button.active:focus {\n  outline: none;\n}\n.yaml-show {\n  margin-top: 0;\n  border-top-left-radius: 0 !important;\n}\n.yaml-hide {\n  display: none;\n}\n\n/* Tabs */\n\n.tabs {\n  display: grid;\n  grid-template-rows: calc(2.5rem - 1px) auto;\n  grid-template-columns: calc(100% - 2rem) 2rem;\n  box-sizing: border-box;\n  margin: 1rem 0;\n}\n\n.tabs .tabset {\n  grid-row: 1;\n  display: flex;\n  list-style: none;\n  padding: 0;\n  align-self: flex-start;\n  align-items: flex-start;\n  margin: 0;\n  box-sizing: border-box;\n}\n\n.tabs .tab-label,\n.tabs .tab-title {\n  display: flex;\n}\n\n.tabs .tab-label {\n  padding: 0 0.75rem;\n  font-size: 1.125rem;\n  font-weight: bold;\n  line-height: 2.5rem;\n  border: 1px solid transparent;\n}\n\n.tabs .tab-title {\n  margin-right: 0.25rem;\n  position: relative;\n}\n\n.tabs .tab-title a {\n  display: flex;\n  line-height: calc(2.5rem - 0.5px);\n  border-top: 1px solid transparent;\n  border-right: 1px solid transparent;\n  border-bottom: 0;\n  border-left: 1px solid transparent;\n  border-radius: 0.25rem 0.25rem 0 0;\n  padding: 0 0.75rem;\n  text-decoration: none;\n  color: var(--mdi-markdown-tab-border, #453C4F);\n  align-items: center;\n  align-content: center;\n  box-sizing: border-box;\n}\n\n.tabs .tab-title a svg:nth-child(1) {\n  width: 1.5rem;\n  margin: -0.25rem;\n  align-self: center;\n}\n\n.tabs .tab-title a span:nth-child(2) {\n  margin-left: 0.55rem;\n}\n\n.tabs .tab-title a svg:nth-child(3) {\n  width: 1.5rem;\n  margin: -0.25rem;\n  align-self: center;\n}\n\n.tabs .tab-title:not(.active) a:hover {\n  border-color: rgba(69, 60, 79, 0.5);\n}\n\n.tabs .tab-title.active a {\n  border-color: var(--mdi-markdown-tab-border, #453C4F);\n  font-weight: bold;\n  background: #fff;\n  cursor: default;\n  height: calc(2.5rem + 0.5px);\n}\n\n.tabs .tab-title:not(.active):first-child:hover::before {\n  position: absolute;\n  top: calc(2.5rem - 1px);\n  content: ' ';\n  border-top: 1px solid  var(--mdi-markdown-tab-border, #453C4F);\n  border-left: 1px solid  var(--mdi-markdown-tab-border, #453C4F);\n  height: 0.25rem;\n  width: 0.25rem;\n  background: #fff;\n}\n\n.tabs .tab-title.active:first-child::before {\n  position: absolute;\n  bottom: -0.25rem;\n  content: ' ';\n  border-left: 1px solid  var(--mdi-markdown-tab-border, #453C4F);\n  height: 0.25rem;\n  width: 0.25rem;\n  background: #fff;\n}\n\n.tabs .tab-content {\n  box-sizing: border-box;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  border: 1px solid var(--mdi-markdown-tab-border, #453C4F);\n  border-radius: 0.25rem;\n  padding: 1px 1rem;\n  background: #fff;\n}\n\n.tabs .tab-content > *:nth-child(1) {\n  margin-top: 1rem;\n}\n\n.tabs .tab-content > *:nth-last-child(1) {\n  margin-bottom: 1rem;\n}\n\n.tabs .tab-content.has-label {\n  border-radius: 0.25rem;\n}\n\n.tab-hide {\n  display: none;\n}";
@@ -22326,7 +22675,8 @@ const supported = [
     'php',
     'bash',
     'json',
-    'yaml'
+    'yaml',
+    'markdown'
 ];
 function yamlToggle(e) {
     const button = e.target;
