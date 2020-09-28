@@ -256,6 +256,7 @@ class User {
         this.website = null;
         this.sponsored = false;
         this.sponsorship = '';
+        this.core = false;
     }
     from(user) {
         this.id = user.id;
@@ -275,6 +276,7 @@ class User {
         this.website = user.website;
         this.sponsored = user.sponsored;
         this.sponsorship = `https://github.com/users/${user.github}/sponsorship`;
+        this.core = user.core;
         return this;
     }
 }
@@ -569,6 +571,89 @@ MdiButtonToggle = __decorate([
         template: template$6
     })
 ], MdiButtonToggle);
+
+var template$7 = "<div part=\"body\">\n  <slot></slot>\n</div>";
+
+var style$7 = ":host {\n  display: flex;\n  flex-direction: column;\n}\n\n[part=\"body\"] {\n  padding: var(--mdi-card-padding, 0);\n  border-radius: var(--mdi-card-padding, 0.5rem);\n  background: var(--mdi-card-background, #fff);\n  box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.3);\n}";
+
+let MdiCard = class MdiCard extends HTMLElement {
+};
+MdiCard = __decorate([
+    Component({
+        selector: 'mdi-card',
+        style: style$7,
+        template: template$7
+    })
+], MdiCard);
+
+var template$8 = "<mdi-card>\n  <div part=\"loading\">\n    Loading...\n  </div>\n  <div part=\"user\">\n    <mdi-avatar part=\"avatar\"></mdi-avatar>\n    <div part=\"name\"></div>\n    <div part=\"iconCount\">\n      <div part=\"iconCountValue\"></div>\n      <div part=\"iconCountLabel\">Icons</div>\n    </div>\n    <a part=\"github\">\n      <svg viewBox=\"0 0 24 24\">\n        <path fill=\"currentColor\" d=\"M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z\" />\n      </svg>\n    </a>\n    <a part=\"twitter\">\n      <svg viewBox=\"0 0 24 24\">\n        <path fill=\"currentColor\" d=\"M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z\" />\n      </svg>\n    </a>\n  </div>\n</mdi-card>";
+
+var style$8 = ":host {\n  display: flex;\n  flex-direction: column;\n  font-family: var(--mdi-font-family);\n}\n\n[part=\"user\"] {\n  display: grid;\n  grid-template-rows: 1fr 1fr;\n  grid-template-columns: 4rem 2rem 1.5rem 1fr auto;\n  padding: 0.5rem;\n}\n\n[part=\"avatar\"] {\n  grid-column: 1;\n  grid-row: 1 / span 2;\n  align-self: center;\n}\n\n[part=\"name\"] {\n  grid-column: 2 / span 3;\n  grid-row: 1;\n  white-space: nowrap;\n}\n\n[part=\"iconCount\"] {\n  display: flex;\n  flex-direction: column;\n  text-align: center;\n  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) inset;\n  border-radius: 0.25rem;\n  background: rgba(0, 0, 0, 0.05);\n  grid-column: 5;\n  grid-row: 1 / span 2;\n  padding: 0 0.5rem;\n  align-items: stretch;\n  justify-content: center;\n  color: #444;\n  margin-left: 0.5rem;\n}\n\n[part=\"iconCountValue\"] {\n  font-weight: bold;\n}\n\n[part=\"github\"] svg,\n[part=\"twitter\"] svg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n[part=\"github\"] {\n  grid-row: 2;\n  grid-column: 2;\n  color: #333;\n}\n\n[part=\"twitter\"] {\n  grid-row: 2;\n  grid-column: 3;\n  color: #333;\n}\n\n[part=\"github\"]:hover,\n[part=\"twitter\"]:hover {\n  color: #4f8ff9;\n}";
+
+let MdiIcon = class MdiIcon extends HTMLElement {
+    constructor() {
+        super(...arguments);
+        this.user = null;
+    }
+    connectedCallback() {
+        addTooltip(this.$github, () => {
+            var _a;
+            return `View ${(_a = this.user) === null || _a === void 0 ? void 0 : _a.github} on GitHub`;
+        });
+        addTooltip(this.$twitter, () => {
+            var _a;
+            return `View ${(_a = this.user) === null || _a === void 0 ? void 0 : _a.twitter} on Twitter`;
+        });
+    }
+    render(changes) {
+        if (changes.user && this.user) {
+            this.$avatar.user = this.user;
+            this.$name.innerText = `${this.user.name}`;
+            this.$iconCountValue.innerText = `${this.user.iconCount}`;
+            this.$github.href = `https://github.com/${this.user.github}`;
+            this.$github.style.setProperty('display', this.user.github ? null : 'none');
+            this.$twitter.href = `https://github.com/${this.user.twitter}`;
+            this.$twitter.style.setProperty('display', this.user.twitter ? null : 'none');
+            this.$user.style.setProperty('display', null);
+            this.$loading.style.setProperty('display', 'none');
+        }
+        else {
+            this.$user.style.setProperty('display', 'none');
+            this.$loading.style.setProperty('display', null);
+        }
+    }
+};
+__decorate([
+    Prop()
+], MdiIcon.prototype, "user", void 0);
+__decorate([
+    Part()
+], MdiIcon.prototype, "$loading", void 0);
+__decorate([
+    Part()
+], MdiIcon.prototype, "$user", void 0);
+__decorate([
+    Part()
+], MdiIcon.prototype, "$name", void 0);
+__decorate([
+    Part()
+], MdiIcon.prototype, "$github", void 0);
+__decorate([
+    Part()
+], MdiIcon.prototype, "$twitter", void 0);
+__decorate([
+    Part()
+], MdiIcon.prototype, "$iconCountValue", void 0);
+__decorate([
+    Part()
+], MdiIcon.prototype, "$avatar", void 0);
+MdiIcon = __decorate([
+    Component({
+        selector: 'mdi-card-user',
+        style: style$8,
+        template: template$8
+    })
+], MdiIcon);
 
 const SWATCHES = [{
         name: 'Red',
@@ -937,9 +1022,9 @@ function hexToRgb(hex) {
     } : null;
 }
 
-var template$7 = "<div part=\"grid\"></div>";
+var template$9 = "<div part=\"grid\"></div>";
 
-var style$7 = "button {\n  border: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbutton.active {\n  border: 2px solid #fff;\n  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5);\n  order: 1;\n}\n\nbutton.white.active {\n  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5) inset;\n}\n\n[part~=grid] {\n  display: grid;\n  grid-template-columns: repeat(19, 1rem);\n  grid-template-rows: repeat(14, 1rem);\n}";
+var style$9 = "button {\n  border: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbutton.active {\n  border: 2px solid #fff;\n  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5);\n  order: 1;\n}\n\nbutton.white.active {\n  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5) inset;\n}\n\n[part~=grid] {\n  display: grid;\n  grid-template-columns: repeat(19, 1rem);\n  grid-template-rows: repeat(14, 1rem);\n}";
 
 let MdiColor = class MdiColor extends HTMLElement {
     constructor() {
@@ -1033,14 +1118,14 @@ __decorate([
 MdiColor = __decorate([
     Component({
         selector: 'mdi-color',
-        style: style$7,
-        template: template$7
+        style: style$9,
+        template: template$9
     })
 ], MdiColor);
 
-var template$8 = "";
+var template$a = "";
 
-var style$8 = "";
+var style$a = "";
 
 /*
  * Dexie.js - a minimalistic wrapper for IndexedDB
@@ -5873,8 +5958,8 @@ __decorate([
 MdiDatabase = __decorate([
     Component({
         selector: 'mdi-database',
-        style: style$8,
-        template: template$8
+        style: style$a,
+        template: template$a
     })
 ], MdiDatabase);
 
@@ -7709,9 +7794,9 @@ var createPopper = /*#__PURE__*/popperGenerator({
   defaultModifiers: defaultModifiers
 }); // eslint-disable-next-line import/no-unused-modules
 
-var template$9 = "<slot part=\"main\"></slot>\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <slot name=\"popover\"></slot>\n</div>";
+var template$b = "<slot part=\"main\"></slot>\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <slot name=\"popover\"></slot>\n</div>";
 
-var style$9 = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid var(--mdi-dropdown-border-color);\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid var(--mdi-dropdown-border-color);\n  border-right: 4px solid var(--mdi-dropdown-border-color);\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid var(--mdi-dropdown-border-color);\n  border-left: 4px solid var(--mdi-dropdown-border-color);\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
+var style$b = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid var(--mdi-dropdown-border-color);\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid var(--mdi-dropdown-border-color);\n  border-right: 4px solid var(--mdi-dropdown-border-color);\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid var(--mdi-dropdown-border-color);\n  border-left: 4px solid var(--mdi-dropdown-border-color);\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
 
 window.process = { env: {} };
 let MdiDropdown = class MdiDropdown extends HTMLElement {
@@ -7769,8 +7854,8 @@ __decorate([
 MdiDropdown = __decorate([
     Component({
         selector: 'mdi-dropdown',
-        style: style$9,
-        template: template$9
+        style: style$b,
+        template: template$b
     })
 ], MdiDropdown);
 
@@ -7784,9 +7869,9 @@ const debounce$1 = (func, waitFor) => {
     });
 };
 
-var template$a = "<mdi-scroll part=\"scroll\">\n  <div part=\"grid\"></div>\n</mdi-scroll>";
+var template$c = "<mdi-scroll part=\"scroll\">\n  <div part=\"grid\"></div>\n</mdi-scroll>";
 
-var style$a = "* {\n  font-family: var(--mdi-font-family);\n}\n\n:host {\n  display: block;\n}\n\n[part~=grid] {\n  position: relative;\n}\n\n[part~=grid] > button {\n  border: 0;\n  background: transparent;\n  padding: 0.625rem;\n  outline: none;\n  width: 2.75rem;\n  height: 2.75rem;\n  position: absolute;\n  left: 0;\n  top: 0;\n  border: 0;\n  border-radius: 0.25rem;\n}\n\n[part~=grid] > button.hover {\n  background: rgba(0, 0, 0, 0.1);\n}\n\n[part~=grid] > button:focus,\n[part~=grid] > button:active {\n  background: rgba(0, 0, 0, 0.15);\n  box-shadow: 0 0.0125rem 0.25rem rgba(0, 0, 0, 0.2) inset;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n}\n\n[part~=grid]::-webkit-scrollbar {\n  width: 1em;\n}\n\n[part~=grid]::-webkit-scrollbar-track {\n  box-shadow: inset 0 0 6px rgba(0,0,0,0.2);\n  border-radius: 0.25rem;\n}\n\n[part~=grid]::-webkit-scrollbar-thumb {\n  background-color: #453C4F;\n  outline: 1px solid slategrey;\n  border-radius: 0.25rem;\n}";
+var style$c = "* {\n  font-family: var(--mdi-font-family);\n}\n\n:host {\n  display: block;\n}\n\n[part~=grid] {\n  position: relative;\n}\n\n[part~=grid] > button {\n  border: 0;\n  background: transparent;\n  padding: 0.625rem;\n  outline: none;\n  width: 2.75rem;\n  height: 2.75rem;\n  position: absolute;\n  left: 0;\n  top: 0;\n  border: 0;\n  border-radius: 0.25rem;\n}\n\n[part~=grid] > button.hover {\n  background: rgba(0, 0, 0, 0.1);\n}\n\n[part~=grid] > button:focus,\n[part~=grid] > button:active {\n  background: rgba(0, 0, 0, 0.15);\n  box-shadow: 0 0.0125rem 0.25rem rgba(0, 0, 0, 0.2) inset;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n[part~=grid] > button > svg {\n  fill: #453C4F;\n}\n\n[part~=grid]::-webkit-scrollbar {\n  width: 1em;\n}\n\n[part~=grid]::-webkit-scrollbar-track {\n  box-shadow: inset 0 0 6px rgba(0,0,0,0.2);\n  border-radius: 0.25rem;\n}\n\n[part~=grid]::-webkit-scrollbar-thumb {\n  background-color: #453C4F;\n  outline: 1px solid slategrey;\n  border-radius: 0.25rem;\n}";
 
 let MdiGrid = class MdiGrid extends HTMLElement {
     constructor() {
@@ -8148,14 +8233,14 @@ __decorate([
 MdiGrid = __decorate([
     Component({
         selector: 'mdi-grid',
-        style: style$a,
-        template: template$a
+        style: style$c,
+        template: template$c
     })
 ], MdiGrid);
 
-var template$b = "<header>\n  <a href=\"/\">\n    <slot name=\"logo\">\n      <svg viewBox=\"0 0 24 24\">\n        <path part=\"path\" fill=\"currentColor\" d=\"\"></path>\n      </svg>\n    </slot>\n    <span part=\"name\"></span>\n  </a>\n  <div>\n    <slot name=\"nav\"></slot>\n    <slot name=\"search\"></slot>\n    <slot name=\"menu\"></slot>\n  </div>\n</header>";
+var template$d = "<header>\n  <a href=\"/\">\n    <slot name=\"logo\">\n      <svg viewBox=\"0 0 24 24\">\n        <path part=\"path\" fill=\"currentColor\" d=\"\"></path>\n      </svg>\n    </slot>\n    <span part=\"name\"></span>\n  </a>\n  <div>\n    <slot name=\"nav\"></slot>\n    <slot name=\"search\"></slot>\n    <slot name=\"menu\"></slot>\n  </div>\n</header>";
 
-var style$b = ":host {\n  display: block;\n}\nheader {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  grid-template-rows: 1fr;\n  grid-row: 1;\n  grid-column: 1 / span 2;\n  background: var(--mdi-header-background, #fff);\n  color: var(--mdi-header-color, #453C4F);\n  font-family: var(--mdi-font-family);\n  height: 3rem;\n}\nheader > a {\n  grid-column: 1;\n  display: inline-flex;\n  color: var(--mdi-header-color, #453C4F);\n  text-decoration: none;\n  align-items: center;\n}\nheader > a svg,\nheader > a slot::slotted(svg) {\n  display: inline-flex;\n  width: 1.75rem;\n  height: 1.75rem;\n  margin: 0 0.75rem 0 1rem;\n}\nheader > a > span {\n  display: inline-flex;\n  color: var(--mdi-header-color, #453C4F);\n  font-size: 1.5rem;\n  margin: 0;\n  font-weight: normal;\n  padding-bottom: 1px;\n}\nheader > div {\n  display: flex;\n  grid-column: 2;\n  justify-self: right;\n  margin-right: 1rem;\n}";
+var style$d = ":host {\n  display: block;\n}\nheader {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  grid-template-rows: 1fr;\n  grid-row: 1;\n  grid-column: 1 / span 2;\n  background: var(--mdi-header-background, #fff);\n  color: var(--mdi-header-color, #453C4F);\n  font-family: var(--mdi-font-family);\n  height: 3rem;\n}\nheader > a {\n  grid-column: 1;\n  display: inline-flex;\n  color: var(--mdi-header-color, #453C4F);\n  text-decoration: none;\n  align-items: center;\n}\nheader > a svg,\nheader > a slot::slotted(svg) {\n  display: inline-flex;\n  width: 1.75rem;\n  height: 1.75rem;\n  margin: 0 0.75rem 0 1rem;\n}\nheader > a > span {\n  display: inline-flex;\n  color: var(--mdi-header-color, #453C4F);\n  font-size: 1.5rem;\n  margin: 0;\n  font-weight: normal;\n  padding-bottom: 1px;\n}\nheader > div {\n  display: flex;\n  grid-column: 2;\n  justify-self: right;\n  margin-right: 1rem;\n}";
 
 const noIcon = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
 let MdiHeader = class MdiHeader extends HTMLElement {
@@ -8188,17 +8273,17 @@ __decorate([
 MdiHeader = __decorate([
     Component({
         selector: 'mdi-header',
-        style: style$b,
-        template: template$b
+        style: style$d,
+        template: template$d
     })
 ], MdiHeader);
 
-var template$c = "<svg part=\"svg\" viewBox=\"0 0 24 24\">\n  <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n</svg>";
+var template$e = "<svg part=\"svg\" viewBox=\"0 0 24 24\">\n  <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n</svg>";
 
-var style$c = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #453C4F);\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-width, 1.5rem);\n  height: var(--mdi-icon-height, 1.5rem);\n}";
+var style$e = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #453C4F);\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-width, 1.5rem);\n  height: var(--mdi-icon-height, 1.5rem);\n}";
 
 const noIcon$1 = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
-let MdiIcon = class MdiIcon extends HTMLElement {
+let MdiIcon$1 = class MdiIcon extends HTMLElement {
     constructor() {
         super(...arguments);
         this.path = noIcon$1;
@@ -8211,21 +8296,66 @@ let MdiIcon = class MdiIcon extends HTMLElement {
 };
 __decorate([
     Prop()
-], MdiIcon.prototype, "path", void 0);
+], MdiIcon$1.prototype, "path", void 0);
 __decorate([
     Part()
-], MdiIcon.prototype, "$path", void 0);
-MdiIcon = __decorate([
+], MdiIcon$1.prototype, "$path", void 0);
+MdiIcon$1 = __decorate([
     Component({
         selector: 'mdi-icon',
-        style: style$c,
-        template: template$c
+        style: style$e,
+        template: template$e
     })
-], MdiIcon);
+], MdiIcon$1);
 
-var template$d = "<label part=\"label\">\n  <input type=\"file\" part=\"file\" />\n  <svg part=\"icon\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z\" /></svg>\n  <span part=\"text\">Upload a File...</span>\n</label>";
+var template$f = "<button part=\"button\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" fill=\"currentColor\" d=\"M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z\"/>\n  </svg>\n</button>";
 
-var style$d = ":host {\n  display: block;\n}\n\n[part=\"label\"] {\n  display: grid;\n  grid-template-columns: 1.5rem auto;\n  grid-template-rows: auto;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n  border: 1px solid var(--mdi-button-border-color, #453C4F);\n  background-color: var(--mdi-button-background-color, #fff);\n  color: var(--mdi-button-color, #453C4F);\n  padding: var(--mdi-button-padding, 0.25rem 0.5rem);\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"label\"]:hover {\n  border: 1px solid var(--mdi-button-hover-border-color, #453C4F);\n  background-color: var(--mdi-button-hover-background-color, #453C4F);\n  color: var(--mdi-button-hover-color, #fff);\n  --mdi-icon-color: var(--mdi-button-hover-color, #fff);\n}\n\n[part=\"label\"]:active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  position: relative;\n}\n\n[part=\"label\"]:focus {\n  position: relative;\n}\n\n[part=\"label\"]:active::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.6));\n}\n\n[part=\"label\"]:focus::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n\n[part=\"file\"] {\n  width: 100%;\n  border: 0;\n  outline: 0;\n  height: 1.5rem;\n  grid-row: 1;\n  grid-column: 1 / span 2;\n  visibility: hidden;\n}\n\n[part=\"icon\"] {\n  grid-row: 1;\n  grid-column: 1;\n  transform: translate(-0.25rem, 0.075rem);\n  pointer-events: none;\n}\n\n[part=\"text\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n}";
+var style$f = ":host {\n  display: inline-flex;\n}\n\n.blank {\n  color: var(--mdi-input-check-blank-color, #453C4F);\n}\n\n.checked {\n  color: var(--mdi-input-check-checked-color, #453C4F);\n}\n\n[part=\"button\"] {\n  display: flex;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  border-radius: 0.25rem;\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-check-size, 1.5rem);\n  height: var(--mdi-icon-check-size, 1.5rem);\n}\n\n[part=\"button\"]:active {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"button\"]:focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-focus-glow, rgb(79, 143, 249, 0.5));\n}";
+
+const unchecked = 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z';
+const checked = 'M19,19H5V5H15V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V11H19M7.91,10.08L6.5,11.5L11,16L21,6L19.59,4.58L11,13.17L7.91,10.08Z';
+let MdiInputCheck = class MdiInputCheck extends HTMLElement {
+    constructor() {
+        super(...arguments);
+        this.value = false;
+    }
+    connectedCallback() {
+        this.$button.addEventListener('click', this.handleClick.bind(this));
+    }
+    handleClick() {
+        const value = [true, 'true'].includes(this.value);
+        this.value = !value;
+        this.dispatchEvent(new CustomEvent('change'));
+    }
+    render(changes) {
+        if (changes.value) {
+            const value = [true, 'true'].includes(this.value);
+            this.$path.setAttribute('d', value ? checked : unchecked);
+            this.$button.classList.toggle('blank', !value);
+            this.$button.classList.toggle('checked', value);
+        }
+    }
+};
+__decorate([
+    Prop()
+], MdiInputCheck.prototype, "value", void 0);
+__decorate([
+    Part()
+], MdiInputCheck.prototype, "$button", void 0);
+__decorate([
+    Part()
+], MdiInputCheck.prototype, "$path", void 0);
+MdiInputCheck = __decorate([
+    Component({
+        selector: 'mdi-input-check',
+        style: style$f,
+        template: template$f
+    })
+], MdiInputCheck);
+
+var template$g = "<label part=\"label\">\n  <input type=\"file\" part=\"file\" />\n  <svg part=\"icon\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z\" /></svg>\n  <span part=\"text\">Upload a File...</span>\n</label>";
+
+var style$g = ":host {\n  display: block;\n}\n\n[part=\"label\"] {\n  display: grid;\n  grid-template-columns: 1.5rem auto;\n  grid-template-rows: auto;\n  font-family: var(--mdi-font-family);\n  font-size: 1rem;\n  line-height: 1.5rem;\n  border: 1px solid var(--mdi-button-border-color, #453C4F);\n  background-color: var(--mdi-button-background-color, #fff);\n  color: var(--mdi-button-color, #453C4F);\n  padding: var(--mdi-button-padding, 0.25rem 0.5rem);\n  border-radius: 0.25rem;\n  outline: none;\n  --mdi-icon-color: var(--mdi-button-color, #453C4F);\n}\n\n[part=\"label\"]:hover {\n  border: 1px solid var(--mdi-button-hover-border-color, #453C4F);\n  background-color: var(--mdi-button-hover-background-color, #453C4F);\n  color: var(--mdi-button-hover-color, #fff);\n  --mdi-icon-color: var(--mdi-button-hover-color, #fff);\n}\n\n[part=\"label\"]:active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.5) inset;\n  position: relative;\n}\n\n[part=\"label\"]:focus {\n  position: relative;\n}\n\n[part=\"label\"]:active::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.6));\n}\n\n[part=\"label\"]:focus::before {\n  content: '';\n  position: absolute;\n  top: -1px;\n  right: -1px;\n  bottom: -1px;\n  left: -1px;\n  border-radius: 0.25rem;\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n\n[part=\"file\"] {\n  width: 100%;\n  border: 0;\n  outline: 0;\n  height: 1.5rem;\n  grid-row: 1;\n  grid-column: 1 / span 2;\n  visibility: hidden;\n}\n\n[part=\"icon\"] {\n  grid-row: 1;\n  grid-column: 1;\n  transform: translate(-0.25rem, 0.075rem);\n  pointer-events: none;\n}\n\n[part=\"text\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n}";
 
 let MdiInputFileLocal = class MdiInputFileLocal extends HTMLElement {
     constructor() {
@@ -8294,8 +8424,8 @@ __decorate([
 MdiInputFileLocal = __decorate([
     Component({
         selector: 'mdi-input-file-local',
-        style: style$d,
-        template: template$d
+        style: style$g,
+        template: template$g
     })
 ], MdiInputFileLocal);
 
@@ -8325,9 +8455,9 @@ function rgbToHex(r, g, b) {
     return "#" + cToHex(r) + cToHex(g) + cToHex(b);
 }
 
-var template$e = "<div>\n  <input part=\"hex\" type=\"text\" />\n  <label part=\"labelRed\">R</label>\n  <input part=\"red\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n  <label part=\"labelGreen\">G</label>\n  <input part=\"green\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n  <label part=\"labelBlue\">B</label>\n  <input part=\"blue\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n</div>";
+var template$h = "<div>\n  <input part=\"hex\" type=\"text\" />\n  <label part=\"labelRed\">R</label>\n  <input part=\"red\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n  <label part=\"labelGreen\">G</label>\n  <input part=\"green\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n  <label part=\"labelBlue\">B</label>\n  <input part=\"blue\" type=\"number\" step=\"1\" min=\"0\" max=\"255\" />\n</div>";
 
-var style$e = ":host {\n  display: block;\n}\n\n:host > div {\n  display: grid;\n  grid-template-rows: auto 1rem 2rem 1rem 2rem 1rem 2rem;\n  grid-template-rows: 1fr;\n}\n\n[part~=\"hex\"] {\n  grid-row: 1;\n  grid-column: 1;\n}\n\n[part~=\"labelRed\"] {\n  grid-row: 1;\n  grid-column: 2;\n  background: red;\n}\n\n[part~=\"red\"] {\n  grid-row: 1;\n  grid-column: 3;\n}\n\n[part~=\"labelGreen\"] {\n  grid-row: 1;\n  grid-column: 4;\n  background: green;\n  color: white;\n}\n\n[part~=\"green\"] {\n  grid-row: 1;\n  grid-column: 5;\n}\n\n[part~=\"labelBlue\"] {\n  grid-row: 1;\n  grid-column: 6;\n  background: blue;\n  color: white;\n}\n\n[part~=\"blue\"] {\n  grid-row: 1;\n  grid-column: 7;\n}\n\n[part~=\"labelRed\"],\n[part~=\"labelGreen\"],\n[part~=\"labelBlue\"] {\n  display: flex;\n  margin-left: 0.25rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 0.25rem 0 0 0.25rem;\n  color: white;\n  min-width: 1rem;\n}\n\n[part~=\"hex\"] {\n  border-radius: 0.25rem;\n  min-width: 4rem;\n}\n\n[part~=\"hex\"],\n[part~=\"red\"],\n[part~=\"green\"],\n[part~=\"blue\"] {\n  outline: none;\n  font-size: 1rem;\n  padding: 0.25rem 0.5rem;\n  border: 0;\n  width: calc(100% - 1rem);\n}\n\n[part~=\"red\"],\n[part~=\"green\"],\n[part~=\"blue\"] {\n  border-radius: 0 0.25rem 0.25rem 0;\n  -moz-appearance: textfield;\n  width: calc(100% - 1rem);\n  min-width: 2rem;\n}\n\n[part~=\"red\"]::-webkit-inner-spin-button,\n[part~=\"red\"]::-webkit-outer-spin-button,\n[part~=\"green\"]::-webkit-inner-spin-button,\n[part~=\"green\"]::-webkit-outer-spin-button,\n[part~=\"blue\"]::-webkit-inner-spin-button,\n[part~=\"blue\"]::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}";
+var style$h = ":host {\n  display: block;\n}\n\n:host > div {\n  display: grid;\n  grid-template-rows: auto 1rem 2rem 1rem 2rem 1rem 2rem;\n  grid-template-rows: 1fr;\n}\n\n[part~=\"hex\"] {\n  grid-row: 1;\n  grid-column: 1;\n}\n\n[part~=\"labelRed\"] {\n  grid-row: 1;\n  grid-column: 2;\n  background: red;\n}\n\n[part~=\"red\"] {\n  grid-row: 1;\n  grid-column: 3;\n}\n\n[part~=\"labelGreen\"] {\n  grid-row: 1;\n  grid-column: 4;\n  background: green;\n  color: white;\n}\n\n[part~=\"green\"] {\n  grid-row: 1;\n  grid-column: 5;\n}\n\n[part~=\"labelBlue\"] {\n  grid-row: 1;\n  grid-column: 6;\n  background: blue;\n  color: white;\n}\n\n[part~=\"blue\"] {\n  grid-row: 1;\n  grid-column: 7;\n}\n\n[part~=\"labelRed\"],\n[part~=\"labelGreen\"],\n[part~=\"labelBlue\"] {\n  display: flex;\n  margin-left: 0.25rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 0.25rem 0 0 0.25rem;\n  color: white;\n  min-width: 1rem;\n}\n\n[part~=\"hex\"] {\n  border-radius: 0.25rem;\n  min-width: 4rem;\n}\n\n[part~=\"hex\"],\n[part~=\"red\"],\n[part~=\"green\"],\n[part~=\"blue\"] {\n  outline: none;\n  font-size: 1rem;\n  padding: 0.25rem 0.5rem;\n  border: 0;\n  width: calc(100% - 1rem);\n}\n\n[part~=\"red\"],\n[part~=\"green\"],\n[part~=\"blue\"] {\n  border-radius: 0 0.25rem 0.25rem 0;\n  -moz-appearance: textfield;\n  width: calc(100% - 1rem);\n  min-width: 2rem;\n}\n\n[part~=\"red\"]::-webkit-inner-spin-button,\n[part~=\"red\"]::-webkit-outer-spin-button,\n[part~=\"green\"]::-webkit-inner-spin-button,\n[part~=\"green\"]::-webkit-outer-spin-button,\n[part~=\"blue\"]::-webkit-inner-spin-button,\n[part~=\"blue\"]::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}";
 
 let MdiInputHexRgb = class MdiInputHexRgb extends HTMLElement {
     constructor() {
@@ -8397,14 +8527,14 @@ __decorate([
 MdiInputHexRgb = __decorate([
     Component({
         selector: 'mdi-input-hex-rgb',
-        style: style$e,
-        template: template$e
+        style: style$h,
+        template: template$h
     })
 ], MdiInputHexRgb);
 
-var template$f = "<input part=\"input\" type=\"range\" />";
+var template$i = "<input part=\"input\" type=\"range\" />";
 
-var style$f = "";
+var style$i = "";
 
 let MdiInputRange = class MdiInputRange extends HTMLElement {
     constructor() {
@@ -8434,14 +8564,14 @@ __decorate([
 MdiInputRange = __decorate([
     Component({
         selector: 'mdi-input-range',
-        style: style$f,
-        template: template$f
+        style: style$i,
+        template: template$i
     })
 ], MdiInputRange);
 
-var template$g = "<div part=\"wrapper\">\n  <select part=\"select\"></select>\n  <svg part=\"chevron\" viewBox=\"0 0 24 24\"><path d=\"M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z\" /></svg>\n</div>";
+var template$j = "<div part=\"wrapper\">\n  <select part=\"select\"></select>\n  <svg part=\"chevron\" viewBox=\"0 0 24 24\"><path d=\"M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z\" /></svg>\n</div>";
 
-var style$g = ":host {\n  display: block;\n  font-family: var(--mdi-font-family);\n}\n\n[part=\"wrapper\"] {\n  display: grid;\n  grid-template-rows: auto;\n  grid-template-columns: 100% 0;\n}\n\n[part=\"select\"] {\n  grid-row: 1;\n  grid-column: 1;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  padding: 0.5rem 0.75rem;\n  width: 100%;\n  font-size: 1rem;\n  outline: 0;\n  -webkit-appearance: none;\n}\n\n[part=\"select\"]:focus {\n  box-shadow: 0 0 0 3px rgba(79, 143, 249, 0.5);\n}\n\n[part=\"chevron\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  transform: translate(-2rem, 0);\n}";
+var style$j = ":host {\n  display: block;\n  font-family: var(--mdi-font-family);\n}\n\n[part=\"wrapper\"] {\n  display: grid;\n  grid-template-rows: auto;\n  grid-template-columns: 100% 0;\n}\n\n[part=\"select\"] {\n  grid-row: 1;\n  grid-column: 1;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  padding: 0.5rem 0.75rem;\n  width: 100%;\n  font-size: 1rem;\n  outline: 0;\n  -webkit-appearance: none;\n}\n\n[part=\"select\"]:focus {\n  box-shadow: 0 0 0 3px rgba(79, 143, 249, 0.5);\n}\n\n[part=\"chevron\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  transform: translate(-2rem, 0);\n}";
 
 let MdiInputSelect = class MdiInputSelect extends HTMLElement {
     constructor() {
@@ -8479,14 +8609,14 @@ __decorate([
 MdiInputSelect = __decorate([
     Component({
         selector: 'mdi-input-select',
-        style: style$g,
-        template: template$g
+        style: style$j,
+        template: template$j
     })
 ], MdiInputSelect);
 
-var template$h = "<input part=\"input\" type=\"text\" />";
+var template$k = "<input part=\"input\" type=\"text\" />";
 
-var style$h = ":host {\n  display: block;\n  font-family: var(--mdi-font-family);\n}\n\n[part=\"input\"] {\n  border: 1px solid var(--mdi-input-text-border-color, #453C4F);\n  border-radius: 0.125rem;\n  padding: calc(0.5rem - 1px) 0.75rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1.5rem - 2px);\n}\n\n[part=\"input\"]:active {\n  box-shadow: 0 0 0 3px var(--mdi-input-text-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"input\"]:focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-text-focus-glow, rgb(79, 143, 249, 0.5));\n}";
+var style$k = ":host {\n  display: block;\n  font-family: var(--mdi-font-family);\n}\n\n[part=\"input\"] {\n  border: 1px solid var(--mdi-input-text-border-color, #453C4F);\n  border-radius: 0.125rem;\n  padding: calc(0.5rem - 1px) 0.75rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1.5rem - 2px);\n}\n\n[part=\"input\"]:active {\n  box-shadow: 0 0 0 3px var(--mdi-input-text-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"input\"]:focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-text-focus-glow, rgb(79, 143, 249, 0.5));\n}";
 
 let MdiInputText = class MdiInputText extends HTMLElement {
     constructor() {
@@ -8544,15 +8674,15 @@ __decorate([
 MdiInputText = __decorate([
     Component({
         selector: 'mdi-input-text',
-        style: style$h,
-        template: template$h
+        style: style$k,
+        template: template$k
     })
 ], MdiInputText);
 var MdiInputText$1 = MdiInputText;
 
-var template$i = "<div part=\"grid\">\n  <parent/>\n  <mdi-icon part=\"icon\"></mdi-icon>\n</div>";
+var template$l = "<div part=\"grid\">\n  <parent/>\n  <mdi-icon part=\"icon\"></mdi-icon>\n</div>";
 
-var style$i = ":host {\n  display: block;\n}\n\n[part=\"grid\"] {\n  display: grid;\n  grid-template-columns: auto 1.5rem;\n}\n\n[part=\"icon\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n  transform: translate(calc(-0.35rem + 1px), calc(0.25rem + 1px));\n}\n\n[part=\"input\"] {\n  grid-row: 1;\n  grid-column: 1 / span 2;\n}\n\n[part=\"input\"]:focus + [part=\"icon\"] {\n  --mdi-icon-color: #4f8ff9;\n}";
+var style$l = ":host {\n  display: block;\n}\n\n[part=\"grid\"] {\n  display: grid;\n  grid-template-columns: auto 1.5rem;\n}\n\n[part=\"icon\"] {\n  grid-row: 1;\n  grid-column: 2;\n  pointer-events: none;\n  transform: translate(calc(-0.35rem + 1px), calc(0.25rem + 1px));\n}\n\n[part=\"input\"] {\n  grid-row: 1;\n  grid-column: 1 / span 2;\n}\n\n[part=\"input\"]:focus + [part=\"icon\"] {\n  --mdi-icon-color: #4f8ff9;\n}";
 
 let MdiInputTextIcon = class MdiInputTextIcon extends MdiInputText$1 {
     constructor() {
@@ -8574,14 +8704,14 @@ __decorate([
 MdiInputTextIcon = __decorate([
     Component({
         selector: 'mdi-input-text-icon',
-        style: style$i,
-        template: template$i
+        style: style$l,
+        template: template$l
     })
 ], MdiInputTextIcon);
 
-var template$j = "<div part=\"wrapper\">\n  <button part=\"select\">\n    <img part=\"selectedAvatar\" />\n    <span part=\"selectedName\">First Last</span>\n    <svg part=\"githubIcon\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z\" /></svg>\n    <span part=\"selectedGithub\">GitHub</span>\n    <svg part=\"countIcon\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M11,13.5V21.5H3V13.5H11M12,2L17.5,11H6.5L12,2M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13Z\" /></svg>\n    <span part=\"selectedCount\">9999</span>\n    <svg part=\"loading\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" /></svg>\n    <span part=\"loadingText\">Loading...</span>\n    <svg part=\"chevron\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z\" /></svg>\n    <span part=\"noData\">Empty Users List</span>\n    <span part=\"noSelection\">Select a User</span>\n  </button>\n  <div part=\"dropdownContainer\">\n    <div part=\"dropdown\"></div>\n  </div>\n</div>";
+var template$m = "<div part=\"wrapper\">\n  <button part=\"select\">\n    <img part=\"selectedAvatar\" />\n    <span part=\"selectedName\">First Last</span>\n    <svg part=\"githubIcon\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z\" /></svg>\n    <span part=\"selectedGithub\">GitHub</span>\n    <svg part=\"countIcon\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M11,13.5V21.5H3V13.5H11M12,2L17.5,11H6.5L12,2M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13Z\" /></svg>\n    <span part=\"selectedCount\">9999</span>\n    <svg part=\"loading\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" /></svg>\n    <span part=\"loadingText\">Loading...</span>\n    <svg part=\"chevron\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z\" /></svg>\n    <span part=\"noData\">Empty Users List</span>\n    <span part=\"noSelection\">Select a User</span>\n  </button>\n  <div part=\"dropdownContainer\">\n    <div part=\"dropdown\"></div>\n  </div>\n</div>";
 
-var style$j = ":host {\n  display: block;\n}\n\n[part=\"wrapper\"] {\n  display: grid;\n  grid-template-rows: auto 0;\n  grid-template-columns: 100%;\n}\n\n[part=\"select\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1.75rem auto 2.75rem 1fr 1.5rem;\n  grid-template-rows: 1.5rem 1.5rem;\n  grid-row: 1;\n  grid-column: 1;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  width: 100%;\n  font-size: 1rem;\n  outline: 0;\n  text-align: left;\n  background: var(--mdi-input-select-background, #fff);\n}\n\n[part=\"select\"]:focus {\n  box-shadow: 0 0 0 3px rgba(79, 143, 249, 0.5);\n}\n\n[part=\"select\"]:disabled {\n  border: 1px solid var(--mdi-input-select-disabled-border-color, rgba(69, 60, 79, 0.6));\n  color: var(--mdi-input-select-disabled-color, rgba(69, 60, 79, 0.6));\n}\n\n[part=\"chevron\"] {\n  grid-row: 1 / span 2;\n  grid-column: 6;\n  pointer-events: none;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n}\n\n.githubIcon,\n[part=\"githubIcon\"] {\n  grid-row: 2;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  color: var(--mdi-input-select-border-color, #453C4F);\n}\n\n.avatar,\n[part=\"selectedAvatar\"] {\n  grid-row: 1 / span 2;\n  grid-column: 1;\n  width: 3rem;\n  height: 3rem;\n  border-radius: 50%;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n}\n\n.name,\n[part=\"selectedName\"] {\n  grid-row: 1;\n  grid-column: 2 / span 4;\n  align-self: center;\n}\n\n.github,\n[part=\"selectedGithub\"] {\n  grid-row: 2;\n  grid-column: 3;\n  align-self: center;\n}\n\n.countIcon,\n[part=\"countIcon\"] {\n  grid-row: 2;\n  grid-column: 4;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  margin-left: 1rem;\n  color: var(--mdi-input-select-border-color, #453C4F);\n}\n\n.iconCount,\n[part=\"selectedCount\"] {\n  grid-row: 2;\n  grid-column: 5;\n  align-self: center;\n  font-weight: bold;\n}\n\n[part=\"dropdown\"].open {\n  display: flex;\n}\n\n[part=\"dropdown\"] {\n  grid-row: 2;\n  grid-column: 1;\n  display: none;\n  flex-direction: column;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  background: #fff;\n  z-index: 1;\n  position: absolute;\n  max-height: 16.5rem;\n  overflow: auto;\n}\n\n[part=\"dropdown\"] button {\n  display: grid;\n  grid-template-columns: 3.5rem 1.75rem auto 2.75rem 1fr;\n  grid-template-rows: auto;\n  border: 0;\n  padding: 0.5rem 0.75rem;\n  text-align: left;\n  background: #fff;\n}\n\n[part=\"dropdown\"] button:hover {\n  color: #fff;\n  background: #1E90FF;\n}\n\n[part=\"dropdown\"] button:hover .githubIcon,\n[part=\"dropdown\"] button:hover .countIcon {\n  color: #fff;\n}\n\n[part=\"loading\"] {\n  width: 3rem;\n  height: 3rem;\n  animation: spin 2s infinite linear;\n  grid-row: 1 / span 2;;\n  grid-column: 1;\n  pointer-events: none;\n  align-self: center;\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part=\"loadingText\"] {\n  grid-row: 1 / span 2;\n  grid-column: 2 / span 3;\n  align-self: center;\n}\n\n[part=\"noData\"] {\n  grid-row: 1 / span 2;\n  grid-column: 1 / span 4;\n  align-self: center;\n}\n\n[part=\"noSelection\"] {\n  grid-row: 1 / span 2;\n  grid-column: 1 / span 4;\n  align-self: center;\n}";
+var style$m = ":host {\n  display: block;\n}\n\n[part=\"wrapper\"] {\n  display: grid;\n  grid-template-rows: auto 0;\n  grid-template-columns: 100%;\n}\n\n[part=\"select\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1.75rem auto 2.75rem 1fr 1.5rem;\n  grid-template-rows: 1.5rem 1.5rem;\n  grid-row: 1;\n  grid-column: 1;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  width: 100%;\n  font-size: 1rem;\n  outline: 0;\n  text-align: left;\n  background: var(--mdi-input-select-background, #fff);\n}\n\n[part=\"select\"]:focus {\n  box-shadow: 0 0 0 3px rgba(79, 143, 249, 0.5);\n}\n\n[part=\"select\"]:disabled {\n  border: 1px solid var(--mdi-input-select-disabled-border-color, rgba(69, 60, 79, 0.6));\n  color: var(--mdi-input-select-disabled-color, rgba(69, 60, 79, 0.6));\n}\n\n[part=\"chevron\"] {\n  grid-row: 1 / span 2;\n  grid-column: 6;\n  pointer-events: none;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n}\n\n.githubIcon,\n[part=\"githubIcon\"] {\n  grid-row: 2;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  color: var(--mdi-input-select-border-color, #453C4F);\n}\n\n.avatar,\n[part=\"selectedAvatar\"] {\n  grid-row: 1 / span 2;\n  grid-column: 1;\n  width: 3rem;\n  height: 3rem;\n  border-radius: 50%;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n}\n\n.name,\n[part=\"selectedName\"] {\n  grid-row: 1;\n  grid-column: 2 / span 4;\n  align-self: center;\n}\n\n.github,\n[part=\"selectedGithub\"] {\n  grid-row: 2;\n  grid-column: 3;\n  align-self: center;\n}\n\n.countIcon,\n[part=\"countIcon\"] {\n  grid-row: 2;\n  grid-column: 4;\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n  margin-left: 1rem;\n  color: var(--mdi-input-select-border-color, #453C4F);\n}\n\n.iconCount,\n[part=\"selectedCount\"] {\n  grid-row: 2;\n  grid-column: 5;\n  align-self: center;\n  font-weight: bold;\n}\n\n[part=\"dropdown\"].open {\n  display: flex;\n}\n\n[part=\"dropdown\"] {\n  grid-row: 2;\n  grid-column: 1;\n  display: none;\n  flex-direction: column;\n  border: 1px solid var(--mdi-input-select-border-color, #453C4F);\n  border-radius: 0.25rem;\n  background: #fff;\n  z-index: 1;\n  position: absolute;\n  max-height: 16.5rem;\n  overflow: auto;\n}\n\n[part=\"dropdown\"] button {\n  display: grid;\n  grid-template-columns: 3.5rem 1.75rem auto 2.75rem 1fr;\n  grid-template-rows: auto;\n  border: 0;\n  padding: 0.5rem 0.75rem;\n  text-align: left;\n  background: #fff;\n}\n\n[part=\"dropdown\"] button:hover,\n[part=\"dropdown\"] button:focus {\n  color: #fff;\n  background: #1E90FF;\n}\n\n[part=\"dropdown\"] button:hover .githubIcon,\n[part=\"dropdown\"] button:hover .countIcon,\n[part=\"dropdown\"] button:focus .githubIcon,\n[part=\"dropdown\"] button:focus .countIcon {\n  color: #fff;\n}\n\n[part=\"loading\"] {\n  width: 3rem;\n  height: 3rem;\n  animation: spin 2s infinite linear;\n  grid-row: 1 / span 2;;\n  grid-column: 1;\n  pointer-events: none;\n  align-self: center;\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part=\"loadingText\"] {\n  grid-row: 1 / span 2;\n  grid-column: 2 / span 3;\n  align-self: center;\n}\n\n[part=\"noData\"] {\n  grid-row: 1 / span 2;\n  grid-column: 1 / span 4;\n  align-self: center;\n}\n\n[part=\"noSelection\"] {\n  grid-row: 1 / span 2;\n  grid-column: 1 / span 4;\n  align-self: center;\n}";
 
 function createIcon(d, className) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -8604,9 +8734,12 @@ let MdiInputUserSelect = class MdiInputUserSelect extends HTMLElement {
         this.noDataText = 'Empty Users List';
         this.noSelectionText = 'Select a User';
         this.isOpen = false;
+        this.optionsElements = [];
+        this.index = -1;
     }
     connectedCallback() {
         this.$select.addEventListener('click', this.handleClick.bind(this));
+        this.addEventListener('keydown', this.handleKeys.bind(this));
     }
     close() {
         this.isOpen = false;
@@ -8625,6 +8758,18 @@ let MdiInputUserSelect = class MdiInputUserSelect extends HTMLElement {
         this.$dropdown.classList.toggle('open', this.isOpen);
         this.handleCloseBind = this.handleClose.bind(this);
         document.addEventListener('mousedown', this.handleCloseBind);
+        this.focusSelected();
+    }
+    focusSelected() {
+        var _a;
+        const find = (_a = this.options) === null || _a === void 0 ? void 0 : _a.findIndex((value) => value === this.value);
+        if (find && find !== -1) {
+            this.optionsElements[find].focus();
+            this.index = find;
+        }
+        else if (this.optionsElements.length) {
+            this.optionsElements[0].focus();
+        }
     }
     handleSelect(e) {
         var _a;
@@ -8696,7 +8841,8 @@ let MdiInputUserSelect = class MdiInputUserSelect extends HTMLElement {
             }
             else {
                 this.selectMode();
-                this.options.forEach(o => {
+                this.calculateMinWidth();
+                this.optionsElements = this.options.map(o => {
                     const button = document.createElement('button');
                     const img = document.createElement('img');
                     img.src = `${o.base64}`;
@@ -8719,6 +8865,7 @@ let MdiInputUserSelect = class MdiInputUserSelect extends HTMLElement {
                     button.appendChild(createIcon(mdiShape, 'countIcon'));
                     button.addEventListener('click', this.handleSelect.bind(this));
                     this.$dropdown.appendChild(button);
+                    return button;
                 });
                 if (this.value === null) {
                     this.noSelectionMode();
@@ -8742,6 +8889,41 @@ let MdiInputUserSelect = class MdiInputUserSelect extends HTMLElement {
         }
         if (changes.noSelectionText) {
             this.$noSelection.innerText = this.noSelectionText;
+        }
+    }
+    calculateMinWidth() {
+        const { width } = this.$select.getBoundingClientRect();
+        this.$dropdown.style.minWidth = `${width - 2}px`;
+    }
+    handleKeys(e) {
+        const items = this.optionsElements;
+        let newIndex = this.index;
+        switch (e.which) {
+            case 38: // up
+                if (newIndex === 0) {
+                    newIndex = items.length - 1;
+                }
+                else if (newIndex >= 0) {
+                    newIndex -= 1;
+                }
+                break;
+            case 40: // down
+                if (newIndex < items.length - 1) {
+                    newIndex += 1;
+                }
+                else if (newIndex === items.length - 1) {
+                    newIndex = 0;
+                }
+                break;
+            case 9: // tab
+            case 27: // close
+                this.close();
+                break;
+        }
+        if (newIndex != this.index) {
+            this.index = newIndex;
+            items[newIndex].focus();
+            e.preventDefault();
         }
     }
 };
@@ -8799,8 +8981,8 @@ __decorate([
 MdiInputUserSelect = __decorate([
     Component({
         selector: 'mdi-input-user-select',
-        style: style$j,
-        template: template$j
+        style: style$m,
+        template: template$m
     })
 ], MdiInputUserSelect);
 
@@ -22656,9 +22838,9 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
 
 }(Prism));
 
-var template$k = "<div part=\"content\"></div>";
+var template$n = "<div part=\"content\"></div>";
 
-var style$k = ":host {\n  display: block;\n  color: #453C4F;\n}\n\nh1 {\n  font-size: 2rem;\n  margin-top: 1rem;\n  margin-bottom: 0.75rem;\n}\n\nh2 {\n  font-size: 1.75rem;\n  margin-top: 2rem;\n  margin-bottom: 0.75rem;\n}\n\nh2 + p {\n  margin-top: 0.75rem;\n}\n\nh3 {\n  font-size: 1.5rem;\n  margin-top: 1.5rem;\n  margin-bottom: 0.5rem;\n}\n\nh4 {\n  font-size: 1.25rem;\n  margin-top: 1.5rem;\n  margin-bottom: 0.5rem;\n}\n\nblockquote {\n  border-left: 4px solid #453C4F;\n  padding: 0.25rem 0.5rem;\n  margin: 1rem 0;\n}\n\nblockquote p:first-child {\n  margin-top: 0;\n}\n\nblockquote p:last-child {\n  margin-bottom: 0;\n}\n\nblockquote.note {\n  background: #FFFF88;\n  color: rgba(0, 0, 0, 0.8);\n  border-color: rgba(0, 0, 0, 0.3);\n  border-top: 1px solid rgba(0, 0, 0, 0.2);\n  border-right: 1px solid rgba(0, 0, 0, 0.2);\n  border-bottom: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 0.25rem;\n}\n\nblockquote.warning {\n  background: #fff3cd;\n  color: #856404;\n  border-color: #856404;\n  border-top: 1px solid #ffeeba;\n  border-right: 1px solid #ffeeba;\n  border-bottom: 1px solid #ffeeba;\n  border-radius: 0.25rem;\n}\n\nblockquote.good,\nblockquote.success {\n  background: #d4edda;\n  color: #155724;\n  border-color: #155724;\n  border-top: 1px solid #c3e6cb;\n  border-right: 1px solid #c3e6cb;\n  border-bottom: 1px solid #c3e6cb;\n  border-radius: 0.25rem;\n}\n\nblockquote.bad,\nblockquote.danger,\nblockquote.alert {\n  background: #f8d7da;\n  color: #721c24;\n  border-color: #721c24;\n  border-top: 1px solid #f5c6cb;\n  border-right: 1px solid #f5c6cb;\n  border-bottom: 1px solid #f5c6cb;\n  border-radius: 0.25rem;\n}\n\nblockquote.information,\nblockquote.attention {\n  background: #cfe2ff;\n  color: #073984;\n  border-color: #073984;\n  border-top: 1px solid #bbd6fe;\n  border-right: 1px solid #bbd6fe;\n  border-bottom: 1px solid #bbd6fe;\n  border-radius: 0.25rem;\n}\n\npre {\n  background: #222;\n  padding: 0.75rem;\n  border-radius: 0.25rem;\n  color: #EEE;\n  overflow: auto;\n  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1) inset;\n}\n\ntable {\n  border-radius: 0.25rem;\n  border-spacing: 0;\n  margin: 1rem 0;\n}\ntable tr th {\n  text-align: left;\n  padding: 0.125rem 0.25rem;\n}\ntable tr td {\n  padding: 0.125rem 0.25rem;\n}\ntable tr:nth-child(1) td {\n  border-top: 1px solid #453C4F;\n}\ntable tr:nth-child(1) td:first-child {\n  border-radius: 0.25rem 0 0 0;\n}\ntable tr:nth-child(1) td:last-child {\n  border-radius: 0 0.25rem 0 0;\n}\ntable tr td:first-child {\n  border-left: 1px solid #453C4F;\n}\ntable tr:last-child td {\n  border-bottom: 1px solid #453C4F;\n}\ntable tr td:last-child {\n  border-right: 1px solid #453C4F;\n}\ntable tr:last-child td:first-child {\n  border-radius: 0 0 0 0.25rem;\n}\ntable tr:last-child td:last-child {\n  border-radius: 0 0 0.25rem 0;\n}\ntable tr:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\ntable tr td:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\n\np {\n  font-size: 1.125rem;\n  line-height: 1.75rem;\n  margin: 1rem 0;\n}\n\nimg {\n  border: 0.25rem solid var(--mdi-markdown-img-border-color, #453C4F);\n  border-radius: 0.25rem;\n}\n\na {\n  color: #278eca;\n}\n\n[part=content] > ul,\n.tab-content > ul {\n  list-style: square;\n  padding-left: 2rem;\n  line-height: 1.75rem;\n}\n\n[part=content] > ul > li > ul,\n.tab-content > ul > li > ul {\n  list-style: square;\n  padding-left: 1.25rem;\n  line-height: 1.75rem;\n}\n\ndl dd {\n  margin-left: 2rem;\n}\n\n[part=content] > p code,\n[part=content] > ul code,\n[part=content] > table code,\n.tab-content > p code,\n.tab-content > ul code,\n.tab-content > table code{\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n\n[part=content] > p a > code,\n[part=content] > ul a > code,\n[part=content] > table a > code,\n.tab-content > p a > code,\n.tab-content > ul a > code,\n.tab-content > table a > code {\n  text-decoration: none;\n}\n\n[part=content] > p a:hover > code,\n[part=content] > ul a:hover > code,\n[part=content] > table a:hover > code,\n.tab-content > p a:hover > code,\n.tab-content > ul a:hover > code,\n.tab-content > table a:hover > code {\n  border-color: #278eca;\n}\n\ntable code {\n  transform: translateY(-1px);\n}\n\np > svg.icon,\nblockquote > svg.icon,\np > a.icon > svg.icon,\nblockquote > a.icon > svg.icon,\nth > svg.icon,\nth > a.icon > svg.icon,\ntd > svg.icon,\ntd > a.icon > svg.icon {\n  width: 1.5rem;\n  height: 1.5rem;\n  vertical-align: middle;\n}\n\np > a.button {\n  display: inline-flex;\n  padding: 0.25rem 0.5rem;\n  background: transparent;\n  border-radius: 0.25rem;\n  color: #fff;\n  text-decoration: none;\n  font-size: 1rem;\n  color: var(--mdi-markdown-button-color, #453C4F);\n  border: 1px solid var(--mdi-markdown-button-color, #453C4F);\n}\n\np > a.button:hover {\n  background: var(--mdi-markdown-button-hover-background, #453C4F);\n  color: var(--mdi-markdown-button-hover-color, #fff);\n}\n\np > a.button:active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.4) inset;\n}\n\np > a.button > svg.icon {\n  width: 1.5rem;\n  height: 1.5rem;\n  margin-left: -0.125rem;\n  margin-right: 0.25rem;\n  align-self: center;\n}\n\n/* PrismJS 1.15.0\n/**\n * prism.js Visual Studio Code Theme\n * @author Visual Studio Code\n */\n\ncode[class*=\"language-\"],\npre[class*=\"language-\"] {\n  color: #9CDCFE;\n  background: none;\n  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;\n  text-align: left;\n  white-space: pre;\n  word-spacing: normal;\n  word-break: normal;\n  word-wrap: normal;\n  line-height: 1.5;\n\n  -moz-tab-size: 4;\n  -o-tab-size: 4;\n  tab-size: 4;\n\n  -webkit-hyphens: none;\n  -moz-hyphens: none;\n  -ms-hyphens: none;\n  hyphens: none;\n\n}\n\n/* Code blocks */\npre[class*=\"language-\"] {\n  margin: .5em 0;\n  overflow: auto;\n}\n\n:not(pre) > code[class*=\"language-\"],\npre[class*=\"language-\"] {\n  background: #1E1E1E;\n}\n\n/* Inline code */\n:not(pre) > code[class*=\"language-\"] {\n  padding: .1em;\n  border-radius: .3em;\n  white-space: normal;\n}\n\n.token.comment,\n.token.block-comment,\n.token.prolog,\n.token.doctype,\n.token.cdata {\n  color: #608B4E;\n}\n\n.token.punctuation {\n  color: #ccc;\n}\n\n.token.tag,\n.token.namespace,\n.token.deleted {\n  color: #4EC9B0;\n}\n\n.token.attr-name {\n  color: #9CDCFE;\n}\n\n.token.function-name {\n  color: #6196cc;\n}\n\n.token.boolean {\n  color: #569CD6;\n}\n.token.number {\n  color: #B5CEA8;\n}\n.token.function {\n  color: #DCDCAA;\n}\n\n.token.property,\n.token.constant,\n.token.symbol {\n  color: #f8c555;\n}\n\n.token.class-name {\n  color: #4EC9B0;\n}\n\n.token.selector,\n.token.important,\n.token.atrule,\n.token.keyword,\n.token.builtin {\n  color: #C586C0;\n}\n\n.token.string,\n.token.char,\n.token.attr-value,\n.token.regex,\n.token.variable {\n  color: #CE9169;\n}\n\n.token.operator {\n  color: #D4D4D4;\n}\n.token.entity,\n.token.url {\n  color: #67cdcc;\n}\n\n.token.important,\n.token.bold {\n  font-weight: bold;\n}\n.token.italic {\n  font-style: italic;\n}\n\n.token.entity {\n  cursor: help;\n}\n\n.token.inserted {\n  color: green;\n}\n/* TypeScript */\n.language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword,\n.language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword + .token.class-name + .token.keyword,\n.language-jsx .token.function-variable.function + .token.operator + .token.keyword {\n  color: #569CD6;\n}\n/* JSX */\n.language-jsx .language-javascript {\n  color: #9CDCFE;\n}\n.language-jsx .language-javascript .token.string {\n  color: #CE9169;\n}\n.language-jsx .language-javascript .token.punctuation {\n  color: #3F9CD6;\n}\n.language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation {\n  color: #D4D4D4;\n}\n.language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation {\n  color: #D4D4D4;\n}\n.language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation + .token.punctuation {\n  color: #3F9CD6;\n}\n\n/* Fancy Language Labels */\n\npre {\n  position: relative;\n  font-size: 0.875rem;\n}\n\npre code:not([class]) {\n  font-size: 0.875rem;\n}\n\npre.language-text::before {\n  content: 'Text';\n}\npre.language-html::before {\n  content: 'HTML';\n}\npre.language-typescript::before {\n  content: 'TypeScript';\n}\npre.language-javascript::before {\n  content: 'JavaScript';\n}\npre.language-jsx::before {\n  content: 'JavaScript / JSX';\n}\npre.language-tsx::before {\n  content: 'TypeScript / TSX';\n}\npre.language-xml::before {\n  content: 'XML';\n}\npre.language-css::before {\n  content: 'CSS';\n}\npre.language-scss::before {\n  content: 'SCSS';\n}\npre.language-php::before {\n  content: 'PHP';\n}\npre.language-yaml::before {\n  content: 'YAML';\n}\npre.language-groovy::before {\n  content: 'Groovy';\n}\n\npre.language-text::before,\npre.language-html::before,\npre.language-typescript::before,\npre.language-javascript::before,\npre.language-tsx::before,\npre.language-jsx::before,\npre.language-xml::before,\npre.language-css::before,\npre.language-scss::before,\npre.language-php::before,\npre.language-yaml::before,\npre.language-groovy::before {\n  display: var(--mdi-markdown-language-display, 'block');\n  font-size: 12px;\n  border-radius: 0 0 0 4px;\n  position: absolute;\n  top: 0;\n  right: 0;\n  color: #453C4F;\n  background: #FFF;\n  padding: 2px 4px 2px 6px;\n  pointer-events: none;\n  border-bottom: 1px solid #000;\n  border-left: 1px solid #000;\n}\n\n/* YAML */\ndiv.yaml + pre.language-yaml {\n  margin-top: 0;\n}\n.yaml-preview {\n  position: relative;\n  background: #1e1e1e;\n  color: #fff;\n  padding: 0.75rem 1.25rem;\n  border-radius: 0.25rem;\n  margin-bottom: 1rem;\n}\n.yaml-preview code {\n  border: none;\n  color: #fff;\n  font-size: 1rem;\n  padding: 0;\n}\n.yaml-preview ul {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 0;\n  margin-top: 0;\n}\n.yaml-preview ul li button {\n  position: relative;\n  top: 1px;\n  background: #fff;\n  color: #444;\n  border: none;\n  border-radius: 2px;\n  padding: 0;\n  width: 1rem;\n  line-height: 1rem;\n  font-weight: bold;\n  margin-left: -1rem;\n  margin-right: 0.75rem;\n  cursor: pointer;\n}\n.yaml-preview ul li button:focus {\n  outline: none;\n}\n.yaml-preview ul li button:hover {\n  color: #000;\n  background: #f1f1f1;\n}\n.yaml-preview ul li ul {\n  padding-left: 1rem;\n}\n.yaml-preview ul li ul > li {\n  border-left: 1px solid rgba(255, 255, 255, 0.05);\n  padding-left: 0.5rem;\n}\n.yaml-preview ul > li {\n  border-left: 1px solid transparent;\n  padding-left: 0.5rem;\n}\n.yaml-preview .yaml-end {\n  padding-left: 0.75rem;\n}\n.yaml-preview .yaml-prop {\n  padding-left: 0.75rem;\n}\n.yaml-preview .yaml-type {\n  color: #9cdcfe;\n}\n.yaml-preview .yaml-error {\n  color: #e91e63;\n}\n.yaml-preview .yaml-key {\n  color: #c586c0;\n}\n.yaml-preview .yaml-auth {\n  width: 1rem;\n  height: 1rem;\n  fill: #d7b558;\n  margin-left: -0.5rem;\n  margin-right: -0.1rem;\n  margin-bottom: -0.1rem;\n}\n.yaml-preview .yaml-example {\n  color: #666;\n}\n.yaml-preview::before {\n  content: 'JSON Preview';\n  font-size: 12px;\n  border-radius: 0 4px 0 4px;\n  position: absolute;\n  top: 0;\n  right: 0;\n  color: #453C4F;\n  background: #fff;\n  padding: 2px 4px 2px 6px;\n  pointer-events: none;\n  border-bottom: 1px solid #000;\n  border-left: 1px solid #000;\n}\n.yaml-toolbar button {\n  margin-right: 0.25rem;\n  padding: 0.25rem 0.75rem 0.25rem 0.75rem;\n  background: #eee;\n  border: 1px solid #ddd;\n  color: #444;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: pointer;\n}\n.yaml-toolbar button:focus {\n  outline: none;\n}\n.yaml-toolbar button:hover {\n  border-color: #bbb;\n}\n.yaml-toolbar button.active {\n  margin-right: 0.25rem;\n  padding: 0.25rem 0.75rem 0.25rem 0.75rem;\n  background: #1e1e1e;\n  border: 1px solid #1e1e1e;\n  color: #fff;\n  border-radius: 0.25rem 0.25rem 0 0;\n  position: relative;\n  z-index: 1;\n  cursor: default;\n}\n.yaml-toolbar button.active:focus {\n  outline: none;\n}\n.yaml-show {\n  margin-top: 0;\n  border-top-left-radius: 0 !important;\n}\n.yaml-hide {\n  display: none;\n}\n\n/* Tabs */\n\n.tabs {\n  display: grid;\n  grid-template-rows: calc(2.5rem - 1px) auto;\n  grid-template-columns: calc(100% - 2rem) 2rem;\n  box-sizing: border-box;\n  margin: 1rem 0;\n}\n\n.tabs .tabset {\n  grid-row: 1;\n  display: flex;\n  list-style: none;\n  padding: 0;\n  align-self: flex-start;\n  align-items: flex-start;\n  margin: 0;\n  box-sizing: border-box;\n}\n\n.tabs .tab-label,\n.tabs .tab-title {\n  display: flex;\n}\n\n.tabs .tab-label {\n  padding: 0 0.75rem;\n  font-size: 1.125rem;\n  font-weight: bold;\n  line-height: 2.5rem;\n  border: 1px solid transparent;\n}\n\n.tabs .tab-title {\n  margin-right: 0.25rem;\n  position: relative;\n}\n\n.tabs .tab-title a {\n  display: flex;\n  line-height: calc(2.5rem - 0.5px);\n  border-top: 1px solid transparent;\n  border-right: 1px solid transparent;\n  border-bottom: 0;\n  border-left: 1px solid transparent;\n  border-radius: 0.25rem 0.25rem 0 0;\n  padding: 0 0.75rem;\n  text-decoration: none;\n  color: var(--mdi-markdown-tab-border, #453C4F);\n  align-items: center;\n  align-content: center;\n  box-sizing: border-box;\n}\n\n.tabs .tab-title a svg:nth-child(1) {\n  width: 1.5rem;\n  margin: -0.25rem;\n  align-self: center;\n}\n\n.tabs .tab-title a span:nth-child(2) {\n  margin-left: 0.55rem;\n}\n\n.tabs .tab-title a svg:nth-child(3) {\n  width: 1.5rem;\n  margin: -0.25rem;\n  align-self: center;\n}\n\n.tabs .tab-title:not(.active) a:hover {\n  border-color: rgba(69, 60, 79, 0.5);\n}\n\n.tabs .tab-title.active a {\n  border-color: var(--mdi-markdown-tab-border, #453C4F);\n  font-weight: bold;\n  background: #fff;\n  cursor: default;\n  height: calc(2.5rem + 0.5px);\n}\n\n.tabs .tab-title:not(.active):first-child:hover::before {\n  position: absolute;\n  top: calc(2.5rem - 1px);\n  content: ' ';\n  border-top: 1px solid  var(--mdi-markdown-tab-border, #453C4F);\n  border-left: 1px solid  var(--mdi-markdown-tab-border, #453C4F);\n  height: 0.25rem;\n  width: 0.25rem;\n  background: #fff;\n}\n\n.tabs .tab-title.active:first-child::before {\n  position: absolute;\n  bottom: -0.25rem;\n  content: ' ';\n  border-left: 1px solid  var(--mdi-markdown-tab-border, #453C4F);\n  height: 0.25rem;\n  width: 0.25rem;\n  background: #fff;\n}\n\n.tabs .tab-content {\n  box-sizing: border-box;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  border: 1px solid var(--mdi-markdown-tab-border, #453C4F);\n  border-radius: 0.25rem;\n  padding: 1px 1rem;\n  background: #fff;\n}\n\n.tabs .tab-content > *:nth-child(1) {\n  margin-top: 1rem;\n}\n\n.tabs .tab-content > *:nth-last-child(1) {\n  margin-bottom: 1rem;\n}\n\n.tabs .tab-content.has-label {\n  border-radius: 0.25rem;\n}\n\n.tab-hide {\n  display: none;\n}";
+var style$n = ":host {\n  display: block;\n  color: #453C4F;\n}\n\nh1 {\n  font-size: 2rem;\n  margin-top: 1rem;\n  margin-bottom: 0.75rem;\n}\n\nh2 {\n  font-size: 1.75rem;\n  margin-top: 2rem;\n  margin-bottom: 0.75rem;\n}\n\nh2 + p {\n  margin-top: 0.75rem;\n}\n\nh3 {\n  font-size: 1.5rem;\n  margin-top: 1.5rem;\n  margin-bottom: 0.5rem;\n}\n\nh4 {\n  font-size: 1.25rem;\n  margin-top: 1.5rem;\n  margin-bottom: 0.5rem;\n}\n\nblockquote {\n  border-left: 4px solid #453C4F;\n  padding: 0.25rem 0.5rem;\n  margin: 1rem 0;\n}\n\nblockquote p:first-child {\n  margin-top: 0;\n}\n\nblockquote p:last-child {\n  margin-bottom: 0;\n}\n\nblockquote.note {\n  background: #FFFF88;\n  color: rgba(0, 0, 0, 0.8);\n  border-color: rgba(0, 0, 0, 0.3);\n  border-top: 1px solid rgba(0, 0, 0, 0.2);\n  border-right: 1px solid rgba(0, 0, 0, 0.2);\n  border-bottom: 1px solid rgba(0, 0, 0, 0.2);\n  border-radius: 0.25rem;\n}\n\nblockquote.warning {\n  background: #fff3cd;\n  color: #856404;\n  border-color: #856404;\n  border-top: 1px solid #ffeeba;\n  border-right: 1px solid #ffeeba;\n  border-bottom: 1px solid #ffeeba;\n  border-radius: 0.25rem;\n}\n\nblockquote.good,\nblockquote.success {\n  background: #d4edda;\n  color: #155724;\n  border-color: #155724;\n  border-top: 1px solid #c3e6cb;\n  border-right: 1px solid #c3e6cb;\n  border-bottom: 1px solid #c3e6cb;\n  border-radius: 0.25rem;\n}\n\nblockquote.bad,\nblockquote.danger,\nblockquote.alert {\n  background: #f8d7da;\n  color: #721c24;\n  border-color: #721c24;\n  border-top: 1px solid #f5c6cb;\n  border-right: 1px solid #f5c6cb;\n  border-bottom: 1px solid #f5c6cb;\n  border-radius: 0.25rem;\n}\n\nblockquote.information,\nblockquote.attention {\n  background: #cfe2ff;\n  color: #073984;\n  border-color: #073984;\n  border-top: 1px solid #bbd6fe;\n  border-right: 1px solid #bbd6fe;\n  border-bottom: 1px solid #bbd6fe;\n  border-radius: 0.25rem;\n}\n\npre {\n  background: #222;\n  padding: 0.75rem;\n  border-radius: 0.25rem;\n  color: #EEE;\n  overflow: auto;\n  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1) inset;\n}\n\ntable {\n  border-radius: 0.25rem;\n  border-spacing: 0;\n  margin: 1rem 0;\n}\ntable tr th {\n  text-align: left;\n  padding: 0.125rem 0.25rem;\n}\ntable tr td {\n  padding: 0.125rem 0.25rem;\n}\ntable tr:nth-child(1) td {\n  border-top: 1px solid #453C4F;\n}\ntable tr:nth-child(1) td:first-child {\n  border-radius: 0.25rem 0 0 0;\n}\ntable tr:nth-child(1) td:last-child {\n  border-radius: 0 0.25rem 0 0;\n}\ntable tr td:first-child {\n  border-left: 1px solid #453C4F;\n}\ntable tr:last-child td {\n  border-bottom: 1px solid #453C4F;\n}\ntable tr td:last-child {\n  border-right: 1px solid #453C4F;\n}\ntable tr:last-child td:first-child {\n  border-radius: 0 0 0 0.25rem;\n}\ntable tr:last-child td:last-child {\n  border-radius: 0 0 0.25rem 0;\n}\ntable tr:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\ntable tr td:nth-child(even) {\n  background: rgba(0, 0, 0, 0.05);\n}\n\np {\n  font-size: 1.125rem;\n  line-height: 1.75rem;\n  margin: 1rem 0;\n}\n\nimg {\n  border: 0.25rem solid var(--mdi-markdown-img-border-color, #453C4F);\n  border-radius: 0.25rem;\n}\n\na {\n  color: #278eca;\n}\n\n[part=content] > ul,\n.tab-content > ul {\n  list-style: square;\n  padding-left: 2rem;\n  line-height: 1.75rem;\n}\n\n[part=content] > ul > li > ul,\n.tab-content > ul > li > ul {\n  list-style: square;\n  padding-left: 1.25rem;\n  line-height: 1.75rem;\n}\n\ndl dd {\n  margin-left: 2rem;\n}\n\n[part=content] > p code,\n[part=content] > ul code,\n[part=content] > table code,\n.tab-content > p code,\n.tab-content > ul code,\n.tab-content > table code{\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n\n[part=content] > p a > code,\n[part=content] > ul a > code,\n[part=content] > table a > code,\n.tab-content > p a > code,\n.tab-content > ul a > code,\n.tab-content > table a > code {\n  text-decoration: none;\n}\n\n[part=content] > p a:hover > code,\n[part=content] > ul a:hover > code,\n[part=content] > table a:hover > code,\n.tab-content > p a:hover > code,\n.tab-content > ul a:hover > code,\n.tab-content > table a:hover > code {\n  border-color: #278eca;\n}\n\ntable code {\n  transform: translateY(-1px);\n}\n\np > svg.icon,\nblockquote > svg.icon,\np > a.icon > svg.icon,\nblockquote > a.icon > svg.icon,\nth > svg.icon,\nth > a.icon > svg.icon,\ntd > svg.icon,\ntd > a.icon > svg.icon {\n  width: 1.5rem;\n  height: 1.5rem;\n  vertical-align: middle;\n}\n\np > a.button {\n  display: inline-flex;\n  padding: 0.25rem 0.5rem;\n  background: transparent;\n  border-radius: 0.25rem;\n  color: #fff;\n  text-decoration: none;\n  font-size: 1rem;\n  color: var(--mdi-markdown-button-color, #453C4F);\n  border: 1px solid var(--mdi-markdown-button-color, #453C4F);\n}\n\np > a.button:hover {\n  background: var(--mdi-markdown-button-hover-background, #453C4F);\n  color: var(--mdi-markdown-button-hover-color, #fff);\n}\n\np > a.button:active {\n  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, 0.4) inset;\n}\n\np > a.button > svg.icon {\n  width: 1.5rem;\n  height: 1.5rem;\n  margin-left: -0.125rem;\n  margin-right: 0.25rem;\n  align-self: center;\n}\n\n/* PrismJS 1.15.0\n/**\n * prism.js Visual Studio Code Theme\n * @author Visual Studio Code\n */\n\ncode[class*=\"language-\"],\npre[class*=\"language-\"] {\n  color: #9CDCFE;\n  background: none;\n  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;\n  text-align: left;\n  white-space: pre;\n  word-spacing: normal;\n  word-break: normal;\n  word-wrap: normal;\n  line-height: 1.5;\n\n  -moz-tab-size: 4;\n  -o-tab-size: 4;\n  tab-size: 4;\n\n  -webkit-hyphens: none;\n  -moz-hyphens: none;\n  -ms-hyphens: none;\n  hyphens: none;\n\n}\n\n/* Code blocks */\npre[class*=\"language-\"] {\n  margin: .5em 0;\n  overflow: auto;\n}\n\n:not(pre) > code[class*=\"language-\"],\npre[class*=\"language-\"] {\n  background: #1E1E1E;\n}\n\n/* Inline code */\n:not(pre) > code[class*=\"language-\"] {\n  padding: .1em;\n  border-radius: .3em;\n  white-space: normal;\n}\n\n.token.comment,\n.token.block-comment,\n.token.prolog,\n.token.doctype,\n.token.cdata {\n  color: #608B4E;\n}\n\n.token.punctuation {\n  color: #ccc;\n}\n\n.token.tag,\n.token.namespace,\n.token.deleted {\n  color: #4EC9B0;\n}\n\n.token.attr-name {\n  color: #9CDCFE;\n}\n\n.token.function-name {\n  color: #6196cc;\n}\n\n.token.boolean {\n  color: #569CD6;\n}\n.token.number {\n  color: #B5CEA8;\n}\n.token.function {\n  color: #DCDCAA;\n}\n\n.token.property,\n.token.constant,\n.token.symbol {\n  color: #f8c555;\n}\n\n.token.class-name {\n  color: #4EC9B0;\n}\n\n.token.selector,\n.token.important,\n.token.atrule,\n.token.keyword,\n.token.builtin {\n  color: #C586C0;\n}\n\n.token.string,\n.token.char,\n.token.attr-value,\n.token.regex,\n.token.variable {\n  color: #CE9169;\n}\n\n.token.operator {\n  color: #D4D4D4;\n}\n.token.entity,\n.token.url {\n  color: #67cdcc;\n}\n\n.token.important,\n.token.bold {\n  font-weight: bold;\n}\n.token.italic {\n  font-style: italic;\n}\n\n.token.entity {\n  cursor: help;\n}\n\n.token.inserted {\n  color: green;\n}\n/* TypeScript */\n.language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword,\n.language-jsx .token:not(.keyword) + .token.keyword + .token.keyword + .token.keyword + .token.class-name + .token.keyword,\n.language-jsx .token.function-variable.function + .token.operator + .token.keyword {\n  color: #569CD6;\n}\n/* JSX */\n.language-jsx .language-javascript {\n  color: #9CDCFE;\n}\n.language-jsx .language-javascript .token.string {\n  color: #CE9169;\n}\n.language-jsx .language-javascript .token.punctuation {\n  color: #3F9CD6;\n}\n.language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation {\n  color: #D4D4D4;\n}\n.language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation {\n  color: #D4D4D4;\n}\n.language-jsx .language-javascript .script-punctuation + .token.punctuation + .token.punctuation ~ .token.punctuation + .token.punctuation {\n  color: #3F9CD6;\n}\n\n/* Fancy Language Labels */\n\npre {\n  position: relative;\n  font-size: 0.875rem;\n}\n\npre code:not([class]) {\n  font-size: 0.875rem;\n}\n\npre.language-text::before {\n  content: 'Text';\n}\npre.language-html::before {\n  content: 'HTML';\n}\npre.language-typescript::before {\n  content: 'TypeScript';\n}\npre.language-javascript::before {\n  content: 'JavaScript';\n}\npre.language-jsx::before {\n  content: 'JavaScript / JSX';\n}\npre.language-tsx::before {\n  content: 'TypeScript / TSX';\n}\npre.language-xml::before {\n  content: 'XML';\n}\npre.language-css::before {\n  content: 'CSS';\n}\npre.language-scss::before {\n  content: 'SCSS';\n}\npre.language-php::before {\n  content: 'PHP';\n}\npre.language-yaml::before {\n  content: 'YAML';\n}\npre.language-groovy::before {\n  content: 'Groovy';\n}\n\npre.language-text::before,\npre.language-html::before,\npre.language-typescript::before,\npre.language-javascript::before,\npre.language-tsx::before,\npre.language-jsx::before,\npre.language-xml::before,\npre.language-css::before,\npre.language-scss::before,\npre.language-php::before,\npre.language-yaml::before,\npre.language-groovy::before {\n  display: var(--mdi-markdown-language-display, 'block');\n  font-size: 12px;\n  border-radius: 0 0 0 4px;\n  position: absolute;\n  top: 0;\n  right: 0;\n  color: #453C4F;\n  background: #FFF;\n  padding: 2px 4px 2px 6px;\n  pointer-events: none;\n  border-bottom: 1px solid #000;\n  border-left: 1px solid #000;\n}\n\n/* YAML */\ndiv.yaml + pre.language-yaml {\n  margin-top: 0;\n}\n.yaml-preview {\n  position: relative;\n  background: #1e1e1e;\n  color: #fff;\n  padding: 0.75rem 1.25rem;\n  border-radius: 0.25rem;\n  margin-bottom: 1rem;\n}\n.yaml-preview code {\n  border: none;\n  color: #fff;\n  font-size: 1rem;\n  padding: 0;\n}\n.yaml-preview ul {\n  list-style: none;\n  padding-left: 0;\n  margin-bottom: 0;\n  margin-top: 0;\n}\n.yaml-preview ul li button {\n  position: relative;\n  top: 1px;\n  background: #fff;\n  color: #444;\n  border: none;\n  border-radius: 2px;\n  padding: 0;\n  width: 1rem;\n  line-height: 1rem;\n  font-weight: bold;\n  margin-left: -1rem;\n  margin-right: 0.75rem;\n  cursor: pointer;\n}\n.yaml-preview ul li button:focus {\n  outline: none;\n}\n.yaml-preview ul li button:hover {\n  color: #000;\n  background: #f1f1f1;\n}\n.yaml-preview ul li ul {\n  padding-left: 1rem;\n}\n.yaml-preview ul li ul > li {\n  border-left: 1px solid rgba(255, 255, 255, 0.05);\n  padding-left: 0.5rem;\n}\n.yaml-preview ul > li {\n  border-left: 1px solid transparent;\n  padding-left: 0.5rem;\n}\n.yaml-preview .yaml-end {\n  padding-left: 0.75rem;\n}\n.yaml-preview .yaml-prop {\n  padding-left: 0.75rem;\n}\n.yaml-preview .yaml-type {\n  color: #9cdcfe;\n}\n.yaml-preview .yaml-error {\n  color: #e91e63;\n}\n.yaml-preview .yaml-key {\n  color: #c586c0;\n}\n.yaml-preview .yaml-auth {\n  width: 1rem;\n  height: 1rem;\n  fill: #d7b558;\n  margin-left: -0.5rem;\n  margin-right: -0.1rem;\n  margin-bottom: -0.1rem;\n}\n.yaml-preview .yaml-example {\n  color: #666;\n}\n.yaml-preview::before {\n  content: 'JSON Preview';\n  font-size: 12px;\n  border-radius: 0 4px 0 4px;\n  position: absolute;\n  top: 0;\n  right: 0;\n  color: #453C4F;\n  background: #fff;\n  padding: 2px 4px 2px 6px;\n  pointer-events: none;\n  border-bottom: 1px solid #000;\n  border-left: 1px solid #000;\n}\n.yaml-toolbar button {\n  margin-right: 0.25rem;\n  padding: 0.25rem 0.75rem 0.25rem 0.75rem;\n  background: #eee;\n  border: 1px solid #ddd;\n  color: #444;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: pointer;\n}\n.yaml-toolbar button:focus {\n  outline: none;\n}\n.yaml-toolbar button:hover {\n  border-color: #bbb;\n}\n.yaml-toolbar button.active {\n  margin-right: 0.25rem;\n  padding: 0.25rem 0.75rem 0.25rem 0.75rem;\n  background: #1e1e1e;\n  border: 1px solid #1e1e1e;\n  color: #fff;\n  border-radius: 0.25rem 0.25rem 0 0;\n  position: relative;\n  z-index: 1;\n  cursor: default;\n}\n.yaml-toolbar button.active:focus {\n  outline: none;\n}\n.yaml-show {\n  margin-top: 0;\n  border-top-left-radius: 0 !important;\n}\n.yaml-hide {\n  display: none;\n}\n\n/* Tabs */\n\n.tabs {\n  display: grid;\n  grid-template-rows: calc(2.5rem - 1px) auto;\n  grid-template-columns: calc(100% - 2rem) 2rem;\n  box-sizing: border-box;\n  margin: 1rem 0;\n}\n\n.tabs .tabset {\n  grid-row: 1;\n  display: flex;\n  list-style: none;\n  padding: 0;\n  align-self: flex-start;\n  align-items: flex-start;\n  margin: 0;\n  box-sizing: border-box;\n}\n\n.tabs .tab-label,\n.tabs .tab-title {\n  display: flex;\n}\n\n.tabs .tab-label {\n  padding: 0 0.75rem;\n  font-size: 1.125rem;\n  font-weight: bold;\n  line-height: 2.5rem;\n  border: 1px solid transparent;\n}\n\n.tabs .tab-title {\n  margin-right: 0.25rem;\n  position: relative;\n}\n\n.tabs .tab-title a {\n  display: flex;\n  line-height: calc(2.5rem - 0.5px);\n  border-top: 1px solid transparent;\n  border-right: 1px solid transparent;\n  border-bottom: 0;\n  border-left: 1px solid transparent;\n  border-radius: 0.25rem 0.25rem 0 0;\n  padding: 0 0.75rem;\n  text-decoration: none;\n  color: var(--mdi-markdown-tab-border, #453C4F);\n  align-items: center;\n  align-content: center;\n  box-sizing: border-box;\n}\n\n.tabs .tab-title a svg:nth-child(1) {\n  width: 1.5rem;\n  margin: -0.25rem;\n  align-self: center;\n}\n\n.tabs .tab-title a span:nth-child(2) {\n  margin-left: 0.55rem;\n}\n\n.tabs .tab-title a svg:nth-child(3) {\n  width: 1.5rem;\n  margin: -0.25rem;\n  align-self: center;\n}\n\n.tabs .tab-title:not(.active) a:hover {\n  border-color: rgba(69, 60, 79, 0.5);\n}\n\n.tabs .tab-title.active a {\n  border-color: var(--mdi-markdown-tab-border, #453C4F);\n  font-weight: bold;\n  background: #fff;\n  cursor: default;\n  height: calc(2.5rem + 0.5px);\n}\n\n.tabs .tab-title:not(.active):first-child:hover::before {\n  position: absolute;\n  top: calc(2.5rem - 1px);\n  content: ' ';\n  border-top: 1px solid  var(--mdi-markdown-tab-border, #453C4F);\n  border-left: 1px solid  var(--mdi-markdown-tab-border, #453C4F);\n  height: 0.25rem;\n  width: 0.25rem;\n  background: #fff;\n}\n\n.tabs .tab-title.active:first-child::before {\n  position: absolute;\n  bottom: -0.25rem;\n  content: ' ';\n  border-left: 1px solid  var(--mdi-markdown-tab-border, #453C4F);\n  height: 0.25rem;\n  width: 0.25rem;\n  background: #fff;\n}\n\n.tabs .tab-content {\n  box-sizing: border-box;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  border: 1px solid var(--mdi-markdown-tab-border, #453C4F);\n  border-radius: 0.25rem;\n  padding: 1px 1rem;\n  background: #fff;\n}\n\n.tabs .tab-content > *:nth-child(1) {\n  margin-top: 1rem;\n}\n\n.tabs .tab-content > *:nth-last-child(1) {\n  margin-bottom: 1rem;\n}\n\n.tabs .tab-content.has-label {\n  border-radius: 0.25rem;\n}\n\n.tab-hide {\n  display: none;\n}";
 
 const supported = [
     'css',
@@ -23008,14 +23190,14 @@ __decorate([
 MdiMarkdown = __decorate([
     Component({
         selector: 'mdi-markdown',
-        style: style$k,
-        template: template$k
+        style: style$n,
+        template: template$n
     })
 ], MdiMarkdown);
 
-var template$l = "<div part=\"contextMenu\">\n  <a part=\"newTab\" href=\"\">Open icon in New Tab</a>\n  <button part=\"copyIconName\">Copy Icon Name</button>\n  <div class=\"section\">Download PNG</div>\n  <div class=\"group\">\n    <button part=\"png24\">24</button>\n    <button part=\"png36\">36</button>\n    <button part=\"png48\">48</button>\n    <button part=\"png96\">96</button>\n  </div>\n  <div class=\"row\" style=\"margin-top: 0.25rem;\">\n    <div class=\"group\">\n      <button part=\"pngBlack\"><span class=\"black\"></span></button>\n      <button part=\"pngWhite\"><span class=\"white\"></span></button>\n      <button part=\"pngColor\">\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"#fff\" d=\"M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z\"/>\n          <path fill=\"currentColor\" d=\"M12.97 8L15.8 10.85L7.67 19L3.71 20.68L3.15 20.11L4.84 16.15L12.97 8Z\"/>\n        </svg>\n      </button>\n    </div>\n    <div class=\"group\">\n      <button part=\"pngDownload\" class=\"download\">\n        PNG\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"currentColor\" d=\"M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z\"/>\n        </svg>\n      </button>\n    </div>\n  </div>\n  <div class=\"section\">SVG</div>\n  <div class=\"row\" style=\"margin-bottom: 0.25rem;\">\n    <div class=\"group\">\n      <button part=\"svgBlack\" class=\"active\"><span class=\"black\"></span></button>\n      <button part=\"svgWhite\"><span class=\"white\"></span></button>\n      <button part=\"svgColor\">\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"#fff\" d=\"M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z\"/>\n          <path fill=\"currentColor\" d=\"M12.97 8L15.8 10.85L7.67 19L3.71 20.68L3.15 20.11L4.84 16.15L12.97 8Z\"/>\n        </svg>\n      </button>\n    </div>\n    <div class=\"group\">\n      <button part=\"svgDownload\" class=\"download\">\n        SVG\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"currentColor\" d=\"M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z\"/>\n        </svg>\n      </button>\n    </div>\n  </div>\n  <button part=\"copySvgInline\">Copy HTML SVG Inline</button>\n  <button part=\"copySvgFile\">Copy SVG File Contents</button>\n  <button part=\"copySvgPath\">Copy SVG Path Data</button>\n  <div class=\"section\">Desktop Font</div>\n  <button part=\"copyUnicode\">Copy Unicode Character</button>\n  <button part=\"copyCodepoint\">Copy Codepoint</button>\n  <div class=\"divider\"></div>\n  <button part=\"copyPreview\">Copy GitHub Preview</button>\n  <div part=\"color\">\n    <mdi-input-hex-rgb part=\"colorHexRgb\"></mdi-input-hex-rgb>\n    <mdi-color part=\"colorPicker\"></mdi-color>\n  </div>\n</div>";
+var template$o = "<div part=\"contextMenu\">\n  <a part=\"newTab\" href=\"\">Open icon in New Tab</a>\n  <button part=\"copyIconName\">Copy Icon Name</button>\n  <div class=\"section\">Download PNG</div>\n  <div class=\"group\">\n    <button part=\"png24\">24</button>\n    <button part=\"png36\">36</button>\n    <button part=\"png48\">48</button>\n    <button part=\"png96\">96</button>\n  </div>\n  <div class=\"row\" style=\"margin-top: 0.25rem;\">\n    <div class=\"group\">\n      <button part=\"pngBlack\"><span class=\"black\"></span></button>\n      <button part=\"pngWhite\"><span class=\"white\"></span></button>\n      <button part=\"pngColor\">\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"#fff\" d=\"M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z\"/>\n          <path fill=\"currentColor\" d=\"M12.97 8L15.8 10.85L7.67 19L3.71 20.68L3.15 20.11L4.84 16.15L12.97 8Z\"/>\n        </svg>\n      </button>\n    </div>\n    <div class=\"group\">\n      <button part=\"pngDownload\" class=\"download\">\n        PNG\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"currentColor\" d=\"M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z\"/>\n        </svg>\n      </button>\n    </div>\n  </div>\n  <div class=\"section\">SVG</div>\n  <div class=\"row\" style=\"margin-bottom: 0.25rem;\">\n    <div class=\"group\">\n      <button part=\"svgBlack\" class=\"active\"><span class=\"black\"></span></button>\n      <button part=\"svgWhite\"><span class=\"white\"></span></button>\n      <button part=\"svgColor\">\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"#fff\" d=\"M19.35,11.72L17.22,13.85L15.81,12.43L8.1,20.14L3.5,22L2,20.5L3.86,15.9L11.57,8.19L10.15,6.78L12.28,4.65L19.35,11.72M16.76,3C17.93,1.83 19.83,1.83 21,3C22.17,4.17 22.17,6.07 21,7.24L19.08,9.16L14.84,4.92L16.76,3M5.56,17.03L4.5,19.5L6.97,18.44L14.4,11L13,9.6L5.56,17.03Z\"/>\n          <path fill=\"currentColor\" d=\"M12.97 8L15.8 10.85L7.67 19L3.71 20.68L3.15 20.11L4.84 16.15L12.97 8Z\"/>\n        </svg>\n      </button>\n    </div>\n    <div class=\"group\">\n      <button part=\"svgDownload\" class=\"download\">\n        SVG\n        <svg viewBox=\"0 0 24 24\">\n          <path fill=\"currentColor\" d=\"M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z\"/>\n        </svg>\n      </button>\n    </div>\n  </div>\n  <button part=\"copySvgInline\">Copy HTML SVG Inline</button>\n  <button part=\"copySvgFile\">Copy SVG File Contents</button>\n  <button part=\"copySvgPath\">Copy SVG Path Data</button>\n  <div class=\"section\">Desktop Font</div>\n  <button part=\"copyUnicode\">Copy Unicode Character</button>\n  <button part=\"copyCodepoint\">Copy Codepoint</button>\n  <div class=\"divider\"></div>\n  <button part=\"copyPreview\">Copy GitHub Preview</button>\n  <div part=\"color\">\n    <mdi-input-hex-rgb part=\"colorHexRgb\"></mdi-input-hex-rgb>\n    <mdi-color part=\"colorPicker\"></mdi-color>\n  </div>\n</div>";
 
-var style$l = "\n[part~=contextMenu] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  width: 12rem;\n  display: flex;\n  flex-direction: column;\n  padding: 0.25rem 0;\n  visibility: hidden;\n  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);\n}\n\n[part~=contextMenu] > div.section {\n  color: #FFF;\n  font-size: 0.875rem;\n  padding: 0.25rem 0.5rem;\n  cursor: default;\n  font-weight: bold;\n}\n\n[part~=contextMenu] > div.section:not(:first-child) {\n  border-top: 1px solid rgba(255, 255, 255, 0.3);\n  margin-top: 0.5rem;\n}\n\n[part~=contextMenu] > div.group {\n  margin: 0 0.5rem;\n  border: 1px solid rgba(255, 255, 255, 0.2);\n  border-radius: 0.25rem;\n  display: flex;\n  flex-direction: row;\n  overflow: hidden;\n}\n[part~=contextMenu] > div.row > div.group {\n  border: 1px solid rgba(255, 255, 255, 0.2);\n  border-radius: 0.25rem;\n  display: flex;\n  flex-direction: row;\n  flex: 1;\n  overflow: hidden;\n}\n\n[part~=contextMenu] > div.row > div.group:first-child {\n  margin-left: 0.5rem;\n  margin-right: 0.25rem;\n}\n\n[part~=contextMenu] > div.row > div.group:last-child {\n  margin-right: 0.5rem;\n}\n\n[part~=contextMenu] > div.group > button,\n[part~=contextMenu] > div.row > div.group > button {\n  display: flex;\n  flex: 1;\n  padding: 0.25rem;\n  justify-content: center;\n  border: 0;\n  margin: 0;\n  background: transparent;\n  color: #FFF;\n  font-size: 1rem;\n  line-height: 1.25rem;\n  align-items: center;\n  outline: none;\n}\n\n[part~=contextMenu] > button,\n[part~=contextMenu] > a {\n  display: flex;\n  border: 0;\n  margin: 0;\n  padding: 0.125rem 0.5rem;\n  background: transparent;\n  text-align: left;\n  color: #FFF;\n  font-size: 1rem;\n  text-decoration: none;\n  cursor: default;\n  outline: none;\n}\n\n[part~=contextMenu] > div.group > button.active,\n[part~=contextMenu] > div.row > div.group > button.active {\n  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.1);\n}\n\n[part~=contextMenu] > div.group > button.active:hover,\n[part~=contextMenu] > div.row > div.group > button.active:hover {\n  background: rgba(0, 0, 0, 0.2);\n}\n\n[part~=contextMenu] > div.group > button:not(:first-child),\n[part~=contextMenu] > div.row > div.group > button:not(:first-child) {\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n}\n\n[part~=contextMenu] > div.row > div.group > button > svg,\n[part~=contextMenu] > div.group > button > svg,\n[part~=contextMenu] > div.row > button > svg,\n[part~=contextMenu] > button > svg {\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n}\n\n[part~=contextMenu] > div.row > div.group > button:hover,\n[part~=contextMenu] > div.group > button:hover,\n[part~=contextMenu] > button:hover,\n[part~=contextMenu] > a:hover {\n  background: rgba(255, 255, 255, 0.2);\n}\n\n[part~=contextMenu] > div.row > div.group > button:active,\n[part~=contextMenu] > div.group > button:active {\n  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.2);\n}\n[part~=contextMenu] > button:active,\n[part~=contextMenu] > a:active {\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.2);\n}\n\n.row {\n  display: flex;\n}\n\n.divider {\n  border-top: 1px solid rgba(255, 255, 255, 0.3);\n  margin-top: 0.5rem;\n  height: 0.4375rem;\n}\n\n.black {\n  display: inline-flex;\n  border-radius: 50%;\n  width: 1rem;\n  height: 1rem;\n  background: #000;\n}\n\n.white {\n  display: inline-flex;\n  border-radius: 50%;\n  width: 1rem;\n  height: 1rem;\n  background: #FFF;\n}\n\n.download svg {\n  margin-bottom: -0.125rem;\n  margin-left: 0.25rem;\n}\n\n[part~=color] {\n  position: absolute;\n  padding: 0.25rem;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  box-shadow: 0 1px 16px rgba(0, 0, 0, 0.6);\n}\n\n[part~=colorHexRgb] {\n  margin-bottom: 0.25rem;\n}";
+var style$o = "\n[part~=contextMenu] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  width: 12rem;\n  display: flex;\n  flex-direction: column;\n  padding: 0.25rem 0;\n  visibility: hidden;\n  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);\n}\n\n[part~=contextMenu] > div.section {\n  color: #FFF;\n  font-size: 0.875rem;\n  padding: 0.25rem 0.5rem;\n  cursor: default;\n  font-weight: bold;\n}\n\n[part~=contextMenu] > div.section:not(:first-child) {\n  border-top: 1px solid rgba(255, 255, 255, 0.3);\n  margin-top: 0.5rem;\n}\n\n[part~=contextMenu] > div.group {\n  margin: 0 0.5rem;\n  border: 1px solid rgba(255, 255, 255, 0.2);\n  border-radius: 0.25rem;\n  display: flex;\n  flex-direction: row;\n  overflow: hidden;\n}\n[part~=contextMenu] > div.row > div.group {\n  border: 1px solid rgba(255, 255, 255, 0.2);\n  border-radius: 0.25rem;\n  display: flex;\n  flex-direction: row;\n  flex: 1;\n  overflow: hidden;\n}\n\n[part~=contextMenu] > div.row > div.group:first-child {\n  margin-left: 0.5rem;\n  margin-right: 0.25rem;\n}\n\n[part~=contextMenu] > div.row > div.group:last-child {\n  margin-right: 0.5rem;\n}\n\n[part~=contextMenu] > div.group > button,\n[part~=contextMenu] > div.row > div.group > button {\n  display: flex;\n  flex: 1;\n  padding: 0.25rem;\n  justify-content: center;\n  border: 0;\n  margin: 0;\n  background: transparent;\n  color: #FFF;\n  font-size: 1rem;\n  line-height: 1.25rem;\n  align-items: center;\n  outline: none;\n}\n\n[part~=contextMenu] > button,\n[part~=contextMenu] > a {\n  display: flex;\n  border: 0;\n  margin: 0;\n  padding: 0.125rem 0.5rem;\n  background: transparent;\n  text-align: left;\n  color: #FFF;\n  font-size: 1rem;\n  text-decoration: none;\n  cursor: default;\n  outline: none;\n}\n\n[part~=contextMenu] > div.group > button.active,\n[part~=contextMenu] > div.row > div.group > button.active {\n  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.1);\n}\n\n[part~=contextMenu] > div.group > button.active:hover,\n[part~=contextMenu] > div.row > div.group > button.active:hover {\n  background: rgba(0, 0, 0, 0.2);\n}\n\n[part~=contextMenu] > div.group > button:not(:first-child),\n[part~=contextMenu] > div.row > div.group > button:not(:first-child) {\n  border-left: 1px solid rgba(255, 255, 255, 0.1);\n}\n\n[part~=contextMenu] > div.row > div.group > button > svg,\n[part~=contextMenu] > div.group > button > svg,\n[part~=contextMenu] > div.row > button > svg,\n[part~=contextMenu] > button > svg {\n  width: 1.5rem;\n  height: 1.5rem;\n  align-self: center;\n}\n\n[part~=contextMenu] > div.row > div.group > button:hover,\n[part~=contextMenu] > div.group > button:hover,\n[part~=contextMenu] > button:hover,\n[part~=contextMenu] > a:hover {\n  background: rgba(255, 255, 255, 0.2);\n}\n\n[part~=contextMenu] > div.row > div.group > button:active,\n[part~=contextMenu] > div.group > button:active {\n  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.2);\n}\n[part~=contextMenu] > button:active,\n[part~=contextMenu] > a:active {\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) inset;\n  background: rgba(0, 0, 0, 0.2);\n}\n\n.row {\n  display: flex;\n}\n\n.divider {\n  border-top: 1px solid rgba(255, 255, 255, 0.3);\n  margin-top: 0.5rem;\n  height: 0.4375rem;\n}\n\n.black {\n  display: inline-flex;\n  border-radius: 50%;\n  width: 1rem;\n  height: 1rem;\n  background: #000;\n}\n\n.white {\n  display: inline-flex;\n  border-radius: 50%;\n  width: 1rem;\n  height: 1rem;\n  background: #FFF;\n}\n\n.download svg {\n  margin-bottom: -0.125rem;\n  margin-left: 0.25rem;\n}\n\n[part~=color] {\n  position: absolute;\n  padding: 0.25rem;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  box-shadow: 0 1px 16px rgba(0, 0, 0, 0.6);\n}\n\n[part~=colorHexRgb] {\n  margin-bottom: 0.25rem;\n}";
 
 let MdiMenuIcon = class MdiMenuIcon extends HTMLElement {
 };
@@ -23103,14 +23285,14 @@ __decorate([
 MdiMenuIcon = __decorate([
     Component({
         selector: 'mdi-menu-icon',
-        style: style$l,
-        template: template$l
+        style: style$o,
+        template: template$o
     })
 ], MdiMenuIcon);
 
-var template$m = "<nav part=\"nav\">\n  <a href=\"/\">\n    <span part=\"name\"></span>\n  </a>\n  <a href=\"/icons\">\n    Icons\n  </a>\n  <a href=\"/icons\">\n    Docs\n  </a>\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n</nav>";
+var template$p = "<nav part=\"nav\">\n  <a href=\"/\">\n    <span part=\"name\"></span>\n  </a>\n  <a href=\"/icons\">\n    Icons\n  </a>\n  <a href=\"/icons\">\n    Docs\n  </a>\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n</nav>";
 
-var style$m = ":host {\n  align-self: center;\n}\nsvg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\nbutton {\n  border: 0;\n  background: transparent;\n}\nbutton > svg {\n  fill: #fff;\n}";
+var style$p = ":host {\n  align-self: center;\n}\nsvg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\nbutton {\n  border: 0;\n  background: transparent;\n}\nbutton > svg {\n  fill: #fff;\n}";
 
 const noIcon$2 = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
 let MdiNav = class MdiNav extends HTMLElement {
@@ -23130,14 +23312,14 @@ __decorate([
 MdiNav = __decorate([
     Component({
         selector: 'mdi-nav',
-        style: style$m,
-        template: template$m
+        style: style$p,
+        template: template$p
     })
 ], MdiNav);
 
-var template$n = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\" height=\"12rem\"></mdi-grid>\n  </div>\n</div>";
+var template$q = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\" height=\"12rem\"></mdi-grid>\n  </div>\n</div>";
 
-var style$n = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n  outline: none;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
+var style$q = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n  outline: none;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
 
 window.process = { env: {} };
 let MdiPicker = class MdiPicker extends MdiButton$1 {
@@ -23203,17 +23385,17 @@ __decorate([
 MdiPicker = __decorate([
     Component({
         selector: 'mdi-picker',
-        style: style$n,
-        template: template$n
+        style: style$q,
+        template: template$q
     })
 ], MdiPicker);
 
-var template$o = "<div part=\"grid\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n  </svg>\n</div>";
+var template$r = "<div part=\"grid\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n  </svg>\n</div>";
 
-var style$o = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n[part=svg] {\n  position: relative;\n  width: 1.5rem;\n  height: 1.5rem;\n  z-index: 1;\n}\n\n[part=\"grid\"] {\n  position: relative;\n  background-image:\n    repeating-linear-gradient(rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%);\n  background-size: var(--mdi-preview-size, 4px) var(--mdi-preview-size, 4px);\n  background-position: calc(var(--mdi-preview-size, 4px) - 1px) calc(var(--mdi-preview-size, 4px) - 1px);\n}\n\n[part=\"grid\"]::after {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  content: ' ';\n  background-image:\n    repeating-linear-gradient(#5389a4 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, #5389a4 0 2px, transparent 2px 100%);\n  background-size: calc(var(--mdi-preview-size, 4px) * 4) calc(var(--mdi-preview-size, 4px) * 4);\n  background-position: calc(var(--mdi-preview-size, 4px) * 4 - 1px) calc(var(--mdi-preview-size, 4px) * 4 - 1px);\n}\n";
+var style$r = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n[part=svg] {\n  position: relative;\n  width: 1.5rem;\n  height: 1.5rem;\n  z-index: 1;\n}\n\n[part=\"grid\"] {\n  position: relative;\n  background-image:\n    repeating-linear-gradient(rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%);\n  background-size: var(--mdi-preview-size, 4px) var(--mdi-preview-size, 4px);\n  background-position: calc(var(--mdi-preview-size, 4px) - 1px) calc(var(--mdi-preview-size, 4px) - 1px);\n}\n\n[part=\"grid\"]::after {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  content: ' ';\n  background-image:\n    repeating-linear-gradient(#5389a4 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, #5389a4 0 2px, transparent 2px 100%);\n  background-size: calc(var(--mdi-preview-size, 4px) * 4) calc(var(--mdi-preview-size, 4px) * 4);\n  background-position: calc(var(--mdi-preview-size, 4px) * 4 - 1px) calc(var(--mdi-preview-size, 4px) * 4 - 1px);\n}\n";
 
 const noIcon$3 = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
-let MdiIcon$1 = class MdiIcon extends HTMLElement {
+let MdiIcon$2 = class MdiIcon extends HTMLElement {
     constructor() {
         super(...arguments);
         this.path = noIcon$3;
@@ -23239,32 +23421,32 @@ let MdiIcon$1 = class MdiIcon extends HTMLElement {
 };
 __decorate([
     Prop()
-], MdiIcon$1.prototype, "path", void 0);
+], MdiIcon$2.prototype, "path", void 0);
 __decorate([
     Prop()
-], MdiIcon$1.prototype, "width", void 0);
+], MdiIcon$2.prototype, "width", void 0);
 __decorate([
     Prop()
-], MdiIcon$1.prototype, "height", void 0);
+], MdiIcon$2.prototype, "height", void 0);
 __decorate([
     Prop()
-], MdiIcon$1.prototype, "size", void 0);
+], MdiIcon$2.prototype, "size", void 0);
 __decorate([
     Part()
-], MdiIcon$1.prototype, "$svg", void 0);
+], MdiIcon$2.prototype, "$svg", void 0);
 __decorate([
     Part()
-], MdiIcon$1.prototype, "$path", void 0);
+], MdiIcon$2.prototype, "$path", void 0);
 __decorate([
     Part()
-], MdiIcon$1.prototype, "$grid", void 0);
-MdiIcon$1 = __decorate([
+], MdiIcon$2.prototype, "$grid", void 0);
+MdiIcon$2 = __decorate([
     Component({
         selector: 'mdi-preview',
-        style: style$o,
-        template: template$o
+        style: style$r,
+        template: template$r
     })
-], MdiIcon$1);
+], MdiIcon$2);
 
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -23781,9 +23963,9 @@ function throttle(func, wait, options) {
   });
 }
 
-var template$p = "<div part=\"scroll\">\n  <slot></slot>\n</div>";
+var template$s = "<div part=\"scroll\">\n  <slot></slot>\n</div>";
 
-var style$p = ":host {\n  display: block;\n}\n\ndiv {\n  transform: translateY(0);\n}";
+var style$s = ":host {\n  display: block;\n}\n\ndiv {\n  transform: translateY(0);\n}";
 
 let MdiScroll = class MdiScroll extends HTMLElement {
     constructor() {
@@ -23916,8 +24098,8 @@ __decorate([
 MdiScroll = __decorate([
     Component({
         selector: 'mdi-scroll',
-        style: style$p,
-        template: template$p
+        style: style$s,
+        template: template$s
     })
 ], MdiScroll);
 
@@ -24085,9 +24267,9 @@ function iconFilter(icons, term, limit = 5) {
     return exactMatch(list, term);
 }
 
-var template$q = "<div part=\"grid\">\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n    <section part=\"empty\">\n      <strong>No Results</strong>\n      <a part=\"reqIcon\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Icon+Request&template=1_icon_request.md&title=\" target=\"_blank\">\n        Request an Icon\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n      <a part=\"reqDoc\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Documentation&template=6_doc_guide_request.md&title=\" target=\"_blank\">\n        Request Documentation\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n    </section>\n  </div>\n</div>";
+var template$t = "<div part=\"grid\">\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n    <section part=\"empty\">\n      <strong>No Results</strong>\n      <a part=\"reqIcon\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Icon+Request&template=1_icon_request.md&title=\" target=\"_blank\">\n        Request an Icon\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n      <a part=\"reqDoc\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Documentation&template=6_doc_guide_request.md&title=\" target=\"_blank\">\n        Request Documentation\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n    </section>\n  </div>\n</div>";
 
-var style$q = ":host {\n  display: block;\n  align-self: center;\n  font-family: var(--mdi-font-family);\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n  border: .0625rem solid var(--mdi-search-border-color);\n}\ninput:active {\n  box-shadow: 0 0 0 3px var(--mdi-search-active-glow, rgb(79, 143, 249, 0.6));\n}\ninput:focus {\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n.active input + svg path {\n  fill: #453C4F;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover,\nul > li > a:active,\nul > li > a:focus {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n  align-self: end;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n.icon svg {\n  color: #453C4F;\n  margin-right: 0.345rem;\n  margin-left: -0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}\n\n[part~=empty] {\n  background: #453C4F;\n  border-radius: 0.25rem;\n  padding: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\n[part~=empty] strong {\n  color: #fff;\n  padding: 0 0.25rem;\n}\n[part~=empty] a {\n  display: block;\n  background: #fff;\n  color: #453C4F;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  margin-top: 0.25rem;\n}\n[part~=empty] a:hover,\n[part~=empty] a:active,\n[part~=empty] a:focus {\n  background: #DAF4FB;\n}\n[part~=empty] a svg {\n  vertical-align: middle;\n  width: 1.5rem;\n  height: 1.5rem;\n  float: right;\n  margin: -0.125rem -0.25rem 0 0;\n}\n\n.hide {\n  display: none;\n}";
+var style$t = ":host {\n  display: block;\n  align-self: center;\n  font-family: var(--mdi-font-family);\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n  border: .0625rem solid var(--mdi-search-border-color);\n}\ninput:active {\n  box-shadow: 0 0 0 3px var(--mdi-search-active-glow, rgb(79, 143, 249, 0.6));\n}\ninput:focus {\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n.active input + svg path {\n  fill: #453C4F;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover,\nul > li > a:active,\nul > li > a:focus {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n  align-self: end;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n.icon svg {\n  color: #453C4F;\n  margin-right: 0.345rem;\n  margin-left: -0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}\n\n[part~=empty] {\n  background: #453C4F;\n  border-radius: 0.25rem;\n  padding: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\n[part~=empty] strong {\n  color: #fff;\n  padding: 0 0.25rem;\n}\n[part~=empty] a {\n  display: block;\n  background: #fff;\n  color: #453C4F;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  margin-top: 0.25rem;\n}\n[part~=empty] a:hover,\n[part~=empty] a:active,\n[part~=empty] a:focus {\n  background: #DAF4FB;\n}\n[part~=empty] a svg {\n  vertical-align: middle;\n  width: 1.5rem;\n  height: 1.5rem;\n  float: right;\n  margin: -0.125rem -0.25rem 0 0;\n}\n\n.hide {\n  display: none;\n}";
 
 let MdiSearch = class MdiSearch extends HTMLElement {
     constructor() {
@@ -24319,8 +24501,8 @@ __decorate([
 MdiSearch = __decorate([
     Component({
         selector: 'mdi-search',
-        style: style$q,
-        template: template$q
+        style: style$t,
+        template: template$t
     })
 ], MdiSearch);
 
@@ -24348,9 +24530,9 @@ function removeToast(key) {
     document.body.dispatchEvent(event);
 }
 
-var template$r = "<button part=\"button\">\n  <span part=\"loading\">\n    <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n    </svg>\n  </span>\n  <span part=\"message\"></span>\n  <span part=\"close\">\n    <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n    </svg>\n  </span>\n</button>";
+var template$u = "<button part=\"button\">\n  <span part=\"loading\">\n    <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n    </svg>\n  </span>\n  <span part=\"message\"></span>\n  <span part=\"close\">\n    <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n    </svg>\n  </span>\n</button>";
 
-var style$r = "[part~=button] {\n  display: flex;\n  background: #737E9E;\n  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);\n  border-radius: 0.25rem;\n  border: 1px solid #737E9E;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  color: #FFF;\n  align-items: center;\n  outline: 0;\n  transition: border-color 0.1s ease-in;\n  margin-bottom: 0.5rem;\n  max-width: 18rem;\n  font-size: 1rem;\n  align-items: center;\n}\n\n[part~=loading] {\n  height: 1.5rem;\n  margin: -0.25rem 0.5rem -0.25rem -0.25rem;\n}\n\n[part~=button]:hover {\n  border: 1px solid rgba(255, 255, 255, 0.75);\n}\n\n[part~=close] {\n  height: 1rem;\n}\n\n[part~=closeIcon] {\n  width: 1rem;\n  height: 1rem;\n}\n\n[part~=loadingIcon] {\n  animation: spin 2s infinite linear;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n@keyframes progress {\n  from {\n    width: 0;\n  }\n  to {\n    width: 20rem;\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part~=closeIcon] {\n  margin-left: 0.5rem;\n  color: rgba(255, 255, 255, 0.5);\n  transition: color 0.1s ease-in;\n}\n\n[part~=button]:hover [part~=closeIcon] {\n  color: #fff;\n}\n\n.hide {\n  display: none;\n}\n\n/* Error */\n\n[part~=button].error {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part~=button].error [part~=closeIcon] {\n  color: rgba(114, 28, 36, 0.6);\n}\n\n[part~=button].error:hover {\n  border-color: #721c24;\n}\n\n[part~=button].error:hover [part~=closeIcon] {\n  color: #721c24;\n}\n\n/* Warning */\n\n[part~=button].warning {\n  color: #856404;\n  background-color: #fff3cd;\n  border-color: #ffeeba;\n}\n\n[part~=button].warning [part~=closeIcon] {\n  color: rgba(133, 101, 4, 0.6);\n}\n\n[part~=button].warning:hover {\n  border-color: #856404;\n}\n\n[part~=button].warning:hover [part~=closeIcon] {\n  color: #856404;\n}";
+var style$u = "[part~=button] {\n  display: flex;\n  background: #737E9E;\n  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);\n  border-radius: 0.25rem;\n  border: 1px solid #737E9E;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  color: #FFF;\n  align-items: center;\n  outline: 0;\n  transition: border-color 0.1s ease-in;\n  margin-bottom: 0.5rem;\n  max-width: 18rem;\n  font-size: 1rem;\n  align-items: center;\n}\n\n[part~=loading] {\n  height: 1.5rem;\n  margin: -0.25rem 0.5rem -0.25rem -0.25rem;\n}\n\n[part~=button]:hover {\n  border: 1px solid rgba(255, 255, 255, 0.75);\n}\n\n[part~=close] {\n  height: 1rem;\n}\n\n[part~=closeIcon] {\n  width: 1rem;\n  height: 1rem;\n}\n\n[part~=loadingIcon] {\n  animation: spin 2s infinite linear;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n@keyframes progress {\n  from {\n    width: 0;\n  }\n  to {\n    width: 20rem;\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part~=closeIcon] {\n  margin-left: 0.5rem;\n  color: rgba(255, 255, 255, 0.5);\n  transition: color 0.1s ease-in;\n}\n\n[part~=button]:hover [part~=closeIcon] {\n  color: #fff;\n}\n\n.hide {\n  display: none;\n}\n\n/* Error */\n\n[part~=button].error {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part~=button].error [part~=closeIcon] {\n  color: rgba(114, 28, 36, 0.6);\n}\n\n[part~=button].error:hover {\n  border-color: #721c24;\n}\n\n[part~=button].error:hover [part~=closeIcon] {\n  color: #721c24;\n}\n\n/* Warning */\n\n[part~=button].warning {\n  color: #856404;\n  background-color: #fff3cd;\n  border-color: #ffeeba;\n}\n\n[part~=button].warning [part~=closeIcon] {\n  color: rgba(133, 101, 4, 0.6);\n}\n\n[part~=button].warning:hover {\n  border-color: #856404;\n}\n\n[part~=button].warning:hover [part~=closeIcon] {\n  color: #856404;\n}";
 
 let MdiToast = class MdiToast extends HTMLElement {
     constructor() {
@@ -24403,14 +24585,14 @@ __decorate([
 MdiToast = __decorate([
     Component({
         selector: 'mdi-toast',
-        style: style$r,
-        template: template$r
+        style: style$u,
+        template: template$u
     })
 ], MdiToast);
 
-var template$s = "<div part=\"container\"></div>";
+var template$v = "<div part=\"container\"></div>";
 
-var style$s = "[part~=container] {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: flex-end;\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n}";
+var style$v = "[part~=container] {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: flex-end;\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n}";
 
 let MdiToasts = class MdiToasts extends HTMLElement {
     constructor() {
@@ -24458,14 +24640,14 @@ __decorate([
 MdiToasts = __decorate([
     Component({
         selector: 'mdi-toasts',
-        style: style$s,
-        template: template$s
+        style: style$v,
+        template: template$v
     })
 ], MdiToasts);
 
-var template$t = "<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"tooltipArrow\"></div>\n</div>";
+var template$w = "<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"tooltipArrow\"></div>\n</div>";
 
-var style$t = ":host {\n  pointer-events: none;\n}\n\n[part~=tooltip] {\n  position: relative;\n}\n\n[part~=tooltipText] {\n  position: absolute;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n  left: 0;\n  top: 0;\n}\n\n[part~=tooltipArrow] {\n  left: 16px;\n  top: -7px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}";
+var style$w = ":host {\n  pointer-events: none;\n}\n\n[part~=tooltip] {\n  position: relative;\n}\n\n[part~=tooltipText] {\n  position: absolute;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n  left: 0;\n  top: 0;\n}\n\n[part~=tooltipArrow] {\n  left: 16px;\n  top: -7px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}";
 
 let MdiTooltip = class MdiTooltip extends HTMLElement {
     constructor() {
@@ -24516,7 +24698,7 @@ __decorate([
 MdiTooltip = __decorate([
     Component({
         selector: 'mdi-tooltip',
-        style: style$t,
-        template: template$t
+        style: style$w,
+        template: template$w
     })
 ], MdiTooltip);

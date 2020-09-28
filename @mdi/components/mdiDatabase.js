@@ -4607,6 +4607,7 @@ var mdiDatabase = (function () {
             this.website = null;
             this.sponsored = false;
             this.sponsorship = '';
+            this.core = false;
         }
         from(user) {
             this.id = user.id;
@@ -4626,6 +4627,7 @@ var mdiDatabase = (function () {
             this.website = user.website;
             this.sponsored = user.sponsored;
             this.sponsorship = `https://github.com/users/${user.github}/sponsorship`;
+            this.core = user.core;
             return this;
         }
     }
