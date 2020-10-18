@@ -8329,16 +8329,17 @@ MdiIcon$1 = __decorate([
     })
 ], MdiIcon$1);
 
-var template$f = "<button part=\"button\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" d=\"M19 19L5 19V5H15V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V11H19\"/>\n\t  <path part=\"check\" fill=\"currentColor\" d=\"M7.91 10.08L6.5 11.5L11 16L21 6L19.59 4.58L11 13.17L7.91 10.08Z\"/>\n  </svg>\n</button>";
+var template$f = "<button part=\"button\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" fill=\"currentColor\" d=\"M19 19L5 19V5H15V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V11H19\"/>\n\t  <path part=\"check\" fill=\"currentColor\" d=\"M7.91 10.08L6.5 11.5L11 16L21 6L19.59 4.58L11 13.17L7.91 10.08Z\"/>\n  </svg>\n</button>";
 
-var style$f = ":host {\n  display: inline-flex;\n}\n\n.blank {\n  color: var(--mdi-input-check-blank-color, #453C4F);\n}\n.blank [part=\"check\"] {\n  visibility: hidden;\n}\n\n.checked {\n  color: var(--mdi-input-check-checked-color, #453C4F);\n}\n\n[part=\"button\"] {\n  display: flex;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  border-radius: 0.25rem;\n  background: transparent;\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-check-size, 1.5rem);\n  height: var(--mdi-icon-check-size, 1.5rem);\n}\n\n[part=\"button\"]:not(:hover):active {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"button\"]:not(:hover):focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-focus-glow, rgb(79, 143, 249, 0.5));\n}\n[part=\"button\"]:hover [part=\"path\"] {\n  fill: #4f8ff9;\n}";
+var style$f = ":host {\n  display: inline-flex;\n}\n\n.blank {\n  color: var(--mdi-input-check-blank-color, #453C4F);\n}\n.blank [part=\"check\"] {\n  visibility: hidden;\n}\n\n.checked {\n  color: var(--mdi-input-check-checked-color, #453C4F);\n}\n\n[part=\"button\"] {\n  display: flex;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  border-radius: 0.25rem;\n  background: transparent;\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-check-size, 1.5rem);\n  height: var(--mdi-icon-check-size, 1.5rem);\n}\n\n[part=\"button\"]:not(:hover):active {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"button\"]:not(:hover):focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-focus-glow, rgb(79, 143, 249, 0.5));\n}\n[part=\"button\"]:not(:disabled):hover [part=\"path\"] {\n  fill: #4f8ff9;\n}\n\n[part=\"button\"]:disabled {\n  color: #AAA;\n}";
 
-const unchecked = 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z';
-const checked = 'M19 19L5 19V5H15V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V11H19';
+const PATH_BLANK = 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z';
+const PATH_CHECKED = 'M19 19L5 19V5H15V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V11H19';
 let MdiInputCheck = class MdiInputCheck extends HTMLElement {
     constructor() {
         super(...arguments);
         this.value = false;
+        this.disabled = false;
     }
     connectedCallback() {
         this.$button.addEventListener('click', this.handleClick.bind(this));
@@ -8351,15 +8352,21 @@ let MdiInputCheck = class MdiInputCheck extends HTMLElement {
     render(changes) {
         if (changes.value) {
             const value = [true, 'true'].includes(this.value);
-            this.$path.setAttribute('d', value ? checked : unchecked);
+            this.$path.setAttribute('d', value ? PATH_CHECKED : PATH_BLANK);
             this.$button.classList.toggle('blank', !value);
             this.$button.classList.toggle('checked', value);
+        }
+        if (changes.disabled) {
+            this.$button.disabled = ['', true, 'true'].includes(this.disabled);
         }
     }
 };
 __decorate([
     Prop()
 ], MdiInputCheck.prototype, "value", void 0);
+__decorate([
+    Prop()
+], MdiInputCheck.prototype, "disabled", void 0);
 __decorate([
     Part()
 ], MdiInputCheck.prototype, "$button", void 0);
@@ -8376,7 +8383,7 @@ MdiInputCheck = __decorate([
 
 var template$g = "<ul part=\"list\"></ul>";
 
-var style$g = ":host {\n  display: flex;\n  flex-direction: column;\n}\n\n.blank {\n  color: var(--mdi-input-check-blank-color, #453C4F);\n}\n.blank [part=\"check\"] {\n  visibility: hidden;\n}\n\n.checked {\n  color: var(--mdi-input-check-checked-color, #453C4F);\n}\n\n[part=\"list\"] {\n  display: flex;\n  flex-direction: column;\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n[part=\"list\"] li {\n  display: flex;\n  flex-direction: column;\n}\n\n[part=\"list\"] li:not(:last-child) {\n  margin-bottom: 0.125rem;\n}\n\n[part=\"list\"] button {\n  display: flex;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  border-radius: 0.25rem;\n  align-items: center;\n  background: transparent;\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-check-size, 1.5rem);\n  height: var(--mdi-icon-check-size, 1.5rem);\n}\n\n[part=\"list\"] button span {\n  margin-left: 0.25rem;\n}\n\n[part=\"list\"] button:not(:hover):active {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"list\"] button:not(:hover):focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-focus-glow, rgb(79, 143, 249, 0.5));\n}\n[part=\"list\"] button:hover [part=\"path\"] {\n  fill: #4f8ff9;\n}";
+var style$g = ":host {\n  display: flex;\n  flex-direction: column;\n}\n\n.blank {\n  color: var(--mdi-input-check-blank-color, #453C4F);\n}\n.blank [part=\"check\"] {\n  visibility: hidden;\n}\n\n.checked {\n  color: var(--mdi-input-check-checked-color, #453C4F);\n}\n\n[part=\"list\"] {\n  display: flex;\n  flex-direction: column;\n  list-style: none;\n  margin: 0;\n  padding: 0.25rem 0;\n}\n\n[part=\"list\"] li {\n  display: flex;\n  flex-direction: column;\n}\n\n[part=\"list\"] li:not(:last-child) {\n  margin-bottom: 0.25rem;\n}\n\n[part=\"list\"] button {\n  display: flex;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  border-radius: 0.25rem;\n  align-items: center;\n  background: transparent;\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-check-size, 1.5rem);\n  height: var(--mdi-icon-check-size, 1.5rem);\n}\n\n[part=\"list\"] button span {\n  margin-left: 0.25rem;\n}\n\n[part=\"list\"] button:not(:hover):active {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"list\"] button:not(:hover):focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-focus-glow, rgb(79, 143, 249, 0.5));\n}\n[part=\"list\"] button:hover [part=\"path\"] {\n  fill: #4f8ff9;\n}\n[part=\"list\"] button:disabled {\n  color: #AAA;\n}";
 
 function list($list, options, key, add, update) {
     const elements = Array.from($list.children);
@@ -8398,7 +8405,7 @@ function list($list, options, key, add, update) {
 }
 
 const NS_SVG = 'http://www.w3.org/2000/svg';
-const PATH_BLANK = 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z';
+const PATH_BLANK$1 = 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z';
 const PATH_CHECK = 'M7.91 10.08L6.5 11.5L11 16L21 6L19.59 4.58L11 13.17L7.91 10.08Z';
 let MdiInputCheckList = class MdiInputCheckList extends HTMLElement {
     constructor() {
@@ -8419,11 +8426,14 @@ let MdiInputCheckList = class MdiInputCheckList extends HTMLElement {
             list(this.$list, this.options, 'value', (option) => {
                 const li = document.createElement('li');
                 const button = document.createElement('button');
+                if (option.disabled === true) {
+                    button.disabled = true;
+                }
                 const svg = document.createElementNS(NS_SVG, 'svg');
                 svg.setAttribute('viewBox', '0 0 24 24');
                 svg.setAttribute('part', 'svg');
                 const path = document.createElementNS(NS_SVG, 'path');
-                path.setAttribute('d', PATH_BLANK);
+                path.setAttribute('d', PATH_BLANK$1);
                 svg.appendChild(path);
                 const check = document.createElementNS(NS_SVG, 'path');
                 check.setAttribute('d', PATH_CHECK);
