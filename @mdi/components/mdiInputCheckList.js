@@ -1,4 +1,4 @@
-var mdiInputCheck = (function () {
+var mdiInputCheckList = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -159,53 +159,95 @@ var mdiInputCheck = (function () {
         };
     }
 
-    var template$1 = "<button part=\"button\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" d=\"M19 19L5 19V5H15V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V11H19\"/>\n\t  <path part=\"check\" fill=\"currentColor\" d=\"M7.91 10.08L6.5 11.5L11 16L21 6L19.59 4.58L11 13.17L7.91 10.08Z\"/>\n  </svg>\n</button>";
+    var template$1 = "<ul part=\"list\"></ul>";
 
-    var style$1 = ":host {\n  display: inline-flex;\n}\n\n.blank {\n  color: var(--mdi-input-check-blank-color, #453C4F);\n}\n.blank [part=\"check\"] {\n  visibility: hidden;\n}\n\n.checked {\n  color: var(--mdi-input-check-checked-color, #453C4F);\n}\n\n[part=\"button\"] {\n  display: flex;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  border-radius: 0.25rem;\n  background: transparent;\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-check-size, 1.5rem);\n  height: var(--mdi-icon-check-size, 1.5rem);\n}\n\n[part=\"button\"]:not(:hover):active {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"button\"]:not(:hover):focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-focus-glow, rgb(79, 143, 249, 0.5));\n}\n[part=\"button\"]:hover [part=\"path\"] {\n  fill: #4f8ff9;\n}";
+    var style$1 = ":host {\n  display: flex;\n  flex-direction: column;\n}\n\n.blank {\n  color: var(--mdi-input-check-blank-color, #453C4F);\n}\n.blank [part=\"check\"] {\n  visibility: hidden;\n}\n\n.checked {\n  color: var(--mdi-input-check-checked-color, #453C4F);\n}\n\n[part=\"list\"] {\n  display: flex;\n  flex-direction: column;\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n[part=\"list\"] li {\n  display: flex;\n  flex-direction: column;\n}\n\n[part=\"list\"] li:not(:last-child) {\n  margin-bottom: 0.125rem;\n}\n\n[part=\"list\"] button {\n  display: flex;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  border-radius: 0.25rem;\n  align-items: center;\n  background: transparent;\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-check-size, 1.5rem);\n  height: var(--mdi-icon-check-size, 1.5rem);\n}\n\n[part=\"list\"] button span {\n  margin-left: 0.25rem;\n}\n\n[part=\"list\"] button:not(:hover):active {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"list\"] button:not(:hover):focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-focus-glow, rgb(79, 143, 249, 0.5));\n}\n[part=\"list\"] button:hover [part=\"path\"] {\n  fill: #4f8ff9;\n}";
 
-    const unchecked = 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z';
-    const checked = 'M19 19L5 19V5H15V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V11H19';
-    let MdiInputCheck = class MdiInputCheck extends HTMLElement {
+    function list($list, options, key, add, update) {
+        const elements = Array.from($list.children);
+        const current = elements.map((e) => e.dataset.key);
+        options.forEach(option => {
+            if (current.length === 0) {
+                const newItem = add(option);
+                newItem.dataset.key = option[key];
+                $list.appendChild(newItem);
+                return;
+            }
+            const element = elements.find((e) => e.dataset.key === current[key]);
+            if (option[key] === current[key]) {
+                update(option, element);
+                return;
+            }
+            element === null || element === void 0 ? void 0 : element.remove();
+        });
+    }
+
+    const NS_SVG = 'http://www.w3.org/2000/svg';
+    const PATH_BLANK = 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z';
+    const PATH_CHECK = 'M7.91 10.08L6.5 11.5L11 16L21 6L19.59 4.58L11 13.17L7.91 10.08Z';
+    let MdiInputCheckList = class MdiInputCheckList extends HTMLElement {
         constructor() {
             super(...arguments);
-            this.value = false;
+            this.value = [];
+            this.options = [];
         }
         connectedCallback() {
-            this.$button.addEventListener('click', this.handleClick.bind(this));
         }
-        handleClick() {
-            const value = [true, 'true'].includes(this.value);
-            this.value = !value;
-            this.dispatchEvent(new CustomEvent('change'));
+        handleClick(option) {
+            console.log(option);
+            //const value = [true, 'true'].includes(this.value);
+            //this.value = !value;
+            //this.dispatchEvent(new CustomEvent('change'));
         }
         render(changes) {
-            if (changes.value) {
-                const value = [true, 'true'].includes(this.value);
-                this.$path.setAttribute('d', value ? checked : unchecked);
-                this.$button.classList.toggle('blank', !value);
-                this.$button.classList.toggle('checked', value);
+            if (changes.options) {
+                list(this.$list, this.options, 'value', (option) => {
+                    const li = document.createElement('li');
+                    const button = document.createElement('button');
+                    const svg = document.createElementNS(NS_SVG, 'svg');
+                    svg.setAttribute('viewBox', '0 0 24 24');
+                    svg.setAttribute('part', 'svg');
+                    const path = document.createElementNS(NS_SVG, 'path');
+                    path.setAttribute('d', PATH_BLANK);
+                    svg.appendChild(path);
+                    const check = document.createElementNS(NS_SVG, 'path');
+                    check.setAttribute('d', PATH_CHECK);
+                    svg.appendChild(check);
+                    button.appendChild(svg);
+                    const span = document.createElement('span');
+                    span.innerText = option.label;
+                    button.appendChild(span);
+                    button.addEventListener('click', (e) => {
+                        this.handleClick(option);
+                    });
+                    li.appendChild(button);
+                    return li;
+                }, (option, $item) => {
+                    $item.querySelector('button').innerText = option.label;
+                });
             }
+            if (changes.value) ;
         }
     };
     __decorate([
         Prop()
-    ], MdiInputCheck.prototype, "value", void 0);
+    ], MdiInputCheckList.prototype, "value", void 0);
+    __decorate([
+        Prop()
+    ], MdiInputCheckList.prototype, "options", void 0);
     __decorate([
         Part()
-    ], MdiInputCheck.prototype, "$button", void 0);
-    __decorate([
-        Part()
-    ], MdiInputCheck.prototype, "$path", void 0);
-    MdiInputCheck = __decorate([
+    ], MdiInputCheckList.prototype, "$list", void 0);
+    MdiInputCheckList = __decorate([
         Component({
-            selector: 'mdi-input-check',
+            selector: 'mdi-input-check-list',
             style: style$1,
             template: template$1
         })
-    ], MdiInputCheck);
-    var MdiInputCheck$1 = MdiInputCheck;
+    ], MdiInputCheckList);
+    var MdiInputCheckList$1 = MdiInputCheckList;
 
-    return MdiInputCheck$1;
+    return MdiInputCheckList$1;
 
 }());
-//# sourceMappingURL=mdiInputCheck.js.map
+//# sourceMappingURL=mdiInputCheckList.js.map

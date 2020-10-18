@@ -1,4 +1,4 @@
-var mdiInputCheck = (function () {
+var mdiModification = (function () {
     'use strict';
 
     /*! *****************************************************************************
@@ -159,53 +159,44 @@ var mdiInputCheck = (function () {
         };
     }
 
-    var template$1 = "<button part=\"button\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" d=\"M19 19L5 19V5H15V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V11H19\"/>\n\t  <path part=\"check\" fill=\"currentColor\" d=\"M7.91 10.08L6.5 11.5L11 16L21 6L19.59 4.58L11 13.17L7.91 10.08Z\"/>\n  </svg>\n</button>";
+    var template$1 = "<div part=\"items\"></div>";
 
-    var style$1 = ":host {\n  display: inline-flex;\n}\n\n.blank {\n  color: var(--mdi-input-check-blank-color, #453C4F);\n}\n.blank [part=\"check\"] {\n  visibility: hidden;\n}\n\n.checked {\n  color: var(--mdi-input-check-checked-color, #453C4F);\n}\n\n[part=\"button\"] {\n  display: flex;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  border-radius: 0.25rem;\n  background: transparent;\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-check-size, 1.5rem);\n  height: var(--mdi-icon-check-size, 1.5rem);\n}\n\n[part=\"button\"]:not(:hover):active {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"button\"]:not(:hover):focus {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-focus-glow, rgb(79, 143, 249, 0.5));\n}\n[part=\"button\"]:hover [part=\"path\"] {\n  fill: #4f8ff9;\n}";
+    var style$1 = ":host {\n  display: flex;\n  flex-direction: row;\n}\n\n";
 
-    const unchecked = 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z';
-    const checked = 'M19 19L5 19V5H15V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V11H19';
-    let MdiInputCheck = class MdiInputCheck extends HTMLElement {
+    let MdiIcon = class MdiIcon extends HTMLElement {
         constructor() {
             super(...arguments);
-            this.value = false;
-        }
-        connectedCallback() {
-            this.$button.addEventListener('click', this.handleClick.bind(this));
-        }
-        handleClick() {
-            const value = [true, 'true'].includes(this.value);
-            this.value = !value;
-            this.dispatchEvent(new CustomEvent('change'));
+            this.modifications = null;
+            this.edit = false;
         }
         render(changes) {
-            if (changes.value) {
-                const value = [true, 'true'].includes(this.value);
-                this.$path.setAttribute('d', value ? checked : unchecked);
-                this.$button.classList.toggle('blank', !value);
-                this.$button.classList.toggle('checked', value);
-            }
+            if (changes.modifications) ;
+            if (changes.edit) ;
+        }
+        addItem(modification) {
+            const div = document.createElement('div');
+            this.$items.appendChild(div);
         }
     };
     __decorate([
         Prop()
-    ], MdiInputCheck.prototype, "value", void 0);
+    ], MdiIcon.prototype, "modifications", void 0);
+    __decorate([
+        Prop()
+    ], MdiIcon.prototype, "edit", void 0);
     __decorate([
         Part()
-    ], MdiInputCheck.prototype, "$button", void 0);
-    __decorate([
-        Part()
-    ], MdiInputCheck.prototype, "$path", void 0);
-    MdiInputCheck = __decorate([
+    ], MdiIcon.prototype, "$items", void 0);
+    MdiIcon = __decorate([
         Component({
-            selector: 'mdi-input-check',
+            selector: 'mdi-modification',
             style: style$1,
             template: template$1
         })
-    ], MdiInputCheck);
-    var MdiInputCheck$1 = MdiInputCheck;
+    ], MdiIcon);
+    var MdiIcon$1 = MdiIcon;
 
-    return MdiInputCheck$1;
+    return MdiIcon$1;
 
 }());
-//# sourceMappingURL=mdiInputCheck.js.map
+//# sourceMappingURL=mdiModification.js.map
