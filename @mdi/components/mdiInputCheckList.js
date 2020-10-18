@@ -181,6 +181,11 @@ var mdiInputCheckList = (function () {
             element === null || element === void 0 ? void 0 : element.remove();
         });
     }
+    function item($list, option, key) {
+        const elements = Array.from($list.children);
+        const item = elements.find((e) => e.dataset.key === option[key]);
+        return item;
+    }
 
     const NS_SVG = 'http://www.w3.org/2000/svg';
     const PATH_BLANK = 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z';
@@ -195,10 +200,15 @@ var mdiInputCheckList = (function () {
         connectedCallback() {
         }
         handleClick(option) {
-            console.log(option);
-            //const value = [true, 'true'].includes(this.value);
-            //this.value = !value;
-            //this.dispatchEvent(new CustomEvent('change'));
+            var _a;
+            const checked = [true, 'true'].includes(option.checked);
+            option.checked = !checked;
+            const li = item(this.$list, option, 'value');
+            const button = li.querySelector('button');
+            button === null || button === void 0 ? void 0 : button.classList.toggle('blank', checked);
+            button === null || button === void 0 ? void 0 : button.classList.toggle('checked', !checked);
+            (_a = li.querySelector('[part="path"]')) === null || _a === void 0 ? void 0 : _a.setAttribute('d', checked ? PATH_BLANK : PATH_CHECKED);
+            this.dispatchEvent(new CustomEvent('change'));
         }
         render(changes) {
             if (changes.options) {
@@ -208,7 +218,7 @@ var mdiInputCheckList = (function () {
                     if (option.disabled === true) {
                         button.disabled = true;
                     }
-                    const value = [true, 'true'].includes(option.value);
+                    const value = [true, 'true'].includes(option.checked);
                     button.classList.toggle('checked', value);
                     button.classList.toggle('blank', !value);
                     const svg = document.createElementNS(NS_SVG, 'svg');
