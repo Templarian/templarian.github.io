@@ -201,13 +201,18 @@ var mdiInputCheckList = (function () {
         }
         handleClick(option) {
             var _a;
-            const checked = [true, 'true'].includes(option.checked);
-            option.checked = !checked;
+            const checked = this.value.includes(option.value);
             const li = item(this.$list, option, 'value');
             const button = li.querySelector('button');
             button === null || button === void 0 ? void 0 : button.classList.toggle('blank', checked);
             button === null || button === void 0 ? void 0 : button.classList.toggle('checked', !checked);
             (_a = li.querySelector('[part="path"]')) === null || _a === void 0 ? void 0 : _a.setAttribute('d', checked ? PATH_BLANK : PATH_CHECKED);
+            if (checked) {
+                this.value.splice(this.value.findIndex(v => v === option.value), 1);
+            }
+            else {
+                this.value.push(option.value);
+            }
             this.dispatchEvent(new CustomEvent('change'));
         }
         render(changes) {
@@ -218,14 +223,15 @@ var mdiInputCheckList = (function () {
                     if (option.disabled === true) {
                         button.disabled = true;
                     }
-                    const value = [true, 'true'].includes(option.checked);
-                    button.classList.toggle('checked', value);
-                    button.classList.toggle('blank', !value);
+                    console.log('check...', this.value, option.value);
+                    const checked = this.value.includes(option.value);
+                    button.classList.toggle('checked', checked);
+                    button.classList.toggle('blank', !checked);
                     const svg = document.createElementNS(NS_SVG, 'svg');
                     svg.setAttribute('viewBox', '0 0 24 24');
                     svg.setAttribute('part', 'svg');
                     const path = document.createElementNS(NS_SVG, 'path');
-                    path.setAttribute('d', value ? PATH_CHECKED : PATH_BLANK);
+                    path.setAttribute('d', checked ? PATH_CHECKED : PATH_BLANK);
                     path.setAttribute('fill', 'currentColor');
                     path.setAttribute('part', 'path');
                     svg.appendChild(path);
