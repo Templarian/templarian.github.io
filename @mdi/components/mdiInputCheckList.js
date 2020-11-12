@@ -163,28 +163,33 @@ var mdiInputCheckList = (function () {
 
     var style$1 = ":host {\n  display: flex;\n  flex-direction: column;\n}\n\n.blank {\n  color: var(--mdi-input-check-blank-color, #453C4F);\n}\n.blank [part=\"check\"] {\n  visibility: hidden;\n}\n\n.checked {\n  color: var(--mdi-input-check-checked-color, #453C4F);\n}\n\n[part=\"list\"] {\n  display: flex;\n  flex-direction: column;\n  list-style: none;\n  margin: 0;\n  padding: 0.25rem 0;\n}\n\n[part=\"list\"] li {\n  display: flex;\n  flex-direction: column;\n}\n\n[part=\"list\"] li:not(:last-child) {\n  margin-bottom: 0.25rem;\n}\n\n[part=\"list\"] button {\n  display: flex;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  border-radius: 0.25rem;\n  align-items: center;\n  background: transparent;\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-check-size, 1.5rem);\n  height: var(--mdi-icon-check-size, 1.5rem);\n}\n\n[part=\"list\"] button span {\n  margin-left: 0.25rem;\n}\n\n[part=\"list\"] button:not(:hover):active {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-active-glow, rgb(79, 143, 249, 0.6));\n}\n[part=\"list\"] button:not(:hover):focus:not(:focus-visible) {\n  box-shadow: none;\n}\n[part=\"list\"] button:not(:hover):focus-visible {\n  box-shadow: 0 0 0 3px var(--mdi-input-check-focus-glow, rgb(79, 143, 249, 0.5));\n}\n[part=\"list\"] button:not(:disabled):hover [part=\"path\"] {\n  fill: #4f8ff9;\n}\n[part=\"list\"] button:not(:disabled):hover span {\n  color: #4f8ff9;\n}\n[part=\"list\"] button:disabled {\n  color: #AAA;\n}";
 
-    function list($list, options, key, add, update) {
+    function list($list, items, key, add, update) {
         const elements = Array.from($list.children);
         const current = elements.map((e) => e.dataset.key);
-        options.forEach(option => {
+        items.forEach(item => {
             if (current.length === 0) {
-                const newItem = add(option);
-                newItem.dataset.key = option[key];
+                const newItem = add(item);
+                if (newItem instanceof DocumentFragment) {
+                    newItem.children[0].dataset.key = item[key];
+                }
+                else {
+                    newItem.dataset.key = item[key];
+                }
                 $list.appendChild(newItem);
                 return;
             }
             const element = elements.find((e) => e.dataset.key === current[key]);
-            if (option[key] === current[key]) {
-                update(option, element);
+            if (item[key] === current[key]) {
+                update(item, element);
                 return;
             }
             element === null || element === void 0 ? void 0 : element.remove();
         });
     }
-    function item($list, option, key) {
+    function item($list, item, key) {
         const elements = Array.from($list.children);
-        const item = elements.find((e) => e.dataset.key === option[key]);
-        return item;
+        const ele = elements.find((e) => e.dataset.key === item[key]);
+        return ele;
     }
 
     const NS_SVG = 'http://www.w3.org/2000/svg';
