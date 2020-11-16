@@ -194,6 +194,8 @@ var mdiModification = (function () {
 
     var templateIconAliasCreated = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Added alias <code part=\"text\"></code> to <code part=\"iconName\"></code>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
 
+    var templateIconAliasDeleted = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Removed alias <code part=\"text\"></code> from <code part=\"iconName\"></code>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
+
     function list($list, items, key, add, update) {
         const elements = Array.from($list.children);
         const current = elements.map((e) => e.dataset.key);
@@ -452,7 +454,7 @@ var mdiModification = (function () {
         [ModificationType.IconRenamed]: templateNews,
         [ModificationType.IconDeleted]: templateNews,
         [ModificationType.IconAliasCreated]: templateIconAliasCreated,
-        [ModificationType.IconAliasDeleted]: templateNews,
+        [ModificationType.IconAliasDeleted]: templateIconAliasDeleted,
         [ModificationType.IconTagCreated]: templateNews,
         [ModificationType.IconTagDeleted]: templateNews
     };
