@@ -202,9 +202,6 @@ function node(template, init) {
                 }
             }
         }
-        else {
-            throw "Cannot find part=\"" + part + "\" in template. node(template, { " + part + ": {} })";
-        }
     }
     return $node;
 }
@@ -311,13 +308,14 @@ class User {
     }
 }
 
-function addTooltip($part, render) {
+function addTooltip($part, render, position) {
     function handleMouseEnter() {
         $part.dispatchEvent(new CustomEvent('tooltip', {
             detail: {
                 visible: true,
                 rect: $part.getBoundingClientRect(),
-                text: render()
+                text: render(),
+                position: position
             },
             bubbles: true,
             composed: true
@@ -23469,11 +23467,11 @@ MdiMenuIcon = __decorate([
 
 var template$q = "<div part=\"items\"></div>";
 
-var style$q = ":host {\n  display: flex;\n  flex-direction: row;\n}\n\n";
+var style$q = ":host {\n  display: flex;\n  flex-direction: column;\n  color: #453C4F;\n}\n\n.invalid {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part=\"news\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1fr;\n  grid-template-rows: 3.25rem auto;\n  padding: 0.25rem;\n}\n[part=\"news\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"news\"] [part=\"label\"] {\n  grid-column: 1;\n  grid-row: 2;\n  text-align: center;\n  padding-right: 0.5rem;\n}\n[part=\"news\"] [part=\"markdown\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n\n[part=\"iconAliasCreated\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"iconAliasCreated\"] [part=\"icon\"] {\n  grid-column: 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"content\"] {\n  grid-column: 3;\n  align-content: center;\n  display: flex;\n  align-items: center;\n}\n[part=\"iconAliasCreated\"] [part=\"content\"] code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n[part=\"iconAliasCreated\"] [part=\"issue\"] {\n  grid-column: 4;\n  display: flex;\n  align-self: center;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n  color: #453C4F;\n  border-radius: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"issue\"]:hover {\n  background: #453C4F;\n  color: #fff;\n}\n[part=\"iconAliasCreated\"] [part=\"edit\"] {\n  grid-column: 5;\n  display: flex;\n  align-self: center;\n  padding: 0.25rem;\n  border: 0;\n  border-radius: 0.25rem;\n  margin-left: 0.5rem;\n  cursor: pointer;\n}\n[part=\"iconAliasCreated\"] [part=\"edit\"]:hover {\n  background: #453C4F;\n  --mdi-icon-color: #fff;\n}\n";
 
-var templateNews = "<div part=\"news\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"text\"></span>\n</div>";
+var templateNews = "<div part=\"news\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <span part=\"label\">News</span>\n  <mdi-markdown part=\"markdown\"></mdi-markdown>\n</div>";
 
-var templateIconAliasCreated = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"text\"></span>\n</div>";
+var templateIconAliasCreated = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Added alias <code part=\"text\"></code> to <code part=\"iconName\"></code>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
 
 var ModificationType;
 (function (ModificationType) {
@@ -23495,6 +23493,7 @@ var ModificationType;
     ModificationType["IconPublished"] = "e262b92e-bfed-11e9-8ca0-94188269ec50";
 })(ModificationType || (ModificationType = {}));
 
+const editIcon = 'M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z';
 const mapTemplates = {
     [ModificationType.News]: templateNews,
     [ModificationType.IconCreated]: templateNews,
@@ -23516,19 +23515,41 @@ let MdiModification = class MdiModification extends HTMLElement {
         if (changes.modifications && this.modifications) {
             list(this.$items, this.modifications, 'id', (modification) => {
                 if (modification.modificationId in mapTemplates) {
-                    return node(mapTemplates[modification.modificationId], {
+                    const n = node(mapTemplates[modification.modificationId], {
                         text: {
                             innerText: modification.text
                         },
+                        markdown: {
+                            text: modification.text
+                        },
                         icon: {
-                            path: modification.icon.data
+                            path: modification.icon && modification.icon.data
+                        },
+                        iconName: {
+                            innerText: modification.icon && modification.icon.name
                         },
                         avatar: {
                             user: modification.user
+                        },
+                        editIcon: {
+                            path: editIcon
+                        },
+                        issue: {
+                            style: modification.issue ? '' : 'display:none',
+                            innerText: modification.issue ? `#${modification.issue}` : '',
+                            href: `https://github.com/Templarian/MaterialDesign/issues/${modification.issue}`
                         }
                     });
+                    const issue = n.querySelector('[part="issue"]');
+                    if (issue) {
+                        addTooltip(issue, () => {
+                            return `View on GitHub`;
+                        }, 'left');
+                    }
+                    return n;
                 }
                 const invalid = document.createElement('div');
+                invalid.classList.add('invalid');
                 invalid.innerText = `Error: Unsupported modificationId with text: "${modification.text}"`;
                 return invalid;
             }, (modifiction, $item) => {
@@ -24917,28 +24938,150 @@ var template$y = "<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n
 
 var style$y = ":host {\n  pointer-events: none;\n}\n\n[part~=tooltip] {\n  position: relative;\n}\n\n[part~=tooltipText] {\n  position: absolute;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n  left: 0;\n  top: 0;\n}\n\n[part~=tooltipArrow] {\n  left: 16px;\n  top: -7px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}";
 
+const TOP = 'top';
+const TOP_START = 'top-start';
+const TOP_END = 'top-end';
+const RIGHT = 'right';
+const RIGHT_START = 'right-start';
+const RIGHT_END = 'right-end';
+const BOTTOM = 'bottom';
+const BOTTOM_START = 'bottom-start';
+const BOTTOM_END = 'bottom-end';
+const LEFT = 'left';
+const LEFT_START = 'left-start';
+const LEFT_END = 'left-end';
+
+const map$1 = {
+    [TOP_START]: (width, height, rect) => {
+        return {
+            arrowTop: height - 5,
+            arrowLeft: rect.width > width
+                ? Math.floor(width / 2) - 5
+                : Math.floor(rect.width / 2) - 5,
+            left: rect.left,
+            top: rect.top - height - 10
+        };
+    },
+    [TOP]: (width, height, rect) => {
+        return {
+            arrowTop: height - 5,
+            arrowLeft: Math.floor(width / 2) - 5,
+            left: rect.left - Math.floor((width - rect.width) / 2),
+            top: rect.top - height - 10
+        };
+    },
+    [TOP_END]: (width, height, rect) => {
+        return {
+            arrowTop: height - 5,
+            arrowLeft: rect.width > width
+                ? width - Math.floor(width / 2) - 5
+                : width - Math.floor(rect.width / 2) - 5,
+            left: rect.left - width + rect.width,
+            top: rect.top - height - 10
+        };
+    },
+    [RIGHT_START]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: -5,
+            left: rect.left + rect.width + 10,
+            top: rect.top
+        };
+    },
+    [RIGHT]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: -5,
+            left: rect.left + rect.width + 10,
+            top: rect.top + Math.floor(rect.height / 2) - Math.floor(height / 2)
+        };
+    },
+    [RIGHT_END]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: -5,
+            left: rect.left + rect.width + 10,
+            top: rect.top + rect.height - height
+        };
+    },
+    [BOTTOM_START]: (width, height, rect) => {
+        return {
+            arrowTop: -5,
+            arrowLeft: rect.width > width
+                ? Math.floor(width / 2) - 5
+                : Math.floor(rect.width / 2) - 5,
+            left: rect.left,
+            top: rect.top + rect.height + height - 20
+        };
+    },
+    [BOTTOM]: (width, height, rect) => {
+        return {
+            arrowTop: -5,
+            arrowLeft: Math.floor(width / 2) - 5,
+            left: rect.left - Math.floor((width - rect.width) / 2),
+            top: rect.top + rect.height + height - 20
+        };
+    },
+    [BOTTOM_END]: (width, height, rect) => {
+        return {
+            arrowTop: -5,
+            arrowLeft: rect.width > width
+                ? width - Math.floor(width / 2) - 5
+                : width - Math.floor(rect.width / 2) - 5,
+            left: rect.left - width + rect.width,
+            top: rect.top + rect.height + height - 20
+        };
+    },
+    [LEFT_START]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: width - 5,
+            left: rect.left - width - 10,
+            top: rect.top
+        };
+    },
+    [LEFT]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: width - 5,
+            left: rect.left - width - 10,
+            top: rect.top + Math.floor(rect.height / 2) - Math.floor(height / 2)
+        };
+    },
+    [LEFT_END]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: width - 5,
+            left: rect.left - width - 10,
+            top: rect.top + rect.height - height
+        };
+    }
+};
 let MdiTooltip = class MdiTooltip extends HTMLElement {
     constructor() {
         super(...arguments);
         this.visible = false;
         this.rect = null;
         this.text = '';
-        this.position = 'bottom-center';
+        this.position = BOTTOM;
     }
     render(changes) {
         this.$tooltipText.innerText = this.text;
+        this.style.position = 'absolute';
         if (changes.visible) {
-            this.style.display = this.visible ? 'inline-flex' : 'none';
+            this.style.display = this.visible ? 'block' : 'none';
         }
-        if (changes.rect && this.rect) {
-            const { top, right, bottom, left, width, height } = this.rect;
-            this.style.position = 'fixed';
-            this.style.left = `${this.rect.left}px`;
-            this.style.top = `${this.rect.top + 5}px`;
-            const arrow = Math.floor(width / 2) - 5;
-            this.$tooltipArrow.style.left = `${arrow}px`;
-            this.$tooltipArrow.style.top = `${height}px`;
-            this.$tooltipText.style.top = `${height + 5}px`;
+        const { width: tooltipWidth, height: tooltipHeight } = this.$tooltipText.getBoundingClientRect();
+        let position = this.position;
+        if (!(position in map$1)) {
+            position = BOTTOM;
+        }
+        if (this.rect) {
+            const { arrowLeft, arrowTop, left, top } = map$1[position](tooltipWidth, tooltipHeight, this.rect);
+            this.style.left = `${left + window.scrollX}px`;
+            this.style.top = `${top + window.scrollY}px`;
+            this.$tooltipArrow.style.left = `${arrowLeft}px`;
+            this.$tooltipArrow.style.top = `${arrowTop}px`;
         }
     }
 };

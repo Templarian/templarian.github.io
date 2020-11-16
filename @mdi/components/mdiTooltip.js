@@ -163,28 +163,150 @@ var mdiTooltip = (function () {
 
     var style$1 = ":host {\n  pointer-events: none;\n}\n\n[part~=tooltip] {\n  position: relative;\n}\n\n[part~=tooltipText] {\n  position: absolute;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n  left: 0;\n  top: 0;\n}\n\n[part~=tooltipArrow] {\n  left: 16px;\n  top: -7px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}";
 
+    const TOP = 'top';
+    const TOP_START = 'top-start';
+    const TOP_END = 'top-end';
+    const RIGHT = 'right';
+    const RIGHT_START = 'right-start';
+    const RIGHT_END = 'right-end';
+    const BOTTOM = 'bottom';
+    const BOTTOM_START = 'bottom-start';
+    const BOTTOM_END = 'bottom-end';
+    const LEFT = 'left';
+    const LEFT_START = 'left-start';
+    const LEFT_END = 'left-end';
+
+    const map = {
+        [TOP_START]: (width, height, rect) => {
+            return {
+                arrowTop: height - 5,
+                arrowLeft: rect.width > width
+                    ? Math.floor(width / 2) - 5
+                    : Math.floor(rect.width / 2) - 5,
+                left: rect.left,
+                top: rect.top - height - 10
+            };
+        },
+        [TOP]: (width, height, rect) => {
+            return {
+                arrowTop: height - 5,
+                arrowLeft: Math.floor(width / 2) - 5,
+                left: rect.left - Math.floor((width - rect.width) / 2),
+                top: rect.top - height - 10
+            };
+        },
+        [TOP_END]: (width, height, rect) => {
+            return {
+                arrowTop: height - 5,
+                arrowLeft: rect.width > width
+                    ? width - Math.floor(width / 2) - 5
+                    : width - Math.floor(rect.width / 2) - 5,
+                left: rect.left - width + rect.width,
+                top: rect.top - height - 10
+            };
+        },
+        [RIGHT_START]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: -5,
+                left: rect.left + rect.width + 10,
+                top: rect.top
+            };
+        },
+        [RIGHT]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: -5,
+                left: rect.left + rect.width + 10,
+                top: rect.top + Math.floor(rect.height / 2) - Math.floor(height / 2)
+            };
+        },
+        [RIGHT_END]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: -5,
+                left: rect.left + rect.width + 10,
+                top: rect.top + rect.height - height
+            };
+        },
+        [BOTTOM_START]: (width, height, rect) => {
+            return {
+                arrowTop: -5,
+                arrowLeft: rect.width > width
+                    ? Math.floor(width / 2) - 5
+                    : Math.floor(rect.width / 2) - 5,
+                left: rect.left,
+                top: rect.top + rect.height + height - 20
+            };
+        },
+        [BOTTOM]: (width, height, rect) => {
+            return {
+                arrowTop: -5,
+                arrowLeft: Math.floor(width / 2) - 5,
+                left: rect.left - Math.floor((width - rect.width) / 2),
+                top: rect.top + rect.height + height - 20
+            };
+        },
+        [BOTTOM_END]: (width, height, rect) => {
+            return {
+                arrowTop: -5,
+                arrowLeft: rect.width > width
+                    ? width - Math.floor(width / 2) - 5
+                    : width - Math.floor(rect.width / 2) - 5,
+                left: rect.left - width + rect.width,
+                top: rect.top + rect.height + height - 20
+            };
+        },
+        [LEFT_START]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: width - 5,
+                left: rect.left - width - 10,
+                top: rect.top
+            };
+        },
+        [LEFT]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: width - 5,
+                left: rect.left - width - 10,
+                top: rect.top + Math.floor(rect.height / 2) - Math.floor(height / 2)
+            };
+        },
+        [LEFT_END]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: width - 5,
+                left: rect.left - width - 10,
+                top: rect.top + rect.height - height
+            };
+        }
+    };
     let MdiTooltip = class MdiTooltip extends HTMLElement {
         constructor() {
             super(...arguments);
             this.visible = false;
             this.rect = null;
             this.text = '';
-            this.position = 'bottom-center';
+            this.position = BOTTOM;
         }
         render(changes) {
             this.$tooltipText.innerText = this.text;
+            this.style.position = 'absolute';
             if (changes.visible) {
-                this.style.display = this.visible ? 'inline-flex' : 'none';
+                this.style.display = this.visible ? 'block' : 'none';
             }
-            if (changes.rect && this.rect) {
-                const { top, right, bottom, left, width, height } = this.rect;
-                this.style.position = 'fixed';
-                this.style.left = `${this.rect.left}px`;
-                this.style.top = `${this.rect.top + 5}px`;
-                const arrow = Math.floor(width / 2) - 5;
-                this.$tooltipArrow.style.left = `${arrow}px`;
-                this.$tooltipArrow.style.top = `${height}px`;
-                this.$tooltipText.style.top = `${height + 5}px`;
+            const { width: tooltipWidth, height: tooltipHeight } = this.$tooltipText.getBoundingClientRect();
+            let position = this.position;
+            if (!(position in map)) {
+                position = BOTTOM;
+            }
+            if (this.rect) {
+                const { arrowLeft, arrowTop, left, top } = map[position](tooltipWidth, tooltipHeight, this.rect);
+                this.style.left = `${left + window.scrollX}px`;
+                this.style.top = `${top + window.scrollY}px`;
+                this.$tooltipArrow.style.left = `${arrowLeft}px`;
+                this.$tooltipArrow.style.top = `${arrowTop}px`;
             }
         }
     };

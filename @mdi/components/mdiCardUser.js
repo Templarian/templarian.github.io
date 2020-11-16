@@ -163,13 +163,14 @@ var mdiCardUser = (function () {
 
     var style$1 = ":host {\n  display: flex;\n  flex-direction: column;\n  font-family: var(--mdi-font-family);\n}\n\n[part=\"user\"] {\n  display: grid;\n  grid-template-rows: 1fr 1fr;\n  grid-template-columns: 4rem 2rem 1.5rem 1fr auto;\n  padding: 0.5rem;\n}\n\n[part=\"avatar\"] {\n  grid-column: 1;\n  grid-row: 1 / span 2;\n  align-self: center;\n}\n\n[part=\"name\"] {\n  grid-column: 2 / span 3;\n  grid-row: 1;\n  white-space: nowrap;\n}\n\n[part=\"iconCount\"] {\n  display: flex;\n  flex-direction: column;\n  text-align: center;\n  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) inset;\n  border-radius: 0.25rem;\n  background: rgba(0, 0, 0, 0.05);\n  grid-column: 5;\n  grid-row: 1 / span 2;\n  padding: 0 0.5rem;\n  align-items: stretch;\n  justify-content: center;\n  color: #444;\n  margin-left: 0.5rem;\n}\n\n[part=\"iconCountValue\"] {\n  font-weight: bold;\n}\n\n[part=\"github\"] svg,\n[part=\"twitter\"] svg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n[part=\"github\"] {\n  grid-row: 2;\n  grid-column: 2;\n  color: #333;\n}\n\n[part=\"twitter\"] {\n  grid-row: 2;\n  grid-column: 3;\n  color: #333;\n}\n\n[part=\"github\"]:hover,\n[part=\"twitter\"]:hover {\n  color: #4f8ff9;\n}";
 
-    function addTooltip($part, render) {
+    function addTooltip($part, render, position) {
         function handleMouseEnter() {
             $part.dispatchEvent(new CustomEvent('tooltip', {
                 detail: {
                     visible: true,
                     rect: $part.getBoundingClientRect(),
-                    text: render()
+                    text: render(),
+                    position: position
                 },
                 bubbles: true,
                 composed: true
