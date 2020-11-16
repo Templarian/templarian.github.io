@@ -188,7 +188,7 @@ var mdiModification = (function () {
 
     var template$1 = "<div part=\"items\"></div>";
 
-    var style$1 = ":host {\n  display: flex;\n  flex-direction: column;\n  color: #453C4F;\n}\n\n.invalid {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part=\"news\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1fr;\n  grid-template-rows: 3.25rem auto;\n  padding: 0.25rem;\n}\n[part=\"news\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"news\"] [part=\"label\"] {\n  grid-column: 1;\n  grid-row: 2;\n  text-align: center;\n  padding-right: 0.5rem;\n}\n[part=\"news\"] [part=\"markdown\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n\n[part=\"iconAliasCreated\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"iconAliasCreated\"] [part=\"icon\"] {\n  grid-column: 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"content\"] {\n  grid-column: 3;\n  align-content: center;\n  display: flex;\n  align-items: center;\n}\n[part=\"iconAliasCreated\"] [part=\"content\"] code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n[part=\"iconAliasCreated\"] [part=\"issue\"] {\n  grid-column: 4;\n  display: flex;\n  align-self: center;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n  color: #453C4F;\n  border-radius: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"issue\"]:hover {\n  background: #453C4F;\n  color: #fff;\n}\n[part=\"iconAliasCreated\"] [part=\"edit\"] {\n  grid-column: 5;\n  display: flex;\n  align-self: center;\n  padding: 0.25rem;\n  border: 0;\n  border-radius: 0.25rem;\n  margin-left: 0.5rem;\n  cursor: pointer;\n}\n[part=\"iconAliasCreated\"] [part=\"edit\"]:hover {\n  background: #453C4F;\n  --mdi-icon-color: #fff;\n}\n";
+    var style$1 = ":host {\n  display: flex;\n  flex-direction: column;\n  color: #453C4F;\n}\n\n.invalid {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part=\"news\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1fr;\n  grid-template-rows: 3.25rem auto;\n  padding: 0.25rem;\n}\n[part=\"news\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"news\"] [part=\"label\"] {\n  grid-column: 1;\n  grid-row: 2;\n  text-align: center;\n  padding-right: 0.5rem;\n}\n[part=\"news\"] [part=\"markdown\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n\n[part=\"iconAliasCreated\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"iconAliasCreated\"] [part=\"icon\"] {\n  grid-column: 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"content\"] {\n  grid-column: 3;\n  align-content: center;\n  display: flex;\n  align-items: center;\n}\n[part=\"iconAliasCreated\"] [part=\"content\"] code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n[part=\"iconAliasCreated\"] [part=\"issue\"] {\n  grid-column: 4;\n  display: flex;\n  align-self: center;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n  color: #453C4F;\n  border-radius: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"issue\"]:hover {\n  background: #453C4F;\n  color: #fff;\n}\n.edit [part=\"iconAliasCreated\"] [part=\"edit\"] {\n  display: flex;\n}\n[part=\"iconAliasCreated\"] [part=\"edit\"] {\n  display: none;\n  grid-column: 5;\n  align-self: center;\n  padding: 0.25rem;\n  border: 0;\n  border-radius: 0.25rem;\n  margin-left: 0.5rem;\n  cursor: pointer;\n}\n[part=\"iconAliasCreated\"] [part=\"edit\"]:hover {\n  background: #453C4F;\n  --mdi-icon-color: #fff;\n}\n";
 
     var templateNews = "<div part=\"news\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <span part=\"label\">News</span>\n  <mdi-markdown part=\"markdown\"></mdi-markdown>\n</div>";
 
@@ -237,6 +237,186 @@ var mdiModification = (function () {
         ModificationType["IconLive"] = "f92f2ba6-bfed-11e9-8ca0-94188269ec50";
         ModificationType["IconPublished"] = "e262b92e-bfed-11e9-8ca0-94188269ec50";
     })(ModificationType || (ModificationType = {}));
+
+    var template$2 = "<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"tooltipArrow\"></div>\n</div>";
+
+    var style$2 = ":host {\n  pointer-events: none;\n}\n\n[part~=tooltip] {\n  position: relative;\n}\n\n[part~=tooltipText] {\n  position: absolute;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n  left: 0;\n  top: 0;\n}\n\n[part~=tooltipArrow] {\n  left: 16px;\n  top: -7px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}";
+
+    const TOP = 'top';
+    const TOP_START = 'top-start';
+    const TOP_END = 'top-end';
+    const RIGHT = 'right';
+    const RIGHT_START = 'right-start';
+    const RIGHT_END = 'right-end';
+    const BOTTOM = 'bottom';
+    const BOTTOM_START = 'bottom-start';
+    const BOTTOM_END = 'bottom-end';
+    const LEFT = 'left';
+    const LEFT_START = 'left-start';
+    const LEFT_END = 'left-end';
+
+    const map = {
+        [TOP_START]: (width, height, rect) => {
+            return {
+                arrowTop: height - 5,
+                arrowLeft: rect.width > width
+                    ? Math.floor(width / 2) - 5
+                    : Math.floor(rect.width / 2) - 5,
+                left: rect.left,
+                top: rect.top - height - 10
+            };
+        },
+        [TOP]: (width, height, rect) => {
+            return {
+                arrowTop: height - 5,
+                arrowLeft: Math.floor(width / 2) - 5,
+                left: rect.left - Math.floor((width - rect.width) / 2),
+                top: rect.top - height - 10
+            };
+        },
+        [TOP_END]: (width, height, rect) => {
+            return {
+                arrowTop: height - 5,
+                arrowLeft: rect.width > width
+                    ? width - Math.floor(width / 2) - 5
+                    : width - Math.floor(rect.width / 2) - 5,
+                left: rect.left - width + rect.width,
+                top: rect.top - height - 10
+            };
+        },
+        [RIGHT_START]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: -5,
+                left: rect.left + rect.width + 10,
+                top: rect.top
+            };
+        },
+        [RIGHT]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: -5,
+                left: rect.left + rect.width + 10,
+                top: rect.top + Math.floor(rect.height / 2) - Math.floor(height / 2)
+            };
+        },
+        [RIGHT_END]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: -5,
+                left: rect.left + rect.width + 10,
+                top: rect.top + rect.height - height
+            };
+        },
+        [BOTTOM_START]: (width, height, rect) => {
+            return {
+                arrowTop: -5,
+                arrowLeft: rect.width > width
+                    ? Math.floor(width / 2) - 5
+                    : Math.floor(rect.width / 2) - 5,
+                left: rect.left,
+                top: rect.top + rect.height + height - 20
+            };
+        },
+        [BOTTOM]: (width, height, rect) => {
+            return {
+                arrowTop: -5,
+                arrowLeft: Math.floor(width / 2) - 5,
+                left: rect.left - Math.floor((width - rect.width) / 2),
+                top: rect.top + rect.height + height - 20
+            };
+        },
+        [BOTTOM_END]: (width, height, rect) => {
+            return {
+                arrowTop: -5,
+                arrowLeft: rect.width > width
+                    ? width - Math.floor(width / 2) - 5
+                    : width - Math.floor(rect.width / 2) - 5,
+                left: rect.left - width + rect.width,
+                top: rect.top + rect.height + height - 20
+            };
+        },
+        [LEFT_START]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: width - 5,
+                left: rect.left - width - 10,
+                top: rect.top
+            };
+        },
+        [LEFT]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: width - 5,
+                left: rect.left - width - 10,
+                top: rect.top + Math.floor(rect.height / 2) - Math.floor(height / 2)
+            };
+        },
+        [LEFT_END]: (width, height, rect) => {
+            return {
+                arrowTop: Math.floor(height / 2) - 5,
+                arrowLeft: width - 5,
+                left: rect.left - width - 10,
+                top: rect.top + rect.height - height
+            };
+        }
+    };
+    let MdiTooltip = class MdiTooltip extends HTMLElement {
+        constructor() {
+            super(...arguments);
+            this.visible = false;
+            this.rect = null;
+            this.text = '';
+            this.position = BOTTOM;
+        }
+        render(changes) {
+            this.$tooltipText.innerText = this.text;
+            this.style.position = 'absolute';
+            if (changes.visible) {
+                this.style.display = this.visible ? 'block' : 'none';
+            }
+            const { width: tooltipWidth, height: tooltipHeight } = this.$tooltipText.getBoundingClientRect();
+            let position = this.position;
+            if (!(position in map)) {
+                position = BOTTOM;
+            }
+            if (this.rect) {
+                const { arrowLeft, arrowTop, left, top } = map[position](tooltipWidth, tooltipHeight, this.rect);
+                this.style.left = `${left + window.scrollX}px`;
+                this.style.top = `${top + window.scrollY}px`;
+                this.$tooltipArrow.style.left = `${arrowLeft}px`;
+                this.$tooltipArrow.style.top = `${arrowTop}px`;
+            }
+        }
+    };
+    __decorate([
+        Prop()
+    ], MdiTooltip.prototype, "visible", void 0);
+    __decorate([
+        Prop()
+    ], MdiTooltip.prototype, "rect", void 0);
+    __decorate([
+        Prop()
+    ], MdiTooltip.prototype, "text", void 0);
+    __decorate([
+        Prop()
+    ], MdiTooltip.prototype, "position", void 0);
+    __decorate([
+        Part()
+    ], MdiTooltip.prototype, "$tooltip", void 0);
+    __decorate([
+        Part()
+    ], MdiTooltip.prototype, "$tooltipText", void 0);
+    __decorate([
+        Part()
+    ], MdiTooltip.prototype, "$tooltipArrow", void 0);
+    MdiTooltip = __decorate([
+        Component({
+            selector: 'mdi-tooltip',
+            style: style$2,
+            template: template$2
+        })
+    ], MdiTooltip);
 
     function addTooltip($part, render, position) {
         function handleMouseEnter() {
@@ -315,7 +495,13 @@ var mdiModification = (function () {
                         if (issue) {
                             addTooltip(issue, () => {
                                 return `View on GitHub`;
-                            }, 'left');
+                            }, BOTTOM_END);
+                        }
+                        const avatar = n.querySelector('[part="avatar"]');
+                        if (avatar) {
+                            addTooltip(avatar, () => {
+                                return modification.user.name;
+                            }, BOTTOM_START);
                         }
                         return n;
                     }
@@ -326,7 +512,9 @@ var mdiModification = (function () {
                 }, (modifiction, $item) => {
                 });
             }
-            if (changes.edit) ;
+            if (changes.edit) {
+                this.$items.classList.toggle('edit', this.edit);
+            }
         }
         addItem(modification) {
             const div = document.createElement('div');

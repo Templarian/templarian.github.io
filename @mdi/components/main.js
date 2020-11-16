@@ -23467,7 +23467,7 @@ MdiMenuIcon = __decorate([
 
 var template$q = "<div part=\"items\"></div>";
 
-var style$q = ":host {\n  display: flex;\n  flex-direction: column;\n  color: #453C4F;\n}\n\n.invalid {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part=\"news\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1fr;\n  grid-template-rows: 3.25rem auto;\n  padding: 0.25rem;\n}\n[part=\"news\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"news\"] [part=\"label\"] {\n  grid-column: 1;\n  grid-row: 2;\n  text-align: center;\n  padding-right: 0.5rem;\n}\n[part=\"news\"] [part=\"markdown\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n\n[part=\"iconAliasCreated\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"iconAliasCreated\"] [part=\"icon\"] {\n  grid-column: 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"content\"] {\n  grid-column: 3;\n  align-content: center;\n  display: flex;\n  align-items: center;\n}\n[part=\"iconAliasCreated\"] [part=\"content\"] code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n[part=\"iconAliasCreated\"] [part=\"issue\"] {\n  grid-column: 4;\n  display: flex;\n  align-self: center;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n  color: #453C4F;\n  border-radius: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"issue\"]:hover {\n  background: #453C4F;\n  color: #fff;\n}\n[part=\"iconAliasCreated\"] [part=\"edit\"] {\n  grid-column: 5;\n  display: flex;\n  align-self: center;\n  padding: 0.25rem;\n  border: 0;\n  border-radius: 0.25rem;\n  margin-left: 0.5rem;\n  cursor: pointer;\n}\n[part=\"iconAliasCreated\"] [part=\"edit\"]:hover {\n  background: #453C4F;\n  --mdi-icon-color: #fff;\n}\n";
+var style$q = ":host {\n  display: flex;\n  flex-direction: column;\n  color: #453C4F;\n}\n\n.invalid {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part=\"news\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1fr;\n  grid-template-rows: 3.25rem auto;\n  padding: 0.25rem;\n}\n[part=\"news\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"news\"] [part=\"label\"] {\n  grid-column: 1;\n  grid-row: 2;\n  text-align: center;\n  padding-right: 0.5rem;\n}\n[part=\"news\"] [part=\"markdown\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n\n[part=\"iconAliasCreated\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"iconAliasCreated\"] [part=\"icon\"] {\n  grid-column: 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"content\"] {\n  grid-column: 3;\n  align-content: center;\n  display: flex;\n  align-items: center;\n}\n[part=\"iconAliasCreated\"] [part=\"content\"] code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n[part=\"iconAliasCreated\"] [part=\"issue\"] {\n  grid-column: 4;\n  display: flex;\n  align-self: center;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n  color: #453C4F;\n  border-radius: 0.25rem;\n}\n[part=\"iconAliasCreated\"] [part=\"issue\"]:hover {\n  background: #453C4F;\n  color: #fff;\n}\n.edit [part=\"iconAliasCreated\"] [part=\"edit\"] {\n  display: flex;\n}\n[part=\"iconAliasCreated\"] [part=\"edit\"] {\n  display: none;\n  grid-column: 5;\n  align-self: center;\n  padding: 0.25rem;\n  border: 0;\n  border-radius: 0.25rem;\n  margin-left: 0.5rem;\n  cursor: pointer;\n}\n[part=\"iconAliasCreated\"] [part=\"edit\"]:hover {\n  background: #453C4F;\n  --mdi-icon-color: #fff;\n}\n";
 
 var templateNews = "<div part=\"news\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <span part=\"label\">News</span>\n  <mdi-markdown part=\"markdown\"></mdi-markdown>\n</div>";
 
@@ -23492,6 +23492,186 @@ var ModificationType;
     ModificationType["IconLive"] = "f92f2ba6-bfed-11e9-8ca0-94188269ec50";
     ModificationType["IconPublished"] = "e262b92e-bfed-11e9-8ca0-94188269ec50";
 })(ModificationType || (ModificationType = {}));
+
+var template$r = "<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"tooltipArrow\"></div>\n</div>";
+
+var style$r = ":host {\n  pointer-events: none;\n}\n\n[part~=tooltip] {\n  position: relative;\n}\n\n[part~=tooltipText] {\n  position: absolute;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n  left: 0;\n  top: 0;\n}\n\n[part~=tooltipArrow] {\n  left: 16px;\n  top: -7px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}";
+
+const TOP = 'top';
+const TOP_START = 'top-start';
+const TOP_END = 'top-end';
+const RIGHT = 'right';
+const RIGHT_START = 'right-start';
+const RIGHT_END = 'right-end';
+const BOTTOM = 'bottom';
+const BOTTOM_START = 'bottom-start';
+const BOTTOM_END = 'bottom-end';
+const LEFT = 'left';
+const LEFT_START = 'left-start';
+const LEFT_END = 'left-end';
+
+const map$1 = {
+    [TOP_START]: (width, height, rect) => {
+        return {
+            arrowTop: height - 5,
+            arrowLeft: rect.width > width
+                ? Math.floor(width / 2) - 5
+                : Math.floor(rect.width / 2) - 5,
+            left: rect.left,
+            top: rect.top - height - 10
+        };
+    },
+    [TOP]: (width, height, rect) => {
+        return {
+            arrowTop: height - 5,
+            arrowLeft: Math.floor(width / 2) - 5,
+            left: rect.left - Math.floor((width - rect.width) / 2),
+            top: rect.top - height - 10
+        };
+    },
+    [TOP_END]: (width, height, rect) => {
+        return {
+            arrowTop: height - 5,
+            arrowLeft: rect.width > width
+                ? width - Math.floor(width / 2) - 5
+                : width - Math.floor(rect.width / 2) - 5,
+            left: rect.left - width + rect.width,
+            top: rect.top - height - 10
+        };
+    },
+    [RIGHT_START]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: -5,
+            left: rect.left + rect.width + 10,
+            top: rect.top
+        };
+    },
+    [RIGHT]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: -5,
+            left: rect.left + rect.width + 10,
+            top: rect.top + Math.floor(rect.height / 2) - Math.floor(height / 2)
+        };
+    },
+    [RIGHT_END]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: -5,
+            left: rect.left + rect.width + 10,
+            top: rect.top + rect.height - height
+        };
+    },
+    [BOTTOM_START]: (width, height, rect) => {
+        return {
+            arrowTop: -5,
+            arrowLeft: rect.width > width
+                ? Math.floor(width / 2) - 5
+                : Math.floor(rect.width / 2) - 5,
+            left: rect.left,
+            top: rect.top + rect.height + height - 20
+        };
+    },
+    [BOTTOM]: (width, height, rect) => {
+        return {
+            arrowTop: -5,
+            arrowLeft: Math.floor(width / 2) - 5,
+            left: rect.left - Math.floor((width - rect.width) / 2),
+            top: rect.top + rect.height + height - 20
+        };
+    },
+    [BOTTOM_END]: (width, height, rect) => {
+        return {
+            arrowTop: -5,
+            arrowLeft: rect.width > width
+                ? width - Math.floor(width / 2) - 5
+                : width - Math.floor(rect.width / 2) - 5,
+            left: rect.left - width + rect.width,
+            top: rect.top + rect.height + height - 20
+        };
+    },
+    [LEFT_START]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: width - 5,
+            left: rect.left - width - 10,
+            top: rect.top
+        };
+    },
+    [LEFT]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: width - 5,
+            left: rect.left - width - 10,
+            top: rect.top + Math.floor(rect.height / 2) - Math.floor(height / 2)
+        };
+    },
+    [LEFT_END]: (width, height, rect) => {
+        return {
+            arrowTop: Math.floor(height / 2) - 5,
+            arrowLeft: width - 5,
+            left: rect.left - width - 10,
+            top: rect.top + rect.height - height
+        };
+    }
+};
+let MdiTooltip = class MdiTooltip extends HTMLElement {
+    constructor() {
+        super(...arguments);
+        this.visible = false;
+        this.rect = null;
+        this.text = '';
+        this.position = BOTTOM;
+    }
+    render(changes) {
+        this.$tooltipText.innerText = this.text;
+        this.style.position = 'absolute';
+        if (changes.visible) {
+            this.style.display = this.visible ? 'block' : 'none';
+        }
+        const { width: tooltipWidth, height: tooltipHeight } = this.$tooltipText.getBoundingClientRect();
+        let position = this.position;
+        if (!(position in map$1)) {
+            position = BOTTOM;
+        }
+        if (this.rect) {
+            const { arrowLeft, arrowTop, left, top } = map$1[position](tooltipWidth, tooltipHeight, this.rect);
+            this.style.left = `${left + window.scrollX}px`;
+            this.style.top = `${top + window.scrollY}px`;
+            this.$tooltipArrow.style.left = `${arrowLeft}px`;
+            this.$tooltipArrow.style.top = `${arrowTop}px`;
+        }
+    }
+};
+__decorate([
+    Prop()
+], MdiTooltip.prototype, "visible", void 0);
+__decorate([
+    Prop()
+], MdiTooltip.prototype, "rect", void 0);
+__decorate([
+    Prop()
+], MdiTooltip.prototype, "text", void 0);
+__decorate([
+    Prop()
+], MdiTooltip.prototype, "position", void 0);
+__decorate([
+    Part()
+], MdiTooltip.prototype, "$tooltip", void 0);
+__decorate([
+    Part()
+], MdiTooltip.prototype, "$tooltipText", void 0);
+__decorate([
+    Part()
+], MdiTooltip.prototype, "$tooltipArrow", void 0);
+MdiTooltip = __decorate([
+    Component({
+        selector: 'mdi-tooltip',
+        style: style$r,
+        template: template$r
+    })
+], MdiTooltip);
 
 const editIcon = 'M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z';
 const mapTemplates = {
@@ -23544,7 +23724,13 @@ let MdiModification = class MdiModification extends HTMLElement {
                     if (issue) {
                         addTooltip(issue, () => {
                             return `View on GitHub`;
-                        }, 'left');
+                        }, BOTTOM_END);
+                    }
+                    const avatar = n.querySelector('[part="avatar"]');
+                    if (avatar) {
+                        addTooltip(avatar, () => {
+                            return modification.user.name;
+                        }, BOTTOM_START);
                     }
                     return n;
                 }
@@ -23555,7 +23741,9 @@ let MdiModification = class MdiModification extends HTMLElement {
             }, (modifiction, $item) => {
             });
         }
-        if (changes.edit) ;
+        if (changes.edit) {
+            this.$items.classList.toggle('edit', this.edit);
+        }
     }
     addItem(modification) {
         const div = document.createElement('div');
@@ -23579,9 +23767,9 @@ MdiModification = __decorate([
     })
 ], MdiModification);
 
-var template$r = "<nav part=\"nav\">\n  <a href=\"/\">\n    <span part=\"name\"></span>\n  </a>\n  <a href=\"/icons\">\n    Icons\n  </a>\n  <a href=\"/icons\">\n    Docs\n  </a>\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n</nav>";
+var template$s = "<nav part=\"nav\">\n  <a href=\"/\">\n    <span part=\"name\"></span>\n  </a>\n  <a href=\"/icons\">\n    Icons\n  </a>\n  <a href=\"/icons\">\n    Docs\n  </a>\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n</nav>";
 
-var style$r = ":host {\n  align-self: center;\n}\nsvg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\nbutton {\n  border: 0;\n  background: transparent;\n}\nbutton > svg {\n  fill: #fff;\n}";
+var style$s = ":host {\n  align-self: center;\n}\nsvg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\nbutton {\n  border: 0;\n  background: transparent;\n}\nbutton > svg {\n  fill: #fff;\n}";
 
 const noIcon$2 = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
 let MdiNav = class MdiNav extends HTMLElement {
@@ -23601,14 +23789,14 @@ __decorate([
 MdiNav = __decorate([
     Component({
         selector: 'mdi-nav',
-        style: style$r,
-        template: template$r
+        style: style$s,
+        template: template$s
     })
 ], MdiNav);
 
-var template$s = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\" height=\"12rem\"></mdi-grid>\n  </div>\n</div>";
+var template$t = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\" height=\"12rem\"></mdi-grid>\n  </div>\n</div>";
 
-var style$s = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n  outline: none;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
+var style$t = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n  outline: none;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
 
 window.process = { env: {} };
 let MdiPicker = class MdiPicker extends MdiButton$1 {
@@ -23674,14 +23862,14 @@ __decorate([
 MdiPicker = __decorate([
     Component({
         selector: 'mdi-picker',
-        style: style$s,
-        template: template$s
+        style: style$t,
+        template: template$t
     })
 ], MdiPicker);
 
-var template$t = "<div part=\"grid\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n  </svg>\n</div>";
+var template$u = "<div part=\"grid\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n  </svg>\n</div>";
 
-var style$t = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n[part=svg] {\n  position: relative;\n  width: 1.5rem;\n  height: 1.5rem;\n  z-index: 1;\n}\n\n[part=\"grid\"] {\n  position: relative;\n  background-image:\n    repeating-linear-gradient(rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%);\n  background-size: var(--mdi-preview-size, 4px) var(--mdi-preview-size, 4px);\n  background-position: calc(var(--mdi-preview-size, 4px) - 1px) calc(var(--mdi-preview-size, 4px) - 1px);\n}\n\n[part=\"grid\"]::after {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  content: ' ';\n  background-image:\n    repeating-linear-gradient(#5389a4 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, #5389a4 0 2px, transparent 2px 100%);\n  background-size: calc(var(--mdi-preview-size, 4px) * 4) calc(var(--mdi-preview-size, 4px) * 4);\n  background-position: calc(var(--mdi-preview-size, 4px) * 4 - 1px) calc(var(--mdi-preview-size, 4px) * 4 - 1px);\n}\n";
+var style$u = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n[part=svg] {\n  position: relative;\n  width: 1.5rem;\n  height: 1.5rem;\n  z-index: 1;\n}\n\n[part=\"grid\"] {\n  position: relative;\n  background-image:\n    repeating-linear-gradient(rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%);\n  background-size: var(--mdi-preview-size, 4px) var(--mdi-preview-size, 4px);\n  background-position: calc(var(--mdi-preview-size, 4px) - 1px) calc(var(--mdi-preview-size, 4px) - 1px);\n}\n\n[part=\"grid\"]::after {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  content: ' ';\n  background-image:\n    repeating-linear-gradient(#5389a4 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, #5389a4 0 2px, transparent 2px 100%);\n  background-size: calc(var(--mdi-preview-size, 4px) * 4) calc(var(--mdi-preview-size, 4px) * 4);\n  background-position: calc(var(--mdi-preview-size, 4px) * 4 - 1px) calc(var(--mdi-preview-size, 4px) * 4 - 1px);\n}\n";
 
 const noIcon$3 = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
 let MdiIcon$2 = class MdiIcon extends HTMLElement {
@@ -23732,8 +23920,8 @@ __decorate([
 MdiIcon$2 = __decorate([
     Component({
         selector: 'mdi-preview',
-        style: style$t,
-        template: template$t
+        style: style$u,
+        template: template$u
     })
 ], MdiIcon$2);
 
@@ -24252,9 +24440,9 @@ function throttle(func, wait, options) {
   });
 }
 
-var template$u = "<div part=\"scroll\">\n  <slot></slot>\n</div>";
+var template$v = "<div part=\"scroll\">\n  <slot></slot>\n</div>";
 
-var style$u = ":host {\n  display: block;\n}\n\ndiv {\n  transform: translateY(0);\n}";
+var style$v = ":host {\n  display: block;\n}\n\ndiv {\n  transform: translateY(0);\n}";
 
 let MdiScroll = class MdiScroll extends HTMLElement {
     constructor() {
@@ -24387,8 +24575,8 @@ __decorate([
 MdiScroll = __decorate([
     Component({
         selector: 'mdi-scroll',
-        style: style$u,
-        template: template$u
+        style: style$v,
+        template: template$v
     })
 ], MdiScroll);
 
@@ -24556,9 +24744,9 @@ function iconFilter(icons, term, limit = 5) {
     return exactMatch(list, term);
 }
 
-var template$v = "<div part=\"grid\">\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n    <section part=\"empty\">\n      <strong>No Results</strong>\n      <a part=\"reqIcon\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Icon+Request&template=1_icon_request.md&title=\" target=\"_blank\">\n        Request an Icon\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n      <a part=\"reqDoc\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Documentation&template=6_doc_guide_request.md&title=\" target=\"_blank\">\n        Request Documentation\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n    </section>\n  </div>\n</div>";
+var template$w = "<div part=\"grid\">\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n    <section part=\"empty\">\n      <strong>No Results</strong>\n      <a part=\"reqIcon\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Icon+Request&template=1_icon_request.md&title=\" target=\"_blank\">\n        Request an Icon\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n      <a part=\"reqDoc\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Documentation&template=6_doc_guide_request.md&title=\" target=\"_blank\">\n        Request Documentation\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n    </section>\n  </div>\n</div>";
 
-var style$v = ":host {\n  display: block;\n  align-self: center;\n  font-family: var(--mdi-font-family);\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n  border: .0625rem solid var(--mdi-search-border-color);\n}\ninput:active {\n  box-shadow: 0 0 0 3px var(--mdi-search-active-glow, rgb(79, 143, 249, 0.6));\n}\ninput:focus {\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n.active input + svg path {\n  fill: #453C4F;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover,\nul > li > a:active,\nul > li > a:focus {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n  align-self: end;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n.icon svg {\n  color: #453C4F;\n  margin-right: 0.345rem;\n  margin-left: -0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}\n\n[part~=empty] {\n  background: #453C4F;\n  border-radius: 0.25rem;\n  padding: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\n[part~=empty] strong {\n  color: #fff;\n  padding: 0 0.25rem;\n}\n[part~=empty] a {\n  display: block;\n  background: #fff;\n  color: #453C4F;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  margin-top: 0.25rem;\n}\n[part~=empty] a:hover,\n[part~=empty] a:active,\n[part~=empty] a:focus {\n  background: #DAF4FB;\n}\n[part~=empty] a svg {\n  vertical-align: middle;\n  width: 1.5rem;\n  height: 1.5rem;\n  float: right;\n  margin: -0.125rem -0.25rem 0 0;\n}\n\n.hide {\n  display: none;\n}";
+var style$w = ":host {\n  display: block;\n  align-self: center;\n  font-family: var(--mdi-font-family);\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n  border: .0625rem solid var(--mdi-search-border-color);\n}\ninput:active {\n  box-shadow: 0 0 0 3px var(--mdi-search-active-glow, rgb(79, 143, 249, 0.6));\n}\ninput:focus {\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n.active input + svg path {\n  fill: #453C4F;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover,\nul > li > a:active,\nul > li > a:focus {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n  align-self: end;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n.icon svg {\n  color: #453C4F;\n  margin-right: 0.345rem;\n  margin-left: -0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}\n\n[part~=empty] {\n  background: #453C4F;\n  border-radius: 0.25rem;\n  padding: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\n[part~=empty] strong {\n  color: #fff;\n  padding: 0 0.25rem;\n}\n[part~=empty] a {\n  display: block;\n  background: #fff;\n  color: #453C4F;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  margin-top: 0.25rem;\n}\n[part~=empty] a:hover,\n[part~=empty] a:active,\n[part~=empty] a:focus {\n  background: #DAF4FB;\n}\n[part~=empty] a svg {\n  vertical-align: middle;\n  width: 1.5rem;\n  height: 1.5rem;\n  float: right;\n  margin: -0.125rem -0.25rem 0 0;\n}\n\n.hide {\n  display: none;\n}";
 
 let MdiSearch = class MdiSearch extends HTMLElement {
     constructor() {
@@ -24790,8 +24978,8 @@ __decorate([
 MdiSearch = __decorate([
     Component({
         selector: 'mdi-search',
-        style: style$v,
-        template: template$v
+        style: style$w,
+        template: template$w
     })
 ], MdiSearch);
 
@@ -24819,9 +25007,9 @@ function removeToast(key) {
     document.body.dispatchEvent(event);
 }
 
-var template$w = "<button part=\"button\">\n  <span part=\"loading\">\n    <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n    </svg>\n  </span>\n  <span part=\"message\"></span>\n  <span part=\"close\">\n    <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n    </svg>\n  </span>\n</button>";
+var template$x = "<button part=\"button\">\n  <span part=\"loading\">\n    <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n    </svg>\n  </span>\n  <span part=\"message\"></span>\n  <span part=\"close\">\n    <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n    </svg>\n  </span>\n</button>";
 
-var style$w = "[part~=button] {\n  display: flex;\n  background: #737E9E;\n  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);\n  border-radius: 0.25rem;\n  border: 1px solid #737E9E;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  color: #FFF;\n  align-items: center;\n  outline: 0;\n  transition: border-color 0.1s ease-in;\n  margin-bottom: 0.5rem;\n  max-width: 18rem;\n  font-size: 1rem;\n  align-items: center;\n}\n\n[part~=loading] {\n  height: 1.5rem;\n  margin: -0.25rem 0.5rem -0.25rem -0.25rem;\n}\n\n[part~=button]:hover {\n  border: 1px solid rgba(255, 255, 255, 0.75);\n}\n\n[part~=close] {\n  height: 1rem;\n}\n\n[part~=closeIcon] {\n  width: 1rem;\n  height: 1rem;\n}\n\n[part~=loadingIcon] {\n  animation: spin 2s infinite linear;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n@keyframes progress {\n  from {\n    width: 0;\n  }\n  to {\n    width: 20rem;\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part~=closeIcon] {\n  margin-left: 0.5rem;\n  color: rgba(255, 255, 255, 0.5);\n  transition: color 0.1s ease-in;\n}\n\n[part~=button]:hover [part~=closeIcon] {\n  color: #fff;\n}\n\n.hide {\n  display: none;\n}\n\n/* Error */\n\n[part~=button].error {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part~=button].error [part~=closeIcon] {\n  color: rgba(114, 28, 36, 0.6);\n}\n\n[part~=button].error:hover {\n  border-color: #721c24;\n}\n\n[part~=button].error:hover [part~=closeIcon] {\n  color: #721c24;\n}\n\n/* Warning */\n\n[part~=button].warning {\n  color: #856404;\n  background-color: #fff3cd;\n  border-color: #ffeeba;\n}\n\n[part~=button].warning [part~=closeIcon] {\n  color: rgba(133, 101, 4, 0.6);\n}\n\n[part~=button].warning:hover {\n  border-color: #856404;\n}\n\n[part~=button].warning:hover [part~=closeIcon] {\n  color: #856404;\n}";
+var style$x = "[part~=button] {\n  display: flex;\n  background: #737E9E;\n  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);\n  border-radius: 0.25rem;\n  border: 1px solid #737E9E;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  color: #FFF;\n  align-items: center;\n  outline: 0;\n  transition: border-color 0.1s ease-in;\n  margin-bottom: 0.5rem;\n  max-width: 18rem;\n  font-size: 1rem;\n  align-items: center;\n}\n\n[part~=loading] {\n  height: 1.5rem;\n  margin: -0.25rem 0.5rem -0.25rem -0.25rem;\n}\n\n[part~=button]:hover {\n  border: 1px solid rgba(255, 255, 255, 0.75);\n}\n\n[part~=close] {\n  height: 1rem;\n}\n\n[part~=closeIcon] {\n  width: 1rem;\n  height: 1rem;\n}\n\n[part~=loadingIcon] {\n  animation: spin 2s infinite linear;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n@keyframes progress {\n  from {\n    width: 0;\n  }\n  to {\n    width: 20rem;\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part~=closeIcon] {\n  margin-left: 0.5rem;\n  color: rgba(255, 255, 255, 0.5);\n  transition: color 0.1s ease-in;\n}\n\n[part~=button]:hover [part~=closeIcon] {\n  color: #fff;\n}\n\n.hide {\n  display: none;\n}\n\n/* Error */\n\n[part~=button].error {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part~=button].error [part~=closeIcon] {\n  color: rgba(114, 28, 36, 0.6);\n}\n\n[part~=button].error:hover {\n  border-color: #721c24;\n}\n\n[part~=button].error:hover [part~=closeIcon] {\n  color: #721c24;\n}\n\n/* Warning */\n\n[part~=button].warning {\n  color: #856404;\n  background-color: #fff3cd;\n  border-color: #ffeeba;\n}\n\n[part~=button].warning [part~=closeIcon] {\n  color: rgba(133, 101, 4, 0.6);\n}\n\n[part~=button].warning:hover {\n  border-color: #856404;\n}\n\n[part~=button].warning:hover [part~=closeIcon] {\n  color: #856404;\n}";
 
 let MdiToast = class MdiToast extends HTMLElement {
     constructor() {
@@ -24874,14 +25062,14 @@ __decorate([
 MdiToast = __decorate([
     Component({
         selector: 'mdi-toast',
-        style: style$w,
-        template: template$w
+        style: style$x,
+        template: template$x
     })
 ], MdiToast);
 
-var template$x = "<div part=\"container\"></div>";
+var template$y = "<div part=\"container\"></div>";
 
-var style$x = "[part~=container] {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: flex-end;\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n}";
+var style$y = "[part~=container] {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: flex-end;\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n}";
 
 let MdiToasts = class MdiToasts extends HTMLElement {
     constructor() {
@@ -24929,187 +25117,7 @@ __decorate([
 MdiToasts = __decorate([
     Component({
         selector: 'mdi-toasts',
-        style: style$x,
-        template: template$x
-    })
-], MdiToasts);
-
-var template$y = "<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"tooltipArrow\"></div>\n</div>";
-
-var style$y = ":host {\n  pointer-events: none;\n}\n\n[part~=tooltip] {\n  position: relative;\n}\n\n[part~=tooltipText] {\n  position: absolute;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n  left: 0;\n  top: 0;\n}\n\n[part~=tooltipArrow] {\n  left: 16px;\n  top: -7px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}";
-
-const TOP = 'top';
-const TOP_START = 'top-start';
-const TOP_END = 'top-end';
-const RIGHT = 'right';
-const RIGHT_START = 'right-start';
-const RIGHT_END = 'right-end';
-const BOTTOM = 'bottom';
-const BOTTOM_START = 'bottom-start';
-const BOTTOM_END = 'bottom-end';
-const LEFT = 'left';
-const LEFT_START = 'left-start';
-const LEFT_END = 'left-end';
-
-const map$1 = {
-    [TOP_START]: (width, height, rect) => {
-        return {
-            arrowTop: height - 5,
-            arrowLeft: rect.width > width
-                ? Math.floor(width / 2) - 5
-                : Math.floor(rect.width / 2) - 5,
-            left: rect.left,
-            top: rect.top - height - 10
-        };
-    },
-    [TOP]: (width, height, rect) => {
-        return {
-            arrowTop: height - 5,
-            arrowLeft: Math.floor(width / 2) - 5,
-            left: rect.left - Math.floor((width - rect.width) / 2),
-            top: rect.top - height - 10
-        };
-    },
-    [TOP_END]: (width, height, rect) => {
-        return {
-            arrowTop: height - 5,
-            arrowLeft: rect.width > width
-                ? width - Math.floor(width / 2) - 5
-                : width - Math.floor(rect.width / 2) - 5,
-            left: rect.left - width + rect.width,
-            top: rect.top - height - 10
-        };
-    },
-    [RIGHT_START]: (width, height, rect) => {
-        return {
-            arrowTop: Math.floor(height / 2) - 5,
-            arrowLeft: -5,
-            left: rect.left + rect.width + 10,
-            top: rect.top
-        };
-    },
-    [RIGHT]: (width, height, rect) => {
-        return {
-            arrowTop: Math.floor(height / 2) - 5,
-            arrowLeft: -5,
-            left: rect.left + rect.width + 10,
-            top: rect.top + Math.floor(rect.height / 2) - Math.floor(height / 2)
-        };
-    },
-    [RIGHT_END]: (width, height, rect) => {
-        return {
-            arrowTop: Math.floor(height / 2) - 5,
-            arrowLeft: -5,
-            left: rect.left + rect.width + 10,
-            top: rect.top + rect.height - height
-        };
-    },
-    [BOTTOM_START]: (width, height, rect) => {
-        return {
-            arrowTop: -5,
-            arrowLeft: rect.width > width
-                ? Math.floor(width / 2) - 5
-                : Math.floor(rect.width / 2) - 5,
-            left: rect.left,
-            top: rect.top + rect.height + height - 20
-        };
-    },
-    [BOTTOM]: (width, height, rect) => {
-        return {
-            arrowTop: -5,
-            arrowLeft: Math.floor(width / 2) - 5,
-            left: rect.left - Math.floor((width - rect.width) / 2),
-            top: rect.top + rect.height + height - 20
-        };
-    },
-    [BOTTOM_END]: (width, height, rect) => {
-        return {
-            arrowTop: -5,
-            arrowLeft: rect.width > width
-                ? width - Math.floor(width / 2) - 5
-                : width - Math.floor(rect.width / 2) - 5,
-            left: rect.left - width + rect.width,
-            top: rect.top + rect.height + height - 20
-        };
-    },
-    [LEFT_START]: (width, height, rect) => {
-        return {
-            arrowTop: Math.floor(height / 2) - 5,
-            arrowLeft: width - 5,
-            left: rect.left - width - 10,
-            top: rect.top
-        };
-    },
-    [LEFT]: (width, height, rect) => {
-        return {
-            arrowTop: Math.floor(height / 2) - 5,
-            arrowLeft: width - 5,
-            left: rect.left - width - 10,
-            top: rect.top + Math.floor(rect.height / 2) - Math.floor(height / 2)
-        };
-    },
-    [LEFT_END]: (width, height, rect) => {
-        return {
-            arrowTop: Math.floor(height / 2) - 5,
-            arrowLeft: width - 5,
-            left: rect.left - width - 10,
-            top: rect.top + rect.height - height
-        };
-    }
-};
-let MdiTooltip = class MdiTooltip extends HTMLElement {
-    constructor() {
-        super(...arguments);
-        this.visible = false;
-        this.rect = null;
-        this.text = '';
-        this.position = BOTTOM;
-    }
-    render(changes) {
-        this.$tooltipText.innerText = this.text;
-        this.style.position = 'absolute';
-        if (changes.visible) {
-            this.style.display = this.visible ? 'block' : 'none';
-        }
-        const { width: tooltipWidth, height: tooltipHeight } = this.$tooltipText.getBoundingClientRect();
-        let position = this.position;
-        if (!(position in map$1)) {
-            position = BOTTOM;
-        }
-        if (this.rect) {
-            const { arrowLeft, arrowTop, left, top } = map$1[position](tooltipWidth, tooltipHeight, this.rect);
-            this.style.left = `${left + window.scrollX}px`;
-            this.style.top = `${top + window.scrollY}px`;
-            this.$tooltipArrow.style.left = `${arrowLeft}px`;
-            this.$tooltipArrow.style.top = `${arrowTop}px`;
-        }
-    }
-};
-__decorate([
-    Prop()
-], MdiTooltip.prototype, "visible", void 0);
-__decorate([
-    Prop()
-], MdiTooltip.prototype, "rect", void 0);
-__decorate([
-    Prop()
-], MdiTooltip.prototype, "text", void 0);
-__decorate([
-    Prop()
-], MdiTooltip.prototype, "position", void 0);
-__decorate([
-    Part()
-], MdiTooltip.prototype, "$tooltip", void 0);
-__decorate([
-    Part()
-], MdiTooltip.prototype, "$tooltipText", void 0);
-__decorate([
-    Part()
-], MdiTooltip.prototype, "$tooltipArrow", void 0);
-MdiTooltip = __decorate([
-    Component({
-        selector: 'mdi-tooltip',
         style: style$y,
         template: template$y
     })
-], MdiTooltip);
+], MdiToasts);
