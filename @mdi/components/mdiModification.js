@@ -192,9 +192,23 @@ var mdiModification = (function () {
 
     var templateNews = "<div part=\"news\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <span part=\"label\">News</span>\n  <mdi-markdown part=\"markdown\"></mdi-markdown>\n</div>";
 
+    var templateIconCreated = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Icon <code part=\"iconName\"></code> created.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
+
+    var templateIconModified = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Icon <code part=\"iconName\"></code> modified.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
+
+    var templateIconRenamed = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Icon <code part=\"iconName\"></code> renamed.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
+
+    var templateIconDeleted = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Icon <code part=\"iconName\"></code> deleted.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
+
     var templateIconAliasCreated = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Added alias <code part=\"text\"></code> to <code part=\"iconName\"></code>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
 
     var templateIconAliasDeleted = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Removed alias <code part=\"text\"></code> from <code part=\"iconName\"></code>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
+
+    var templateIconTagCreated = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Added tag <code part=\"text\"></code> to <code part=\"iconName\"></code>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
+
+    var templateIconTagDeleted = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Removed tag <code part=\"text\"></code> from <code part=\"iconName\"></code>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
+
+    var templateIconDescriptionModified = "<div part=\"iconDescriptionModified\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <mdi-markdown part=\"markdown\"></mdi-markdown>\n</div>";
 
     function list($list, items, key, add, update) {
         const elements = Array.from($list.children);
@@ -449,14 +463,15 @@ var mdiModification = (function () {
     const editIcon = 'M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z';
     const mapTemplates = {
         [ModificationType.News]: templateNews,
-        [ModificationType.IconCreated]: templateNews,
-        [ModificationType.IconModified]: templateNews,
-        [ModificationType.IconRenamed]: templateNews,
-        [ModificationType.IconDeleted]: templateNews,
+        [ModificationType.IconCreated]: templateIconCreated,
+        [ModificationType.IconModified]: templateIconModified,
+        [ModificationType.IconRenamed]: templateIconRenamed,
+        [ModificationType.IconDeleted]: templateIconDeleted,
         [ModificationType.IconAliasCreated]: templateIconAliasCreated,
         [ModificationType.IconAliasDeleted]: templateIconAliasDeleted,
-        [ModificationType.IconTagCreated]: templateNews,
-        [ModificationType.IconTagDeleted]: templateNews
+        [ModificationType.IconTagCreated]: templateIconTagCreated,
+        [ModificationType.IconTagDeleted]: templateIconTagDeleted,
+        [ModificationType.IconDescriptionModified]: templateIconDescriptionModified
     };
     let MdiModification = class MdiModification extends HTMLElement {
         constructor() {
