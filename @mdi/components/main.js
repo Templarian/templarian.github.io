@@ -23467,7 +23467,9 @@ MdiMenuIcon = __decorate([
 
 var template$q = "<div part=\"items\"></div>";
 
-var style$q = ":host {\n  display: flex;\n  flex-direction: column;\n  color: #453C4F;\n}\n\n.invalid {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n/* Individual Templates */\n\n[part=\"news\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1fr;\n  grid-template-rows: 3.25rem auto;\n  padding: 0.25rem;\n}\n[part=\"news\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"news\"] [part=\"label\"] {\n  grid-column: 1;\n  grid-row: 2;\n  text-align: center;\n  padding-right: 0.5rem;\n}\n[part=\"news\"] [part=\"markdown\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n\n[part=\"iconCreated\"],\n[part=\"iconModified\"],\n[part=\"iconRenamed\"],\n[part=\"iconDeleted\"],\n[part=\"iconAliasCreated\"],\n[part=\"iconAliasDeleted\"],\n[part=\"iconTagCreated\"],\n[part=\"iconTagDeleted\"],\n[part=\"iconAuthorModified\"],\n[part=\"iconDeprecated\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconCreated\"] [part=\"avatar\"],\n[part=\"iconModified\"] [part=\"avatar\"],\n[part=\"iconRenamed\"] [part=\"avatar\"],\n[part=\"iconDeleted\"] [part=\"avatar\"],\n[part=\"iconAliasCreated\"] [part=\"avatar\"],\n[part=\"iconAliasDeleted\"] [part=\"avatar\"],\n[part=\"iconTagCreated\"] [part=\"avatar\"],\n[part=\"iconTagDeleted\"] [part=\"avatar\"],\n[part=\"iconAuthorModified\"] [part=\"avatar\"],\n[part=\"iconDeprecated\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"iconCreated\"] [part=\"icon\"],\n[part=\"iconModified\"] [part=\"icon\"],\n[part=\"iconRenamed\"] [part=\"icon\"],\n[part=\"iconDeleted\"] [part=\"icon\"],\n[part=\"iconAliasCreated\"] [part=\"icon\"],\n[part=\"iconAliasDeleted\"] [part=\"icon\"],\n[part=\"iconTagCreated\"] [part=\"icon\"],\n[part=\"iconTagDeleted\"] [part=\"icon\"],\n[part=\"iconAuthorModified\"] [part=\"icon\"],\n[part=\"iconDeprecated\"] [part=\"icon\"] {\n  grid-column: 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n  align-self: flex-start;\n}\n[part=\"iconCreated\"] [part=\"content\"],\n[part=\"iconModified\"] [part=\"content\"],\n[part=\"iconRenamed\"] [part=\"content\"],\n[part=\"iconDeleted\"] [part=\"content\"],\n[part=\"iconAliasCreated\"] [part=\"content\"],\n[part=\"iconAliasDeleted\"] [part=\"content\"],\n[part=\"iconTagCreated\"] [part=\"content\"],\n[part=\"iconTagDeleted\"] [part=\"content\"],\n[part=\"iconAuthorModified\"] [part=\"content\"],\n[part=\"iconDeprecated\"] [part=\"content\"] {\n  grid-column: 3;\n  align-content: center;\n  display: flex;\n  align-items: center;\n}\n[part=\"iconCreated\"] [part=\"content\"] code,\n[part=\"iconModified\"] [part=\"content\"] code,\n[part=\"iconRenamed\"] [part=\"content\"] code,\n[part=\"iconDeleted\"] [part=\"content\"] code,\n[part=\"iconAliasCreated\"] [part=\"content\"] code,\n[part=\"iconAliasDeleted\"] [part=\"content\"] code,\n[part=\"iconTagCreated\"] [part=\"content\"] code,\n[part=\"iconTagDeleted\"] [part=\"content\"] code,\n[part=\"iconAuthorModified\"] [part=\"content\"] code,\n[part=\"iconDeprecated\"] [part=\"content\"] code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n[part=\"iconCreated\"] [part=\"issue\"],\n[part=\"iconModified\"] [part=\"issue\"],\n[part=\"iconRenamed\"] [part=\"issue\"],\n[part=\"iconDeleted\"] [part=\"issue\"],\n[part=\"iconAliasCreated\"] [part=\"issue\"],\n[part=\"iconAliasDeleted\"] [part=\"issue\"],\n[part=\"iconTagCreated\"] [part=\"issue\"],\n[part=\"iconTagDeleted\"] [part=\"issue\"],\n[part=\"iconDescriptionModified\"] [part=\"issue\"],\n[part=\"iconAuthorModified\"] [part=\"issue\"],\n[part=\"iconDeprecated\"] [part=\"issue\"] {\n  grid-column: 4;\n  display: flex;\n  align-self: center;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n  color: #453C4F;\n  border-radius: 0.25rem;\n}\n[part=\"iconCreated\"] [part=\"issue\"]:hover,\n[part=\"iconModified\"] [part=\"issue\"]:hover,\n[part=\"iconRenamed\"] [part=\"issue\"]:hover,\n[part=\"iconDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconAliasCreated\"] [part=\"issue\"]:hover,\n[part=\"iconAliasDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconTagCreated\"] [part=\"issue\"]:hover,\n[part=\"iconTagDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconDescriptionModified\"] [part=\"issue\"]:hover,\n[part=\"iconAuthorModified\"] [part=\"issue\"]:hover,\n[part=\"iconDeprecated\"] [part=\"issue\"]:hover {\n  background: #453C4F;\n  color: #fff;\n}\n.edit [part=\"iconCreated\"] [part=\"edit\"],\n.edit [part=\"iconModified\"] [part=\"edit\"],\n.edit [part=\"iconRenamed\"] [part=\"edit\"],\n.edit [part=\"iconDeleted\"] [part=\"edit\"],\n.edit [part=\"iconAliasCreated\"] [part=\"edit\"],\n.edit [part=\"iconAliasDeleted\"] [part=\"edit\"],\n.edit [part=\"iconTagCreated\"] [part=\"edit\"],\n.edit [part=\"iconTagDeleted\"] [part=\"edit\"],\n.edit [part=\"iconDescriptionModified\"] [part=\"edit\"],\n.edit [part=\"iconAuthorModified\"] [part=\"edit\"],\n.edit [part=\"iconDeprecated\"] [part=\"edit\"] {\n  display: flex;\n}\n[part=\"iconCreated\"] [part=\"edit\"],\n[part=\"iconModified\"] [part=\"edit\"],\n[part=\"iconRenamed\"] [part=\"edit\"],\n[part=\"iconDeleted\"] [part=\"edit\"],\n[part=\"iconAliasCreated\"] [part=\"edit\"],\n[part=\"iconAliasDeleted\"] [part=\"edit\"],\n[part=\"iconTagCreated\"] [part=\"edit\"],\n[part=\"iconTagDeleted\"] [part=\"edit\"],\n[part=\"iconDescriptionModified\"] [part=\"edit\"],\n[part=\"iconAuthorModified\"] [part=\"edit\"],\n[part=\"iconDeprecated\"] [part=\"edit\"] {\n  display: none;\n  grid-column: 5;\n  align-self: center;\n  padding: 0.25rem;\n  border: 0;\n  border-radius: 0.25rem;\n  margin-left: 0.5rem;\n  cursor: pointer;\n}\n[part=\"iconCreated\"] [part=\"edit\"]:hover,\n[part=\"iconModified\"] [part=\"edit\"]:hover,\n[part=\"iconRenamed\"] [part=\"edit\"]:hover,\n[part=\"iconDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconAliasCreated\"] [part=\"edit\"]:hover,\n[part=\"iconAliasDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconTagCreated\"] [part=\"edit\"]:hover,\n[part=\"iconTagDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconDescriptionModified\"] [part=\"edit\"]:hover,\n[part=\"iconAuthorModified\"] [part=\"edit\"]:hover,\n[part=\"iconDeprecated\"] [part=\"edit\"]:hover {\n  background: #453C4F;\n  --mdi-icon-color: #fff;\n}\n\n[part=\"iconDescriptionModified\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr 0.5rem 1fr auto;\n  grid-template-rows: auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"avatar\"] {\n  grid-column: 1;\n  grid-row: 1 / span 2;\n}\n[part=\"iconDescriptionModified\"] [part=\"icon\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n  align-self: flex-start;\n}\n[part=\"iconDescriptionModified\"] [part=\"iconDescriptionBefore\"] {\n  grid-column: 3;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"iconDescriptionAfter\"] {\n  grid-column: 5;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"issue\"] {\n  grid-column: 6;\n  grid-row: 1;\n  margin-left: 0.5rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"edit\"] {\n  grid-column: 6;\n  grid-row: 2;\n  justify-content: center;\n  margin-top: 0.25rem;\n}";
+var style$q = ":host {\n  display: flex;\n  flex-direction: column;\n  color: #453C4F;\n}\n\n.invalid {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\nh2 {\n  font-weight: normal;\n  font-size: 1.25rem;\n  margin: 0.5rem 0 0.5rem 0;\n}\n\n/* Individual Templates */\n\n[part=\"news\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1fr;\n  grid-template-rows: 3.25rem auto;\n  padding: 0.25rem;\n}\n[part=\"news\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"news\"] [part=\"label\"] {\n  grid-column: 1;\n  grid-row: 2;\n  text-align: center;\n  padding-right: 0.5rem;\n}\n[part=\"news\"] [part=\"markdown\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n\n[part=\"iconCreated\"],\n[part=\"iconModified\"],\n[part=\"iconRenamed\"],\n[part=\"iconDeleted\"],\n[part=\"iconAliasCreated\"],\n[part=\"iconAliasDeleted\"],\n[part=\"iconTagCreated\"],\n[part=\"iconTagDeleted\"],\n[part=\"iconAuthorModified\"],\n[part=\"iconDeprecated\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconCreated\"] [part=\"avatar\"],\n[part=\"iconModified\"] [part=\"avatar\"],\n[part=\"iconRenamed\"] [part=\"avatar\"],\n[part=\"iconDeleted\"] [part=\"avatar\"],\n[part=\"iconAliasCreated\"] [part=\"avatar\"],\n[part=\"iconAliasDeleted\"] [part=\"avatar\"],\n[part=\"iconTagCreated\"] [part=\"avatar\"],\n[part=\"iconTagDeleted\"] [part=\"avatar\"],\n[part=\"iconAuthorModified\"] [part=\"avatar\"],\n[part=\"iconDeprecated\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"iconCreated\"] [part=\"icon\"],\n[part=\"iconModified\"] [part=\"icon\"],\n[part=\"iconRenamed\"] [part=\"icon\"],\n[part=\"iconDeleted\"] [part=\"icon\"],\n[part=\"iconAliasCreated\"] [part=\"icon\"],\n[part=\"iconAliasDeleted\"] [part=\"icon\"],\n[part=\"iconTagCreated\"] [part=\"icon\"],\n[part=\"iconTagDeleted\"] [part=\"icon\"],\n[part=\"iconAuthorModified\"] [part=\"icon\"],\n[part=\"iconDeprecated\"] [part=\"icon\"] {\n  grid-column: 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n  align-self: flex-start;\n}\n[part=\"iconCreated\"] [part=\"content\"],\n[part=\"iconModified\"] [part=\"content\"],\n[part=\"iconRenamed\"] [part=\"content\"],\n[part=\"iconDeleted\"] [part=\"content\"],\n[part=\"iconAliasCreated\"] [part=\"content\"],\n[part=\"iconAliasDeleted\"] [part=\"content\"],\n[part=\"iconTagCreated\"] [part=\"content\"],\n[part=\"iconTagDeleted\"] [part=\"content\"],\n[part=\"iconAuthorModified\"] [part=\"content\"],\n[part=\"iconDeprecated\"] [part=\"content\"] {\n  grid-column: 3;\n  align-content: center;\n  display: flex;\n  align-items: center;\n}\n[part=\"iconCreated\"] [part=\"content\"] code,\n[part=\"iconModified\"] [part=\"content\"] code,\n[part=\"iconRenamed\"] [part=\"content\"] code,\n[part=\"iconDeleted\"] [part=\"content\"] code,\n[part=\"iconAliasCreated\"] [part=\"content\"] code,\n[part=\"iconAliasDeleted\"] [part=\"content\"] code,\n[part=\"iconTagCreated\"] [part=\"content\"] code,\n[part=\"iconTagDeleted\"] [part=\"content\"] code,\n[part=\"iconAuthorModified\"] [part=\"content\"] code,\n[part=\"iconDeprecated\"] [part=\"content\"] code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n[part=\"iconCreated\"] [part=\"issue\"],\n[part=\"iconModified\"] [part=\"issue\"],\n[part=\"iconRenamed\"] [part=\"issue\"],\n[part=\"iconDeleted\"] [part=\"issue\"],\n[part=\"iconAliasCreated\"] [part=\"issue\"],\n[part=\"iconAliasDeleted\"] [part=\"issue\"],\n[part=\"iconTagCreated\"] [part=\"issue\"],\n[part=\"iconTagDeleted\"] [part=\"issue\"],\n[part=\"iconDescriptionModified\"] [part=\"issue\"],\n[part=\"iconAuthorModified\"] [part=\"issue\"],\n[part=\"iconDeprecated\"] [part=\"issue\"] {\n  grid-column: 4;\n  display: flex;\n  align-self: center;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n  color: #453C4F;\n  border-radius: 0.25rem;\n}\n[part=\"iconCreated\"] [part=\"issue\"]:hover,\n[part=\"iconModified\"] [part=\"issue\"]:hover,\n[part=\"iconRenamed\"] [part=\"issue\"]:hover,\n[part=\"iconDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconAliasCreated\"] [part=\"issue\"]:hover,\n[part=\"iconAliasDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconTagCreated\"] [part=\"issue\"]:hover,\n[part=\"iconTagDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconDescriptionModified\"] [part=\"issue\"]:hover,\n[part=\"iconAuthorModified\"] [part=\"issue\"]:hover,\n[part=\"iconDeprecated\"] [part=\"issue\"]:hover {\n  background: #453C4F;\n  color: #fff;\n}\n.edit [part=\"iconCreated\"] [part=\"edit\"],\n.edit [part=\"iconModified\"] [part=\"edit\"],\n.edit [part=\"iconRenamed\"] [part=\"edit\"],\n.edit [part=\"iconDeleted\"] [part=\"edit\"],\n.edit [part=\"iconAliasCreated\"] [part=\"edit\"],\n.edit [part=\"iconAliasDeleted\"] [part=\"edit\"],\n.edit [part=\"iconTagCreated\"] [part=\"edit\"],\n.edit [part=\"iconTagDeleted\"] [part=\"edit\"],\n.edit [part=\"iconDescriptionModified\"] [part=\"edit\"],\n.edit [part=\"iconAuthorModified\"] [part=\"edit\"],\n.edit [part=\"iconDeprecated\"] [part=\"edit\"] {\n  display: flex;\n}\n[part=\"iconCreated\"] [part=\"edit\"],\n[part=\"iconModified\"] [part=\"edit\"],\n[part=\"iconRenamed\"] [part=\"edit\"],\n[part=\"iconDeleted\"] [part=\"edit\"],\n[part=\"iconAliasCreated\"] [part=\"edit\"],\n[part=\"iconAliasDeleted\"] [part=\"edit\"],\n[part=\"iconTagCreated\"] [part=\"edit\"],\n[part=\"iconTagDeleted\"] [part=\"edit\"],\n[part=\"iconDescriptionModified\"] [part=\"edit\"],\n[part=\"iconAuthorModified\"] [part=\"edit\"],\n[part=\"iconDeprecated\"] [part=\"edit\"] {\n  display: none;\n  grid-column: 5;\n  align-self: center;\n  padding: 0.25rem;\n  border: 0;\n  border-radius: 0.25rem;\n  margin-left: 0.5rem;\n  cursor: pointer;\n}\n[part=\"iconCreated\"] [part=\"edit\"]:hover,\n[part=\"iconModified\"] [part=\"edit\"]:hover,\n[part=\"iconRenamed\"] [part=\"edit\"]:hover,\n[part=\"iconDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconAliasCreated\"] [part=\"edit\"]:hover,\n[part=\"iconAliasDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconTagCreated\"] [part=\"edit\"]:hover,\n[part=\"iconTagDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconDescriptionModified\"] [part=\"edit\"]:hover,\n[part=\"iconAuthorModified\"] [part=\"edit\"]:hover,\n[part=\"iconDeprecated\"] [part=\"edit\"]:hover {\n  background: #453C4F;\n  --mdi-icon-color: #fff;\n}\n\n[part=\"iconDescriptionModified\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr 0.5rem 1fr auto;\n  grid-template-rows: auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"avatar\"] {\n  grid-column: 1;\n  grid-row: 1 / span 2;\n}\n[part=\"iconDescriptionModified\"] [part=\"icon\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n  align-self: flex-start;\n}\n[part=\"iconDescriptionModified\"] [part=\"iconDescriptionBefore\"] {\n  grid-column: 3;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"iconDescriptionAfter\"] {\n  grid-column: 5;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"issue\"] {\n  grid-column: 6;\n  grid-row: 1;\n  margin-left: 0.5rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"edit\"] {\n  grid-column: 6;\n  grid-row: 2;\n  justify-content: center;\n  margin-top: 0.25rem;\n}";
+
+var templateDate = "<h2 part=\"text\"></h1>";
 
 var templateNews = "<div part=\"news\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <span part=\"label\">News</span>\n  <mdi-markdown part=\"markdown\"></mdi-markdown>\n</div>";
 
@@ -23493,6 +23495,28 @@ var templateIconAuthorModified = "<div part=\"iconAuthorModified\">\n  <mdi-avat
 
 var templateIconDeprecated = "<div part=\"iconDeprecated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Deprecated. Warning this icon will be removed in a future release.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
 
+class Modification {
+    constructor() { }
+    from(modification) {
+        this.id = modification.id;
+        this.modificationId = modification.modificationId;
+        this.packageId = modification.packageId;
+        this.user = new User().from(modification.user);
+        this.icon = new Icon().from(modification.icon);
+        this.iconNameBefore = modification.iconNameBefore;
+        this.iconNameAfter = modification.iconNameAfter;
+        this.iconDescriptionBefore = modification.iconDescriptionBefore;
+        this.iconDescriptionAfter = modification.iconDescriptionAfter;
+        this.iconDataBefore = modification.iconDataBefore;
+        this.iconDataAfter = modification.iconDataAfter;
+        this.text = modification.text;
+        this.date = modification.date;
+        this.issue = modification.issue;
+        this.isVisible = modification.isVisible;
+        return this;
+    }
+}
+
 var ModificationType;
 (function (ModificationType) {
     ModificationType["IconAliasCreated"] = "691c8829-b1e7-11e7-bf5c-94188269ec50";
@@ -23511,6 +23535,7 @@ var ModificationType;
     ModificationType["IconWorkInProgress"] = "e262be80-bfed-11e9-8ca0-94188269ec50";
     ModificationType["IconLive"] = "f92f2ba6-bfed-11e9-8ca0-94188269ec50";
     ModificationType["IconPublished"] = "e262b92e-bfed-11e9-8ca0-94188269ec50";
+    ModificationType["Date"] = "date";
 })(ModificationType || (ModificationType = {}));
 
 var template$r = "<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"tooltipArrow\"></div>\n</div>";
@@ -23706,8 +23731,47 @@ const mapTemplates = {
     [ModificationType.IconTagDeleted]: templateIconTagDeleted,
     [ModificationType.IconDescriptionModified]: templateIconDescriptionModified,
     [ModificationType.IconAuthorModified]: templateIconAuthorModified,
-    [ModificationType.IconDeprecated]: templateIconDeprecated
+    [ModificationType.IconDeprecated]: templateIconDeprecated,
+    [ModificationType.Date]: templateDate
 };
+const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+];
+function dateToString(date) {
+    const d = new Date(date);
+    const month = months[d.getMonth()];
+    return `${month} ${d.getDate()}, ${d.getFullYear()}`;
+}
+function itemsInsertDates(modifications) {
+    const items = [];
+    let unique = '';
+    modifications.forEach((m, i) => {
+        const date = dateToString(m.date);
+        if (unique !== date) {
+            items.push(new Modification().from({
+                id: `date-${i}`,
+                modificationId: ModificationType.Date,
+                text: date,
+                user: new User(),
+                icon: new Icon()
+            }));
+            unique = date;
+        }
+        items.push(m);
+    });
+    return items;
+}
 let MdiModification = class MdiModification extends HTMLElement {
     constructor() {
         super(...arguments);
@@ -23716,7 +23780,7 @@ let MdiModification = class MdiModification extends HTMLElement {
     }
     render(changes) {
         if (changes.modifications && this.modifications) {
-            list(this.$items, this.modifications, 'id', (modification) => {
+            list(this.$items, itemsInsertDates(this.modifications), 'id', (modification) => {
                 if (modification.modificationId in mapTemplates) {
                     const n = node(mapTemplates[modification.modificationId], {
                         text: {
