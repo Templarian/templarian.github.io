@@ -166,8 +166,16 @@ var mdiInputCheckList = (function () {
     function list($list, items, key, add, update) {
         const elements = Array.from($list.children);
         const current = elements.map((e) => e.dataset.key);
+        const itemKeys = items.map(x => x[key]);
         items.forEach(item => {
-            if (current.length === 0) {
+            if (current.includes(item[key])) {
+                const element = elements.find((e) => e.dataset.key === current[key]);
+                if (item[key] === current[key]) {
+                    update(item, element);
+                    return;
+                }
+            }
+            else {
                 const newItem = add(item);
                 if (newItem instanceof DocumentFragment) {
                     newItem.children[0].dataset.key = item[key];
@@ -178,12 +186,11 @@ var mdiInputCheckList = (function () {
                 $list.appendChild(newItem);
                 return;
             }
-            const element = elements.find((e) => e.dataset.key === current[key]);
-            if (item[key] === current[key]) {
-                update(item, element);
-                return;
+        });
+        elements.forEach(element => {
+            if (!itemKeys.includes(element.dataset.key)) {
+                element.remove();
             }
-            element === null || element === void 0 ? void 0 : element.remove();
         });
     }
     function item($list, item, key) {
