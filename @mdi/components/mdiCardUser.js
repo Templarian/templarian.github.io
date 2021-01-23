@@ -282,7 +282,7 @@ var mdiCardUser = (function () {
         })
     ], MdiAvatar);
 
-    let MdiIcon = class MdiIcon extends HTMLElement {
+    let MdiCardUser = class MdiCardUser extends HTMLElement {
         constructor() {
             super(...arguments);
             this.user = null;
@@ -317,38 +317,38 @@ var mdiCardUser = (function () {
     };
     __decorate([
         Prop()
-    ], MdiIcon.prototype, "user", void 0);
+    ], MdiCardUser.prototype, "user", void 0);
     __decorate([
         Part()
-    ], MdiIcon.prototype, "$loading", void 0);
+    ], MdiCardUser.prototype, "$loading", void 0);
     __decorate([
         Part()
-    ], MdiIcon.prototype, "$user", void 0);
+    ], MdiCardUser.prototype, "$user", void 0);
     __decorate([
         Part()
-    ], MdiIcon.prototype, "$name", void 0);
+    ], MdiCardUser.prototype, "$name", void 0);
     __decorate([
         Part()
-    ], MdiIcon.prototype, "$github", void 0);
+    ], MdiCardUser.prototype, "$github", void 0);
     __decorate([
         Part()
-    ], MdiIcon.prototype, "$twitter", void 0);
+    ], MdiCardUser.prototype, "$twitter", void 0);
     __decorate([
         Part()
-    ], MdiIcon.prototype, "$iconCountValue", void 0);
+    ], MdiCardUser.prototype, "$iconCountValue", void 0);
     __decorate([
         Part()
-    ], MdiIcon.prototype, "$avatar", void 0);
-    MdiIcon = __decorate([
+    ], MdiCardUser.prototype, "$avatar", void 0);
+    MdiCardUser = __decorate([
         Component({
             selector: 'mdi-card-user',
             style: style$1,
             template: template$1
         })
-    ], MdiIcon);
-    var MdiIcon$1 = MdiIcon;
+    ], MdiCardUser);
+    var MdiCardUser$1 = MdiCardUser;
 
-    return MdiIcon$1;
+    return MdiCardUser$1;
 
 }());
 //# sourceMappingURL=mdiCardUser.js.map

@@ -618,7 +618,7 @@ var template$8 = "<mdi-card>\n  <div part=\"loading\">\n    Loading...\n  </div>
 
 var style$8 = ":host {\n  display: flex;\n  flex-direction: column;\n  font-family: var(--mdi-font-family);\n}\n\n[part=\"user\"] {\n  display: grid;\n  grid-template-rows: 1fr 1fr;\n  grid-template-columns: 4rem 2rem 1.5rem 1fr auto;\n  padding: 0.5rem;\n}\n\n[part=\"avatar\"] {\n  grid-column: 1;\n  grid-row: 1 / span 2;\n  align-self: center;\n}\n\n[part=\"name\"] {\n  grid-column: 2 / span 3;\n  grid-row: 1;\n  white-space: nowrap;\n}\n\n[part=\"iconCount\"] {\n  display: flex;\n  flex-direction: column;\n  text-align: center;\n  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) inset;\n  border-radius: 0.25rem;\n  background: rgba(0, 0, 0, 0.05);\n  grid-column: 5;\n  grid-row: 1 / span 2;\n  padding: 0 0.5rem;\n  align-items: stretch;\n  justify-content: center;\n  color: #444;\n  margin-left: 0.5rem;\n}\n\n[part=\"iconCountValue\"] {\n  font-weight: bold;\n}\n\n[part=\"github\"] svg,\n[part=\"twitter\"] svg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n[part=\"github\"] {\n  grid-row: 2;\n  grid-column: 2;\n  color: #333;\n}\n\n[part=\"twitter\"] {\n  grid-row: 2;\n  grid-column: 3;\n  color: #333;\n}\n\n[part=\"github\"]:hover,\n[part=\"twitter\"]:hover {\n  color: #4f8ff9;\n}";
 
-let MdiIcon = class MdiIcon extends HTMLElement {
+let MdiCardUser = class MdiCardUser extends HTMLElement {
     constructor() {
         super(...arguments);
         this.user = null;
@@ -653,35 +653,35 @@ let MdiIcon = class MdiIcon extends HTMLElement {
 };
 __decorate([
     Prop()
-], MdiIcon.prototype, "user", void 0);
+], MdiCardUser.prototype, "user", void 0);
 __decorate([
     Part()
-], MdiIcon.prototype, "$loading", void 0);
+], MdiCardUser.prototype, "$loading", void 0);
 __decorate([
     Part()
-], MdiIcon.prototype, "$user", void 0);
+], MdiCardUser.prototype, "$user", void 0);
 __decorate([
     Part()
-], MdiIcon.prototype, "$name", void 0);
+], MdiCardUser.prototype, "$name", void 0);
 __decorate([
     Part()
-], MdiIcon.prototype, "$github", void 0);
+], MdiCardUser.prototype, "$github", void 0);
 __decorate([
     Part()
-], MdiIcon.prototype, "$twitter", void 0);
+], MdiCardUser.prototype, "$twitter", void 0);
 __decorate([
     Part()
-], MdiIcon.prototype, "$iconCountValue", void 0);
+], MdiCardUser.prototype, "$iconCountValue", void 0);
 __decorate([
     Part()
-], MdiIcon.prototype, "$avatar", void 0);
-MdiIcon = __decorate([
+], MdiCardUser.prototype, "$avatar", void 0);
+MdiCardUser = __decorate([
     Component({
         selector: 'mdi-card-user',
         style: style$8,
         template: template$8
     })
-], MdiIcon);
+], MdiCardUser);
 
 const SWATCHES = [{
         name: 'Red',
@@ -8332,7 +8332,7 @@ var template$e = "<svg part=\"svg\" viewBox=\"0 0 24 24\">\n  <path part=\"path\
 var style$e = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #453C4F);\n}\n\n[part=\"svg\"] {\n  width: var(--mdi-icon-width, 1.5rem);\n  height: var(--mdi-icon-height, 1.5rem);\n}";
 
 const noIcon$1 = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
-let MdiIcon$1 = class MdiIcon extends HTMLElement {
+let MdiIcon = class MdiIcon extends HTMLElement {
     constructor() {
         super(...arguments);
         this.path = noIcon$1;
@@ -8345,17 +8345,17 @@ let MdiIcon$1 = class MdiIcon extends HTMLElement {
 };
 __decorate([
     Prop()
-], MdiIcon$1.prototype, "path", void 0);
+], MdiIcon.prototype, "path", void 0);
 __decorate([
     Part()
-], MdiIcon$1.prototype, "$path", void 0);
-MdiIcon$1 = __decorate([
+], MdiIcon.prototype, "$path", void 0);
+MdiIcon = __decorate([
     Component({
         selector: 'mdi-icon',
         style: style$e,
         template: template$e
     })
-], MdiIcon$1);
+], MdiIcon);
 
 var template$f = "<button part=\"button\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" fill=\"currentColor\" d=\"M19 19L5 19V5H15V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V11H19\"/>\n\t  <path part=\"check\" fill=\"currentColor\" d=\"M7.91 10.08L6.5 11.5L11 16L21 6L19.59 4.58L11 13.17L7.91 10.08Z\"/>\n  </svg>\n</button>";
 
@@ -23472,21 +23472,103 @@ MdiMenuIcon = __decorate([
     })
 ], MdiMenuIcon);
 
-var template$q = "<div part=\"items\"></div>";
+var template$q = "<div class=\"backdrop\">\n  <div class=\"dialog\"\n    role=\"dialog\"\n    id=\"dialog1\"\n    aria-labelledby=\"dialog1_label\"\n    aria-modal=\"true\">\n    <header part=\"header\">\n      <h2 id=\"dialog1_label\"\n        class=\"dialog_label\"\n        part=\"headerText\">\n        Add Delivery Address\n      </h2>\n    </header>\n    <main>\n      <p part=\"message\"></p>\n    </main>\n    <footer>\n      <mdi-button part=\"no\">No</mdi-button>\n      <mdi-button part=\"yes\">Yes</mdi-button>\n    </footer>\n  </div>\n</div>";
 
-var style$q = ":host {\n  display: flex;\n  flex-direction: column;\n  color: #453C4F;\n}\n\n.invalid {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\nh2 {\n  font-weight: normal;\n  font-size: 1.25rem;\n  margin: 0.5rem 0 0.5rem 0;\n}\n\n/* Individual Templates */\n\n[part=\"news\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1fr;\n  grid-template-rows: 3.25rem auto;\n  padding: 0.25rem;\n}\n[part=\"news\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"news\"] [part=\"label\"] {\n  grid-column: 1;\n  grid-row: 2;\n  text-align: center;\n  padding-right: 0.5rem;\n}\n[part=\"news\"] [part=\"markdown\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n\n[part=\"iconCreated\"],\n[part=\"iconRenamed\"],\n[part=\"iconDeleted\"],\n[part=\"iconAliasCreated\"],\n[part=\"iconAliasDeleted\"],\n[part=\"iconTagCreated\"],\n[part=\"iconTagDeleted\"],\n[part=\"iconAuthorModified\"],\n[part=\"iconDeprecated\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconCreated\"] [part=\"avatar\"],\n[part=\"iconModified\"] [part=\"avatar\"],\n[part=\"iconRenamed\"] [part=\"avatar\"],\n[part=\"iconDeleted\"] [part=\"avatar\"],\n[part=\"iconAliasCreated\"] [part=\"avatar\"],\n[part=\"iconAliasDeleted\"] [part=\"avatar\"],\n[part=\"iconTagCreated\"] [part=\"avatar\"],\n[part=\"iconTagDeleted\"] [part=\"avatar\"],\n[part=\"iconAuthorModified\"] [part=\"avatar\"],\n[part=\"iconDeprecated\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"iconCreated\"] [part=\"icon\"],\n[part=\"iconModified\"] [part=\"iconDataBefore\"],\n[part=\"iconModified\"] [part=\"iconDataAfter\"],\n[part=\"iconRenamed\"] [part=\"icon\"],\n[part=\"iconDeleted\"] [part=\"icon\"],\n[part=\"iconAliasCreated\"] [part=\"icon\"],\n[part=\"iconAliasDeleted\"] [part=\"icon\"],\n[part=\"iconTagCreated\"] [part=\"icon\"],\n[part=\"iconTagDeleted\"] [part=\"icon\"],\n[part=\"iconAuthorModified\"] [part=\"icon\"],\n[part=\"iconDeprecated\"] [part=\"icon\"] {\n  grid-column: 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n  align-self: flex-start;\n}\n[part=\"iconCreated\"] [part=\"content\"],\n[part=\"iconModified\"] [part=\"content\"],\n[part=\"iconRenamed\"] [part=\"content\"],\n[part=\"iconDeleted\"] [part=\"content\"],\n[part=\"iconAliasCreated\"] [part=\"content\"],\n[part=\"iconAliasDeleted\"] [part=\"content\"],\n[part=\"iconTagCreated\"] [part=\"content\"],\n[part=\"iconTagDeleted\"] [part=\"content\"],\n[part=\"iconAuthorModified\"] [part=\"content\"],\n[part=\"iconDeprecated\"] [part=\"content\"] {\n  grid-column: 3;\n  align-content: center;\n  display: flex;\n  align-items: center;\n}\n[part=\"iconCreated\"] [part=\"content\"] code,\n[part=\"iconModified\"] [part=\"content\"] code,\n[part=\"iconRenamed\"] [part=\"content\"] code,\n[part=\"iconDeleted\"] [part=\"content\"] code,\n[part=\"iconAliasCreated\"] [part=\"content\"] code,\n[part=\"iconAliasDeleted\"] [part=\"content\"] code,\n[part=\"iconTagCreated\"] [part=\"content\"] code,\n[part=\"iconTagDeleted\"] [part=\"content\"] code,\n[part=\"iconAuthorModified\"] [part=\"content\"] code,\n[part=\"iconDeprecated\"] [part=\"content\"] code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n[part=\"iconCreated\"] [part=\"issue\"],\n[part=\"iconModified\"] [part=\"issue\"],\n[part=\"iconRenamed\"] [part=\"issue\"],\n[part=\"iconDeleted\"] [part=\"issue\"],\n[part=\"iconAliasCreated\"] [part=\"issue\"],\n[part=\"iconAliasDeleted\"] [part=\"issue\"],\n[part=\"iconTagCreated\"] [part=\"issue\"],\n[part=\"iconTagDeleted\"] [part=\"issue\"],\n[part=\"iconDescriptionModified\"] [part=\"issue\"],\n[part=\"iconAuthorModified\"] [part=\"issue\"],\n[part=\"iconDeprecated\"] [part=\"issue\"] {\n  grid-column: 4;\n  display: flex;\n  align-self: center;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n  color: #453C4F;\n  border-radius: 0.25rem;\n}\n[part=\"iconCreated\"] [part=\"issue\"]:hover,\n[part=\"iconModified\"] [part=\"issue\"]:hover,\n[part=\"iconRenamed\"] [part=\"issue\"]:hover,\n[part=\"iconDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconAliasCreated\"] [part=\"issue\"]:hover,\n[part=\"iconAliasDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconTagCreated\"] [part=\"issue\"]:hover,\n[part=\"iconTagDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconDescriptionModified\"] [part=\"issue\"]:hover,\n[part=\"iconAuthorModified\"] [part=\"issue\"]:hover,\n[part=\"iconDeprecated\"] [part=\"issue\"]:hover {\n  background: #453C4F;\n  color: #fff;\n}\n.edit [part=\"iconCreated\"] [part=\"edit\"],\n.edit [part=\"iconModified\"] [part=\"edit\"],\n.edit [part=\"iconRenamed\"] [part=\"edit\"],\n.edit [part=\"iconDeleted\"] [part=\"edit\"],\n.edit [part=\"iconAliasCreated\"] [part=\"edit\"],\n.edit [part=\"iconAliasDeleted\"] [part=\"edit\"],\n.edit [part=\"iconTagCreated\"] [part=\"edit\"],\n.edit [part=\"iconTagDeleted\"] [part=\"edit\"],\n.edit [part=\"iconDescriptionModified\"] [part=\"edit\"],\n.edit [part=\"iconAuthorModified\"] [part=\"edit\"],\n.edit [part=\"iconDeprecated\"] [part=\"edit\"] {\n  display: flex;\n}\n[part=\"iconCreated\"] [part=\"edit\"],\n[part=\"iconModified\"] [part=\"edit\"],\n[part=\"iconRenamed\"] [part=\"edit\"],\n[part=\"iconDeleted\"] [part=\"edit\"],\n[part=\"iconAliasCreated\"] [part=\"edit\"],\n[part=\"iconAliasDeleted\"] [part=\"edit\"],\n[part=\"iconTagCreated\"] [part=\"edit\"],\n[part=\"iconTagDeleted\"] [part=\"edit\"],\n[part=\"iconDescriptionModified\"] [part=\"edit\"],\n[part=\"iconAuthorModified\"] [part=\"edit\"],\n[part=\"iconDeprecated\"] [part=\"edit\"] {\n  display: none;\n  grid-column: 5;\n  align-self: center;\n  padding: 0.25rem;\n  border: 0;\n  border-radius: 0.25rem;\n  margin-left: 0.5rem;\n  cursor: pointer;\n}\n[part=\"iconCreated\"] [part=\"edit\"]:hover,\n[part=\"iconModified\"] [part=\"edit\"]:hover,\n[part=\"iconRenamed\"] [part=\"edit\"]:hover,\n[part=\"iconDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconAliasCreated\"] [part=\"edit\"]:hover,\n[part=\"iconAliasDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconTagCreated\"] [part=\"edit\"]:hover,\n[part=\"iconTagDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconDescriptionModified\"] [part=\"edit\"]:hover,\n[part=\"iconAuthorModified\"] [part=\"edit\"]:hover,\n[part=\"iconDeprecated\"] [part=\"edit\"]:hover {\n  background: #453C4F;\n  --mdi-icon-color: #fff;\n}\n\n/* Individiual Tweaks */\n[part=\"iconCreated\"] [part=\"icon\"] {\n  background: #d1e7dd;\n  border-color: #badbcc;\n}\n\n[part=\"iconRenamed\"] [part=\"icon\"] {\n  background-color: #fff3cd;\n  border-color: #ffecb5;\n}\n\n[part=\"iconModified\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconModified\"] [part=\"iconDataBefore\"] {\n  opacity: 0.4;\n}\n[part=\"iconModified\"] [part=\"iconDataAfter\"] {\n  grid-column: 3;\n}\n[part=\"iconModified\"] [part=\"content\"] {\n  grid-column: 4;\n}\n[part=\"iconModified\"] [part=\"issue\"] {\n  grid-column: 5;\n}\n[part=\"iconModified\"] [part=\"edit\"] {\n  grid-column: 6;\n}\n\n[part=\"iconAliasCreated\"] [part=\"icon\"],\n[part=\"iconAliasDeleted\"] [part=\"icon\"] {\n  background-color: #DDC6E7;\n  border-color: 1px solid #DBBDE5;\n}\n\n[part=\"iconTagCreated\"] [part=\"icon\"],\n[part=\"iconTagDeleted\"] [part=\"icon\"] {\n  background-color: #cff4fc;\n  border-color: #b6effb;\n}\n\n[part=\"iconDescriptionModified\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr 0.5rem 1fr auto;\n  grid-template-rows: auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"avatar\"] {\n  grid-column: 1;\n  grid-row: 1 / span 2;\n}\n[part=\"iconDescriptionModified\"] [part=\"icon\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n  align-self: flex-start;\n}\n[part=\"iconDescriptionModified\"] [part=\"iconDescriptionBefore\"] {\n  grid-column: 3;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"iconDescriptionAfter\"] {\n  grid-column: 5;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"issue\"] {\n  grid-column: 6;\n  grid-row: 1;\n  margin-left: 0.5rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"edit\"] {\n  grid-column: 6;\n  grid-row: 2;\n  justify-content: center;\n  margin-top: 0.25rem;\n}\n\n.added {\n  border-bottom: 3px solid #badbcc;\n}\n\n.removed {\n  border-bottom: 3px solid #f5c6cb;\n}";
+var style$q = ".backdrop {\n  display: flex;\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.6);\n  justify-content: center;\n  align-items: center;\n}\n.dialog {\n  background: #fff;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 1rem rgba(0, 0, 0, 0.5);\n  overflow: hidden;\n  min-width: 15rem;\n}\nheader {\n  border-bottom: 1px solid #ccc;\n  background: #f1f1f1;\n  padding: 0.75rem 1rem;\n}\nheader h2 {\n  font-size: 1.25rem;\n  margin: 0;\n  font-weight: normal;\n}\nmain {\n  padding: 0.5rem 1rem;\n}\nfooter {\n  display: flex;\n  flex-direction: row;\n  padding: 0.75rem 1rem;\n  border-top: 1px solid #ccc;\n  background: #f1f1f1;\n  justify-content: flex-end;\n}\n\n[part=\"no\"] {\n  margin-right: 0.5rem;\n}";
+
+function camelToDash$1(str) {
+    return str.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
+}
+const layers = [];
+// Update to support passing no object for a base class
+let MdiOverlay = class MdiOverlay extends HTMLElement {
+    static open(props = {}) {
+        var ele = document.createElement(camelToDash$1(this.name));
+        Object.assign(ele, props);
+        document.body.appendChild(ele);
+        layers.push(ele);
+    }
+    close() {
+        layers.pop().remove();
+    }
+};
+MdiOverlay = __decorate([
+    Component({
+        selector: 'mdi-overlay',
+        template: '-'
+    })
+], MdiOverlay);
+var MdiOverlay$1 = MdiOverlay;
+
+let MdiModalAlert = class MdiModalAlert extends MdiOverlay$1 {
+    constructor() {
+        super(...arguments);
+        this.header = 'Are you sure?';
+        this.message = 'Are you sure?';
+    }
+    connectedCallback() {
+        this.$yes.addEventListener('click', this.handleYes.bind(this));
+        this.$no.addEventListener('click', this.handleNo.bind(this));
+    }
+    handleYes() {
+        this.close();
+    }
+    handleNo() {
+        this.close();
+    }
+    render(changes) {
+        if (changes.header) {
+            this.$headerText.innerText = this.header;
+        }
+        if (changes.message) {
+            this.$message.innerText = this.message;
+        }
+    }
+};
+__decorate([
+    Prop()
+], MdiModalAlert.prototype, "header", void 0);
+__decorate([
+    Prop()
+], MdiModalAlert.prototype, "message", void 0);
+__decorate([
+    Part()
+], MdiModalAlert.prototype, "$header", void 0);
+__decorate([
+    Part()
+], MdiModalAlert.prototype, "$headerText", void 0);
+__decorate([
+    Part()
+], MdiModalAlert.prototype, "$message", void 0);
+__decorate([
+    Part()
+], MdiModalAlert.prototype, "$yes", void 0);
+__decorate([
+    Part()
+], MdiModalAlert.prototype, "$no", void 0);
+MdiModalAlert = __decorate([
+    Component({
+        selector: 'mdi-modal-alert',
+        template: template$q,
+        style: style$q
+    })
+], MdiModalAlert);
+
+var template$r = "<div part=\"items\"></div>";
+
+var style$r = ":host {\n  display: flex;\n  flex-direction: column;\n  color: #453C4F;\n}\n\n.invalid {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\nh2 {\n  font-weight: normal;\n  font-size: 1.25rem;\n  margin: 0.5rem 0 0.5rem 0;\n}\n\n/* Individual Templates */\n\n[part=\"news\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 1fr;\n  grid-template-rows: 3.25rem auto;\n  padding: 0.25rem;\n}\n[part=\"news\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"news\"] [part=\"label\"] {\n  grid-column: 1;\n  grid-row: 2;\n  text-align: center;\n  padding-right: 0.5rem;\n}\n[part=\"news\"] [part=\"markdown\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n\n[part=\"iconCreated\"],\n[part=\"iconRenamed\"],\n[part=\"iconDeleted\"],\n[part=\"iconAliasCreated\"],\n[part=\"iconAliasDeleted\"],\n[part=\"iconTagCreated\"],\n[part=\"iconTagDeleted\"],\n[part=\"iconAuthorModified\"],\n[part=\"iconDeprecated\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconCreated\"] [part=\"avatar\"],\n[part=\"iconModified\"] [part=\"avatar\"],\n[part=\"iconRenamed\"] [part=\"avatar\"],\n[part=\"iconDeleted\"] [part=\"avatar\"],\n[part=\"iconAliasCreated\"] [part=\"avatar\"],\n[part=\"iconAliasDeleted\"] [part=\"avatar\"],\n[part=\"iconTagCreated\"] [part=\"avatar\"],\n[part=\"iconTagDeleted\"] [part=\"avatar\"],\n[part=\"iconAuthorModified\"] [part=\"avatar\"],\n[part=\"iconDeprecated\"] [part=\"avatar\"] {\n  grid-column: 1;\n}\n[part=\"iconCreated\"] [part=\"icon\"],\n[part=\"iconModified\"] [part=\"iconDataBefore\"],\n[part=\"iconModified\"] [part=\"iconDataAfter\"],\n[part=\"iconRenamed\"] [part=\"icon\"],\n[part=\"iconDeleted\"] [part=\"icon\"],\n[part=\"iconAliasCreated\"] [part=\"icon\"],\n[part=\"iconAliasDeleted\"] [part=\"icon\"],\n[part=\"iconTagCreated\"] [part=\"icon\"],\n[part=\"iconTagDeleted\"] [part=\"icon\"],\n[part=\"iconAuthorModified\"] [part=\"icon\"],\n[part=\"iconDeprecated\"] [part=\"icon\"] {\n  grid-column: 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n  align-self: flex-start;\n}\n[part=\"iconCreated\"] [part=\"content\"],\n[part=\"iconModified\"] [part=\"content\"],\n[part=\"iconRenamed\"] [part=\"content\"],\n[part=\"iconDeleted\"] [part=\"content\"],\n[part=\"iconAliasCreated\"] [part=\"content\"],\n[part=\"iconAliasDeleted\"] [part=\"content\"],\n[part=\"iconTagCreated\"] [part=\"content\"],\n[part=\"iconTagDeleted\"] [part=\"content\"],\n[part=\"iconAuthorModified\"] [part=\"content\"],\n[part=\"iconDeprecated\"] [part=\"content\"] {\n  grid-column: 3;\n  align-content: center;\n  display: flex;\n  align-items: center;\n}\n[part=\"iconCreated\"] [part=\"content\"] code,\n[part=\"iconModified\"] [part=\"content\"] code,\n[part=\"iconRenamed\"] [part=\"content\"] code,\n[part=\"iconDeleted\"] [part=\"content\"] code,\n[part=\"iconAliasCreated\"] [part=\"content\"] code,\n[part=\"iconAliasDeleted\"] [part=\"content\"] code,\n[part=\"iconTagCreated\"] [part=\"content\"] code,\n[part=\"iconTagDeleted\"] [part=\"content\"] code,\n[part=\"iconAuthorModified\"] [part=\"content\"] code,\n[part=\"iconDeprecated\"] [part=\"content\"] code {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.05);\n  padding: 0.125rem 0.25rem;\n  border-radius: 0.125rem;\n  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);\n  border: 1px solid rgba(69, 60, 79, 0.2);\n  line-height: 1.125rem;\n}\n[part=\"iconCreated\"] [part=\"issue\"],\n[part=\"iconModified\"] [part=\"issue\"],\n[part=\"iconRenamed\"] [part=\"issue\"],\n[part=\"iconDeleted\"] [part=\"issue\"],\n[part=\"iconAliasCreated\"] [part=\"issue\"],\n[part=\"iconAliasDeleted\"] [part=\"issue\"],\n[part=\"iconTagCreated\"] [part=\"issue\"],\n[part=\"iconTagDeleted\"] [part=\"issue\"],\n[part=\"iconDescriptionModified\"] [part=\"issue\"],\n[part=\"iconAuthorModified\"] [part=\"issue\"],\n[part=\"iconDeprecated\"] [part=\"issue\"] {\n  grid-column: 4;\n  display: flex;\n  align-self: center;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border: 1px solid #453C4F;\n  color: #453C4F;\n  border-radius: 0.25rem;\n}\n[part=\"iconCreated\"] [part=\"issue\"]:hover,\n[part=\"iconModified\"] [part=\"issue\"]:hover,\n[part=\"iconRenamed\"] [part=\"issue\"]:hover,\n[part=\"iconDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconAliasCreated\"] [part=\"issue\"]:hover,\n[part=\"iconAliasDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconTagCreated\"] [part=\"issue\"]:hover,\n[part=\"iconTagDeleted\"] [part=\"issue\"]:hover,\n[part=\"iconDescriptionModified\"] [part=\"issue\"]:hover,\n[part=\"iconAuthorModified\"] [part=\"issue\"]:hover,\n[part=\"iconDeprecated\"] [part=\"issue\"]:hover {\n  background: #453C4F;\n  color: #fff;\n}\n.edit [part=\"iconCreated\"] [part=\"edit\"],\n.edit [part=\"iconModified\"] [part=\"edit\"],\n.edit [part=\"iconRenamed\"] [part=\"edit\"],\n.edit [part=\"iconDeleted\"] [part=\"edit\"],\n.edit [part=\"iconAliasCreated\"] [part=\"edit\"],\n.edit [part=\"iconAliasDeleted\"] [part=\"edit\"],\n.edit [part=\"iconTagCreated\"] [part=\"edit\"],\n.edit [part=\"iconTagDeleted\"] [part=\"edit\"],\n.edit [part=\"iconDescriptionModified\"] [part=\"edit\"],\n.edit [part=\"iconAuthorModified\"] [part=\"edit\"],\n.edit [part=\"iconDeprecated\"] [part=\"edit\"] {\n  display: flex;\n}\n[part=\"iconCreated\"] [part=\"edit\"],\n[part=\"iconModified\"] [part=\"edit\"],\n[part=\"iconRenamed\"] [part=\"edit\"],\n[part=\"iconDeleted\"] [part=\"edit\"],\n[part=\"iconAliasCreated\"] [part=\"edit\"],\n[part=\"iconAliasDeleted\"] [part=\"edit\"],\n[part=\"iconTagCreated\"] [part=\"edit\"],\n[part=\"iconTagDeleted\"] [part=\"edit\"],\n[part=\"iconDescriptionModified\"] [part=\"edit\"],\n[part=\"iconAuthorModified\"] [part=\"edit\"],\n[part=\"iconDeprecated\"] [part=\"edit\"] {\n  display: none;\n  grid-column: 5;\n  align-self: center;\n  padding: 0.25rem;\n  border: 0;\n  border-radius: 0.25rem;\n  margin-left: 0.5rem;\n  cursor: pointer;\n}\n[part=\"iconCreated\"] [part=\"edit\"]:hover,\n[part=\"iconModified\"] [part=\"edit\"]:hover,\n[part=\"iconRenamed\"] [part=\"edit\"]:hover,\n[part=\"iconDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconAliasCreated\"] [part=\"edit\"]:hover,\n[part=\"iconAliasDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconTagCreated\"] [part=\"edit\"]:hover,\n[part=\"iconTagDeleted\"] [part=\"edit\"]:hover,\n[part=\"iconDescriptionModified\"] [part=\"edit\"]:hover,\n[part=\"iconAuthorModified\"] [part=\"edit\"]:hover,\n[part=\"iconDeprecated\"] [part=\"edit\"]:hover {\n  background: #453C4F;\n  --mdi-icon-color: #fff;\n}\n\n/* Individiual Tweaks */\n[part=\"iconCreated\"] [part=\"icon\"] {\n  background: #d1e7dd;\n  border-color: #badbcc;\n}\n\n[part=\"iconRenamed\"] [part=\"icon\"] {\n  background-color: #fff3cd;\n  border-color: #ffecb5;\n}\n\n[part=\"iconDeleted\"] [part=\"icon\"] {\n  background: #f5c6cb;\n  border-color: #d06e78;\n}\n\n[part=\"iconModified\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 3.5rem 1fr auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconModified\"] [part=\"iconDataBefore\"] {\n  opacity: 0.4;\n}\n[part=\"iconModified\"] [part=\"iconDataAfter\"] {\n  grid-column: 3;\n}\n[part=\"iconModified\"] [part=\"content\"] {\n  grid-column: 4;\n}\n[part=\"iconModified\"] [part=\"issue\"] {\n  grid-column: 5;\n}\n[part=\"iconModified\"] [part=\"edit\"] {\n  grid-column: 6;\n}\n\n[part=\"iconAliasCreated\"] [part=\"icon\"],\n[part=\"iconAliasDeleted\"] [part=\"icon\"] {\n  background-color: #DDC6E7;\n  border-color: 1px solid #DBBDE5;\n}\n\n[part=\"iconTagCreated\"] [part=\"icon\"],\n[part=\"iconTagDeleted\"] [part=\"icon\"] {\n  background-color: #cff4fc;\n  border-color: #b6effb;\n}\n\n[part=\"iconDescriptionModified\"] {\n  display: grid;\n  grid-template-columns: 3.5rem 3.5rem 1fr 0.5rem 1fr auto;\n  grid-template-rows: auto auto;\n  padding: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"avatar\"] {\n  grid-column: 1;\n  grid-row: 1 / span 2;\n}\n[part=\"iconDescriptionModified\"] [part=\"icon\"] {\n  grid-column: 2;\n  grid-row: 1 / span 2;\n  --mdi-icon-width: 3rem;\n  --mdi-icon-height: 3rem;\n  width: 3rem;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 0.25rem;\n  align-self: flex-start;\n}\n[part=\"iconDescriptionModified\"] [part=\"iconDescriptionBefore\"] {\n  grid-column: 3;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"iconDescriptionAfter\"] {\n  grid-column: 5;\n  grid-row: 1 / span 2;\n  border: 1px solid #DDD;\n  padding: 0 1rem;\n  background: #fff;\n  border-radius: 0.25rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"issue\"] {\n  grid-column: 6;\n  grid-row: 1;\n  margin-left: 0.5rem;\n}\n[part=\"iconDescriptionModified\"] [part=\"edit\"] {\n  grid-column: 6;\n  grid-row: 2;\n  justify-content: center;\n  margin-top: 0.25rem;\n}\n\n.added,\n.created {\n  border-bottom: 3px solid #badbcc;\n}\n\n.removed,\n.deleted {\n  border-bottom: 3px solid #f5c6cb;\n}";
 
 var templateDate = "<h2 part=\"text\"></h1>";
 
 var templateNews = "<div part=\"news\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <span part=\"label\">News</span>\n  <mdi-markdown part=\"markdown\"></mdi-markdown>\n</div>";
 
-var templateIconCreated = "<div part=\"iconCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Icon <code part=\"iconName\"></code> created.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
+var templateIconCreated = "<div part=\"iconCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Icon <code part=\"iconName\"></code> <span class=\"created\">created</span>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
 
 var templateIconModified = "<div part=\"iconModified\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"iconDataBefore\"></mdi-icon>\n  <mdi-icon part=\"iconDataAfter\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Icon <code part=\"iconName\"></code> modified.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
 
 var templateIconRenamed = "<div part=\"iconRenamed\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Icon <code part=\"iconNameBefore\"></code> renamed to <code part=\"iconNameAfter\"></code>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
 
-var templateIconDeleted = "<div part=\"iconDeleted\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Icon <code part=\"iconName\"></code> deleted.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
+var templateIconDeleted = "<div part=\"iconDeleted\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      Icon <code part=\"iconName\"></code> <span class=\"deleted\">deleted</span>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
 
 var templateIconAliasCreated = "<div part=\"iconAliasCreated\">\n  <mdi-avatar part=\"avatar\"></mdi-avatar>\n  <mdi-icon part=\"icon\"></mdi-icon>\n  <span part=\"content\">\n    <span>\n      <span class=\"added\">Added</span> alias <code part=\"text\"></code> to <code part=\"iconName\"></code>.\n    </span>\n  </span>\n  <a part=\"issue\"></a>\n  <button part=\"edit\">\n    <mdi-icon part=\"editIcon\"></mdi-icon>\n  </button>\n</div>";
 
@@ -23545,9 +23627,9 @@ var ModificationType;
     ModificationType["Date"] = "date";
 })(ModificationType || (ModificationType = {}));
 
-var template$r = "<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"tooltipArrow\"></div>\n</div>";
+var template$s = "<div part=\"tooltip\">\n  <span part=\"tooltipText\"></span>\n  <div part=\"tooltipArrow\"></div>\n</div>";
 
-var style$r = ":host {\n  pointer-events: none;\n}\n\n[part~=tooltip] {\n  position: relative;\n}\n\n[part~=tooltipText] {\n  position: absolute;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n  left: 0;\n  top: 0;\n}\n\n[part~=tooltipArrow] {\n  left: 16px;\n  top: -7px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}";
+var style$s = ":host {\n  pointer-events: none;\n}\n\n[part~=tooltip] {\n  position: relative;\n}\n\n[part~=tooltipText] {\n  position: absolute;\n  background: #737E9E;\n  border-radius: 0.25rem;\n  color: #FFF;\n  padding: 0.15rem 0.5rem 0.3rem 0.5rem;\n  white-space: nowrap;\n  left: 0;\n  top: 0;\n}\n\n[part~=tooltipArrow] {\n  left: 16px;\n  top: -7px;\n}\n\n[part~=tooltipArrow],\n[part~=tooltipArrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=tooltipArrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #737E9E;\n}";
 
 const TOP = 'top';
 const TOP_START = 'top-start';
@@ -23720,8 +23802,8 @@ __decorate([
 MdiTooltip = __decorate([
     Component({
         selector: 'mdi-tooltip',
-        style: style$r,
-        template: template$r
+        style: style$s,
+        template: template$s
     })
 ], MdiTooltip);
 
@@ -23789,6 +23871,8 @@ let MdiModification = class MdiModification extends HTMLElement {
         super(...arguments);
         this.modifications = null;
         this.edit = false;
+        // Ex: pictogrammers/repo
+        this.github = '';
     }
     render(changes) {
         if (changes.modifications && this.modifications) {
@@ -23834,7 +23918,7 @@ let MdiModification = class MdiModification extends HTMLElement {
                         issue: {
                             style: modification.issue ? '' : 'display:none',
                             innerText: modification.issue ? `#${modification.issue}` : '',
-                            href: `https://github.com/Templarian/MaterialDesign/issues/${modification.issue}`
+                            href: `https://github.com/${this.github}/issues/${modification.issue}`
                         }
                     });
                     const issue = n.querySelector('[part="issue"]');
@@ -23848,6 +23932,16 @@ let MdiModification = class MdiModification extends HTMLElement {
                         addTooltip(avatar, () => {
                             return modification.user.name;
                         }, BOTTOM_START);
+                    }
+                    const edit = n.querySelector('[part="edit"]');
+                    if (edit) {
+                        edit.addEventListener('click', () => {
+                            this.dispatchEvent(new CustomEvent('edit', {
+                                detail: {
+                                    modification
+                                }
+                            }));
+                        });
                     }
                     return n;
                 }
@@ -23874,19 +23968,22 @@ __decorate([
     Prop()
 ], MdiModification.prototype, "edit", void 0);
 __decorate([
+    Prop()
+], MdiModification.prototype, "github", void 0);
+__decorate([
     Part()
 ], MdiModification.prototype, "$items", void 0);
 MdiModification = __decorate([
     Component({
         selector: 'mdi-modification',
-        style: style$q,
-        template: template$q
+        style: style$r,
+        template: template$r
     })
 ], MdiModification);
 
-var template$s = "<nav part=\"nav\">\n  <a href=\"/\">\n    <span part=\"name\"></span>\n  </a>\n  <a href=\"/icons\">\n    Icons\n  </a>\n  <a href=\"/icons\">\n    Docs\n  </a>\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n</nav>";
+var template$t = "<nav part=\"nav\">\n  <a href=\"/\">\n    <span part=\"name\"></span>\n  </a>\n  <a href=\"/icons\">\n    Icons\n  </a>\n  <a href=\"/icons\">\n    Docs\n  </a>\n  <button part=\"menu\">\n    <svg viewBox=\"0 0 24 24\">\n      <path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\" />\n    </svg>\n  </button>\n</nav>";
 
-var style$s = ":host {\n  align-self: center;\n}\nsvg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\nbutton {\n  border: 0;\n  background: transparent;\n}\nbutton > svg {\n  fill: #fff;\n}";
+var style$t = ":host {\n  align-self: center;\n}\nsvg {\n  width: 1.5rem;\n  height: 1.5rem;\n}\nbutton {\n  border: 0;\n  background: transparent;\n}\nbutton > svg {\n  fill: #fff;\n}";
 
 const noIcon$2 = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
 let MdiNav = class MdiNav extends HTMLElement {
@@ -23906,14 +24003,14 @@ __decorate([
 MdiNav = __decorate([
     Component({
         selector: 'mdi-nav',
-        style: style$s,
-        template: template$s
+        style: style$t,
+        template: template$t
     })
 ], MdiNav);
 
-var template$t = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\" height=\"12rem\"></mdi-grid>\n  </div>\n</div>";
+var template$u = "<parent />\n<div part=\"popover\">\n  <div part=\"arrow\"></div>\n  <input part=\"search\" type=\"text\" />\n  <div part=\"scroll\">\n    <mdi-grid part=\"grid\" height=\"12rem\"></mdi-grid>\n  </div>\n</div>";
 
-var style$t = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n  outline: none;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
+var style$u = "[part~=popover] {\n  background: #FFF;\n  padding: 0.5rem;\n  border-radius: 0.5rem;\n  box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);\n  border: 4px solid #4F8FF9;\n}\n\n[part~=search] {\n  border: 2px solid #453C4F;\n  border-radius: 0.125rem;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  width: 27.25rem;\n  margin-bottom: 0.25rem;\n  outline: none;\n}\n\n[part~=arrow],\n[part~=arrow]::before {\n  position: absolute;\n  width: 10px;\n  height: 10px;\n}\n\n[part~=arrow]::before {\n  content: '';\n  transform: rotate(45deg);\n  background: #FFF;\n}\n\n[part~=popover][data-popper-placement^='top'] > [part~=arrow] {\n  bottom: -5px;\n}\n[part~=popover][data-popper-placement^='top'] > [part~=arrow]::before {\n  border-bottom: 4px solid #4F8FF9;\n  border-right: 4px solid #4F8FF9;\n  border-bottom-right-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow] {\n  top: -10px;\n}\n[part~=popover][data-popper-placement^='bottom'] > [part~=arrow]::before {\n  border-top: 4px solid #4F8FF9;\n  border-left: 4px solid #4F8FF9;\n  border-top-left-radius: 0.25rem;\n}\n\n[part~=popover][data-popper-placement^='left'] > [part~=arrow] {\n  right: -5px;\n}\n\n[part~=popover][data-popper-placement^='right'] > [part~=arrow] {\n  left: -5px;\n}";
 
 window.process = { env: {} };
 let MdiPicker = class MdiPicker extends MdiButton$1 {
@@ -23979,17 +24076,17 @@ __decorate([
 MdiPicker = __decorate([
     Component({
         selector: 'mdi-picker',
-        style: style$t,
-        template: template$t
+        style: style$u,
+        template: template$u
     })
 ], MdiPicker);
 
-var template$u = "<div part=\"grid\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n  </svg>\n</div>";
+var template$v = "<div part=\"grid\">\n  <svg part=\"svg\" viewBox=\"0 0 24 24\">\n    <path part=\"path\" fill=\"currentColor\" d=\"M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z\"/>\n  </svg>\n</div>";
 
-var style$u = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n[part=svg] {\n  position: relative;\n  width: 1.5rem;\n  height: 1.5rem;\n  z-index: 1;\n}\n\n[part=\"grid\"] {\n  position: relative;\n  background-image:\n    repeating-linear-gradient(rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%);\n  background-size: var(--mdi-preview-size, 4px) var(--mdi-preview-size, 4px);\n  background-position: calc(var(--mdi-preview-size, 4px) - 1px) calc(var(--mdi-preview-size, 4px) - 1px);\n}\n\n[part=\"grid\"]::after {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  content: ' ';\n  background-image:\n    repeating-linear-gradient(#5389a4 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, #5389a4 0 2px, transparent 2px 100%);\n  background-size: calc(var(--mdi-preview-size, 4px) * 4) calc(var(--mdi-preview-size, 4px) * 4);\n  background-position: calc(var(--mdi-preview-size, 4px) * 4 - 1px) calc(var(--mdi-preview-size, 4px) * 4 - 1px);\n}\n";
+var style$v = ":host {\n  display: inline-flex;\n  color: var(--mdi-icon-color, #222);\n}\n\n[part=svg] {\n  position: relative;\n  width: 1.5rem;\n  height: 1.5rem;\n  z-index: 1;\n}\n\n[part=\"grid\"] {\n  position: relative;\n  background-image:\n    repeating-linear-gradient(rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, rgba(83, 137, 164, 0.5) 0 2px, transparent 2px 100%);\n  background-size: var(--mdi-preview-size, 4px) var(--mdi-preview-size, 4px);\n  background-position: calc(var(--mdi-preview-size, 4px) - 1px) calc(var(--mdi-preview-size, 4px) - 1px);\n}\n\n[part=\"grid\"]::after {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  content: ' ';\n  background-image:\n    repeating-linear-gradient(#5389a4 0 2px, transparent 2px 100%),\n    repeating-linear-gradient(90deg, #5389a4 0 2px, transparent 2px 100%);\n  background-size: calc(var(--mdi-preview-size, 4px) * 4) calc(var(--mdi-preview-size, 4px) * 4);\n  background-position: calc(var(--mdi-preview-size, 4px) * 4 - 1px) calc(var(--mdi-preview-size, 4px) * 4 - 1px);\n}\n";
 
 const noIcon$3 = 'M0 0h24v24H0V0zm2 2v20h20V2H2z';
-let MdiIcon$2 = class MdiIcon extends HTMLElement {
+let MdiIcon$1 = class MdiIcon extends HTMLElement {
     constructor() {
         super(...arguments);
         this.path = noIcon$3;
@@ -24015,32 +24112,32 @@ let MdiIcon$2 = class MdiIcon extends HTMLElement {
 };
 __decorate([
     Prop()
-], MdiIcon$2.prototype, "path", void 0);
+], MdiIcon$1.prototype, "path", void 0);
 __decorate([
     Prop()
-], MdiIcon$2.prototype, "width", void 0);
+], MdiIcon$1.prototype, "width", void 0);
 __decorate([
     Prop()
-], MdiIcon$2.prototype, "height", void 0);
+], MdiIcon$1.prototype, "height", void 0);
 __decorate([
     Prop()
-], MdiIcon$2.prototype, "size", void 0);
+], MdiIcon$1.prototype, "size", void 0);
 __decorate([
     Part()
-], MdiIcon$2.prototype, "$svg", void 0);
+], MdiIcon$1.prototype, "$svg", void 0);
 __decorate([
     Part()
-], MdiIcon$2.prototype, "$path", void 0);
+], MdiIcon$1.prototype, "$path", void 0);
 __decorate([
     Part()
-], MdiIcon$2.prototype, "$grid", void 0);
-MdiIcon$2 = __decorate([
+], MdiIcon$1.prototype, "$grid", void 0);
+MdiIcon$1 = __decorate([
     Component({
         selector: 'mdi-preview',
-        style: style$u,
-        template: template$u
+        style: style$v,
+        template: template$v
     })
-], MdiIcon$2);
+], MdiIcon$1);
 
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -24557,9 +24654,9 @@ function throttle(func, wait, options) {
   });
 }
 
-var template$v = "<div part=\"scroll\">\n  <slot></slot>\n</div>";
+var template$w = "<div part=\"scroll\">\n  <slot></slot>\n</div>";
 
-var style$v = ":host {\n  display: block;\n}\n\ndiv {\n  transform: translateY(0);\n}";
+var style$w = ":host {\n  display: block;\n}\n\ndiv {\n  transform: translateY(0);\n}";
 
 let MdiScroll = class MdiScroll extends HTMLElement {
     constructor() {
@@ -24692,8 +24789,8 @@ __decorate([
 MdiScroll = __decorate([
     Component({
         selector: 'mdi-scroll',
-        style: style$v,
-        template: template$v
+        style: style$w,
+        template: template$w
     })
 ], MdiScroll);
 
@@ -24861,9 +24958,9 @@ function iconFilter(icons, term, limit = 5) {
     return exactMatch(list, term);
 }
 
-var template$w = "<div part=\"grid\">\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n    <section part=\"empty\">\n      <strong>No Results</strong>\n      <a part=\"reqIcon\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Icon+Request&template=1_icon_request.md&title=\" target=\"_blank\">\n        Request an Icon\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n      <a part=\"reqDoc\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Documentation&template=6_doc_guide_request.md&title=\" target=\"_blank\">\n        Request Documentation\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n    </section>\n  </div>\n</div>";
+var template$x = "<div part=\"grid\">\n  <input part=\"input\" type=\"text\" />\n  <svg viewBox=\"0 0 24 24\"><path d=\"M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z\" /></svg>\n  <div part=\"menu\">\n    <ul part=\"list\"></ul>\n    <section part=\"empty\">\n      <strong>No Results</strong>\n      <a part=\"reqIcon\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Icon+Request&template=1_icon_request.md&title=\" target=\"_blank\">\n        Request an Icon\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n      <a part=\"reqDoc\" href=\"https://github.com/Templarian/MaterialDesign/issues/new?labels=Documentation&template=6_doc_guide_request.md&title=\" target=\"_blank\">\n        Request Documentation\n        <svg viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z\" /></svg>\n      </a>\n    </section>\n  </div>\n</div>";
 
-var style$w = ":host {\n  display: block;\n  align-self: center;\n  font-family: var(--mdi-font-family);\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n  border: .0625rem solid var(--mdi-search-border-color);\n}\ninput:active {\n  box-shadow: 0 0 0 3px var(--mdi-search-active-glow, rgb(79, 143, 249, 0.6));\n}\ninput:focus {\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n.active input + svg path {\n  fill: #453C4F;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover,\nul > li > a:active,\nul > li > a:focus {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n  align-self: end;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n.icon svg {\n  color: #453C4F;\n  margin-right: 0.345rem;\n  margin-left: -0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}\n\n[part~=empty] {\n  background: #453C4F;\n  border-radius: 0.25rem;\n  padding: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\n[part~=empty] strong {\n  color: #fff;\n  padding: 0 0.25rem;\n}\n[part~=empty] a {\n  display: block;\n  background: #fff;\n  color: #453C4F;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  margin-top: 0.25rem;\n}\n[part~=empty] a:hover,\n[part~=empty] a:active,\n[part~=empty] a:focus {\n  background: #DAF4FB;\n}\n[part~=empty] a svg {\n  vertical-align: middle;\n  width: 1.5rem;\n  height: 1.5rem;\n  float: right;\n  margin: -0.125rem -0.25rem 0 0;\n}\n\n.hide {\n  display: none;\n}";
+var style$x = ":host {\n  display: block;\n  align-self: center;\n  font-family: var(--mdi-font-family);\n}\n\ndiv {\n  display: grid;\n  grid-template-columns: 1fr 0;\n  grid-template-rows: 1fr 0;\n}\ninput {\n  grid-row: 1;\n  grid-column: 1;\n  border-radius: 0.25rem;\n  border: 0;\n  padding: 0.25rem 0.5rem;\n  font-size: 1rem;\n  outline: none;\n  width: calc(100% - 1rem);\n  border: .0625rem solid var(--mdi-search-border-color);\n}\ninput:active {\n  box-shadow: 0 0 0 3px var(--mdi-search-active-glow, rgb(79, 143, 249, 0.6));\n}\ninput:focus {\n  box-shadow: 0 0 0 3px var(--mdi-search-focus-glow, rgb(79, 143, 249, 0.5));\n}\n.active input + svg path {\n  fill: #453C4F;\n}\nsvg {\n  grid-row: 1;\n  grid-column: 2;\n  width: 1.5rem;\n  height: 1.5rem;\n  justify-self: right;\n  margin-right: 0.25rem;\n  pointer-events: none;\n  align-self: center;\n}\nsvg > path {\n  transition: fill 0.3s ease-in-out;\n}\n[part=menu] {\n  display: none;\n  background: #FFF;\n  grid-row: 2;\n  grid-column: 1 / span 2;\n  z-index: 1;\n}\nul {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n  margin: 0;\n  border-radius: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\nul > li {\n  color: #222;\n}\nul > li > a {\n  display: flex;\n  padding: 0.25rem 0.5rem;\n  background: #FFF;\n  border-left: 1px solid #DDD;\n  border-right: 1px solid #DDD;\n}\nul > li > a:hover,\nul > li > a:active,\nul > li > a:focus {\n  background: #DAF4FB;\n}\nul > li.item:first-child > a {\n  border-top: 1px solid #DDD;\n  border-bottom: 1px solid #DDD;\n  border-radius: 0.25rem 0.25rem 0 0;\n}\nul > li.item:not(:first-child) > a {\n  border-bottom: 1px solid #DDD;\n}\nul > li.item:last-child > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\nul > li > a {\n  text-decoration: none;\n  color: #222;\n}\nul > li > a strong {\n  color: #453C4F;\n}\n.section {\n  color: #FFF;\n  padding: 0.25rem 0.5rem;\n  font-weight: bold;\n  background: #453C4F;\n  border-radius: 0.25rem 0.25rem 0 0;\n  cursor: default;\n}\n.section + li a {\n  border-radius: 0;\n}\n\nli + .section {\n  border-radius: 0;\n}\n\n.type {\n  background-color: #453C4F;\n  border-radius: 0.25rem;\n  font-size: 0.75rem;\n  color: #fff;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n  margin: 0.125rem 0 0.125rem 0.25rem;\n  align-self: end;\n}\n\n.icon {\n  background-color: #453C4F;\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n.icon.first > a {\n  border-top-left-radius: 0.25rem;\n  border-top-right-radius: 0.25rem;\n}\n.icon.last {\n  padding-bottom: 0.25rem;\n  border-bottom-left-radius: 0.25rem;\n  border-bottom-right-radius: 0.25rem;\n}\n.icon.last > a {\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n.icon svg {\n  color: #453C4F;\n  margin-right: 0.345rem;\n  margin-left: -0.25rem;\n}\n\n.all {\n  background-color: #453C4F;\n  padding: 0 0.25rem 0.25rem 0.25rem;\n  border-radius: 0 0 0.25rem 0.25rem;\n}\n\n.all a {\n  border-radius: 0.25rem;\n}\n\n[part~=empty] {\n  background: #453C4F;\n  border-radius: 0.25rem;\n  padding: 0.25rem;\n  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.4);\n}\n[part~=empty] strong {\n  color: #fff;\n  padding: 0 0.25rem;\n}\n[part~=empty] a {\n  display: block;\n  background: #fff;\n  color: #453C4F;\n  text-decoration: none;\n  padding: 0.25rem 0.5rem;\n  border-radius: 0.25rem;\n  margin-top: 0.25rem;\n}\n[part~=empty] a:hover,\n[part~=empty] a:active,\n[part~=empty] a:focus {\n  background: #DAF4FB;\n}\n[part~=empty] a svg {\n  vertical-align: middle;\n  width: 1.5rem;\n  height: 1.5rem;\n  float: right;\n  margin: -0.125rem -0.25rem 0 0;\n}\n\n.hide {\n  display: none;\n}";
 
 let MdiSearch = class MdiSearch extends HTMLElement {
     constructor() {
@@ -25095,8 +25192,8 @@ __decorate([
 MdiSearch = __decorate([
     Component({
         selector: 'mdi-search',
-        style: style$w,
-        template: template$w
+        style: style$x,
+        template: template$x
     })
 ], MdiSearch);
 
@@ -25124,9 +25221,9 @@ function removeToast(key) {
     document.body.dispatchEvent(event);
 }
 
-var template$x = "<button part=\"button\">\n  <span part=\"loading\">\n    <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n    </svg>\n  </span>\n  <span part=\"message\"></span>\n  <span part=\"close\">\n    <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n    </svg>\n  </span>\n</button>";
+var template$y = "<button part=\"button\">\n  <span part=\"loading\">\n    <svg part=\"loadingIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z\" />\n    </svg>\n  </span>\n  <span part=\"message\"></span>\n  <span part=\"close\">\n    <svg part=\"closeIcon\" viewBox=\"0 0 24 24\">\n      <path fill=\"currentColor\" d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n    </svg>\n  </span>\n</button>";
 
-var style$x = "[part~=button] {\n  display: flex;\n  background: #737E9E;\n  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);\n  border-radius: 0.25rem;\n  border: 1px solid #737E9E;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  color: #FFF;\n  align-items: center;\n  outline: 0;\n  transition: border-color 0.1s ease-in;\n  margin-bottom: 0.5rem;\n  max-width: 18rem;\n  font-size: 1rem;\n  align-items: center;\n}\n\n[part~=loading] {\n  height: 1.5rem;\n  margin: -0.25rem 0.5rem -0.25rem -0.25rem;\n}\n\n[part~=button]:hover {\n  border: 1px solid rgba(255, 255, 255, 0.75);\n}\n\n[part~=close] {\n  height: 1rem;\n}\n\n[part~=closeIcon] {\n  width: 1rem;\n  height: 1rem;\n}\n\n[part~=loadingIcon] {\n  animation: spin 2s infinite linear;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n@keyframes progress {\n  from {\n    width: 0;\n  }\n  to {\n    width: 20rem;\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part~=closeIcon] {\n  margin-left: 0.5rem;\n  color: rgba(255, 255, 255, 0.5);\n  transition: color 0.1s ease-in;\n}\n\n[part~=button]:hover [part~=closeIcon] {\n  color: #fff;\n}\n\n.hide {\n  display: none;\n}\n\n/* Error */\n\n[part~=button].error {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part~=button].error [part~=closeIcon] {\n  color: rgba(114, 28, 36, 0.6);\n}\n\n[part~=button].error:hover {\n  border-color: #721c24;\n}\n\n[part~=button].error:hover [part~=closeIcon] {\n  color: #721c24;\n}\n\n/* Warning */\n\n[part~=button].warning {\n  color: #856404;\n  background-color: #fff3cd;\n  border-color: #ffeeba;\n}\n\n[part~=button].warning [part~=closeIcon] {\n  color: rgba(133, 101, 4, 0.6);\n}\n\n[part~=button].warning:hover {\n  border-color: #856404;\n}\n\n[part~=button].warning:hover [part~=closeIcon] {\n  color: #856404;\n}";
+var style$y = "[part~=button] {\n  display: flex;\n  background: #737E9E;\n  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.4);\n  border-radius: 0.25rem;\n  border: 1px solid #737E9E;\n  padding: 0.5rem 0.5rem 0.5rem 0.75rem;\n  color: #FFF;\n  align-items: center;\n  outline: 0;\n  transition: border-color 0.1s ease-in;\n  margin-bottom: 0.5rem;\n  max-width: 18rem;\n  font-size: 1rem;\n  align-items: center;\n}\n\n[part~=loading] {\n  height: 1.5rem;\n  margin: -0.25rem 0.5rem -0.25rem -0.25rem;\n}\n\n[part~=button]:hover {\n  border: 1px solid rgba(255, 255, 255, 0.75);\n}\n\n[part~=close] {\n  height: 1rem;\n}\n\n[part~=closeIcon] {\n  width: 1rem;\n  height: 1rem;\n}\n\n[part~=loadingIcon] {\n  animation: spin 2s infinite linear;\n  width: 1.5rem;\n  height: 1.5rem;\n}\n\n@keyframes progress {\n  from {\n    width: 0;\n  }\n  to {\n    width: 20rem;\n  }\n}\n\n@keyframes spin {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(359deg);\n  }\n}\n\n[part~=closeIcon] {\n  margin-left: 0.5rem;\n  color: rgba(255, 255, 255, 0.5);\n  transition: color 0.1s ease-in;\n}\n\n[part~=button]:hover [part~=closeIcon] {\n  color: #fff;\n}\n\n.hide {\n  display: none;\n}\n\n/* Error */\n\n[part~=button].error {\n  color: #721c24;\n  background-color: #f8d7da;\n  border-color: #f5c6cb;\n}\n\n[part~=button].error [part~=closeIcon] {\n  color: rgba(114, 28, 36, 0.6);\n}\n\n[part~=button].error:hover {\n  border-color: #721c24;\n}\n\n[part~=button].error:hover [part~=closeIcon] {\n  color: #721c24;\n}\n\n/* Warning */\n\n[part~=button].warning {\n  color: #856404;\n  background-color: #fff3cd;\n  border-color: #ffeeba;\n}\n\n[part~=button].warning [part~=closeIcon] {\n  color: rgba(133, 101, 4, 0.6);\n}\n\n[part~=button].warning:hover {\n  border-color: #856404;\n}\n\n[part~=button].warning:hover [part~=closeIcon] {\n  color: #856404;\n}";
 
 let MdiToast = class MdiToast extends HTMLElement {
     constructor() {
@@ -25179,14 +25276,14 @@ __decorate([
 MdiToast = __decorate([
     Component({
         selector: 'mdi-toast',
-        style: style$x,
-        template: template$x
+        style: style$y,
+        template: template$y
     })
 ], MdiToast);
 
-var template$y = "<div part=\"container\"></div>";
+var template$z = "<div part=\"container\"></div>";
 
-var style$y = "[part~=container] {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: flex-end;\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n}";
+var style$z = "[part~=container] {\n  display: inline-flex;\n  flex-direction: column;\n  align-items: flex-end;\n  position: fixed;\n  top: 1rem;\n  right: 1rem;\n}";
 
 let MdiToasts = class MdiToasts extends HTMLElement {
     constructor() {
@@ -25234,7 +25331,7 @@ __decorate([
 MdiToasts = __decorate([
     Component({
         selector: 'mdi-toasts',
-        style: style$y,
-        template: template$y
+        style: style$z,
+        template: template$z
     })
 ], MdiToasts);
