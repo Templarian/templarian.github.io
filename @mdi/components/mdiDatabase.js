@@ -158,7 +158,7 @@ var mdiDatabase = (function () {
      *
      * By David Fahlander, david.fahlander@gmail.com
      *
-     * Version 3.0.1, Thu May 07 2020
+     * Version 3.0.3, Wed Nov 18 2020
      *
      * http://dexie.org
      *
@@ -837,10 +837,9 @@ var mdiDatabase = (function () {
             function then(onFulfilled, onRejected) {
                 var _this = this;
                 var possibleAwait = !psd.global && (psd !== PSD || microTaskId !== totalEchoes);
-                if (possibleAwait)
-                    decrementExpectedAwaits();
+                var cleanup = possibleAwait && !decrementExpectedAwaits();
                 var rv = new DexiePromise(function (resolve, reject) {
-                    propagateToListener(_this, new Listener(nativeAwaitCompatibleWrap(onFulfilled, psd, possibleAwait), nativeAwaitCompatibleWrap(onRejected, psd, possibleAwait), resolve, reject, psd));
+                    propagateToListener(_this, new Listener(nativeAwaitCompatibleWrap(onFulfilled, psd, possibleAwait, cleanup), nativeAwaitCompatibleWrap(onRejected, psd, possibleAwait, cleanup), resolve, reject, psd));
                 });
                 debug && linkToPreviousPromise(rv, this);
                 return rv;
@@ -957,6 +956,7 @@ var mdiDatabase = (function () {
             get: function () { return PSD; },
             set: function (value) { return PSD = value; }
         },
+        totalEchoes: { get: function () { return totalEchoes; } },
         newPSD: newScope,
         usePSD: usePSD,
         scheduler: {
@@ -1279,12 +1279,13 @@ var mdiDatabase = (function () {
         task.echoes += ZONE_ECHO_LIMIT;
         return task.id;
     }
-    function decrementExpectedAwaits(sourceTaskId) {
-        if (!task.awaits || (sourceTaskId && sourceTaskId !== task.id))
-            return;
+    function decrementExpectedAwaits() {
+        if (!task.awaits)
+            return false;
         if (--task.awaits === 0)
             task.id = 0;
         task.echoes = task.awaits * ZONE_ECHO_LIMIT;
+        return true;
     }
     if (('' + nativePromiseThen).indexOf('[native code]') === -1) {
         incrementExpectedAwaits = decrementExpectedAwaits = nop;
@@ -1371,7 +1372,7 @@ var mdiDatabase = (function () {
     function enqueueNativeMicroTask(job) {
         nativePromiseThen.call(resolvedNativePromise, job);
     }
-    function nativeAwaitCompatibleWrap(fn, zone, possibleAwait) {
+    function nativeAwaitCompatibleWrap(fn, zone, possibleAwait, cleanup) {
         return typeof fn !== 'function' ? fn : function () {
             var outerZone = PSD;
             if (possibleAwait)
@@ -1382,12 +1383,14 @@ var mdiDatabase = (function () {
             }
             finally {
                 switchToZone(outerZone, false);
+                if (cleanup)
+                    enqueueNativeMicroTask(decrementExpectedAwaits);
             }
         };
     }
     function getPatchedPromiseThen(origThen, zone) {
         return function (onResolved, onRejected) {
-            return origThen.call(this, nativeAwaitCompatibleWrap(onResolved, zone, false), nativeAwaitCompatibleWrap(onRejected, zone, false));
+            return origThen.call(this, nativeAwaitCompatibleWrap(onResolved, zone), nativeAwaitCompatibleWrap(onRejected, zone));
         };
     }
     var UNHANDLEDREJECTION = "unhandledrejection";
@@ -1453,7 +1456,7 @@ var mdiDatabase = (function () {
         }
     }
 
-    var DEXIE_VERSION = '3.0.1';
+    var DEXIE_VERSION = '3.0.3';
     var maxString = String.fromCharCode(65535);
     var minKey = -Infinity;
     var INVALID_KEY_ARGUMENT = "Invalid key provided. Keys must be of type string, number, Date or Array<string | number | Date>.";
@@ -1482,6 +1485,16 @@ var mdiDatabase = (function () {
         upper: [[]],
         upperOpen: false
     };
+
+    function workaroundForUndefinedPrimKey(keyPath) {
+        return function (obj) {
+            if (getByKeyPath(obj, keyPath) === undefined) {
+                obj = deepClone(obj);
+                delByKeyPath(obj, keyPath);
+            }
+            return obj;
+        };
+    }
 
     var Table =               (function () {
         function Table() {
@@ -1629,13 +1642,18 @@ var mdiDatabase = (function () {
         };
         Table.prototype.add = function (obj, key) {
             var _this = this;
+            var _a = this.schema.primKey, auto = _a.auto, keyPath = _a.keyPath;
+            var objToAdd = obj;
+            if (keyPath && auto) {
+                objToAdd = workaroundForUndefinedPrimKey(keyPath)(obj);
+            }
             return this._trans('readwrite', function (trans) {
-                return _this.core.mutate({ trans: trans, type: 'add', keys: key != null ? [key] : null, values: [obj] });
+                return _this.core.mutate({ trans: trans, type: 'add', keys: key != null ? [key] : null, values: [objToAdd] });
             }).then(function (res) { return res.numFailures ? DexiePromise.reject(res.failures[0]) : res.lastResult; })
                 .then(function (lastResult) {
-                if (!_this.core.schema.primaryKey.outbound) {
+                if (keyPath) {
                     try {
-                        setByKeyPath(obj, _this.core.schema.primaryKey.keyPath, lastResult);
+                        setByKeyPath(obj, keyPath, lastResult);
                     }
                     catch (_) { }
                     
@@ -1661,12 +1679,17 @@ var mdiDatabase = (function () {
         };
         Table.prototype.put = function (obj, key) {
             var _this = this;
-            return this._trans('readwrite', function (trans) { return _this.core.mutate({ trans: trans, type: 'put', values: [obj], keys: key != null ? [key] : null }); })
+            var _a = this.schema.primKey, auto = _a.auto, keyPath = _a.keyPath;
+            var objToAdd = obj;
+            if (keyPath && auto) {
+                objToAdd = workaroundForUndefinedPrimKey(keyPath)(obj);
+            }
+            return this._trans('readwrite', function (trans) { return _this.core.mutate({ trans: trans, type: 'put', values: [objToAdd], keys: key != null ? [key] : null }); })
                 .then(function (res) { return res.numFailures ? DexiePromise.reject(res.failures[0]) : res.lastResult; })
                 .then(function (lastResult) {
-                if (!_this.core.schema.primaryKey.outbound) {
+                if (keyPath) {
                     try {
-                        setByKeyPath(obj, _this.core.schema.primaryKey.keyPath, lastResult);
+                        setByKeyPath(obj, keyPath, lastResult);
                     }
                     catch (_) { }
                     
@@ -1690,7 +1713,7 @@ var mdiDatabase = (function () {
                 return _this.core.getMany({
                     keys: keys$$1,
                     trans: trans
-                });
+                }).then(function (result) { return result.map(function (res) { return _this.hook.reading.fire(res); }); });
             });
         };
         Table.prototype.bulkAdd = function (objects, keysOrOptions, options) {
@@ -1699,13 +1722,16 @@ var mdiDatabase = (function () {
             options = options || (keys$$1 ? undefined : keysOrOptions);
             var wantResults = options ? options.allKeys : undefined;
             return this._trans('readwrite', function (trans) {
-                var outbound = _this.core.schema.primaryKey.outbound;
-                if (!outbound && keys$$1)
+                var _a = _this.schema.primKey, auto = _a.auto, keyPath = _a.keyPath;
+                if (keyPath && keys$$1)
                     throw new exceptions.InvalidArgument("bulkAdd(): keys argument invalid on tables with inbound keys");
                 if (keys$$1 && keys$$1.length !== objects.length)
                     throw new exceptions.InvalidArgument("Arguments objects and keys must have the same length");
                 var numObjects = objects.length;
-                return _this.core.mutate({ trans: trans, type: 'add', keys: keys$$1, values: objects, wantResults: wantResults })
+                var objectsToAdd = keyPath && auto ?
+                    objects.map(workaroundForUndefinedPrimKey(keyPath)) :
+                    objects;
+                return _this.core.mutate({ trans: trans, type: 'add', keys: keys$$1, values: objectsToAdd, wantResults: wantResults })
                     .then(function (_a) {
                     var numFailures = _a.numFailures, results = _a.results, lastResult = _a.lastResult, failures = _a.failures;
                     var result = wantResults ? results : lastResult;
@@ -1721,13 +1747,16 @@ var mdiDatabase = (function () {
             options = options || (keys$$1 ? undefined : keysOrOptions);
             var wantResults = options ? options.allKeys : undefined;
             return this._trans('readwrite', function (trans) {
-                var outbound = _this.core.schema.primaryKey.outbound;
-                if (!outbound && keys$$1)
+                var _a = _this.schema.primKey, auto = _a.auto, keyPath = _a.keyPath;
+                if (keyPath && keys$$1)
                     throw new exceptions.InvalidArgument("bulkPut(): keys argument invalid on tables with inbound keys");
                 if (keys$$1 && keys$$1.length !== objects.length)
                     throw new exceptions.InvalidArgument("Arguments objects and keys must have the same length");
                 var numObjects = objects.length;
-                return _this.core.mutate({ trans: trans, type: 'put', keys: keys$$1, values: objects, wantResults: wantResults })
+                var objectsToPut = keyPath && auto ?
+                    objects.map(workaroundForUndefinedPrimKey(keyPath)) :
+                    objects;
+                return _this.core.mutate({ trans: trans, type: 'put', keys: keys$$1, values: objectsToPut, wantResults: wantResults })
                     .then(function (_a) {
                     var numFailures = _a.numFailures, results = _a.results, lastResult = _a.lastResult, failures = _a.failures;
                     var result = wantResults ? results : lastResult;
@@ -2274,7 +2303,7 @@ var mdiDatabase = (function () {
                     return ctx.table.core.count({ trans: trans, query: { index: primaryKey, range: coreRange } }).then(function (count) {
                         return ctx.table.core.mutate({ trans: trans, type: 'deleteRange', range: coreRange })
                             .then(function (_a) {
-                            var failures = _a.failures, lastResult = _a.lastResult, results = _a.results, numFailures = _a.numFailures;
+                            var failures = _a.failures; _a.lastResult; _a.results; var numFailures = _a.numFailures;
                             if (numFailures)
                                 throw new ModifyError("Could not delete some values", Object.keys(failures).map(function (pos) { return failures[pos]; }), count - numFailures);
                             return count - numFailures;
@@ -2468,6 +2497,8 @@ var mdiDatabase = (function () {
             }
         };
         WhereClause.prototype.equals = function (value) {
+            if (value == null)
+                return fail(this, INVALID_KEY_ARGUMENT);
             return new this.Collection(this, function () { return rangeEqual(value); });
         };
         WhereClause.prototype.above = function (value) {
@@ -3371,7 +3402,8 @@ var mdiDatabase = (function () {
         tableNames.forEach(function (tableName) {
             var schema = dbschema[tableName];
             objs.forEach(function (obj) {
-                if (!(tableName in obj)) {
+                var propDesc = getPropertyDescriptor(obj, tableName);
+                if (!propDesc || ("value" in propDesc && propDesc.value === undefined)) {
                     if (obj === db.Transaction.prototype || obj instanceof db.Transaction) {
                         setProp(obj, tableName, {
                             get: function () { return this.table(tableName); },
@@ -3453,6 +3485,7 @@ var mdiDatabase = (function () {
                 var contentUpgrade = version._cfg.contentUpgrade;
                 if (contentUpgrade && version._cfg.version > oldVersion) {
                     generateMiddlewareStacks(db, idbUpgradeTrans);
+                    trans._memoizedTables = {};
                     anyContentUpgraderHasRun = true;
                     var upgradeSchema_1 = shallowClone(newSchema);
                     diff.del.forEach(function (table) {
@@ -3522,9 +3555,10 @@ var mdiDatabase = (function () {
                     add: [],
                     change: []
                 };
-                if (oldDef.primKey.src !== newDef.primKey.src &&
-                    !isIEOrEdge
-                ) {
+                if ((
+                '' + (oldDef.primKey.keyPath || '')) !== ('' + (newDef.primKey.keyPath || '')) ||
+                    (oldDef.primKey.auto !== newDef.primKey.auto && !isIEOrEdge))
+                 {
                     change.recreate = true;
                     diff.change.push(change);
                 }
@@ -3599,6 +3633,11 @@ var mdiDatabase = (function () {
         var globalSchema = db._dbSchema = buildGlobalSchema(db, idbdb, tmpTrans);
         db._storeNames = slice(idbdb.objectStoreNames, 0);
         setApiOnPlace(db, [db._allTables], keys(globalSchema), globalSchema);
+    }
+    function verifyInstalledSchema(db, tmpTrans) {
+        var installedSchema = buildGlobalSchema(db, db.idbdb, tmpTrans);
+        var diff = getSchemaDiff(installedSchema, db._dbSchema);
+        return !(diff.add.length || diff.change.some(function (ch) { return ch.add.length || ch.change.length; }));
     }
     function adjustToExistingIndexNames(db, schema, idbtrans) {
         var storeNames = idbtrans.db.objectStoreNames;
@@ -3788,8 +3827,12 @@ var mdiDatabase = (function () {
                             var tmpTrans = idbdb.transaction(safariMultiStoreFix(objectStoreNames), 'readonly');
                             if (state.autoSchema)
                                 readGlobalSchema(db, idbdb, tmpTrans);
-                            else
+                            else {
                                 adjustToExistingIndexNames(db, db._dbSchema, tmpTrans);
+                                if (!verifyInstalledSchema(db, tmpTrans)) {
+                                    console.warn("Dexie SchemaDiff: Schema was extended without increasing the number passed to db.version(). Some queries may fail.");
+                                }
+                            }
                             generateMiddlewareStacks(db, tmpTrans);
                         }
                         catch (e) {
@@ -4079,7 +4122,12 @@ var mdiDatabase = (function () {
                                         if (additionalChanges_1) {
                                             var requestedValue_1 = req.values[i];
                                             Object.keys(additionalChanges_1).forEach(function (keyPath) {
-                                                setByKeyPath(requestedValue_1, keyPath, additionalChanges_1[keyPath]);
+                                                if (hasOwn(requestedValue_1, keyPath)) {
+                                                    requestedValue_1[keyPath] = additionalChanges_1[keyPath];
+                                                }
+                                                else {
+                                                    setByKeyPath(requestedValue_1, keyPath, additionalChanges_1[keyPath]);
+                                                }
                                             });
                                         }
                                     }
