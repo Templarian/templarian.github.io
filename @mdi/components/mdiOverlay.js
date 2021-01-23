@@ -115,6 +115,7 @@ var mdiOverlay = (function () {
         return str.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
     }
     const layers = [];
+    const promises = [];
     // Update to support passing no object for a base class
     let MdiOverlay = class MdiOverlay extends HTMLElement {
         static open(props = {}) {
@@ -122,9 +123,13 @@ var mdiOverlay = (function () {
             Object.assign(ele, props);
             document.body.appendChild(ele);
             layers.push(ele);
+            return new Promise((resolve) => {
+                promises.push(resolve);
+            });
         }
-        close() {
+        close(result) {
             layers.pop().remove();
+            promises.pop()(result);
         }
     };
     MdiOverlay = __decorate([
