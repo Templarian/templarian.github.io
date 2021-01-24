@@ -39,6 +39,7 @@ var mdiButtonGroup = (function () {
         return str.replace(/-([a-z])/g, function (m) { return m[1].toUpperCase(); });
     }
     function Component(config) {
+        if (config === void 0) { config = {}; }
         return function (cls) {
             if (cls.prototype[parent]) {
                 cls.prototype[parent].push(cls.prototype);
@@ -57,7 +58,13 @@ var mdiButtonGroup = (function () {
             var disconnectedCallback = cls.prototype.disconnectedCallback || (function () { });
             cls.prototype.connectedCallback = function () {
                 var _this = this;
-                if (!this[init] && config.template) {
+                if (!this[init] && !config.template) {
+                    if (config.useShadow === false) ;
+                    else {
+                        this.attachShadow({ mode: 'open' });
+                    }
+                }
+                else if (!this[init] && config.template) {
                     var $template = document.createElement('template');
                     $template.innerHTML = cls.prototype[template] + "<style>" + cls.prototype[style] + "</style>";
                     var $node = document.importNode($template.content, true);
@@ -70,7 +77,7 @@ var mdiButtonGroup = (function () {
                 }
                 else if (this[init] && config.style) ;
                 else if (this[init] && !config.template) {
-                    throw new Error('You need to pass a template for the element');
+                    throw new Error('You need to pass a template for an extended element.');
                 }
                 if (this.componentWillMount) {
                     this.componentWillMount();
@@ -105,7 +112,7 @@ var mdiButtonGroup = (function () {
                 var normalizedName = dashToCamel(name);
                 this[normalizedName] = newValue;
             };
-            if (!window.customElements.get(config.selector)) {
+            if (config.selector && !window.customElements.get(config.selector)) {
                 window.customElements.define(config.selector, cls);
             }
         };
