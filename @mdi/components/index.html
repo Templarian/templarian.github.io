@@ -1217,6 +1217,11 @@ mdi-overlay
 <script>
 markdown("mdiOverlay", "\n\nThe `MdiOverlay` class provides a way to create an element on the body element. Elements that should be attached at the body root should extend `MdiOverlay`.\n\n\n## Example Modal\n\n```typescript\nimport { Component, Prop } from '@mdi/element';\nimport MdiOverlay from '@mdi/components/mdiOverlay';\n\nimport template from './modal.html';\nimport style from './modal.css';\n\n@Component({\n  selector: 'mdi-modal',\n  template,\n  style\n})\nexport default class MdiModal extends MdiOverlay {\n  // This will render attached to the body. To close call\n  // this.close(result);\n\n  @Prop() foo: string = 'Default';\n}\n```\n\nWhile this component can be inlined still it will mostly be opened via the a static open method which will create an instance and attach it to the `<body>` tag.\n\n```typescript\nimport MdiModal from './../modal/modal';\n\nconst result = await MdiModal.open({\n  foo: 'bar'\n});\nconsole.log(result);\n```")
 </script>
+<section>
+<h3><span>basic</span></h3>
+<x-mdi-overlay-basic></x-mdi-overlay-basic>
+</section>
+
 <h2 id="mdiPickerH2">
 mdi-picker
 <a title="Link to mdi-picker" href="#mdi-picker" id="mdi-picker">
@@ -1263,8 +1268,13 @@ mdi-preview
 </h2>
 <div class="markdown" id="mdiPreviewContainer"></div>
 <script>
-markdown("mdiPreview", "\n\nThe `mdi-preview` component allows a standard way to render a grid behind an icon.\n\n```typescript\nimport '@mdi/components/mdi/preview';\nimport MdiIcon from '@mdi/components/mdi/preview';\n```\n\n```html\n<mdi-preview path=\"...\" size=\"4\"></mdi-preview>\n```\n\n| Attributes | Tested   | Description |\n| ---------- | -------- | ----------- |\n| path       | &#x2705; | Set path data |\n| size       | &#x2705; | 4 |")
+markdown("mdiPreview", "\n\nThe `mdi-preview` component allows a standard way to render a grid behind an icon.\n\n```typescript\nimport '@mdi/components/mdi/preview';\nimport MdiIcon from '@mdi/components/mdi/preview';\n```\n\n```html\n<mdi-preview path=\"...\" size=\"4\"></mdi-preview>\n```\n\n| Attributes | Tested   | Default | Description |\n| ---------- | -------- | ------- | ----------- |\n| path       | &#x2705; |         | Set path data |\n| size       | &#x2705; | 4       |   |\n| width      |          | 24      |   |\n| height     |          | 24      |   |")
 </script>
+<section>
+<h3><span>basic</span></h3>
+<x-mdi-preview-basic></x-mdi-preview-basic>
+</section>
+
 <h2 id="mdiScrollH2">
 mdi-scroll
 <a title="Link to mdi-scroll" href="#mdi-scroll" id="mdi-scroll">
