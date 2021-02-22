@@ -1048,6 +1048,11 @@ mdi-input-user-select
 <script>
 markdown("mdiInputUserSelect", "\n\nThe `mdi-input-user-select` component creates an select drop down.\n\n```typescript\nimport '@mdi/components/mdiInputUserSelect';\nimport { MdiInputUserSelect } '@mdi/components/mdiInputUserSelect';\n```\n\n```html\n<mdi-input-user-select></mdi-input-user-select>\n```\n\n## Attributes\n\n| Attributes | Tested   | Description |\n| ---------- | -------- | ----------- |\n| options    |          | `[User, ...]` |\n| value      |          | `world` |\n\n## Events\n\n| Event     | Tested   | Detail |\n| --------- | -------- | ----------- |\n| change    |          | `User` |\n\n## Models\n\n```yaml\n$ref: '#/api/model/user'\n```")
 </script>
+<section>
+<h3><span>basic</span></h3>
+<x-mdi-input-user-select-basic></x-mdi-input-user-select-basic>
+</section>
+
 <h2 id="mdiMarkdownH2">
 mdi-markdown
 <a title="Link to mdi-markdown" href="#mdi-markdown" id="mdi-markdown">
@@ -1355,7 +1360,7 @@ mdi-tabs
 </h2>
 <div class="markdown" id="mdiTabsContainer"></div>
 <script>
-markdown("mdiTabs", "\n\nThe `mdi-icon` component allows a standard way to render [MaterialDesignIcons.com](https://materialdesignicons.com) icons.\n\n```typescript\nimport '@mdi/components/mdi/icon';\nimport MdiIcon from '@mdi/components/mdi/icon';\n```\n\n```html\n<mdi-icon path=\"...\"></mdi-icon>\n```\n\n| Attributes | Tested   | Description |\n| ---------- | -------- | ----------- |\n| path       | &#x2705; | Set path data |\n\n\n| CSS Variable        | Default   | Description |\n| ------------------- | --------- | ----------- |\n| `--mdi-icon-color`  | `#453C4F` | Color       |\n| `--mdi-icon-width`  | `1.5rem`  | Width       |\n| `--mdi-icon-height` | `1.5rem`  | Height      |")
+markdown("mdiTabs", "\n\nThe `mdi-tabs` component allows a standard way to render tabs.\n\n```typescript\nimport '@mdi/components/mdi/tabs';\nimport MdiTabs from '@mdi/components/mdi/tabs';\n```\n\n```html\n<mdi-tabs>\n  <mdi-tab label=\"Tab 1\">\n    Content 1\n  </mdi-tab>\n  <mdi-tab label=\"Tab 2\">\n    Content 2\n  </mdi-tab>\n</mdi-tabs>\n```\n\n| Attributes | Tested   | Description |\n| ---------- | -------- | ----------- |\n| path       | &#x2705; | Set path data |\n\n\n| Events     | Tested   | Description |\n| ---------- | -------- | ----------- |\n| onselect   | &#x2705; | Set path data |\n\n\n| CSS Variable        | Default   | Description |\n| ------------------- | --------- | ----------- |\n| `--mdi-icon-color`  | `#453C4F` | Color       |\n| `--mdi-icon-width`  | `1.5rem`  | Width       |\n| `--mdi-icon-height` | `1.5rem`  | Height      |")
 </script>
 <h2 id="mdiToastH2">
 mdi-toast
