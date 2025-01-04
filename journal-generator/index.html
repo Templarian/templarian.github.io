@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.5" x 5" Pocket Journal Generator for Print</title>
+    <style>
+        /*
+         * Print and Screen, kept it very basic.
+         */
+        @page {
+            margin: 0;
+            padding: 0;
+        }
+
+        @media print {
+            * {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            html,
+            body {
+                height: auto;
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+                display: grid;
+                grid-template-columns: auto;
+                grid-template-rows: auto auto;
+                margin: 0;
+                padding: 0;
+            }
+
+            div.body {
+                display: contents;
+            }
+
+            div.page {
+                /* Overridden by JS... */
+                background-image: url('page.png');
+            }
+
+            div.page:first-child {
+                -webkit-print-color-adjust: exact;
+                grid-column: 1;
+                grid-row: 1;
+                background-size: contain;
+                background-position-x: center;
+                position: relative;
+                user-select: none;
+            }
+
+            div.page:last-child {
+                -webkit-print-color-adjust: exact;
+                grid-column: 1;
+                grid-row: 2;
+                background-size: contain;
+                background-position-x: center;
+                transform: rotate(180deg);
+                position: relative;
+                user-select: none;
+            }
+
+            div>span.right {
+                position: absolute;
+                left: 50%;
+                bottom: 15px;
+                width: 3.5in;
+                display: flex;
+                height: 0.25in;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 16px;
+                align-items: flex-start;
+                justify-content: flex-end;
+            }
+
+            div>span.right>span {
+                display: flex;
+                width: 0.25in;
+                transform: translate(1px, 1px);
+            }
+
+            div>span.left {
+                position: absolute;
+                right: 50%;
+                bottom: 15px;
+                width: 3.5in;
+                display: flex;
+                height: 0.25in;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 16px;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+
+            div>span.left>span {
+                display: flex;
+                width: 0.25in;
+                transform: translate(-1px, 1px);
+                justify-content: right;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+
+        @media screen {
+
+            input:focus,
+            button:focus,
+            select:focus {
+                outline: 0; /* meh */
+                box-shadow: 0 0 0 2px #0099f8;
+            }
+
+            body {
+                height: 100vh;
+                overflow: hidden;
+                background: #FFF;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                margin: 0;
+                padding: 0;
+                display: grid;
+                grid-template-columns: auto auto;
+                grid-template-rows: auto;
+                background: #DDD;
+            }
+
+            div.body {
+                grid-column: 2;
+                grid-row: 1;
+                display: grid;
+                grid-template-columns: auto;
+                grid-template-rows: auto auto;
+                margin: 1rem;
+                padding: 0;
+                width: 413px;
+                height: calc(275px * 2);
+                box-shadow: 0 0 1rem rgba(0, 0, 0, 0.25);
+            }
+
+            div.page {
+                /* Overridden by JS... */
+                background-image: url('page.png');
+            }
+
+            div.page:first-child {
+                grid-column: 1;
+                grid-row: 1;
+                background-size: auto 100%;
+                background-position-x: center;
+                position: relative;
+                user-select: none;
+            }
+
+            div.page:last-child {
+                grid-column: 1;
+                grid-row: 2;
+                background-size: auto 100%;
+                background-position-x: center;
+                transform: rotate(180deg);
+                position: relative;
+                user-select: none;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 0.25rem;
+            }
+
+            div>span.right {
+                position: absolute;
+                left: 50%;
+                bottom: 9px;
+                width: 188px;
+                display: flex;
+                height: 12px;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 11px;
+                align-items: flex-start;
+                justify-content: flex-end;
+            }
+
+            div>span.right>span {
+                display: flex;
+                width: 0.25in;
+                transform: translate(1px, 1px);
+            }
+
+            div>span.left {
+                position: absolute;
+                right: 50%;
+                bottom: 9px;
+                width: 188px;
+                display: flex;
+                height: 12px;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 11px;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+
+            div>span.left>span {
+                display: flex;
+                width: 0.25in;
+                transform: translate(-1px, 1px);
+                justify-content: right;
+            }
+
+            section {
+                grid-column: 1;
+                grid-row: 1;
+                max-width: 20rem;
+                padding: 1rem;
+                background: #FFF;
+                box-shadow: 0 0 1rem rgba(0, 0, 0, 0.25);
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                overflow: auto;
+            }
+
+            section select {
+                padding: 0.25rem 0.5rem;
+                border: 1px solid #111;
+                width: calc(100%);
+                border-radius: 0.25rem;
+            }
+
+            section p {
+                margin: 0.25rem 0;
+                line-height: 1.5rem;
+            }
+
+            section p>span {
+                cursor: help;
+                text-decoration: underline;
+                text-decoration-style: wavy;
+                text-decoration-color: #0099f8;
+            }
+
+            section h1 {
+                font-weight: normal;
+                margin: 0 0 0.5rem 0;
+                font-size: 1.5rem;
+            }
+
+            section h2 {
+                font-weight: normal;
+                margin: 0.5rem 0;
+                font-size: 1.25rem;
+            }
+
+            section h3 {
+                font-weight: bold;
+                margin: 0.5rem 0;
+                font-size: 1rem;
+            }
+
+            section h4 {
+                font-weight: bold;
+                margin: 0.5rem 0;
+                font-size: 0.875rem;
+            }
+
+            section > div > button {
+                border: 2px solid #666;
+                border-radius: 0.5rem;
+                background: #FFF;
+                display: flex;
+                width: 100%;
+                padding: 0.5rem;
+                justify-content: center;
+                font-weight: bold;
+                color: #333;
+            }
+
+            section > div > button:hover {
+                background: #EEE;
+            }
+
+            section .pageSelect {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.25rem;
+                margin: 0.5rem 0;
+            }
+
+            section .pageSelect button {
+                display: flex;
+                flex: 1;
+                flex-grow: 0;
+                min-width: 2.5rem;
+                height: 3.25rem;
+                padding: 0;
+                position: relative;
+                background: #FFF;
+                border: 1px solid #666;
+                border-radius: 0.125rem;
+                justify-content: space-around;
+            }
+
+            section .pageSelect button:hover {
+                background: #EEE;
+            }
+            section .pageSelect button.selected {
+                border-color: #0099f8;
+                border-width: 2px;
+            }
+            section .pageSelect button.selected:hover {
+                background: #FFF;
+            }
+            section .pageSelect button:nth-child(even) {
+                border-top-right-radius: 0.5rem;
+            }
+            section .pageSelect button:nth-child(even)::after {
+                content: ' ';
+                position: absolute;
+                border-radius: 0 0.25rem 0 0.25rem;
+                top: 0;
+                right: 0;
+                border-bottom: 1px solid #666;
+                border-left: 1px solid #666;
+                width: 0.5rem;
+                height: 0.5rem;
+                box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.10);
+            }
+
+            section .pageSelect button.selected:nth-child(even)::after {
+                border-bottom: 2px solid #0099f8;
+                border-left: 2px solid #0099f8;
+            }
+
+            section .pageSelect span.page-start {
+                font-size: 0.875rem;
+                position: absolute;
+                bottom: 0.125rem;
+                left: 0.125rem;
+                color: #666;
+            }
+
+            section .pageSelect span.page-end {
+                font-size: 0.875rem;
+                position: absolute;
+                bottom: 0.125rem;
+                right: 0.125rem;
+                color: #666;
+            }
+
+            section .pageSelect span.page-number {
+                margin-top: 0.5rem;
+                color: #666;
+                border-radius: 1rem;
+                background: #EEE;
+                padding: 0.25rem;
+                width: 1rem;
+            }
+            section .pageSelect .selected span.page-number {
+                background: rgba(0, 153, 248, 0.2);
+                color: #333;
+            }
+
+            section select.custom,
+            section select.custom:focus {
+                border-radius: 0.25rem 0.25rem 0 0;
+            }
+
+            section div.custom {
+                padding: 0.25rem 0.5rem;
+                border-bottom: 1px solid #111;
+                border-left: 1px solid #111;
+                border-right: 1px solid #111;
+                border-radius: 0 0 0.25rem 0.25rem;
+                margin-top: -0.5rem;
+            }
+
+            ul {
+                padding: 0 0 0 1.5rem;
+            }
+
+            ul li.light {
+                opacity: 0.6;
+            }
+
+            .zoom {
+                grid-column: 2;
+                grid-row: 1;
+                position: absolute;
+                bottom: 1rem;
+                right: 1rem;
+                border-radius: 0.25rem;
+                box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+                /* disabled for now as I don't use it */
+                display: none;
+            }
+
+            .hide {
+                display: none;
+            }
+        }
+    </style>
+    <script>
+        /**
+         * Rarely refresh the page, so this makes it snappy
+         * as you can swap between templates instantly
+         */
+        const cacheTemplate = new Map();
+        /**
+         * Utility to take image data and update template
+         */
+        function updateTemplate() {
+            // Updates
+            const width = 2478;
+            const height = 1650;
+            const widthInner = 2148;
+            const heightInner = 1548;
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(
+                    cacheTemplate.get('page.png'),
+                    0, 0, width, height,
+                    0, 0, width, height
+                );
+            // Elements
+            const templateEle = document.getElementById('template');
+            const customTemplateEle = document.getElementById('customTemplate');
+            const uploadEle = document.getElementById('upload');
+            const template = templateEle.value;
+            if (template === 'custom') {
+                // Usage Custom Image
+                const file = uploadEle.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        if (img.width !== widthInner || img.height !== heightInner) {
+                            alert(`Should really only use ${widthInner}x${heightInner} images.`);
+                        }
+                        ctx.drawImage(
+                            img,
+                            0, 0, widthInner, heightInner,
+                            55 * 3, 27 * 3, widthInner, heightInner
+                        );
+                        const pages = [...document.querySelectorAll('div.page')];
+                        pages.forEach(page => {
+                            page.style.backgroundImage = `url('${canvas.toDataURL("image/png")}')`;
+                        });
+                    };
+                    img.src = e.target.result;
+                };
+                try {
+                    reader.readAsDataURL(file);
+                } catch (e) {
+                    console.error('error file not sure');
+                }
+            } else {
+                // Use Template Path
+                ctx.drawImage(
+                    cacheTemplate.get(template),
+                    0, 0, widthInner, heightInner,
+                    55 * 3, 27 * 3, widthInner, heightInner
+                );
+                const pages = [...document.querySelectorAll('div.page')];
+                pages.forEach(page => {
+                    page.style.backgroundImage = `url('${canvas.toDataURL("image/png")}')`;
+                });
+            }
+        }
+        /**
+         * Utility to visibly show page numbers. Personally find it easier
+         * to keep track of which page is being printed.
+         */
+        function updateTotalPages() {
+            // Calculate Template
+            const templateEle = document.getElementById('template');
+            const customTemplateEle = document.getElementById('customTemplate');
+            const template = templateEle.value;
+            customTemplateEle.classList.toggle('hide', template !== 'custom');
+            templateEle.classList.toggle('custom', template === 'custom');
+            // Generate Page Select
+            const pageSelect = document.getElementById('pageSelect');
+            const enabledEle = document.getElementById('enablePageNumbers');
+            const isEnabled = enabledEle.checked;
+            // Clear All Pages
+            while (pageSelect.firstChild) {
+                pageSelect.removeChild(pageSelect.firstChild);
+            }
+            const totalPagesEle = document.getElementById('totalPages');
+            const totalPages = parseInt(totalPagesEle.value, 10);
+            // Include Cover
+            const includeCoverEle = document.getElementById('includeCover');
+            const includeCover = includeCoverEle.checked;
+            // Total Pages
+            const total = (totalPages * 4) + (includeCover ? 2 : 0);
+            const pages = [
+                { name: 'Page 1 Cover Front', number: 1, start: null, end: null }
+            ];
+            if (includeCover) {
+                pages.push({ name: 'Page 1 Details Back', number: 1, start: 1, end: total });
+            } else {
+                pages.push({ name: 'Page 1 Details Back', number: 1, start: null, end: null });
+            }
+            // Need to stop coding at 1am... but it works so don't touch it?
+            for (let i = 1; i <= totalPages; i++) {
+                pages.push({
+                    name: `Page ${i + 1} Front`,
+                    number: i + 1,
+                    start: isEnabled ? total - ((i - 1) * 2) - (includeCover ? 1 : 0) : null,
+                    end: isEnabled ? (i * 2) - 1 + (includeCover ? 1 : 0) : null
+                });
+                pages.push({
+                    name: `Page ${i + 1} Back`,
+                    number: i + 1,
+                    start: isEnabled ? i * 2 + (includeCover ? 1 : 0) : null,
+                    end: isEnabled ? total - ((i - 1) * 2) - 1 - (includeCover ? 1 : 0) : null
+                });
+            }
+            // Render Buttons
+            const pageEles = [];
+            pages.forEach((page) => {
+                const pEle = document.createElement('button');
+                pEle.classList.add('page-select');
+                pEle.title = page.name;
+                if (page.start) {
+                    const startPage = document.createElement('span');
+                    startPage.textContent = page.start;
+                    startPage.classList.add('page-start');
+                    pEle.appendChild(startPage);
+                }
+                if (page.end) {
+                    const endPage = document.createElement('span');
+                    endPage.textContent = page.end;
+                    endPage.classList.add('page-end');
+                    pEle.appendChild(endPage);
+                }
+                const numPage = document.createElement('span');
+                numPage.textContent = page.number;
+                numPage.classList.add('page-number');
+                pEle.appendChild(numPage);
+                pEle.addEventListener('click', () => {
+                    // Update page numbers
+                    document.getElementById('print').textContent = `Print '${page.name}'`;
+                    pageEles.forEach(pEle => pEle.classList.remove('selected'));
+                    pEle.classList.add('selected');
+                    const startNumberEles = [...document.querySelectorAll('.left > span')];
+                    startNumberEles.forEach(ele => ele.textContent = page.start);
+                    const endNumberEles = [...document.querySelectorAll('.right > span')];
+                    endNumberEles.forEach(ele => ele.textContent = page.end);
+                });
+                pageSelect.appendChild(pEle);
+                pageEles.push(pEle);
+            });
+            pageSelect.firstChild.click();
+        }
+        // Setup
+        window.addEventListener('load', () => {
+            // Wire up button, input, etc events
+            document.getElementById('print').addEventListener('click', () => {
+                window.print();
+            });
+            document.getElementById('template').addEventListener('change', () => {
+                updateTotalPages();
+                updateTemplate();
+            });
+            document.getElementById('upload').addEventListener('change', () => {
+                updateTemplate();
+            });
+            document.getElementById('enablePageNumbers').addEventListener('change', () => {
+                updateTotalPages();
+            });
+            document.getElementById('includeCover').addEventListener('change', () => {
+                updateTotalPages();
+            });
+            document.getElementById('totalPages').addEventListener('change', () => {
+                updateTotalPages();
+            });
+            // Cache all images
+            const promises = [];
+            const templateEle = document.getElementById('template');
+            const options = [...templateEle.querySelectorAll('option')];
+            const list = ['page.png', ...(options.filter(o => o.value !== 'custom').map(o => o.value))];
+            list.forEach((value) => {
+                const img = new Image();
+                promises.push(new Promise(resolve => {
+                    img.addEventListener('load', () => {
+                        cacheTemplate.set(value, img);
+                        resolve(img);
+                    }); 
+                }));
+                console.log(`Caching '${value}'...`);
+                img.src = value;
+            });
+            Promise.all(promises).then((imgs) => {
+                console.log('Cached all image templates.');
+                // Enable dropdown
+                templateEle.disabled = false;
+            });
+            // Init Defaults
+            updateTotalPages();
+        });
+    </script>
+</head>
+
+<body>
+    <select class="zoom no-print">
+        <option value="Resize">100%</option>
+        <option value="Resize">125%</option>
+    </select>
+    <section class="no-print">
+        <h1>Pocket Journal Generator</h1>
+        <div>
+            <button id="print">Print</button>
+        </div>
+        <div>
+            <label for="template">Template</label>
+            <select id="template" disabled>
+                <option value="custom">Custom</option>
+                <option value="covers/cover-chicago.png">Cover - Chicago</option>
+                <option value="covers/cover-st-louis.png">Cover - St. Louis</option>
+                <option value="details/details-basic.png">Detail - Basic</option>
+                <option value="inner/inner-dot.png">Inner - 1/4 Inch Dots</option>
+                <option value="inner/inner-line.png">Inner - 1/4 Inch Line Rule</option>
+            </select>
+        </div>
+        <div id="customTemplate" class="custom">
+            <input type="file" id="upload"/>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" id="enablePageNumbers" checked />
+                Enable Page Numbers
+            </label>
+            <label>
+                <input type="checkbox" id="includeCover" />
+                Start number on reverse of cover page
+            </label>
+        </div>
+        <div>
+            <label for="totalPages">Total Pages</label>
+            <select id="totalPages">
+                <option value="1">1 Inner Page (4 Numbered Pages)</option>
+                <option value="2">2 Inner Pages (8 Numbered Pages)</option>
+                <option value="3">3 Inner Pages (12 Numbered Pages)</option>
+                <option value="4">4 Inner Pages (16 Numbered Pages)</option>
+                <option value="5">5 Inner Pages (20 Numbered Pages)</option>
+                <option value="6" selected>6 Inner Pages (24 Numbered Pages)</option>
+                <option value="7">7 Inner Pages (28 Numbered Pages)</option>
+                <option value="8">8 Inner Pages (32 Numbered Pages)</option>
+                <option value="9">9 Inner Pages (36 Numbered Pages)</option>
+                <option value="10">10 Inner Pages (40 Numbered Pages)</option>
+                <option value="11">11 Inner Pages (44 Numbered Pages)</option>
+                <option value="12">12 Inner Pages (48 Numbered Pages)</option>
+            </select>
+            <div id="pageSelect" class="pageSelect"></div>
+        </div>
+        <div>
+            <h2>Documentation</h2>
+            <p>Create <span title="The top and bottom are mirrored.">two</span> 3.5" x 5" pocket journals from standard
+                8.5" x 11" letter sized paper sheets.</p>
+            <ul>
+                <li>2148x1548 Image (300dpi)</li>
+                <li class="light">716x516 Image (100dpi)</li>
+            </ul>
+            <p>Select an existing template or upload your own.</p>
+            <h3>How to Print</h3>
+            <p>Start by printing the cover page, then decide if your notebook pages will have page numbers.</p>
+
+            <h4>Without Page Numbers</h4>
+            <p>Since there are no page numbers each inner sheet will have a standard front and back. Print an info page on the cover back or any template.</p>
+            <h4>With Page Numbers</h4>
+            <p>Use the page selection tool to correctly mark the pages then print them.</p>
+            <h3>Page</h3>
+            <ul>
+                <li><strong>Cover</strong> - Front page is the right side and left the back of the booklet. 110lb+ paper recommended.</li>
+                <li><strong>Detail (Cover Back)</strong> - Optional informational page. This is preferred when the inner pages use a different paper stock. If this is not the case then print the inner page on the back of the cover page.</li>
+                <li><strong>Inner</strong> - This paper stock can vary depending on the usage. 65lb is common. Too many pages can cause a notebook to be difficult to close or staple.</li>
+            </ul>
+        </div>
+    </section>
+    <div class="body">
+        <div class="page">
+            <span class="number left"><span>1</span></span>
+            <span class="number right"><span>2</span></span>
+        </div>
+        <div class="page">
+            <span class="number left"><span>1</span></span>
+            <span class="number right"><span>2</span></span>
+        </div>
+    </div>
+</body>
+
+</html>
