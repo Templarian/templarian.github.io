@@ -628,19 +628,25 @@
             <label for="template">Template</label>
             <select id="template" disabled>
                 <option value="custom">Custom</option>
-                <option value="covers/cover-chicago.png">Cover - Chicago</option>
-                <option value="covers/cover-st-louis.png">Cover - St. Louis</option>
-                <option value="covers/cover-seattle.png">Cover - Seattle</option>
-                <option value="covers/cover-new-york.png">Cover - New York</option>
-                <option value="covers/cover-kansas.png">Cover - Kansas</option>
-                <option value="details/details-basic-dot.png">Detail - Basic - Dots</option>
-                <option value="details/details-basic-iso.png">Detail - Basic - Isometric</option>
-                <option value="inner/inner-dot.png">Inner - 1/4" Dots</option>
-                <option value="inner/inner-grid.png">Inner - 1/4" Grid</option>
-                <option value="inner/inner-line.png">Inner - 1/4" Line Rule</option>
-                <option value="inner/inner-iso.png">Inner - 1/4" Isometric</option>
-                <option value="inner/inner-left-line-right-dot.png">Inner - 1/4" Line Rule | Dots</option>
-                <option value="inner/inner-left-dot-right-line.png">Inner - 1/4" Dots | Line Rule</option>
+                <optgroup label="Cover">
+                    <option value="covers/cover-chicago.png">Map - Chicago</option>
+                    <option value="covers/cover-st-louis.png">Map - St. Louis</option>
+                    <option value="covers/cover-seattle.png">Map - Seattle</option>
+                    <option value="covers/cover-new-york.png">Map - New York</option>
+                    <option value="covers/cover-kansas.png">Map - Kansas</option>
+                </optgroup>
+                <optgroup label="Detail">
+                    <option value="details/details-basic-dot.png">Basic - Dots</option>
+                    <option value="details/details-basic-iso.png">Basic - Isometric</option>
+                </optgroup>
+                <optgroup label="Inner">
+                    <option value="inner/inner-dot.png">1/4" Dots</option>
+                    <option value="inner/inner-grid.png">1/4" Grid</option>
+                    <option value="inner/inner-line.png">1/4" Line Rule</option>
+                    <option value="inner/inner-iso.png">1/4" Isometric Grid</option>
+                    <option value="inner/inner-left-line-right-dot.png">1/4" Line Rule | Dots</option>
+                    <option value="inner/inner-left-dot-right-line.png">1/4" Dots | Line Rule</option>
+                </optgroup>
             </select>
         </div>
         <div id="customTemplate" class="custom">
