@@ -109,6 +109,25 @@
             .no-print {
                 display: none;
             }
+
+            div>span.arrow {
+                position: absolute;
+                left: 50%;
+                top: 16px;
+                width: 3.5in;
+                display: flex;
+                height: 0.25in;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 16px;
+                align-items: flex-start;
+                justify-content: flex-end;
+            }
+            div>span.arrow > span {
+                transform: rotate(270deg) translate(0, 27px);
+                color: #999;
+            }
         }
 
         @media screen {
@@ -407,6 +426,25 @@
 
             .hide {
                 display: none;
+            }
+
+            div>span.arrow {
+                position: absolute;
+                left: 50%;
+                top: 5px;
+                width: 188px;
+                display: flex;
+                height: 12px;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 11px;
+                align-items: flex-start;
+                justify-content: flex-end;
+            }
+            div>span.arrow > span {
+                transform: rotate(270deg) translate(0, 2px);
+                color: #999;
             }
         }
     </style>
@@ -711,6 +749,7 @@
     </section>
     <div class="body">
         <div class="page">
+            <span class="arrow"><span>&#x279C;</span></span>
             <span class="number left"><span>1</span></span>
             <span class="number right"><span>2</span></span>
         </div>
