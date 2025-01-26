@@ -128,6 +128,25 @@
                 transform: rotate(270deg) translate(0, 27px);
                 color: #999;
             }
+
+            div>span.marker {
+                position: absolute;
+                right: 50%;
+                top: 12px;
+                width: 3.5in;
+                display: flex;
+                height: 0.25in;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 12px;
+                align-items: flex-start;
+                justify-content: center;
+            }
+            div>span.marker > span {
+                transform: translate(10, 0px);
+                color: #999;
+            }
         }
 
         @media screen {
@@ -420,8 +439,6 @@
                 right: 1rem;
                 border-radius: 0.25rem;
                 box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
-                /* disabled for now as I don't use it */
-                display: none;
             }
 
             .hide {
@@ -446,6 +463,25 @@
                 transform: rotate(270deg) translate(0, 2px);
                 color: #999;
             }
+
+            div>span.marker {
+                position: absolute;
+                right: 50%;
+                top: 4px;
+                width: 188px;
+                display: flex;
+                height: 12px;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 9px;
+                align-items: flex-start;
+                justify-content: center;
+            }
+            div>span.marker > span {
+                color: #999;
+                padding-left: 1rem;
+            }
         }
     </style>
     <script>
@@ -457,11 +493,12 @@
         /**
          * Utility to take image data and update template
          */
-        function updateTemplate() {
+        function updateTemplate(pageNumber) {
             // Updates
             const width = 2478;
             const height = 1650;
             const widthInner = 2148;
+            const halfWidthInner = 2148 / 2;
             const heightInner = 1548;
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -477,6 +514,7 @@
             const customTemplateEle = document.getElementById('customTemplate');
             const uploadEle = document.getElementById('upload');
             const template = templateEle.value;
+            const offset = pageNumber - 1;
             if (template === 'custom') {
                 // Usage Custom Image
                 const file = uploadEle.files[0];
@@ -487,10 +525,17 @@
                         if (img.width !== widthInner || img.height !== heightInner) {
                             alert(`Should really only use ${widthInner}x${heightInner} images.`);
                         }
+                        // Left Page
                         ctx.drawImage(
                             img,
-                            0, 0, widthInner, heightInner,
-                            55 * 3, 27 * 3, widthInner, heightInner
+                            0, 0, halfWidthInner - offset, heightInner,
+                            (55 * 3) + offset, 27 * 3, halfWidthInner - offset, heightInner
+                        );
+                        // Right Page
+                        ctx.drawImage(
+                            img,
+                            halfWidthInner - offset, 0, halfWidthInner - offset, heightInner,
+                            55 * 3 + halfWidthInner - offset, 27 * 3, halfWidthInner - offset, heightInner
                         );
                         const pages = [...document.querySelectorAll('div.page')];
                         pages.forEach(page => {
@@ -500,16 +545,27 @@
                     img.src = e.target.result;
                 };
                 try {
-                    reader.readAsDataURL(file);
+                    if (file) {
+                        reader.readAsDataURL(file);
+                    } else {
+                        console.log('No file uploaded to render');
+                    }
                 } catch (e) {
                     console.error('error file not sure');
                 }
             } else {
                 // Use Template Path
+                // Left Page
                 ctx.drawImage(
                     cacheTemplate.get(template),
-                    0, 0, widthInner, heightInner,
-                    55 * 3, 27 * 3, widthInner, heightInner
+                    0, 0, halfWidthInner - offset, heightInner,
+                    (55 * 3) + offset, 27 * 3, halfWidthInner - offset, heightInner
+                );
+                // Right Page
+                ctx.drawImage(
+                    cacheTemplate.get(template),
+                    halfWidthInner + offset, 0, halfWidthInner - offset, heightInner,
+                    55 * 3 + halfWidthInner, 27 * 3, halfWidthInner - offset, heightInner
                 );
                 const pages = [...document.querySelectorAll('div.page')];
                 pages.forEach(page => {
@@ -597,6 +653,9 @@
                     startNumberEles.forEach(ele => ele.textContent = page.start);
                     const endNumberEles = [...document.querySelectorAll('.right > span')];
                     endNumberEles.forEach(ele => ele.textContent = page.end);
+                    const pageNumberEle = document.getElementById('pageNumber');
+                    pageNumberEle.textContent = page.name;
+                    updateTemplate(page.number);
                 });
                 pageSelect.appendChild(pEle);
                 pageEles.push(pEle);
@@ -611,10 +670,10 @@
             });
             document.getElementById('template').addEventListener('change', () => {
                 updateTotalPages();
-                updateTemplate();
+                updateTemplate(0);
             });
             document.getElementById('upload').addEventListener('change', () => {
-                updateTemplate();
+                updateTemplate(0);
             });
             document.getElementById('enablePageNumbers').addEventListener('change', () => {
                 updateTotalPages();
@@ -624,6 +683,9 @@
             });
             document.getElementById('totalPages').addEventListener('change', () => {
                 updateTotalPages();
+            });
+            document.getElementById('zoom').addEventListener('change', (e) => {
+                document.getElementById('body').style.zoom = e.target.value;
             });
             // Cache all images
             const promises = [];
@@ -645,17 +707,18 @@
                 console.log('Cached all image templates.');
                 // Enable dropdown
                 templateEle.disabled = false;
+                // Init Defaults
+                updateTotalPages();
             });
-            // Init Defaults
-            updateTotalPages();
         });
     </script>
 </head>
 
 <body>
-    <select class="zoom no-print">
-        <option value="Resize">100%</option>
-        <option value="Resize">125%</option>
+    <select class="zoom no-print" id="zoom">
+        <option value="100%">100%</option>
+        <option value="125%">125%</option>
+        <option value="150%">150%</option>
     </select>
     <section class="no-print">
         <h1>Pocket Journal Generator</h1>
@@ -677,6 +740,7 @@
                 </optgroup>
                 <optgroup label="Detail">
                     <option value="details/details-basic-dot.png">Basic - Dots</option>
+                    <option value="details/details-basic-grid.png">Basic - Grid</option>
                     <option value="details/details-basic-iso.png">Basic - Isometric</option>
                 </optgroup>
                 <optgroup label="Inner">
@@ -747,8 +811,9 @@
             <p><a href="https://github.com/Templarian/journal-generator">https://github.com/Templarian/journal-generator</a></p>
         </div>
     </section>
-    <div class="body">
+    <div class="body" id="body">
         <div class="page">
+            <span class="marker"><span id="pageNumber">0</span></span>
             <span class="arrow"><span>&#x279C;</span></span>
             <span class="number left"><span>1</span></span>
             <span class="number right"><span>2</span></span>
