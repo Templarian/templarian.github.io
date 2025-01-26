@@ -670,10 +670,10 @@
             });
             document.getElementById('template').addEventListener('change', () => {
                 updateTotalPages();
-                updateTemplate(0);
+                updateTemplate(1);
             });
             document.getElementById('upload').addEventListener('change', () => {
-                updateTemplate(0);
+                updateTemplate(1);
             });
             document.getElementById('enablePageNumbers').addEventListener('change', () => {
                 updateTotalPages();
@@ -739,6 +739,7 @@
                     <option value="covers/cover-grid-dice.png">Grid Dice</option>
                 </optgroup>
                 <optgroup label="Detail">
+                    <option value="details/details-basic-blank.png">Basic - Blank</option>
                     <option value="details/details-basic-dot.png">Basic - Dots</option>
                     <option value="details/details-basic-grid.png">Basic - Grid</option>
                     <option value="details/details-basic-iso.png">Basic - Isometric</option>
