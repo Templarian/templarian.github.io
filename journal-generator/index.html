@@ -485,6 +485,8 @@
         }
     </style>
     <script>
+        // Keep track of selected page
+        let currentIndex = 0;
         /**
          * Rarely refresh the page, so this makes it snappy
          * as you can swap between templates instantly
@@ -600,22 +602,24 @@
             // Total Pages
             const total = (totalPages * 4) + (includeCover ? 2 : 0);
             const pages = [
-                { name: 'Page 1 Cover Front', number: 1, start: null, end: null }
+                { index: 0, name: 'Page 1 Cover Front', number: 1, start: null, end: null }
             ];
             if (includeCover) {
-                pages.push({ name: 'Page 1 Details Back', number: 1, start: 1, end: total });
+                pages.push({ index: 1, name: 'Page 1 Details Back', number: 1, start: 1, end: total });
             } else {
-                pages.push({ name: 'Page 1 Details Back', number: 1, start: null, end: null });
+                pages.push({ index: 1,  name: 'Page 1 Details Back', number: 1, start: null, end: null });
             }
             // Need to stop coding at 1am... but it works so don't touch it?
             for (let i = 1; i <= totalPages; i++) {
                 pages.push({
+                    index: i * 2,
                     name: `Page ${i + 1} Front`,
                     number: i + 1,
                     start: isEnabled ? total - ((i - 1) * 2) - (includeCover ? 1 : 0) : null,
                     end: isEnabled ? (i * 2) - 1 + (includeCover ? 1 : 0) : null
                 });
                 pages.push({
+                    index: i * 2 + 1,
                     name: `Page ${i + 1} Back`,
                     number: i + 1,
                     start: isEnabled ? i * 2 + (includeCover ? 1 : 0) : null,
@@ -654,13 +658,23 @@
                     const endNumberEles = [...document.querySelectorAll('.right > span')];
                     endNumberEles.forEach(ele => ele.textContent = page.end);
                     const pageNumberEle = document.getElementById('pageNumber');
-                    pageNumberEle.textContent = page.name;
+                    // Cover pages are generic without page numbers
+                    if ([0, 1].includes(page.index) && !includeCover) {
+                        pageNumberEle.textContent = page.name;
+                    } else {
+                        pageNumberEle.textContent = `${page.name}${isEnabled ? ` of ${totalPages + 1} Pages` : ''}`;
+                    }
                     updateTemplate(page.number);
+                    currentIndex = page.index;
                 });
                 pageSelect.appendChild(pEle);
                 pageEles.push(pEle);
             });
-            pageSelect.firstChild.click();
+            if (currentIndex < pageSelect.children.length) {
+                pageSelect.children[currentIndex].click();
+            } else {
+                pageSelect.firstChild.click();
+            }
         }
         // Setup
         window.addEventListener('load', () => {
