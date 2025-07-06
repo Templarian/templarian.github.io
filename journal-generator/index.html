@@ -269,6 +269,10 @@
                 overflow: auto;
             }
 
+            section label {
+                user-select: none;
+            }
+
             section select {
                 padding: 0.25rem 0.5rem;
                 border: 1px solid #111;
@@ -328,6 +332,176 @@
                 background: #EEE;
             }
 
+            /* Cover | Detail | Inner */
+            section div.typeSteps {
+                display: grid;
+                gap: 0.25rem 0.5rem;
+                grid-template-columns: auto auto auto;
+                grid-template-rows: auto auto auto;
+            }
+            section div.typeSteps-label {
+                justify-self: center;
+                color: #333;
+                font-size: 0.875rem;
+                font-weight: bold;
+                cursor: default;
+            }
+            section div.typeSteps-book button {
+                display: flex;
+                position: relative;
+                padding: 0;
+                border: 2px solid #DDD;
+                justify-self: stretch;
+                height: 7rem;
+                border-radius: 0.25rem;
+                justify-content: right;
+                align-items: flex-end;
+                background: #fff;
+                font-size: 0.75rem;
+                color: #222;
+            }
+            section div.typeSteps-book button:not(.selected):focus {
+                box-shadow: none;
+            }
+            section div.typeSteps-book button:not(.selected):hover:not(:active) {
+                border-bottom-width: 4px;
+                height: calc(7rem + 2px);
+                transform: translateY(-2px);
+                margin-bottom: -2px;
+            }
+            section div.typeSteps-book button:not(.selected):active {
+                box-shadow: inset 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+            }
+            section div.typeSteps-book button:not(.selected):active .title {
+                transform: translate(-0.25rem, 1.125rem);
+            }
+            section div.typeSteps-book button:not(.selected):not(:active):hover .title {
+                transform: translate(-0.25rem, 1.25rem);
+            }
+            section div.typeSteps-book button:focus {
+                background: rgb(0, 153, 248, 0.05);
+            }
+            section div.typeSteps-book button .binding {
+                overflow: hidden;
+                position: absolute;
+                width: 2rem;
+                top: 0;
+                bottom: 0;
+                left: calc(50% - 1rem);
+            }
+            section div.typeSteps-book button .binding::before {
+                content: ' ';
+                position: absolute;
+                left: calc(50% - 0.125rem / 2);;
+                top: 0;
+                bottom: 0;
+                width: 0.125rem;
+                border-left: 1px dotted #DDD;
+                border-right: 1px dotted #DDD;
+                box-shadow: 0 0 2rem #FFF;
+            }
+            section div.typeSteps-book button .title {
+                transform: translate(-0.25rem, 1.125rem);
+            }
+            section div.typeSteps-book button .page-1-left {
+                border-left: 1px dashed #DDD;
+                border-top: 1px dashed #DDD;
+                border-bottom: 1px dashed #DDD;
+                position: absolute;
+                top: 0.25rem;
+                left: 0.5rem;
+                right: calc(50% + 0.125rem);
+                bottom: calc(50% + 0.125rem);
+                background: rgba(200, 200, 200, 0.05);
+            }
+            section div.typeSteps-book button .page-1-right {
+                border-right: 1px dashed #DDD;
+                border-top: 1px dashed #DDD;
+                border-bottom: 1px dashed #DDD;
+                position: absolute;
+                top: 0.25rem;
+                left: calc(50% + 0.125rem);
+                right: 0.5rem;
+                bottom: calc(50% + 0.125rem);
+                background: rgba(200, 200, 200, 0.05);
+            }
+            section div.typeSteps-book button .page-2-left {
+                border-left: 1px dashed #DDD;
+                border-top: 1px dashed #DDD;
+                border-bottom: 1px dashed #DDD;
+                position: absolute;
+                top: calc(50% + 0.125rem);
+                left: 0.5rem;
+                right: calc(50% + 0.125rem);
+                bottom: 0.25rem;
+                background: rgba(200, 200, 200, 0.05);
+            }
+            section div.typeSteps-book button .page-2-right {
+                border-right: 1px dashed #DDD;
+                border-top: 1px dashed #DDD;
+                border-bottom: 1px dashed #DDD;
+                position: absolute;
+                top: calc(50% + 0.125rem);
+                left: calc(50% + 0.125rem);
+                right: 0.5rem;
+                bottom: 0.25rem;
+                background: rgba(200, 200, 200, 0.05);
+            }
+            section div.typeSteps-book button.selected {
+                box-shadow: none;
+                border-color: #0099f8;
+            }
+            section div.typeSteps-book button.selected .page-1-left,
+            section div.typeSteps-book button.selected .page-1-right,
+            section div.typeSteps-book button.selected .page-2-left,
+            section div.typeSteps-book button.selected .page-2-right {
+                border-color: rgba(0, 153, 248, 0.5);
+            }
+            section div.typeSteps-book button.selected .title {
+                color: #0099f8;
+                font-weight: bold;
+            }
+            section div.typeSteps div:nth-child(7) {
+                grid-column: 1 / span 2;
+                grid-row: 3;
+                font-size: 0.875rem;
+                color: #666;
+                display: flex;
+                height: 2rem;
+                align-items: end;
+            }
+            section div.typeSteps div:nth-child(8) {
+                grid-column: 3;
+                grid-row: 3;
+                font-size: 0.875rem;
+                color: #666;
+                display: flex;
+                height: 2rem;
+                align-items: end;
+            }
+            section div.typeSteps div:nth-child(7)::before,
+            section div.typeSteps div:nth-child(8)::before {
+                content: ' ';
+                border-left: 2px solid #ccc;
+                border-bottom: 2px solid #ccc;
+                flex: 1;
+                border-bottom-left-radius: 0.5rem;
+                height: 1.5rem;
+                margin-right: 0.25rem;
+                align-self: start;
+            }
+            section div.typeSteps div:nth-child(7)::after,
+            section div.typeSteps div:nth-child(8)::after {
+                content: ' ';
+                border-right: 2px solid #ccc;
+                border-bottom: 2px solid #ccc;
+                flex: 1;
+                border-bottom-right-radius: 0.5rem;
+                height: 1.5rem;
+                margin-left: 0.25rem;
+                align-self: start;
+            }
+
             section .pageSelect {
                 display: flex;
                 flex-wrap: wrap;
@@ -347,14 +521,21 @@
                 border: 1px solid #666;
                 border-radius: 0.125rem;
                 justify-content: space-around;
+                align-items: flex-start
             }
 
             section .pageSelect button:hover {
                 background: #EEE;
             }
+            section .pageSelect button:hover::after {
+                background-color: #ddd;
+            }
             section .pageSelect button.selected {
                 border-color: #0099f8;
                 border-width: 2px;
+            }
+            section .pageSelect button.selected::after {
+                background: rgba(0, 153, 248, 0.2);
             }
             section .pageSelect button.selected:hover {
                 background: #FFF;
@@ -365,7 +546,7 @@
             section .pageSelect button:nth-child(even)::after {
                 content: ' ';
                 position: absolute;
-                border-radius: 0 0.25rem 0 0.25rem;
+                border-radius: 0 0.5rem 0 0.25rem;
                 top: 0;
                 right: 0;
                 border-bottom: 1px solid #666;
@@ -374,7 +555,6 @@
                 height: 0.5rem;
                 box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.10);
             }
-
             section .pageSelect button.selected:nth-child(even)::after {
                 border-bottom: 2px solid #0099f8;
                 border-left: 2px solid #0099f8;
@@ -485,6 +665,54 @@
         }
     </style>
     <script>
+        let dbCache = null;
+        // Open a DB, these images are large ~6mb+ for
+        // - Cover
+        // - Detail
+        // - Inner (right now this caches a single, but may be more later)
+        const dbPromise = new Promise((resolve, reject) => {
+            const request = indexedDB.open("CachePages", 1);
+            request.onerror = (event) => {
+                console.error("indexedDB failed to init");
+                reject();
+            };
+            request.onsuccess = (event) => {
+                resolve(event.target.result);
+            };
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (event.oldVersion === 0) {
+                    const objectStore = db.createObjectStore("items", { keyPath: "key" });
+                    objectStore.transaction.oncomplete = () => {
+                        resolve(db);
+                    };
+                }
+            };
+        });
+        async function setItem(key, value) {
+            const itemsObjectStore = dbCache
+                .transaction(["items"], "readwrite")
+                .objectStore("items");
+            const request = itemsObjectStore.put({ key, value });
+            return new Promise((resolve, reject) => {
+                request.onsuccess = (event) => {
+                    resolve(event.target.result);
+                };
+                request.onerror = reject;
+            });
+        }
+        async function getItem(key) {
+            const itemsObjectStore = dbCache
+                .transaction(["items"], "readwrite")
+                .objectStore("items");
+            const request = itemsObjectStore.get(key);
+            return new Promise((resolve, reject) => {
+                request.onsuccess = (event) => {
+                    resolve(request.result ? request.result.value : null);
+                };
+                request.onerror = reject;
+            });
+        }
         // Keep track of selected page
         let currentIndex = 0;
         /**
@@ -495,7 +723,7 @@
         /**
          * Utility to take image data and update template
          */
-        function updateTemplate(pageNumber) {
+        async function updateTemplate(pageNumber) {
             // Updates
             const width = 2478;
             const height = 1650;
@@ -507,15 +735,15 @@
             canvas.width = width;
             canvas.height = height;
             ctx.drawImage(
-                    cacheTemplate.get('page.png'),
-                    0, 0, width, height,
-                    0, 0, width, height
-                );
+                cacheTemplate.get('page.png'),
+                0, 0, width, height,
+                0, 0, width, height
+            );
             // Elements
             const templateEle = document.getElementById('template');
             const customTemplateEle = document.getElementById('customTemplate');
             const uploadEle = document.getElementById('upload');
-            const template = templateEle.value;
+            const template = templateEle.value || 'custom';
             const offset = pageNumber - 1;
             if (template === 'custom') {
                 // Usage Custom Image
@@ -543,6 +771,14 @@
                         pages.forEach(page => {
                             page.style.backgroundImage = `url('${canvas.toDataURL("image/png")}')`;
                         });
+                        // Cache to localStorage
+                        if (pageNumber === 0) {
+                            setItem('coverCache', canvas.toDataURL("image/png"));
+                        } else if (pageNumber === 1) {
+                            setItem('detailCache', canvas.toDataURL("image/png"));
+                        } else {
+                            setItem('innerCache', canvas.toDataURL("image/png"));
+                        }
                     };
                     img.src = e.target.result;
                 };
@@ -550,7 +786,20 @@
                     if (file) {
                         reader.readAsDataURL(file);
                     } else {
-                        console.log('No file uploaded to render');
+                        console.log('No file uploaded to render, will check cache');
+                        let cachePage = null;
+                        if (pageNumber === 0) {
+                            cachePage = await getItem('coverCache');
+                        } else if (pageNumber === 1) {
+                            cachePage = await getItem('detailCache');
+                        } else {
+                            cachePage = await getItem('innerCache');
+                        }
+                        // Render blank
+                        const pages = [...document.querySelectorAll('div.page')];
+                        pages.forEach(page => {
+                            page.style.backgroundImage = `url('${cachePage ?? canvas.toDataURL("image/png")}')`;
+                        });
                     }
                 } catch (e) {
                     console.error('error file not sure');
@@ -573,6 +822,14 @@
                 pages.forEach(page => {
                     page.style.backgroundImage = `url('${canvas.toDataURL("image/png")}')`;
                 });
+            }
+            // Store selected template in localStorage
+            if (pageNumber === 0) {
+                localStorage.setItem('cover', template);
+            } else if (pageNumber === 1) {
+                localStorage.setItem('detail', template);
+            } else {
+                localStorage.setItem('inner', template);
             }
         }
         /**
@@ -598,7 +855,11 @@
             const totalPages = parseInt(totalPagesEle.value, 10);
             // Include Cover
             const includeCoverEle = document.getElementById('includeCover');
-            const includeCover = includeCoverEle.checked;
+            const includeCover = isEnabled ? includeCoverEle.checked : false;
+            includeCoverEle.disabled = !isEnabled;
+            if (!isEnabled) {
+                includeCoverEle.checked = false;
+            }
             // Total Pages
             const total = (totalPages * 4) + (includeCover ? 2 : 0);
             const pages = [
@@ -649,6 +910,10 @@
                 numPage.classList.add('page-number');
                 pEle.appendChild(numPage);
                 pEle.addEventListener('click', () => {
+                    // Update template list
+                    if (currentIndex !== page.index) {
+                        updateTemplateList(page.index);
+                    }
                     // Update page numbers
                     document.getElementById('print').textContent = `Print '${page.name}'`;
                     pageEles.forEach(pEle => pEle.classList.remove('selected'));
@@ -664,7 +929,16 @@
                     } else {
                         pageNumberEle.textContent = `${page.name}${isEnabled ? ` of ${totalPages + 1} Pages` : ''}`;
                     }
-                    updateTemplate(page.number);
+                    updateTemplate(page.index);
+                    if (currentIndex !== page.index) {
+                        if (page.index === 0) {
+                            document.getElementById('typeCover').click();
+                        } else if (page.index === 1) {
+                            document.getElementById('typeDetail').click();
+                        } else {
+                            document.getElementById('typeInner').click();
+                        }
+                    }
                     currentIndex = page.index;
                 });
                 pageSelect.appendChild(pEle);
@@ -676,18 +950,54 @@
                 pageSelect.firstChild.click();
             }
         }
+        function updateTemplateList(pageIndex) {
+            const templateEle = document.getElementById('template');
+            const newOptions = [];
+            const customOption = document.createElement('option');
+            customOption.value = 'custom';
+            customOption.textContent = 'Custom';
+            newOptions.push(customOption);
+            templates.filter((template) => {
+                if(pageIndex === 0) {
+                    return template.type === templateType.cover;
+                } else if (pageIndex === 1) {
+                    return template.type === templateType.detail;
+                }
+                return template.type === templateType.inner;
+            }).forEach((template) => {
+                const newOption = document.createElement('option');
+                newOption.value = template.value;
+                newOption.textContent = template.label;
+                newOptions.push(newOption);
+            });
+            templateEle.replaceChildren(...newOptions);
+            // Select cached item
+            const cacheCover = localStorage.getItem('cover') || 'custom';
+            const cacheDetail = localStorage.getItem('detail') || 'custom';
+            const cacheInner = localStorage.getItem('inner') || 'custom';
+            if (pageIndex === 0
+                && (cacheCover === 'custom' || templateCovers.includes(cacheCover))) {
+                templateEle.value = cacheCover;
+            } else if (pageIndex === 1
+                && (cacheDetail === 'custom' || templateDetails.includes(cacheDetail))) {
+                templateEle.value = cacheDetail;
+            } else if (cacheInner === 'custom' || templateInners.includes(cacheInner)) {
+                templateEle.value = cacheInner;
+            }
+        }
         // Setup
         window.addEventListener('load', () => {
             // Wire up button, input, etc events
             document.getElementById('print').addEventListener('click', () => {
                 window.print();
             });
-            document.getElementById('template').addEventListener('change', () => {
+            document.getElementById('template').addEventListener('change', (e) => {
                 updateTotalPages();
-                updateTemplate(1);
+                // Update visible template
+                updateTemplate(currentIndex);
             });
             document.getElementById('upload').addEventListener('change', () => {
-                updateTemplate(1);
+                updateTemplate(currentIndex);
             });
             document.getElementById('enablePageNumbers').addEventListener('change', () => {
                 updateTotalPages();
@@ -701,11 +1011,42 @@
             document.getElementById('zoom').addEventListener('change', (e) => {
                 document.getElementById('body').style.zoom = e.target.value;
             });
+            document.getElementById('typeCover').addEventListener('click', (e) => {
+                document.getElementById('upload').value = '';
+                const pages = document.getElementById('pageSelect');
+                pages.children[0].click();
+                currentIndex = 0;
+                document.getElementById('typeCover').classList.add('selected');
+                document.getElementById('typeDetail').classList.remove('selected');
+                document.getElementById('typeInner').classList.remove('selected');
+            });
+            document.getElementById('typeDetail').addEventListener('click', (e) => {
+                document.getElementById('upload').value = '';
+                const pages = document.getElementById('pageSelect');
+                pages.children[1].click();
+                currentIndex = 1;
+                document.getElementById('typeCover').classList.remove('selected');
+                document.getElementById('typeDetail').classList.add('selected');
+                document.getElementById('typeInner').classList.remove('selected');
+            });
+            document.getElementById('typeInner').addEventListener('click', (e) => {
+                document.getElementById('upload').value = '';
+                if (currentIndex < 2 ) {
+                    const pages = document.getElementById('pageSelect');
+                    pages.children[2].click();
+                    currentIndex = 2;
+                }
+                document.getElementById('typeCover').classList.remove('selected');
+                document.getElementById('typeDetail').classList.remove('selected');
+                document.getElementById('typeInner').classList.add('selected');
+            });
+            document.getElementById('clearCache').addEventListener('click', (e) => {
+                localStorage.clear();
+            });
             // Cache all images
-            const promises = [];
+            const promises = [dbPromise];
             const templateEle = document.getElementById('template');
-            const options = [...templateEle.querySelectorAll('option')];
-            const list = ['page.png', ...(options.filter(o => o.value !== 'custom').map(o => o.value))];
+            const list = ['page.png', ...(templates.map(o => o.value))];
             list.forEach((value) => {
                 const img = new Image();
                 promises.push(new Promise(resolve => {
@@ -718,13 +1059,133 @@
                 img.src = value;
             });
             Promise.all(promises).then((imgs) => {
+                // DB
+                dbCache = imgs.shift();
+                // Images are all Cached
                 console.log('Cached all image templates.');
                 // Enable dropdown
                 templateEle.disabled = false;
+                // Init Template List
+                updateTemplateList(0);
                 // Init Defaults
                 updateTotalPages();
             });
         });
+        const templateType = {
+            cover: 'cover',
+            detail: 'detail',
+            inner: 'inner'
+        }
+        const templates = [
+            {
+                label: 'Map - Chicago',
+                value: 'covers/cover-chicago.png',
+                type: templateType.cover
+            },
+            {
+                label: 'Map - St. Louis',
+                value: 'covers/cover-st-louis.png',
+                type: templateType.cover
+            },
+            {
+                label: 'Map - Seattle',
+                value: 'covers/cover-seattle.png',
+                type: templateType.cover
+            },
+            {
+                label: 'Map - New York',
+                value: 'covers/cover-new-york.png',
+                type: templateType.cover
+            },
+            {
+                label: 'Map - Kansas',
+                value: 'covers/cover-kansas.png',
+                type: templateType.cover
+            },
+            {
+                label: 'Contour - Boulder, CO',
+                value: 'covers/cover-boulder-contour.png',
+                type: templateType.cover
+            },
+            {
+                label: 'Iso Dungeon',
+                value: 'covers/cover-iso.png',
+                type: templateType.cover
+            },
+            {
+                label: 'Grid Dice',
+                value: 'covers/cover-grid-dice.png',
+                type: templateType.cover
+            },
+            {
+                label: 'Grid Fallout Survival Guide',
+                value: 'covers/cover-grid-survival-guide.png',
+                type: templateType.cover
+            },
+            {
+                label: 'Grid Elder Scrolls',
+                value: 'covers/cover-grid-elder-scrolls.png',
+                type: templateType.cover
+            },
+            {
+                label: 'Basic - Blank',
+                value: 'details/details-basic-blank.png',
+                type: templateType.detail
+            },
+            {
+                label: 'Basic - Dots',
+                value: 'details/details-basic-dot.png',
+                type: templateType.detail
+            },
+            {
+                label: 'Basic - Grid',
+                value: 'details/details-basic-grid.png',
+                type: templateType.detail
+            },
+            {
+                label: 'Basic - Isometric',
+                value: 'details/details-basic-iso.png',
+                type: templateType.detail
+            },
+            {
+                label: '1/4" Dots',
+                value: 'inner/inner-dot.png',
+                type: templateType.inner
+            },
+            {
+                label: '1/4" Grid',
+                value: 'inner/inner-grid.png',
+                type: templateType.inner
+            },
+            {
+                label: '1/4" Line Rule',
+                value: 'inner/inner-line.png',
+                type: templateType.inner
+            },
+            {
+                label: '1/4" Isometric Grid',
+                value: 'inner/inner-iso.png',
+                type: templateType.inner
+            },
+            {
+                label: '1/2" Hexagon',
+                value: 'inner/inner-hex.png',
+                type: templateType.inner
+            },
+            {
+                label: '1/4" Line Rule | Dots',
+                value: 'inner/inner-left-line-right-dot.png',
+                type: templateType.inner
+            },
+            {
+                label: '1/4" Dots | Line Rule',
+                value: 'inner/inner-left-dot-right-line.png',
+                type: templateType.inner
+            }
+        ];
+        const templateCovers = templates.filter(x => x.type === templateType.cover).map(x => x.value);
+        const templateDetails = templates.filter(x => x.type === templateType.detail).map(x => x.value);
+        const templateInners = templates.filter(x => x.type === templateType.inner).map(x => x.value);
     </script>
 </head>
 
@@ -739,37 +1200,47 @@
         <div>
             <button id="print">Print</button>
         </div>
+        <div class="typeSteps">
+            <div class="typeSteps-label">Step 1</div>
+            <div class="typeSteps-label">Step 2</div>
+            <div class="typeSteps-label">Step 3</div>
+            <div class="typeSteps-book">
+                <button class="selected" id="typeCover">
+                    <span class="page-1-left"></span>
+                    <span class="page-1-right"></span>
+                    <span class="page-2-left"></span>
+                    <span class="page-2-right"></span>
+                    <span class="title">Cover</span>
+                    <span class="binding"></span>
+                </button>
+            </div>
+            <div class="typeSteps-book">
+                <button id="typeDetail">
+                    <span class="page-1-left"></span>
+                    <span class="page-1-right"></span>
+                    <span class="page-2-left"></span>
+                    <span class="page-2-right"></span>
+                    <span class="title">Detail</span>
+                    <span class="binding"></span>
+                </button>
+            </div>
+            <div class="typeSteps-book">
+                <button id="typeInner">
+                    <span class="page-1-left"></span>
+                    <span class="page-1-right"></span>
+                    <span class="page-2-left"></span>
+                    <span class="page-2-right"></span>
+                    <span class="title">Inner</span>
+                    <span class="binding"></span>
+                </button>
+            </div>
+            <!-- Some found cover + detail confusing, so... -->
+            <div>First Sheet</div>
+            <div>...</div>
+        </div>
         <div>
             <label for="template">Template</label>
-            <select id="template" disabled>
-                <option value="custom">Custom</option>
-                <optgroup label="Cover">
-                    <option value="covers/cover-chicago.png">Map - Chicago</option>
-                    <option value="covers/cover-st-louis.png">Map - St. Louis</option>
-                    <option value="covers/cover-seattle.png">Map - Seattle</option>
-                    <option value="covers/cover-new-york.png">Map - New York</option>
-                    <option value="covers/cover-kansas.png">Map - Kansas</option>
-                    <option value="covers/cover-iso.png">Iso Dungeon</option>
-                    <option value="covers/cover-grid-dice.png">Grid Dice</option>
-                    <option value="covers/cover-grid-survival-guide.png">Grid Fallout Survival Guide</option>
-                    <option value="covers/cover-grid-elder-scrolls.png">Grid Elder Scrolls</option>
-                </optgroup>
-                <optgroup label="Detail">
-                    <option value="details/details-basic-blank.png">Basic - Blank</option>
-                    <option value="details/details-basic-dot.png">Basic - Dots</option>
-                    <option value="details/details-basic-grid.png">Basic - Grid</option>
-                    <option value="details/details-basic-iso.png">Basic - Isometric</option>
-                </optgroup>
-                <optgroup label="Inner">
-                    <option value="inner/inner-dot.png">1/4" Dots</option>
-                    <option value="inner/inner-grid.png">1/4" Grid</option>
-                    <option value="inner/inner-line.png">1/4" Line Rule</option>
-                    <option value="inner/inner-iso.png">1/4" Isometric Grid</option>
-                    <option value="inner/inner-hex.png">1/2" Hexagon</option>
-                    <option value="inner/inner-left-line-right-dot.png">1/4" Line Rule | Dots</option>
-                    <option value="inner/inner-left-dot-right-line.png">1/4" Dots | Line Rule</option>
-                </optgroup>
-            </select>
+            <select id="template" disabled></select>
         </div>
         <div id="customTemplate" class="custom">
             <input type="file" id="upload"/>
@@ -826,6 +1297,10 @@
             </ul>
             <h2>Source Code</h2>
             <p><a href="https://github.com/Templarian/journal-generator">https://github.com/Templarian/journal-generator</a></p>
+            <hr/>
+            <h3>Clear Cache</h3>
+            <p>Something acting broken...</p>
+            <button id="clearCache">Clear Cache</button>
         </div>
     </section>
     <div class="body" id="body">
