@@ -931,6 +931,7 @@
                     }
                     updateTemplate(page.index);
                     if (currentIndex !== page.index) {
+                        currentIndex = page.index;
                         if (page.index === 0) {
                             document.getElementById('typeCover').click();
                         } else if (page.index === 1) {
