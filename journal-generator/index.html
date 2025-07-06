@@ -1042,6 +1042,7 @@
             });
             document.getElementById('clearCache').addEventListener('click', (e) => {
                 localStorage.clear();
+                indexedDB.deleteDatabase("CachePages");
             });
             // Cache all images
             const promises = [dbPromise];
