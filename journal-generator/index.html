@@ -1043,6 +1043,7 @@
             document.getElementById('clearCache').addEventListener('click', (e) => {
                 localStorage.clear();
                 indexedDB.deleteDatabase("CachePages");
+                window.location.reload();
             });
             // Cache all images
             const promises = [dbPromise];
