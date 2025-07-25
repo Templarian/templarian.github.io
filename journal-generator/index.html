@@ -744,7 +744,32 @@
             const customTemplateEle = document.getElementById('customTemplate');
             const uploadEle = document.getElementById('upload');
             const template = templateEle.value || 'custom';
-            const offset = pageNumber - 1;
+            const innerOffset = parseInt(document.getElementById('innerOffset').value, 10);
+            const offset = Math.floor(pageNumber / 2) === 0
+                ? 0
+                : Math.floor(pageNumber / 2) * innerOffset;
+            // Draw pages
+            function draw(img) {
+                if (img) {
+                    // Left Page
+                    ctx.drawImage(
+                        img,
+                        0, 0, halfWidthInner - offset, heightInner,
+                        (55 * 3) + offset, 27 * 3, halfWidthInner - offset, heightInner
+                    );
+                    // Right Page
+                    ctx.drawImage(
+                        img,
+                        halfWidthInner + offset, 0, halfWidthInner - offset, heightInner,
+                        (55 * 3) + halfWidthInner, 27 * 3, halfWidthInner - offset, heightInner
+                    );
+                }
+                const pages = [...document.querySelectorAll('div.page')];
+                pages.forEach(page => {
+                    page.style.backgroundImage = `url('${canvas.toDataURL("image/png")}')`;
+                });
+            }
+            // Draw
             if (template === 'custom') {
                 // Usage Custom Image
                 const file = uploadEle.files[0];
@@ -755,29 +780,24 @@
                         if (img.width !== widthInner || img.height !== heightInner) {
                             alert(`Should really only use ${widthInner}x${heightInner} images.`);
                         }
-                        // Left Page
-                        ctx.drawImage(
+                        draw(img);
+                        // Create cache
+                        const canvas2 = document.createElement('canvas');
+                        const ctx2 = canvas2.getContext('2d');
+                        canvas2.width = widthInner;
+                        canvas2.height = heightInner;
+                        ctx2.drawImage(
                             img,
-                            0, 0, halfWidthInner - offset, heightInner,
-                            (55 * 3) + offset, 27 * 3, halfWidthInner - offset, heightInner
+                            0, 0, widthInner, heightInner,
+                            0, 0, widthInner, heightInner
                         );
-                        // Right Page
-                        ctx.drawImage(
-                            img,
-                            halfWidthInner - offset, 0, halfWidthInner - offset, heightInner,
-                            55 * 3 + halfWidthInner - offset, 27 * 3, halfWidthInner - offset, heightInner
-                        );
-                        const pages = [...document.querySelectorAll('div.page')];
-                        pages.forEach(page => {
-                            page.style.backgroundImage = `url('${canvas.toDataURL("image/png")}')`;
-                        });
                         // Cache to localStorage
                         if (pageNumber === 0) {
-                            setItem('coverCache', canvas.toDataURL("image/png"));
+                            setItem('coverCache', canvas2.toDataURL("image/png"));
                         } else if (pageNumber === 1) {
-                            setItem('detailCache', canvas.toDataURL("image/png"));
+                            setItem('detailCache', canvas2.toDataURL("image/png"));
                         } else {
-                            setItem('innerCache', canvas.toDataURL("image/png"));
+                            setItem('innerCache', canvas2.toDataURL("image/png"));
                         }
                     };
                     img.src = e.target.result;
@@ -795,33 +815,23 @@
                         } else {
                             cachePage = await getItem('innerCache');
                         }
-                        // Render blank
-                        const pages = [...document.querySelectorAll('div.page')];
-                        pages.forEach(page => {
-                            page.style.backgroundImage = `url('${cachePage ?? canvas.toDataURL("image/png")}')`;
-                        });
+                        if (cachePage === null) {
+                            console.info('custom selected, no file or cache');
+                            draw();
+                        } else {
+                            const img2 = document.createElement('img');
+                            img2.onload = () => {
+                                draw(img2);
+                            };
+                            img2.src = cachePage;
+                        }
                     }
                 } catch (e) {
-                    console.error('error file not sure');
+                    console.error('corrupted cache or something');
                 }
             } else {
                 // Use Template Path
-                // Left Page
-                ctx.drawImage(
-                    cacheTemplate.get(template),
-                    0, 0, halfWidthInner - offset, heightInner,
-                    (55 * 3) + offset, 27 * 3, halfWidthInner - offset, heightInner
-                );
-                // Right Page
-                ctx.drawImage(
-                    cacheTemplate.get(template),
-                    halfWidthInner + offset, 0, halfWidthInner - offset, heightInner,
-                    55 * 3 + halfWidthInner, 27 * 3, halfWidthInner - offset, heightInner
-                );
-                const pages = [...document.querySelectorAll('div.page')];
-                pages.forEach(page => {
-                    page.style.backgroundImage = `url('${canvas.toDataURL("image/png")}')`;
-                });
+                draw(cacheTemplate.get(template));
             }
             // Store selected template in localStorage
             if (pageNumber === 0) {
@@ -962,7 +972,7 @@
                 if(pageIndex === 0) {
                     return template.type === templateType.cover;
                 } else if (pageIndex === 1) {
-                    return template.type === templateType.detail;
+                    return template.type === templateType.detail || template.type === templateType.inner;
                 }
                 return template.type === templateType.inner;
             }).forEach((template) => {
@@ -1000,11 +1010,26 @@
             document.getElementById('upload').addEventListener('change', () => {
                 updateTemplate(currentIndex);
             });
+            if (localStorage.getItem('enablePageNumbers')) {
+                const checked = localStorage.getItem('enablePageNumbers') === 'true';
+                document.getElementById('enablePageNumbers').checked = checked;
+                if (checked) {
+                    const checkedIncludeCover = localStorage.getItem('includeCover') === 'true';
+                    document.getElementById('includeCover').checked = checkedIncludeCover;
+                }
+            }
             document.getElementById('enablePageNumbers').addEventListener('change', () => {
                 updateTotalPages();
+                const checked = document.getElementById('enablePageNumbers').checked;
+                localStorage.setItem('enablePageNumbers', `${checked}`);
+                if (!checked) {
+                    localStorage.setItem('includeCover', 'false');
+                }
             });
             document.getElementById('includeCover').addEventListener('change', () => {
                 updateTotalPages();
+                const checked = document.getElementById('includeCover').checked;
+                localStorage.setItem('includeCover', `${checked}`);
             });
             document.getElementById('totalPages').addEventListener('change', () => {
                 updateTotalPages();
@@ -1041,6 +1066,30 @@
                 document.getElementById('typeDetail').classList.remove('selected');
                 document.getElementById('typeInner').classList.add('selected');
             });
+            // Offset
+            document.getElementById('offset').addEventListener('change', (e) => {
+                const { value } = e.target;
+                const pages = [...document.querySelectorAll('div.page')];
+                pages.forEach(page => {
+                    page.style.left = `${value}mm`;
+                });
+                localStorage.setItem('offset', value);
+            });
+            const currentOffset = localStorage.getItem('offset') ?? '0';
+            document.getElementById('offset').value = currentOffset;
+            const pages = [...document.querySelectorAll('div.page')];
+            pages.forEach(page => {
+                page.style.left = `${currentOffset}mm`;
+            });
+            // Inner Offset
+            document.getElementById('innerOffset').addEventListener('change', (e) => {
+                const { value } = e.target;
+                updateTemplate(currentIndex);
+                localStorage.setItem('innerOffset', value);
+            });
+            const currentInnerOffset = localStorage.getItem('innerOffset') ?? '1';
+            document.getElementById('innerOffset').value = currentInnerOffset;
+            // Clear Cache
             document.getElementById('clearCache').addEventListener('click', (e) => {
                 localStorage.clear();
                 indexedDB.deleteDatabase("CachePages");
@@ -1187,7 +1236,7 @@
             }
         ];
         const templateCovers = templates.filter(x => x.type === templateType.cover).map(x => x.value);
-        const templateDetails = templates.filter(x => x.type === templateType.detail).map(x => x.value);
+        const templateDetails = templates.filter(x => x.type === templateType.detail || x.type === templateType.inner).map(x => x.value);
         const templateInners = templates.filter(x => x.type === templateType.inner).map(x => x.value);
     </script>
 </head>
@@ -1275,6 +1324,53 @@
                 <option value="12">12 Inner Pages (48 Numbered Pages)</option>
             </select>
             <div id="pageSelect" class="pageSelect"></div>
+            <fieldset style="margin-block-start: 1rem;border: 2px solid #999;border-radius: 0.5rem;">
+                <legend style="cursor: default;">Printer Tweaks</legend>
+                <div style="display: flex; gap: 1rem">
+                    <label for="offset">Offset</label>
+                    <select id="offset">
+                        <option value="-1.0">-1.0mm</option>
+                        <option value="-0.9">-0.9mm</option>
+                        <option value="-0.8">-0.8mm</option>
+                        <option value="-0.7">-0.7mm</option>
+                        <option value="-0.6">-0.6mm</option>
+                        <option value="-0.5">-0.5mm</option>
+                        <option value="-0.4">-0.4mm</option>
+                        <option value="-0.3">-0.3mm</option>
+                        <option value="-0.2">-0.2mm</option>
+                        <option value="-0.1">-0.1mm</option>
+                        <option value="0" selected>0mm</option>
+                        <option value="0.1">+0.1mm</option>
+                        <option value="0.2">+0.2mm</option>
+                        <option value="0.3">+0.3mm</option>
+                        <option value="0.7">+0.7mm</option>
+                        <option value="0.4">+0.4mm</option>
+                        <option value="0.5">+0.5mm</option>
+                        <option value="0.6">+0.6mm</option>
+                        <option value="0.8">+0.8mm</option>
+                        <option value="0.9">+0.9mm</option>
+                        <option value="1.0">+1.0mm</option>
+                    </select>
+                </div>
+                <div style="color:#666; line-height: 1.2rem;margin-block-start: 0.5rem;">
+                    <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24"><path fill="currentColor" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
+                    Hold your print up to the light. If the front is offset to the right use a negative value. Reprint to verify.
+                </div>
+                <div style="display: flex; gap: 1rem; padding-top: 0.75rem;margin-top:0.75rem;border-top: 2px solid #999;">
+                    <label for="innerOffset" style="white-space: pre;">Inner Offset</label>
+                    <select id="innerOffset">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div style="color:#666; line-height: 1.2rem;margin-block-start: 0.5rem;">
+                    <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24"><path fill="currentColor" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
+                    Nesting pages causes a gradual offset due to the paper thickness. Ensure inner pages are nested in order.
+                </div>
+            </fieldset>
         </div>
         <div>
             <h2>Documentation</h2>
