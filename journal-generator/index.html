@@ -841,6 +841,9 @@
             } else {
                 localStorage.setItem('inner', template);
             }
+            // Custom list
+            customTemplateEle.classList.toggle('hide', template !== 'custom');
+            templateEle.classList.toggle('custom', template === 'custom');
         }
         /**
          * Utility to visibly show page numbers. Personally find it easier
@@ -850,9 +853,6 @@
             // Calculate Template
             const templateEle = document.getElementById('template');
             const customTemplateEle = document.getElementById('customTemplate');
-            const template = templateEle.value;
-            customTemplateEle.classList.toggle('hide', template !== 'custom');
-            templateEle.classList.toggle('custom', template === 'custom');
             // Generate Page Select
             const pageSelect = document.getElementById('pageSelect');
             const enabledEle = document.getElementById('enablePageNumbers');
@@ -963,6 +963,7 @@
         }
         function updateTemplateList(pageIndex) {
             const templateEle = document.getElementById('template');
+            const customTemplateEle = document.getElementById('customTemplate');
             const newOptions = [];
             const customOption = document.createElement('option');
             customOption.value = 'custom';
@@ -995,6 +996,10 @@
             } else if (cacheInner === 'custom' || templateInners.includes(cacheInner)) {
                 templateEle.value = cacheInner;
             }
+            // Custom
+            const template = templateEle.value;
+            customTemplateEle.classList.toggle('hide', template !== 'custom');
+            templateEle.classList.toggle('custom', template === 'custom');
         }
         // Setup
         window.addEventListener('load', () => {
@@ -1232,6 +1237,16 @@
             {
                 label: '1/4" Dots | Line Rule',
                 value: 'inner/inner-left-dot-right-line.png',
+                type: templateType.inner
+            },
+            {
+                label: '1/4" Dots + Grid + Cross',
+                value: 'inner/inner-dot-grid-cross.png',
+                type: templateType.inner
+            },
+            {
+                label: 'RPG - Item',
+                value: 'inner/inner-rpg-item.png',
                 type: templateType.inner
             }
         ];
