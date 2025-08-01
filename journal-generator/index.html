@@ -619,6 +619,9 @@
                 right: 1rem;
                 border-radius: 0.25rem;
                 box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+                z-index: 1;
+                outline: 2px solid #FFF;
+                font-size: 1.25rem;
             }
 
             .hide {
@@ -863,6 +866,8 @@
             }
             const totalPagesEle = document.getElementById('totalPages');
             const totalPages = parseInt(totalPagesEle.value, 10);
+            // Cache
+            localStorage.setItem('totalPages', `${totalPages}`);
             // Include Cover
             const includeCoverEle = document.getElementById('includeCover');
             const includeCover = isEnabled ? includeCoverEle.checked : false;
@@ -1092,8 +1097,12 @@
                 updateTemplate(currentIndex);
                 localStorage.setItem('innerOffset', value);
             });
-            const currentInnerOffset = localStorage.getItem('innerOffset') ?? '1';
+            const currentInnerOffset = localStorage.getItem('innerOffset') ?? '2';
             document.getElementById('innerOffset').value = currentInnerOffset;
+            // Update Total Pages
+            const totalPagesEle = document.getElementById('totalPages');
+            const cacheTotalPages = localStorage.getItem('totalPages') ?? '6';
+            totalPagesEle.value = cacheTotalPages;
             // Clear Cache
             document.getElementById('clearCache').addEventListener('click', (e) => {
                 localStorage.clear();
@@ -1374,8 +1383,8 @@
                 <div style="display: flex; gap: 1rem; padding-top: 0.75rem;margin-top:0.75rem;border-top: 2px solid #999;">
                     <label for="innerOffset" style="white-space: pre;">Inner Offset</label>
                     <select id="innerOffset">
-                        <option value="1" selected>1</option>
-                        <option value="2">2</option>
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
