@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3.5" x 5" Pocket Journal Generator for Print</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap" rel="stylesheet">
     <style>
         /*
          * Print and Screen, kept it very basic.
@@ -50,6 +51,7 @@
                 background-position-x: center;
                 position: relative;
                 user-select: none;
+                left: var(--config-innerOffset, 0);
             }
 
             div.page:last-child {
@@ -61,6 +63,7 @@
                 transform: rotate(180deg);
                 position: relative;
                 user-select: none;
+                left: var(--config-innerOffset, 0);
             }
 
             div>span.right {
@@ -106,6 +109,20 @@
                 justify-content: right;
             }
 
+            div>span.text {
+                position: absolute;
+                left: calc(50%);
+                bottom: 9px;
+                width: 188px;
+                display: flex;
+                font-family: 'Rubik';
+                color: #AAA;
+                line-height: 1em;
+                font-size: 20px;
+                align-items: flex-start;
+                justify-content: center;
+            }
+
             .no-print {
                 display: none;
             }
@@ -144,7 +161,27 @@
                 justify-content: center;
             }
             div>span.marker > span {
-                transform: translate(10, 0px);
+                transform: translate(10px, 0px);
+                color: #999;
+            }
+
+            div>span.config {
+                position: absolute;
+                right: 50%;
+                top: 12px;
+                width: 3.5in;
+                display: flex;
+                height: 0.25in;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 12px;
+                align-items: flex-start;
+                justify-content: center;
+                transform: rotate(180deg);
+            }
+            div>span.config > span {
+                transform: translate(-10px, 10px);
                 color: #999;
             }
         }
@@ -254,6 +291,21 @@
                 width: 0.25in;
                 transform: translate(-1px, 1px);
                 justify-content: right;
+            }
+
+            div>span.text {
+                position: absolute;
+                left: calc(50% + 13px);
+                bottom: 9px;
+                width: 150px;
+                display: flex;
+                font-family: 'Rubik';
+                font-weight: 300;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 16px;
+                align-items: flex-start;
+                justify-content: center;
             }
 
             section {
@@ -603,6 +655,15 @@
                 margin-top: -0.5rem;
             }
 
+            section table th {
+                border-radius: 0.25rem;
+                background: #EEE;
+                padding: 0.125rem 0.25rem;
+                font-weight: normal;
+                font-size: 0.825rem;
+                text-align: left;
+            }
+
             ul {
                 padding: 0 0 0 1.5rem;
             }
@@ -664,6 +725,26 @@
             div>span.marker > span {
                 color: #999;
                 padding-left: 1rem;
+            }
+
+            div>span.config {
+                position: absolute;
+                right: 50%;
+                top: 4px;
+                width: 188px;
+                display: flex;
+                height: 12px;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                color: #AAA;
+                line-height: 1em;
+                font-size: 9px;
+                align-items: flex-start;
+                justify-content: center;
+                transform: rotate(180deg);
+            }
+            div>span.config > span {
+                color: #999;
+                padding-right: 1rem;
             }
         }
     </style>
@@ -747,6 +828,9 @@
             const customTemplateEle = document.getElementById('customTemplate');
             const uploadEle = document.getElementById('upload');
             const template = templateEle.value || 'custom';
+            // This is to fix printer alignment
+            const printerOffset = document.getElementById('offset').value;
+            // This is the offset for nesting pages
             const innerOffset = parseInt(document.getElementById('innerOffset').value, 10);
             const offset = Math.floor(pageNumber / 2) === 0
                 ? 0
@@ -847,6 +931,15 @@
             // Custom list
             customTemplateEle.classList.toggle('hide', template !== 'custom');
             templateEle.classList.toggle('custom', template === 'custom');
+            // Front or Back
+            const body = document.getElementById('body');
+            body.style.setProperty('--config-pageFront', pageNumber % 2 === 0 ? 'true' : 'false');
+            body.style.setProperty('--config-pageBack', pageNumber % 2 !== 0 ? 'true' : 'false');
+            // Update Config
+            const configElement = document.getElementById('config');
+            configElement.textContent = Math.floor(pageNumber / 2) === 0
+                ? `${printerOffset}mm Printer Offset`
+                : `${printerOffset}mm Printer Offset • ${innerOffset} Inner Offset`;
         }
         /**
          * Utility to visibly show page numbers. Personally find it easier
@@ -1006,6 +1099,14 @@
             customTemplateEle.classList.toggle('hide', template !== 'custom');
             templateEle.classList.toggle('custom', template === 'custom');
         }
+        function updateText() {
+            const wrappers = [...document.querySelectorAll('div.text')];
+            wrappers.forEach(wrapper => {
+                // Lazy, wipe it out
+                wrapper.innerHTML = '';
+                // Insert text elements
+            });
+        }
         // Setup
         window.addEventListener('load', () => {
             // Wire up button, input, etc events
@@ -1079,18 +1180,15 @@
             // Offset
             document.getElementById('offset').addEventListener('change', (e) => {
                 const { value } = e.target;
-                const pages = [...document.querySelectorAll('div.page')];
-                pages.forEach(page => {
-                    page.style.left = `${value}mm`;
-                });
+                const body = document.getElementById('body');
+                body.style.setProperty('--config-innerOffset', `${value}mm`);
                 localStorage.setItem('offset', value);
+                updateTemplate(currentIndex);
             });
             const currentOffset = localStorage.getItem('offset') ?? '0';
             document.getElementById('offset').value = currentOffset;
-            const pages = [...document.querySelectorAll('div.page')];
-            pages.forEach(page => {
-                page.style.left = `${currentOffset}mm`;
-            });
+            const body = document.getElementById('body');
+            body.style.setProperty('--config-innerOffset', `${currentOffset}mm`);
             // Inner Offset
             document.getElementById('innerOffset').addEventListener('change', (e) => {
                 const { value } = e.target;
@@ -1103,6 +1201,14 @@
             const totalPagesEle = document.getElementById('totalPages');
             const cacheTotalPages = localStorage.getItem('totalPages') ?? '6';
             totalPagesEle.value = cacheTotalPages;
+            // Text Show
+            const textShow = document.getElementById('textShow');
+            textShow.addEventListener('change', (e) => {
+                localStorage.setItem('textShow', e.target.checked ? 'true' : 'false');
+                updateText();
+            });
+            const textShowChecked = localStorage.getItem('textShow') ?? 'false';
+            textShow.checked = textShowChecked === 'true';
             // Clear Cache
             document.getElementById('clearCache').addEventListener('click', (e) => {
                 localStorage.clear();
@@ -1176,6 +1282,25 @@
             {
                 label: 'Iso Dungeon',
                 value: 'covers/cover-iso.png',
+                type: templateType.cover
+            },
+            {
+                label: 'D20',
+                value: 'covers/cover-d20.png',
+                type: templateType.cover,
+                text: [
+                    {
+                        value: 'Campaign Notes',
+                        block: 'end',
+                        blockOffset: 0,
+                        inline: 'center',
+                        inlineOffset: 0,
+                    }
+                ]
+            },
+            {
+                label: 'Dice',
+                value: 'covers/cover-dice.png',
                 type: templateType.cover
             },
             {
@@ -1349,9 +1474,9 @@
             </select>
             <div id="pageSelect" class="pageSelect"></div>
             <fieldset style="margin-block-start: 1rem;border: 2px solid #999;border-radius: 0.5rem;">
-                <legend style="cursor: default;">Printer Tweaks</legend>
+                <legend style="cursor: default;">Paper Tweaks</legend>
                 <div style="display: flex; gap: 1rem">
-                    <label for="offset">Offset</label>
+                    <label for="offset" style="white-space: pre;">Printer Offset</label>
                     <select id="offset">
                         <option value="-1.0">-1.0mm</option>
                         <option value="-0.9">-0.9mm</option>
@@ -1380,12 +1505,16 @@
                     <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24"><path fill="currentColor" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
                     Hold your print up to the light. If the front is offset to the right use a negative value. Reprint to verify.
                 </div>
+                <div style="color:#666; line-height: 1.2rem;margin-block-start: 0.5rem;">
+                    <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16" /></svg>
+                    Not all paper is exactly 8.5in width, so this could vary if the cover is using different paper!
+                </div>
                 <div style="display: flex; gap: 1rem; padding-top: 0.75rem;margin-top:0.75rem;border-top: 2px solid #999;">
                     <label for="innerOffset" style="white-space: pre;">Inner Offset</label>
                     <select id="innerOffset">
-                        <option value="1">1</option>
-                        <option value="2" selected>2</option>
-                        <option value="3">3</option>
+                        <option value="1">1; Office 24lb, 90gsm</option>
+                        <option value="2">2; Office 32lb, 120gsm</option>
+                        <option value="3" selected>3; Cover 65lb, 176gsm</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
                     </select>
@@ -1394,6 +1523,36 @@
                     <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24"><path fill="currentColor" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
                     Nesting pages causes a gradual offset due to the paper thickness. Ensure inner pages are nested in order.
                 </div>
+            </fieldset>
+            <fieldset style="margin-block-start: 1rem;border: 2px solid #999;border-radius: 0.5rem;">
+                <legend style="cursor: default;">
+                    <input type="checkbox" id="textShow" style="vertical-align: text-bottom;" />
+                    Custom Text (Coming Soon)
+                </legend>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1rem;height:1rem;vertical-align:text-bottom;"><path d="M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z" /></svg></th>
+                            <th>Text</th>
+                            <th><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1rem;height:1rem;vertical-align:text-bottom;"><path d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" /></svg></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="checkbox" />
+                            </th>
+                            <td>
+                                <input type="text" />
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1rem;height:1rem;"><path d="M17.45,17.55L12,23L6.55,17.55L7.96,16.14L11,19.17V4.83L7.96,7.86L6.55,6.45L12,1L17.45,6.45L16.04,7.86L13,4.83V19.17L16.04,16.14L17.45,17.55Z" /></svg>
+                                <select></select>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1rem;height:1rem;"><path d="M6.45,17.45L1,12L6.45,6.55L7.86,7.96L4.83,11H19.17L16.14,7.96L17.55,6.55L23,12L17.55,17.45L16.14,16.04L19.17,13H4.83L7.86,16.04L6.45,17.45Z" /></svg>
+                                <select></select>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <button>Add Text</button>
             </fieldset>
         </div>
         <div>
@@ -1428,14 +1587,17 @@
     </section>
     <div class="body" id="body">
         <div class="page">
-            <span class="marker"><span id="pageNumber">0</span></span>
+            <span class="marker"><span id="pageNumber">Error</span></span>
             <span class="arrow"><span>&#x279C;</span></span>
             <span class="number left"><span>1</span></span>
             <span class="number right"><span>2</span></span>
+            <span class="text"></span>
         </div>
         <div class="page">
+            <span class="config"><span id="config">0mm Printer Offset &bullet; 3 Inner Offset</span></span>
             <span class="number left"><span>1</span></span>
             <span class="number right"><span>2</span></span>
+            <span class="text"></span>
         </div>
     </div>
 </body>
