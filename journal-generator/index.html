@@ -1105,10 +1105,15 @@
         }
         // Call everytime text is updated
         function updateText() {
+            const textShow = document.getElementById('textShow');
+            const show = textShow.checked;
             const wrappers = [...document.querySelectorAll('span.text')];
             wrappers.forEach(wrapper => {
                 // Lazy, wipe it out
                 wrapper.innerHTML = '';
+                if (!show) {
+                    return;
+                }
                 // Insert text elements
                 const txtNode = document.createElement('span');
                 txtNode.textContent = 'Item Ideas';
@@ -1217,6 +1222,7 @@
             });
             const textShowChecked = localStorage.getItem('textShow') ?? 'false';
             textShow.checked = textShowChecked === 'true';
+            updateText();
             // Clear Cache
             document.getElementById('clearCache').addEventListener('click', (e) => {
                 localStorage.clear();
