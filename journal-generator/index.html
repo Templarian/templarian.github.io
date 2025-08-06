@@ -116,7 +116,7 @@
                 width: 188px;
                 display: flex;
                 font-family: 'Rubik';
-                color: #AAA;
+                color: rgb(0, 0, 0);
                 line-height: 1em;
                 font-size: 20px;
                 align-items: flex-start;
@@ -301,7 +301,7 @@
                 display: flex;
                 font-family: 'Rubik';
                 font-weight: 300;
-                color: #AAA;
+                color: rgb(0, 0, 0);
                 line-height: 1em;
                 font-size: 16px;
                 align-items: flex-start;
@@ -730,7 +730,7 @@
             div>span.config {
                 position: absolute;
                 right: 50%;
-                top: 4px;
+                top: 2px;
                 width: 188px;
                 display: flex;
                 height: 12px;
@@ -1099,12 +1099,20 @@
             customTemplateEle.classList.toggle('hide', template !== 'custom');
             templateEle.classList.toggle('custom', template === 'custom');
         }
+        // Create a single edit text node
+        function createEditTextItem() {
+
+        }
+        // Call everytime text is updated
         function updateText() {
-            const wrappers = [...document.querySelectorAll('div.text')];
+            const wrappers = [...document.querySelectorAll('span.text')];
             wrappers.forEach(wrapper => {
                 // Lazy, wipe it out
                 wrapper.innerHTML = '';
                 // Insert text elements
+                const txtNode = document.createElement('span');
+                txtNode.textContent = 'Item Ideas';
+                wrapper.appendChild(txtNode);
             });
         }
         // Setup
@@ -1545,10 +1553,21 @@
                             <td>
                                 <input type="text" />
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1rem;height:1rem;"><path d="M17.45,17.55L12,23L6.55,17.55L7.96,16.14L11,19.17V4.83L7.96,7.86L6.55,6.45L12,1L17.45,6.45L16.04,7.86L13,4.83V19.17L16.04,16.14L17.45,17.55Z" /></svg>
-                                <select></select>
+                                <select>
+                                    <option>Top</option>
+                                    <option>Center</option>
+                                    <option>Bottom</option>
+                                </select>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1rem;height:1rem;"><path d="M6.45,17.45L1,12L6.45,6.55L7.86,7.96L4.83,11H19.17L16.14,7.96L17.55,6.55L23,12L17.55,17.45L16.14,16.04L19.17,13H4.83L7.86,16.04L6.45,17.45Z" /></svg>
-                                <select></select>
-                            </th>
+                                <select>
+                                    <option>Left</option>
+                                    <option>Center</option>
+                                    <option>Right</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button>X</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -1577,11 +1596,12 @@
                 <li><strong>Detail (Cover Back)</strong> - Optional informational page. This is preferred when the inner pages use a different paper stock. If this is not the case then print the inner page on the back of the cover page.</li>
                 <li><strong>Inner</strong> - This paper stock can vary depending on the usage. 65lb is common. Too many pages can cause a notebook to be difficult to close or staple.</li>
             </ul>
+            <hr/>
             <h2>Source Code</h2>
             <p><a href="https://github.com/Templarian/journal-generator">https://github.com/Templarian/journal-generator</a></p>
             <hr/>
             <h3>Clear Cache</h3>
-            <p>Something acting broken...</p>
+            <p>If something is not working...</p>
             <button id="clearCache">Clear Cache</button>
         </div>
     </section>
