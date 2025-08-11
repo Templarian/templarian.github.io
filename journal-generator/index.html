@@ -66,63 +66,6 @@
                 left: var(--config-innerOffset, 0);
             }
 
-            div>span.right {
-                position: absolute;
-                left: 50%;
-                bottom: 15px;
-                width: 3.5in;
-                display: flex;
-                height: 0.25in;
-                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-                color: #AAA;
-                line-height: 1em;
-                font-size: 16px;
-                align-items: flex-start;
-                justify-content: flex-end;
-            }
-
-            div>span.right>span {
-                display: flex;
-                width: 0.25in;
-                transform: translate(1px, 1px);
-            }
-
-            div>span.left {
-                position: absolute;
-                right: 50%;
-                bottom: 15px;
-                width: 3.5in;
-                display: flex;
-                height: 0.25in;
-                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-                color: #AAA;
-                line-height: 1em;
-                font-size: 16px;
-                align-items: flex-start;
-                justify-content: flex-start;
-            }
-
-            div>span.left>span {
-                display: flex;
-                width: 0.25in;
-                transform: translate(-1px, 1px);
-                justify-content: right;
-            }
-
-            div>span.text {
-                position: absolute;
-                left: calc(50%);
-                bottom: 9px;
-                width: 188px;
-                display: flex;
-                font-family: 'Rubik';
-                color: rgb(0, 0, 0);
-                line-height: 1em;
-                font-size: 20px;
-                align-items: flex-start;
-                justify-content: center;
-            }
-
             .no-print {
                 display: none;
             }
@@ -248,64 +191,6 @@
             label {
                 display: block;
                 margin-bottom: 0.25rem;
-            }
-
-            div>span.right {
-                position: absolute;
-                left: 50%;
-                bottom: 9px;
-                width: 188px;
-                display: flex;
-                height: 12px;
-                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-                color: #AAA;
-                line-height: 1em;
-                font-size: 11px;
-                align-items: flex-start;
-                justify-content: flex-end;
-            }
-
-            div>span.right>span {
-                display: flex;
-                width: 0.25in;
-                transform: translate(1px, 1px);
-            }
-
-            div>span.left {
-                position: absolute;
-                right: 50%;
-                bottom: 9px;
-                width: 188px;
-                display: flex;
-                height: 12px;
-                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-                color: #AAA;
-                line-height: 1em;
-                font-size: 11px;
-                align-items: flex-start;
-                justify-content: flex-start;
-            }
-
-            div>span.left>span {
-                display: flex;
-                width: 0.25in;
-                transform: translate(-1px, 1px);
-                justify-content: right;
-            }
-
-            div>span.text {
-                position: absolute;
-                left: calc(50% + 13px);
-                bottom: 9px;
-                width: 150px;
-                display: flex;
-                font-family: 'Rubik';
-                font-weight: 300;
-                color: rgb(0, 0, 0);
-                line-height: 1em;
-                font-size: 16px;
-                align-items: flex-start;
-                justify-content: center;
             }
 
             section {
@@ -653,6 +538,16 @@
                 border-right: 1px solid #111;
                 border-radius: 0 0 0.25rem 0.25rem;
                 margin-top: -0.5rem;
+                display: flex;
+            }
+
+            section div.custom input {
+                width: 12rem;
+                align-self: center;
+            }
+
+            section div.custom select {
+                flex: 1;
             }
 
             section table th {
@@ -686,7 +581,7 @@
             }
 
             .hide {
-                display: none;
+                display: none !important;
             }
 
             div>span.arrow {
@@ -746,6 +641,45 @@
                 color: #999;
                 padding-right: 1rem;
             }
+
+            section .fontPreview {
+                padding: 0.5rem 0.75rem;
+                position: relative;
+                background: #f1f1f1;
+                border-radius: 0 0 0.25rem 0.25rem;
+                font-size: 1.5rem;
+                border: 1px solid #DDD;
+                letter-spacing: 0.5rem;
+                cursor: default;
+            }
+            section .fontPreview::before {
+                content: 'Preview';
+                position: absolute;
+                bottom: 0.125rem;
+                right: 0.25rem;
+                font-size: 0.75rem;
+                letter-spacing: 0;
+            }
+            section .fontPreview.disabled {
+                color: #999;
+            }
+            section .fontPreview.disabled::before {
+                color: #999;
+            }
+            section .fontPreview.fontGillSans span {
+                font-family: 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            }
+            section .fontPreview.fontRubikLight span {
+                font-family: 'Rubik';
+                font-weight: 100;
+            }
+            section .fontPreview.fontRubikRegular span {
+                font-family: 'Rubik';
+            }
+            section .fontPreview.fontRubikBold span {
+                font-family: 'Rubik';
+                font-weight: Bold;
+            }
         }
     </style>
     <script>
@@ -799,11 +733,32 @@
         }
         // Keep track of selected page
         let currentIndex = 0;
+        // Keep track of pages metaData
+        let pages = [];
         /**
          * Rarely refresh the page, so this makes it snappy
          * as you can swap between templates instantly
          */
         const cacheTemplate = new Map();
+        // Fonts
+        const fonts = {
+            'Gill Sans MT': {
+                font: 'Gill Sans MT',
+                weight: '400'
+            },
+            'Rubik Light': {
+                font: 'Rubik',
+                weight: '100'
+            },
+            'Rubik Regular': {
+                font: 'Rubik',
+                weight: '400'
+            },
+            'Rubik Bold': {
+                font: 'Rubik',
+                weight: '700'
+            }
+        };
         /**
          * Utility to take image data and update template
          */
@@ -823,11 +778,22 @@
                 0, 0, width, height,
                 0, 0, width, height
             );
+            // Numbers
+            const enabledEle = document.getElementById('enablePageNumbers');
+            const isEnabled = enabledEle.checked;
+            // Font Preview
+            const fontEle = document.getElementById('font');
+            const fontPreviewEle = document.getElementById('fontPreview');
+            fontPreviewEle.classList.toggle('disabled', !isEnabled);
             // Elements
             const templateEle = document.getElementById('template');
             const customTemplateEle = document.getElementById('customTemplate');
             const uploadEle = document.getElementById('upload');
             const template = templateEle.value || 'custom';
+            const customGridTypeEle = document.getElementById('customGridType');
+            const customGridType = template === 'custom'
+                ? customGridTypeEle.value
+                : templates.find(x => x.value === template).gridType ?? 'inch';
             // This is to fix printer alignment
             const printerOffset = document.getElementById('offset').value;
             // This is the offset for nesting pages
@@ -835,6 +801,40 @@
             const offset = Math.floor(pageNumber / 2) === 0
                 ? 0
                 : Math.floor(pageNumber / 2) * innerOffset;
+            // Draw Text
+            function drawText() {
+                const page = pages.find(x => x.index === pageNumber);
+                // Draw Page Numbers
+                if (isEnabled) {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+                    if (customGridType === 'inch') {
+                        ctx.font = `${fonts[fontEle.value].weight} 14mm ${fonts[fontEle.value].font}`;
+                        ctx.textAlign = 'right';
+                        page.start && ctx.fillText(page.start, 263, height - 72);
+                        ctx.textAlign = 'left';
+                        page.end && ctx.fillText(page.end, width - 263, height - 72);
+                    } else if (customGridType === 'cm') {
+                        ctx.font = `${fonts[fontEle.value].weight} 14mm ${fonts[fontEle.value].font}`;
+                        ctx.textAlign = 'left';
+                        page.start && ctx.fillText(page.start, 254, height - 96);
+                        ctx.textAlign = 'right';
+                        page.end && ctx.fillText(page.end, width - 254, height - 96);
+                    } else {
+                        ctx.font = `${fonts[fontEle.value].weight} 13mm ${fonts[fontEle.value].font}`;
+                        ctx.textAlign = 'left';
+                        page.start && ctx.fillText(page.start, 246, height - 93);
+                        ctx.textAlign = 'right';
+                        page.end && ctx.fillText(page.end, width - 246, height - 93);
+                    }
+                    // Test placement with: ██
+                }
+                // Draw Custom Text
+                const customText = document.getElementById('customText');
+                const show = customText.checked;
+                if (!show) {
+                    return;
+                }
+            }
             // Draw pages
             function draw(img) {
                 if (img) {
@@ -851,8 +851,9 @@
                         (55 * 3) + halfWidthInner, 27 * 3, halfWidthInner - offset, heightInner
                     );
                 }
-                const pages = [...document.querySelectorAll('div.page')];
-                pages.forEach(page => {
+                drawText();
+                const pagesOld = [...document.querySelectorAll('div.page')];
+                pagesOld.forEach(page => {
                     page.style.backgroundImage = `url('${canvas.toDataURL("image/png")}')`;
                 });
             }
@@ -970,7 +971,7 @@
             }
             // Total Pages
             const total = (totalPages * 4) + (includeCover ? 2 : 0);
-            const pages = [
+            pages = [
                 { index: 0, name: 'Page 1 Cover Front', number: 1, start: null, end: null }
             ];
             if (includeCover) {
@@ -1099,26 +1100,17 @@
             customTemplateEle.classList.toggle('hide', template !== 'custom');
             templateEle.classList.toggle('custom', template === 'custom');
         }
+        // Set font
+        function setFont(font) {
+            const fontPreviewEle = document.getElementById('fontPreview');
+            fontPreviewEle.classList.toggle('fontGillSans', font === 'Gill Sans MT');
+            fontPreviewEle.classList.toggle('fontRubikLight', font === 'Rubik Light');
+            fontPreviewEle.classList.toggle('fontRubikRegular', font === 'Rubik Regular');
+            fontPreviewEle.classList.toggle('fontRubikBold', font === 'Rubik Bold');
+        }
         // Create a single edit text node
         function createEditTextItem() {
 
-        }
-        // Call everytime text is updated
-        function updateText() {
-            const textShow = document.getElementById('textShow');
-            const show = textShow.checked;
-            const wrappers = [...document.querySelectorAll('span.text')];
-            wrappers.forEach(wrapper => {
-                // Lazy, wipe it out
-                wrapper.innerHTML = '';
-                if (!show) {
-                    return;
-                }
-                // Insert text elements
-                const txtNode = document.createElement('span');
-                txtNode.textContent = 'Item Ideas';
-                wrapper.appendChild(txtNode);
-            });
         }
         // Setup
         window.addEventListener('load', () => {
@@ -1132,6 +1124,16 @@
                 updateTemplate(currentIndex);
             });
             document.getElementById('upload').addEventListener('change', () => {
+                updateTemplate(currentIndex);
+            });
+            document.getElementById('customGridType').addEventListener('change', (e) => {
+                if (currentIndex === 0) {
+                    setItem('coverGridType', e.target.value);
+                } else if (currentIndex === 1) {
+                    setItem('detailGridType', e.target.value);
+                } else {
+                    setItem('innerGridType', e.target.value);
+                }
                 updateTemplate(currentIndex);
             });
             if (localStorage.getItem('enablePageNumbers')) {
@@ -1158,13 +1160,21 @@
             document.getElementById('totalPages').addEventListener('change', () => {
                 updateTotalPages();
             });
+            document.getElementById('font').addEventListener('change', (e) => {
+                setFont(e.target.value);
+                updateTemplate(currentIndex);
+                localStorage.setItem('font', e.target.value);
+            });
+            const currentFont = localStorage.getItem('font') ?? 'Gill Sans MT';
+            setFont(currentFont);
+            document.getElementById('font').value = currentFont;
             document.getElementById('zoom').addEventListener('change', (e) => {
                 document.getElementById('body').style.zoom = e.target.value;
             });
             document.getElementById('typeCover').addEventListener('click', (e) => {
                 document.getElementById('upload').value = '';
-                const pages = document.getElementById('pageSelect');
-                pages.children[0].click();
+                const pages2 = document.getElementById('pageSelect');
+                pages2.children[0].click();
                 currentIndex = 0;
                 document.getElementById('typeCover').classList.add('selected');
                 document.getElementById('typeDetail').classList.remove('selected');
@@ -1172,8 +1182,8 @@
             });
             document.getElementById('typeDetail').addEventListener('click', (e) => {
                 document.getElementById('upload').value = '';
-                const pages = document.getElementById('pageSelect');
-                pages.children[1].click();
+                const pages2 = document.getElementById('pageSelect');
+                pages2.children[1].click();
                 currentIndex = 1;
                 document.getElementById('typeCover').classList.remove('selected');
                 document.getElementById('typeDetail').classList.add('selected');
@@ -1182,8 +1192,8 @@
             document.getElementById('typeInner').addEventListener('click', (e) => {
                 document.getElementById('upload').value = '';
                 if (currentIndex < 2 ) {
-                    const pages = document.getElementById('pageSelect');
-                    pages.children[2].click();
+                    const pages2 = document.getElementById('pageSelect');
+                    pages2.children[2].click();
                     currentIndex = 2;
                 }
                 document.getElementById('typeCover').classList.remove('selected');
@@ -1215,14 +1225,13 @@
             const cacheTotalPages = localStorage.getItem('totalPages') ?? '6';
             totalPagesEle.value = cacheTotalPages;
             // Text Show
-            const textShow = document.getElementById('textShow');
-            textShow.addEventListener('change', (e) => {
-                localStorage.setItem('textShow', e.target.checked ? 'true' : 'false');
-                updateText();
+            const customText = document.getElementById('customText');
+            customText.addEventListener('change', (e) => {
+                localStorage.setItem('customText', e.target.checked ? 'true' : 'false');
+                updateTemplate(currentIndex);
             });
-            const textShowChecked = localStorage.getItem('textShow') ?? 'false';
-            textShow.checked = textShowChecked === 'true';
-            updateText();
+            const customTextChecked = localStorage.getItem('customText') ?? 'false';
+            customText.checked = customTextChecked === 'true';
             // Clear Cache
             document.getElementById('clearCache').addEventListener('click', (e) => {
                 localStorage.clear();
@@ -1261,8 +1270,19 @@
             cover: 'cover',
             detail: 'detail',
             inner: 'inner'
-        }
+        };
+        // Determines where page numbers are placed
+        const templateGridType = {
+            inch: 'inch',
+            cm: 'cm',
+            mm: 'mm'
+        };
         const templates = [
+            {
+                label: 'Blank',
+                value: 'covers/cover-blank.png',
+                type: templateType.cover
+            },
             {
                 label: 'Map - Chicago',
                 value: 'covers/cover-chicago.png',
@@ -1335,67 +1355,92 @@
             {
                 label: 'Basic - Blank',
                 value: 'details/details-basic-blank.png',
-                type: templateType.detail
+                type: templateType.detail,
+                gridType: templateGridType.inch
             },
             {
                 label: 'Basic - Dots',
                 value: 'details/details-basic-dot.png',
-                type: templateType.detail
+                type: templateType.detail,
+                gridType: templateGridType.inch
             },
             {
                 label: 'Basic - Grid',
                 value: 'details/details-basic-grid.png',
-                type: templateType.detail
+                type: templateType.detail,
+                gridType: templateGridType.inch
             },
             {
                 label: 'Basic - Isometric',
                 value: 'details/details-basic-iso.png',
-                type: templateType.detail
+                type: templateType.detail,
+                gridType: templateGridType.inch
             },
             {
                 label: '1/4" Dots',
                 value: 'inner/inner-dot.png',
-                type: templateType.inner
+                type: templateType.inner,
+                gridType: templateGridType.inch
             },
             {
                 label: '1/4" Grid',
                 value: 'inner/inner-grid.png',
-                type: templateType.inner
+                type: templateType.inner,
+                gridType: templateGridType.inch
             },
             {
                 label: '1/4" Line Rule',
                 value: 'inner/inner-line.png',
-                type: templateType.inner
+                type: templateType.inner,
+                gridType: templateGridType.inch
             },
             {
                 label: '1/4" Isometric Grid',
                 value: 'inner/inner-iso.png',
-                type: templateType.inner
+                type: templateType.inner,
+                gridType: templateGridType.inch
             },
             {
                 label: '1/2" Hexagon',
                 value: 'inner/inner-hex.png',
-                type: templateType.inner
+                type: templateType.inner,
+                gridType: templateGridType.inch
             },
             {
                 label: '1/4" Line Rule | Dots',
                 value: 'inner/inner-left-line-right-dot.png',
-                type: templateType.inner
+                type: templateType.inner,
+                gridType: templateGridType.inch
             },
             {
                 label: '1/4" Dots | Line Rule',
                 value: 'inner/inner-left-dot-right-line.png',
-                type: templateType.inner
+                type: templateType.inner,
+                gridType: templateGridType.inch
             },
             {
                 label: '1/4" Dots + Grid + Cross',
                 value: 'inner/inner-dot-grid-cross.png',
-                type: templateType.inner
+                type: templateType.inner,
+                gridType: templateGridType.inch
             },
             {
-                label: 'RPG - Item',
+                label: '1/4" RPG - Item',
                 value: 'inner/inner-rpg-item.png',
-                type: templateType.inner
+                type: templateType.inner,
+                gridType: templateGridType.inch
+            },
+            {
+                label: '1cm Dot',
+                value: 'inner/inner-1cm-dot.png',
+                type: templateType.inner,
+                gridType: templateGridType.cm
+            },
+            {
+                label: '5mm Dot',
+                value: 'inner/inner-5mm-dot.png',
+                type: templateType.inner,
+                gridType: templateGridType.mm
             }
         ];
         const templateCovers = templates.filter(x => x.type === templateType.cover).map(x => x.value);
@@ -1459,16 +1504,28 @@
         </div>
         <div id="customTemplate" class="custom">
             <input type="file" id="upload"/>
+            <select id="customGridType">
+                <option>inch</option>
+                <option>cm</option>
+            </select>
         </div>
         <div>
-            <label>
-                <input type="checkbox" id="enablePageNumbers" checked />
-                Enable Page Numbers
-            </label>
+            <div style="display: flex;gap:0.5rem;align-items: center">
+                <label style="white-space: pre;"><input type="checkbox" id="enablePageNumbers" checked /> Page Numbers</label>
+                <select id="font">
+                    <option value="Gill Sans MT" style="font-family: 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size:20px;">Gill Sans MT</option>
+                    <option value="Rubik Light" style="font-family: 'Rubik';font-weight:100;font-size:20px;">Rubik Light</option>
+                    <option value="Rubik Regular" style="font-family: 'Rubik';font-size:20px;">Rubik Regular</option>
+                    <option value="Rubik Bold" style="font-family: 'Rubik';font-weight:700;font-size:20px;">Rubik Bold</option>
+                </select>
+            </div>
             <label>
                 <input type="checkbox" id="includeCover" />
                 Start number on reverse of cover page
             </label>
+            <div id="fontPreview" class="fontPreview">
+                <span>1234567890</span>
+            </div>
         </div>
         <div>
             <label for="totalPages">Total Pages</label>
@@ -1540,7 +1597,7 @@
             </fieldset>
             <fieldset style="margin-block-start: 1rem;border: 2px solid #999;border-radius: 0.5rem;">
                 <legend style="cursor: default;">
-                    <input type="checkbox" id="textShow" style="vertical-align: text-bottom;" />
+                    <input type="checkbox" id="customText" style="vertical-align: text-bottom;" />
                     Custom Text (Coming Soon)
                 </legend>
                 <table>
@@ -1615,14 +1672,10 @@
         <div class="page">
             <span class="marker"><span id="pageNumber">Error</span></span>
             <span class="arrow"><span>&#x279C;</span></span>
-            <span class="number left"><span>1</span></span>
-            <span class="number right"><span>2</span></span>
             <span class="text"></span>
         </div>
         <div class="page">
             <span class="config"><span id="config">0mm Printer Offset &bullet; 3 Inner Offset</span></span>
-            <span class="number left"><span>1</span></span>
-            <span class="number right"><span>2</span></span>
             <span class="text"></span>
         </div>
     </div>
