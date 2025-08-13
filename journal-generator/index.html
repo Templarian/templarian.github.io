@@ -929,6 +929,14 @@
             } else {
                 localStorage.setItem('inner', template);
             }
+            // Update Selection
+            if (pageNumber === 0) {
+                customGridTypeEle.value = localStorage.getItem('coverGridType') ?? 'inch';
+            } else if (pageNumber === 1) {
+                customGridTypeEle.value = localStorage.getItem('detailGridType') ?? 'inch';
+            } else {
+                customGridTypeEle.value = localStorage.getItem('innerGridType') ?? 'inch';
+            }
             // Custom list
             customTemplateEle.classList.toggle('hide', template !== 'custom');
             templateEle.classList.toggle('custom', template === 'custom');
@@ -1126,13 +1134,15 @@
             document.getElementById('upload').addEventListener('change', () => {
                 updateTemplate(currentIndex);
             });
-            document.getElementById('customGridType').addEventListener('change', (e) => {
+            // Custom Grid Type
+            const customGridTypeEle = document.getElementById('customGridType');
+            customGridTypeEle.addEventListener('change', (e) => {
                 if (currentIndex === 0) {
-                    setItem('coverGridType', e.target.value);
+                    localStorage.setItem('coverGridType', e.target.value);
                 } else if (currentIndex === 1) {
-                    setItem('detailGridType', e.target.value);
+                    localStorage.setItem('detailGridType', e.target.value);
                 } else {
-                    setItem('innerGridType', e.target.value);
+                    localStorage.setItem('innerGridType', e.target.value);
                 }
                 updateTemplate(currentIndex);
             });
