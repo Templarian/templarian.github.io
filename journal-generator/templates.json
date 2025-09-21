@@ -1,0 +1,561 @@
+[
+    {
+        "label": "Blank",
+        "value": "2b2a605b-32d5-4001-b9f2-31c7284048e8",
+        "src": "covers/cover-blank.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "Map - Chicago",
+        "value": "e492e883-f867-498d-ace8-130c6164929c",
+        "src": "covers/cover-chicago.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "Map - St. Louis",
+        "value": "d94f355d-e459-4aab-96b9-4eb00741940c",
+        "src": "covers/cover-st-louis.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "Map - Seattle",
+        "value": "cfc89f74-74a4-4d79-9227-cffaf0f20168",
+        "src": "covers/cover-seattle.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "Map - New York",
+        "value": "081395ad-0db1-4f47-803c-a555c2defc71",
+        "src": "covers/cover-new-york.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "Map - Kansas",
+        "value": "3e17fca9-14dd-484b-816c-35ac0091ffb7",
+        "src": "covers/cover-kansas.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "Contour - Boulder, CO",
+        "value": "8ed22425-e90b-4f11-b005-4698c8800e87",
+        "src": "covers/cover-boulder-contour.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "Iso Dungeon",
+        "value": "4b1be0e7-590a-460c-a1e0-8ec829fc10ec",
+        "src": "covers/cover-iso.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "D20",
+        "value": "e5b26717-91d7-4c30-bf27-5f223512e1e0",
+        "src": "covers/cover-d20.png",
+        "type": "cover",
+        "gridType": "inch",
+        "presets": [
+            {
+                "label": "Campaign Notes",
+                "value": "6bfe762f-ccc5-4f64-87b4-aeeab8659ad5",
+                "nodes": [
+                    {
+                        "value": "Campaign Notes",
+                        "side": "right",
+                        "block": "end",
+                        "blockOffset": -2.75,
+                        "inline": "center",
+                        "inlineOffset": 0,
+                        "size": 0.9,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 100,
+                        "leadingOffset": 0.25
+                    }
+                ]
+            },
+            {
+                "label": "Inventory Ideas",
+                "value": "88269554-80e4-414b-8f3a-1cf2179ed099",
+                "nodes": [
+                    {
+                        "value": "Inventory Ideas",
+                        "side": "right",
+                        "block": "end",
+                        "blockOffset": -2.75,
+                        "inline": "center",
+                        "inlineOffset": 0,
+                        "size": 0.9,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 100,
+                        "leadingOffset": 0.25
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "label": "Dice",
+        "value": "b9e16b14-e3ad-4580-9477-ae44e3272658",
+        "src": "covers/cover-dice.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Grid Dice",
+        "value": "61599c0e-bf50-41e8-a1a5-3b94a5c7362f",
+        "src": "covers/cover-grid-dice.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Grid Fallout Survival Guide",
+        "value": "7297793e-6a5c-4d45-b6b1-e68d2914f31e",
+        "src": "covers/cover-grid-survival-guide.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Grid Elder Scrolls",
+        "value": "78579faa-0328-4201-96ba-031609a02e8d",
+        "src": "covers/cover-grid-elder-scrolls.png",
+        "type": "cover",
+        "gridType": "inch"
+    },
+    {
+        "label": "Debug Inch",
+        "value": "3e389459-3b3e-400a-9da7-4ca77a611a84",
+        "src": "covers/cover-inch-debug.png",
+        "type": "cover",
+        "gridType": "inch",
+        "presets": [
+            {
+                "label": "Debug Text",
+                "value": "b34ec164-0a40-4888-9f49-7e9f46317bcc",
+                "nodes": [
+                    {
+                        "value": "█ Text1 █\n█ Line1 █",
+                        "side": "left",
+                        "block": "start",
+                        "blockOffset": 0,
+                        "inline": "start",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text2 █\n█ Line2 █",
+                        "side": "left",
+                        "block": "start",
+                        "blockOffset": 0,
+                        "inline": "center",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text3 █\n█ Line3 █",
+                        "side": "left",
+                        "block": "start",
+                        "blockOffset": 0,
+                        "inline": "end",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "lineHeight": 1,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text4 █\n█ Line4 █",
+                        "side": "left",
+                        "block": "center",
+                        "blockOffset": 0,
+                        "inline": "start",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text5 █\n█ Line5 █",
+                        "side": "left",
+                        "block": "center",
+                        "blockOffset": 0,
+                        "inline": "center",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text6 █\n█ Line6 █",
+                        "side": "left",
+                        "block": "center",
+                        "blockOffset": 0,
+                        "inline": "end",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text7 █\n█ Line7 █",
+                        "side": "left",
+                        "block": "end",
+                        "blockOffset": 0,
+                        "inline": "start",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text8 █\n█ Line8 █",
+                        "side": "left",
+                        "block": "end",
+                        "blockOffset": 0,
+                        "inline": "center",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text9 █\n█ Line9 █",
+                        "side": "left",
+                        "block": "end",
+                        "blockOffset": 0,
+                        "inline": "end",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text1 █\n█ Line1 █",
+                        "side": "right",
+                        "block": "start",
+                        "blockOffset": 0,
+                        "inline": "start",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text2 █\n█ Line2 █",
+                        "side": "right",
+                        "block": "start",
+                        "blockOffset": 0,
+                        "inline": "center",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text3 █\n█ Line3 █",
+                        "side": "right",
+                        "block": "start",
+                        "blockOffset": 0,
+                        "inline": "end",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text4 █\n█ Line4 █",
+                        "side": "right",
+                        "block": "center",
+                        "blockOffset": 0,
+                        "inline": "start",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text5 █\n█ Line5 █",
+                        "side": "right",
+                        "block": "center",
+                        "blockOffset": 0,
+                        "inline": "center",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text6 █\n█ Line6 █",
+                        "side": "right",
+                        "block": "center",
+                        "blockOffset": 0,
+                        "inline": "end",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text7 █\n█ Line7 █",
+                        "side": "right",
+                        "block": "end",
+                        "blockOffset": 0,
+                        "inline": "start",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text8 █\n█ Line8 █",
+                        "side": "right",
+                        "block": "end",
+                        "blockOffset": 0,
+                        "inline": "center",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "█ Text9 █\n█ Line9 █",
+                        "side": "right",
+                        "block": "end",
+                        "blockOffset": 0,
+                        "inline": "end",
+                        "inlineOffset": 0,
+                        "size": 0.5,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    }
+                ]
+            },
+            {
+                "label": "Debug Replacements",
+                "value": "460873f8-e677-46d2-a3d0-e9eb9e374d0e",
+                "nodes": [
+                    {
+                        "value": "pageCount={pageCount}\npageNumber={pageNumber}\npageIndex={pageIndex}\nyear={year}\nshortYear={shortYear}\nmonth={month}\nmonthPadded={monthPadded}\nmonthFull={monthFull}\nmonthShort={monthShort}\nday={day}\ndayPadded={dayPadded}",
+                        "side": "left",
+                        "block": "start",
+                        "blockOffset": 0,
+                        "inline": "start",
+                        "inlineOffset": 0,
+                        "size": 0.75,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "pageCount={pageCount}\npageNumber={pageNumber}\npageIndex={pageIndex}\nyear={year}\nshortYear={shortYear}\nmonth={month}\nmonthPadded={monthPadded}\nmonthFull={monthFull}\nmonthShort={monthShort}\nday={day}\ndayPadded={dayPadded}",
+                        "side": "right",
+                        "block": "start",
+                        "blockOffset": 0,
+                        "inline": "start",
+                        "inlineOffset": 0,
+                        "size": 0.75,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "label": "1/4\" Basic - Blank",
+        "value": "e445772c-bf0e-4198-8e09-19d4d401ce75",
+        "src": "details/details-basic-blank.png",
+        "type": "detail",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Basic - Dots",
+        "value": "aa6941e9-549a-4d73-9f05-a6c63a0ab4c2",
+        "src": "details/details-basic-dot.png",
+        "type": "detail",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Basic - Grid",
+        "value": "1881be5d-d956-46ba-853f-3125d6c97bdf",
+        "src": "details/details-basic-grid.png",
+        "type": "detail",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Basic - Isometric",
+        "value": "b118115e-9bc2-4e5c-9b65-7e2a268025b6",
+        "src": "details/details-basic-iso.png",
+        "type": "detail",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Dots",
+        "value": "f1a3a4ab-73b3-4e7d-a034-5f6ec5f211d5",
+        "src": "inner/inner-dot.png",
+        "type": "inner",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Grid",
+        "value": "28fe33e6-7d97-41e9-b260-bfe95a762fa2",
+        "src": "inner/inner-grid.png",
+        "type": "inner",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Line Rule",
+        "value": "a5b1f94e-9af7-4528-b8ef-0c44a10ed9a6",
+        "src": "inner/inner-line.png",
+        "type": "inner",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Isometric Grid",
+        "value": "801e5cd5-c9f5-4e11-8285-bcf35f060fa9",
+        "src": "inner/inner-iso.png",
+        "type": "inner",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/2\" Hexagon",
+        "value": "b21fe7d1-ce6a-48f3-9e57-f4f916094347",
+        "src": "inner/inner-hex.png",
+        "type": "inner",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Line Rule | Dots",
+        "value": "9b516beb-8c40-4636-b071-5cb8eff0cf40",
+        "src": "inner/inner-left-line-right-dot.png",
+        "type": "inner",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Dots | Line Rule",
+        "value": "7b744b03-40f8-4738-9f3a-fee9a0bd41c0",
+        "src": "inner/inner-left-dot-right-line.png",
+        "type": "inner",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" Dots + Grid + Cross",
+        "value": "d532d06f-7529-4d5c-b36f-c8efaff7d729",
+        "src": "inner/inner-dot-grid-cross.png",
+        "type": "inner",
+        "gridType": "inch"
+    },
+    {
+        "label": "1/4\" RPG - Item",
+        "value": "5cf58fd0-71f3-412f-abde-f4eaf3518ca3",
+        "src": "inner/inner-rpg-item.png",
+        "type": "inner",
+        "gridType": "inch"
+    },
+    {
+        "label": "1cm Dot",
+        "value": "3da56d0c-ec81-471a-bc7b-7c453a02f2a0",
+        "src": "inner/inner-1cm-dot.png",
+        "type": "inner",
+        "gridType": "cm"
+    },
+    {
+        "label": "5mm Dot",
+        "value": "7d6dd2fc-bd34-4f16-a6f0-b407a178d425",
+        "src": "inner/inner-5mm-dot.png",
+        "type": "inner",
+        "gridType": "mm"
+    },
+    {
+        "label": "Debug Inch",
+        "value": "d2cc1413-5220-40d7-9f50-49cefb88841f",
+        "src": "inner/inner-grid.png",
+        "type": "inner",
+        "gridType": "inch",
+        "presets": [
+            {
+                "label": "Debug Replacements",
+                "value": "5270e333-06d4-40ed-b7c6-f31c140bf143",
+                "nodes": [
+                    {
+                        "value": "pageCount={pageCount}\npageNumber={pageNumber}\npageIndex={pageIndex}\nyear={year}\nshortYear={shortYear}\nmonth={month}\nmonthPadded={monthPadded}\nmonthFull={monthFull}\nmonthShort={monthShort}\nday={day}\ndayPadded={dayPadded}",
+                        "side": "left",
+                        "block": "start",
+                        "blockOffset": 0,
+                        "inline": "start",
+                        "inlineOffset": 0,
+                        "size": 0.75,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    },
+                    {
+                        "value": "pageCount={pageCount}\npageNumber={pageNumber}\npageIndex={pageIndex}\nyear={year}\nshortYear={shortYear}\nmonth={month}\nmonthPadded={monthPadded}\nmonthFull={monthFull}\nmonthShort={monthShort}\nday={day}\ndayPadded={dayPadded}",
+                        "side": "right",
+                        "block": "start",
+                        "blockOffset": 0,
+                        "inline": "start",
+                        "inlineOffset": 0,
+                        "size": 0.75,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 400,
+                        "leadingOffset": 0.2
+                    }
+                ]
+            }
+        ]
+    }
+]

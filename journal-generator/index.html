@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3.5" x 5" Pocket Journal Generator for Print</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap" rel="stylesheet">
     <style>
         /*
          * Print and Screen, kept it very basic.
@@ -36,11 +35,12 @@
 
             div.body {
                 display: contents;
+                background-color: transparent !important;
             }
 
             div.page {
                 /* Overridden by JS... */
-                background-image: url('page.png');
+                background-image: url('assets/page.png');
             }
 
             div.page:first-child {
@@ -84,7 +84,8 @@
                 align-items: flex-start;
                 justify-content: flex-end;
             }
-            div>span.arrow > span {
+
+            div>span.arrow>span {
                 transform: rotate(270deg) translate(0, 27px);
                 color: #999;
             }
@@ -103,7 +104,8 @@
                 align-items: flex-start;
                 justify-content: center;
             }
-            div>span.marker > span {
+
+            div>span.marker>span {
                 transform: translate(10px, 0px);
                 color: #999;
             }
@@ -123,7 +125,8 @@
                 justify-content: center;
                 transform: rotate(180deg);
             }
-            div>span.config > span {
+
+            div>span.config>span {
                 transform: translate(-10px, 10px);
                 color: #999;
             }
@@ -132,9 +135,10 @@
         @media screen {
 
             input:focus,
-            button:focus,
+            button:focus-visible,
             select:focus {
-                outline: 0; /* meh */
+                outline: 0;
+                /* meh */
                 box-shadow: 0 0 0 2px #0099f8;
             }
 
@@ -166,7 +170,7 @@
 
             div.page {
                 /* Overridden by JS... */
-                background-image: url('page.png');
+                background-image: url('assets/page.png');
             }
 
             div.page:first-child {
@@ -217,6 +221,12 @@
                 border-radius: 0.25rem;
             }
 
+            section input[type="text"] {
+                padding: 0.25rem 0.5rem;
+                border: 1px solid #111;
+                border-radius: 0.25rem;
+            }
+
             section p {
                 margin: 0.25rem 0;
                 line-height: 1.5rem;
@@ -227,6 +237,19 @@
                 text-decoration: underline;
                 text-decoration-style: wavy;
                 text-decoration-color: #0099f8;
+            }
+
+            section ul li {
+                margin-bottom: 0.125rem;
+            }
+
+            section code {
+                font-family: 'Consolas', 'Monaco', monospace;
+                background: #F1F1F1;
+                font-size: 0.875rem;
+                padding: 0.125rem 0.125rem;
+                border: 1px solid #DDD;
+                border-radius: 0.25rem;
             }
 
             section h1 {
@@ -253,7 +276,7 @@
                 font-size: 0.875rem;
             }
 
-            section > div > button {
+            section>div>button {
                 border: 2px solid #666;
                 border-radius: 0.5rem;
                 background: #FFF;
@@ -265,7 +288,7 @@
                 color: #333;
             }
 
-            section > div > button:hover {
+            section>div>button:hover {
                 background: #EEE;
             }
 
@@ -276,6 +299,7 @@
                 grid-template-columns: auto auto auto;
                 grid-template-rows: auto auto auto;
             }
+
             section div.typeSteps-label {
                 justify-self: center;
                 color: #333;
@@ -283,6 +307,7 @@
                 font-weight: bold;
                 cursor: default;
             }
+
             section div.typeSteps-book button {
                 display: flex;
                 position: relative;
@@ -297,27 +322,34 @@
                 font-size: 0.75rem;
                 color: #222;
             }
+
             section div.typeSteps-book button:not(.selected):focus {
                 box-shadow: none;
             }
+
             section div.typeSteps-book button:not(.selected):hover:not(:active) {
                 border-bottom-width: 4px;
                 height: calc(7rem + 2px);
                 transform: translateY(-2px);
                 margin-bottom: -2px;
             }
+
             section div.typeSteps-book button:not(.selected):active {
                 box-shadow: inset 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
             }
+
             section div.typeSteps-book button:not(.selected):active .title {
                 transform: translate(-0.25rem, 1.125rem);
             }
+
             section div.typeSteps-book button:not(.selected):not(:active):hover .title {
                 transform: translate(-0.25rem, 1.25rem);
             }
+
             section div.typeSteps-book button:focus {
                 background: rgb(0, 153, 248, 0.05);
             }
+
             section div.typeSteps-book button .binding {
                 overflow: hidden;
                 position: absolute;
@@ -326,10 +358,12 @@
                 bottom: 0;
                 left: calc(50% - 1rem);
             }
+
             section div.typeSteps-book button .binding::before {
                 content: ' ';
                 position: absolute;
-                left: calc(50% - 0.125rem / 2);;
+                left: calc(50% - 0.125rem / 2);
+                ;
                 top: 0;
                 bottom: 0;
                 width: 0.125rem;
@@ -337,9 +371,11 @@
                 border-right: 1px dotted #DDD;
                 box-shadow: 0 0 2rem #FFF;
             }
+
             section div.typeSteps-book button .title {
                 transform: translate(-0.25rem, 1.125rem);
             }
+
             section div.typeSteps-book button .page-1-left {
                 border-left: 1px dashed #DDD;
                 border-top: 1px dashed #DDD;
@@ -351,6 +387,7 @@
                 bottom: calc(50% + 0.125rem);
                 background: rgba(200, 200, 200, 0.05);
             }
+
             section div.typeSteps-book button .page-1-right {
                 border-right: 1px dashed #DDD;
                 border-top: 1px dashed #DDD;
@@ -362,6 +399,7 @@
                 bottom: calc(50% + 0.125rem);
                 background: rgba(200, 200, 200, 0.05);
             }
+
             section div.typeSteps-book button .page-2-left {
                 border-left: 1px dashed #DDD;
                 border-top: 1px dashed #DDD;
@@ -373,6 +411,7 @@
                 bottom: 0.25rem;
                 background: rgba(200, 200, 200, 0.05);
             }
+
             section div.typeSteps-book button .page-2-right {
                 border-right: 1px dashed #DDD;
                 border-top: 1px dashed #DDD;
@@ -384,20 +423,24 @@
                 bottom: 0.25rem;
                 background: rgba(200, 200, 200, 0.05);
             }
+
             section div.typeSteps-book button.selected {
                 box-shadow: none;
                 border-color: #0099f8;
             }
+
             section div.typeSteps-book button.selected .page-1-left,
             section div.typeSteps-book button.selected .page-1-right,
             section div.typeSteps-book button.selected .page-2-left,
             section div.typeSteps-book button.selected .page-2-right {
                 border-color: rgba(0, 153, 248, 0.5);
             }
+
             section div.typeSteps-book button.selected .title {
                 color: #0099f8;
                 font-weight: bold;
             }
+
             section div.typeSteps div:nth-child(7) {
                 grid-column: 1 / span 2;
                 grid-row: 3;
@@ -407,6 +450,7 @@
                 height: 2rem;
                 align-items: end;
             }
+
             section div.typeSteps div:nth-child(8) {
                 grid-column: 3;
                 grid-row: 3;
@@ -416,6 +460,7 @@
                 height: 2rem;
                 align-items: end;
             }
+
             section div.typeSteps div:nth-child(7)::before,
             section div.typeSteps div:nth-child(8)::before {
                 content: ' ';
@@ -427,6 +472,7 @@
                 margin-right: 0.25rem;
                 align-self: start;
             }
+
             section div.typeSteps div:nth-child(7)::after,
             section div.typeSteps div:nth-child(8)::after {
                 content: ' ';
@@ -464,22 +510,28 @@
             section .pageSelect button:hover {
                 background: #EEE;
             }
+
             section .pageSelect button:hover::after {
                 background-color: #ddd;
             }
+
             section .pageSelect button.selected {
                 border-color: #0099f8;
                 border-width: 2px;
             }
+
             section .pageSelect button.selected::after {
                 background: rgba(0, 153, 248, 0.2);
             }
+
             section .pageSelect button.selected:hover {
                 background: #FFF;
             }
+
             section .pageSelect button:nth-child(even) {
                 border-top-right-radius: 0.5rem;
             }
+
             section .pageSelect button:nth-child(even)::after {
                 content: ' ';
                 position: absolute;
@@ -492,6 +544,7 @@
                 height: 0.5rem;
                 box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.10);
             }
+
             section .pageSelect button.selected:nth-child(even)::after {
                 border-bottom: 2px solid #0099f8;
                 border-left: 2px solid #0099f8;
@@ -521,14 +574,19 @@
                 padding: 0.25rem;
                 width: 1rem;
             }
+
             section .pageSelect .selected span.page-number {
                 background: rgba(0, 153, 248, 0.2);
                 color: #333;
             }
 
-            section select.custom,
-            section select.custom:focus {
-                border-radius: 0.25rem 0.25rem 0 0;
+            section .template {
+                border-radius: 0.25rem 0 0 0.25rem;
+            }
+
+            section .template.custom,
+            section .template.custom:focus {
+                border-radius: 0.25rem 0 0 0;
             }
 
             section div.custom {
@@ -550,13 +608,520 @@
                 flex: 1;
             }
 
-            section table th {
+            section .editor-wrapper {
+                display: grid;
+                grid-template-columns: 1.5rem auto;
+                gap: 0.25rem;
+                margin: 0.5rem 0;
+            }
+
+            section .editor-header-hideshow,
+            section .editor-header-text {
                 border-radius: 0.25rem;
                 background: #EEE;
                 padding: 0.125rem 0.25rem;
                 font-weight: normal;
                 font-size: 0.825rem;
                 text-align: left;
+            }
+
+            section .editor-column {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            section .editor-column-hideshow {
+                width: 1.5rem;
+            }
+
+            section .editor-row.editor-presets {
+                display: grid;
+                gap: 0.25rem;
+                grid-template-columns: 1fr auto auto auto;
+            }
+
+            section .editor-presets select {
+                grid-row: 1;
+                grid-column: 1;
+            }
+
+            section .editor-presets .editor-preset-add {
+                grid-row: 1;
+                grid-column: 2;
+            }
+
+            section .editor-presets .editor-preset-copy {
+                grid-row: 1;
+                grid-column: 3;
+            }
+
+            section .editor-presets .editor-preset-menu {
+                grid-row: 1;
+                grid-column: 4;
+            }
+
+            section .editor-presets .editor-preset-rename {
+                grid-row: 1;
+                grid-column: 1 / span 3;
+                display: flex;
+            }
+
+            section .editor-presets .editor-preset-rename input {
+                width: auto !important;
+                flex: 1;
+                border: 2px solid #666;
+            }
+
+            section .editor-row {
+                display: flex;
+                gap: 0.25rem;
+            }
+
+            section .editor-row input {
+                display: flex;
+                flex: 1;
+                border: 1px solid #111;
+                border-radius: 0.25rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            section .editor-row input:invalid {
+                outline: 2px solid red;
+                background: rgba(255, 0, 0, 0.05);
+                outline-offset: -1px;
+            }
+
+            section .editor-row select.change,
+            section .editor-row input.change,
+            section .editor-row textarea.change {
+                border-color: rgb(127, 82, 0);
+                background: rgba(255, 165, 0, 0.1);
+                outline-offset: -1px;
+            }
+
+            section .editor-row input[type=number],
+            section .editor-row input[type=text] {
+                min-width: 0;
+                width: 4rem;
+            }
+
+            section input[type=number].no-arrows {
+                -moz-appearance: textfield;
+            }
+
+            section input[type=number].no-arrows::-webkit-outer-spin-button,
+            section input[type=number].no-arrows::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            section .editor-row input.red,
+            section .editor-row input.green,
+            section .editor-row input.blue,
+            section .editor-row input.alpha {
+                width: 1.5rem;
+                padding-left: 0.75rem;
+            }
+
+            section .editor-row .red-dot {
+                margin: 0.25rem -0.25rem 0.25rem;
+                width: 0.25rem;
+                background: #A00;
+                transform: translate(0.5rem, 0);
+                border-radius: 0.25rem;
+            }
+
+            section .editor-row .green-dot {
+                margin: 0.25rem -0.25rem 0.25rem;
+                width: 0.25rem;
+                background: #0A0;
+                transform: translate(0.5rem, 0);
+                border-radius: 0.25rem;
+            }
+
+            section .editor-row .blue-dot {
+                margin: 0.25rem -0.25rem 0.25rem;
+                width: 0.25rem;
+                background: #00A;
+                transform: translate(0.5rem, 0);
+                border-radius: 0.25rem;
+            }
+
+            section .editor-row .alpha-dot {
+                margin: 0.25rem -0.25rem 0.25rem;
+                width: 0.25rem;
+                background: linear-gradient(0deg, #FFF 0%, #AAA 100%);
+                transform: translate(0.5rem, 0);
+                border-radius: 0.25rem;
+            }
+
+            section .editor-row select {
+                display: flex;
+            }
+
+            section .editor-row textarea {
+                flex: 1;
+                border: 1px solid #111;
+                border-radius: 0.25rem;
+                padding: 0.25rem 0.5rem;
+                resize: vertical;
+            }
+
+            section .editor-row svg {
+                align-self: center;
+            }
+
+            section .editor-list {
+                grid-column: 1 / span 2;
+            }
+
+            section .editor-list>.editor-row:not(:first-child) {
+                border-top: 1px dashed #AAA;
+                margin-top: 0.25rem;
+                padding-top: 0.25rem;
+            }
+
+            section .editor-select-inline,
+            section .editor-select-block {
+                width: 5rem;
+            }
+
+            section .editor-select-font {
+                flex: 1;
+            }
+
+            section .editor-select-size {
+                width: 6rem;
+            }
+
+            section .editor-row button {
+                display: flex;
+                border: 1px solid #666;
+                border-radius: 0.5rem;
+                background: #f8f9fa;
+                padding: 0 0.25rem;
+            }
+
+            section .editor-row button:hover,
+            section .editor-row button:focus {
+                border-color: #111;
+                color: #0099f8;
+                z-index: 1;
+            }
+
+            section .editor-row button svg {
+                align-self: center;
+            }
+
+            /* Fancy group rounding */
+            section .editor-row button.editor-preset-add:not(:has(+.hide)) {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                margin-right: calc(-0.25rem - 1px);
+            }
+
+            section .editor-row button.editor-preset-copy {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            section .editor-row .editor-preset-menu {
+                display: flex;
+                position: relative;
+            }
+
+            section .editor-row .editor-preset-menu-button {}
+
+            section .editor-row .editor-preset-menu-item {
+                display: flex;
+                border: 0;
+                border-radius: 0.25rem;
+                padding: 0.25rem;
+                background: transparent;
+                gap: 0.25rem;
+                align-items: center;
+                font-size: 1rem;
+            }
+
+            section .editor-row .editor-preset-menu-list {
+                position: absolute;
+                right: 0;
+                top: 1.75rem;
+            }
+
+            section .editor-row .editor-preset-menu-list::before {
+                content: ' ';
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.1);
+                z-index: 1;
+                position: fixed;
+                left: 0;
+                top: 0;
+            }
+
+            section .editor-row .editor-preset-menu-items {
+                position: relative;
+                background: #FFF;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                border-radius: 0.5rem;
+                padding: 0.25rem;
+                border: 1px solid #666;
+                z-index: 1;
+            }
+
+            section .editor-row .editor-preset-menu-seperator {
+                border-top: 1px solid #AAA;
+                margin-top: 0.25rem;
+                padding-top: 0.25rem;
+            }
+
+            .hide+.editor-preset-menu-seperator {
+                display: none;
+            }
+
+            section .editor-row button.editor-page-left {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                margin-right: -0.125rem;
+                padding-left: 0.375rem;
+            }
+
+            section .editor-row button.editor-page-left.selected {
+                background-color: #1978D0;
+                color: #fff;
+                border-color: #1978D0;
+            }
+
+            section .editor-row button.editor-page-left.change:not(.selected) {
+                background-color: rgba(255, 165, 0, 0.1);
+                border-color: #7f5200;
+            }
+
+            section .editor-row button.editor-page-left.change.selected {
+                background-color: #7f5200;
+                border-color: #7f5200;
+            }
+
+            section .editor-row button.editor-page-right {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                margin-left: -0.125rem;
+                padding-right: 0.375rem;
+            }
+
+            section .editor-row button.editor-page-right.selected {
+                background-color: #1978D0;
+                color: #fff;
+                border-color: #1978D0;
+            }
+
+            section .editor-row button.editor-page-right.change:not(.selected) {
+                background-color: rgba(255, 165, 0, 0.1);
+                border-color: #7f5200;
+            }
+
+            section .editor-row button.editor-page-right.change.selected {
+                background-color: #7f5200;
+                border-color: #7f5200;
+            }
+
+            section .editor-flex-1 {
+                flex: 1;
+            }
+
+            section .editor-buttons {
+                display: flex;
+                flex-direction: row;
+                gap: 0.5rem;
+            }
+
+            section .editor-reset {
+                display: flex;
+                flex: 2;
+                border-radius: 0.25rem;
+                padding: 0.5rem 1.0rem;
+                border-style: solid;
+                border-width: 2px;
+                background-color: #f8f9fa;
+                border-color: #666;
+                color: #111;
+                justify-content: center;
+            }
+
+            section .editor-reset:hover {
+                background-color: #f8f9fa;
+                border-color: #dc3545;
+                color: #dc3545;
+            }
+
+            section .editor-add {
+                display: flex;
+                flex: 1;
+                border-radius: 0.25rem;
+                padding: 0.5rem 1.0rem;
+                border-style: solid;
+                border-width: 2px;
+                background-color: #f8f9fa;
+                border-color: #666;
+                color: #111;
+                justify-content: center;
+            }
+
+            section .editor-add:hover {
+                background-color: #f8f9fa;
+                border-color: #198754;
+                color: #198754;
+            }
+
+            section .tint {
+                display: flex;
+                flex: 1;
+                border-top: 1px solid #111;
+                border-right: 1px solid #111;
+                border-bottom: 1px solid #111;
+                border-left: 0;
+                border-radius: 0 0.25rem 0.25rem 0;
+                padding: 0.25rem 0.75rem;
+                background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25"><path fill="rgb(140,140,140)" d="M25,25H20V20H15V25H10V20H5V25H0V20H5V15H0V10H5V5H0V0H5V5H10V0H15V5H20V0H25V5H20V10H25V15H20V20H25ZM15,10V5H10V10ZM10,15V10H5V15ZM20,15V10H15V15ZM15,20V15H10V20Z" ></path></svg>');
+                background-color: #DDD;
+                background-position: center center;
+            }
+
+            section .tint.custom {
+                border-radius: 0 0.25rem 0 0;
+            }
+
+            section .tint-menu {
+                position: absolute;
+                z-index: 2;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+                background: #FFF;
+                top: calc(100% - 1px);
+                left: -16rem;
+                width: calc(100% + 16rem - 2px);
+                border: 1px solid #666;
+                border-radius: 0.5rem 0 0.5rem 0.5rem;
+            }
+
+            section .tint-menu-wrap {
+                padding: 0.5rem 0.75rem;
+            }
+
+            section .tint-red {
+                display: flex;
+                border-radius: 50%;
+                border: 1px solid rgb(160, 0, 0);
+                background: rgb(200, 0, 0);
+                width: 1rem;
+                height: 1rem;
+            }
+
+            section .tint-green {
+                display: flex;
+                border-radius: 50%;
+                border: 1px solid rgb(0, 160, 0);
+                background: rgb(0, 200, 0);
+                width: 1rem;
+                height: 1rem;
+            }
+
+            section .tint-blue {
+                display: flex;
+                border-radius: 50%;
+                border: 1px solid rgb(0, 0, 160);
+                background: rgb(0, 0, 200);
+                width: 1rem;
+                height: 1rem;
+            }
+
+            section .tint-list-header {
+                border-top: 1px solid #DDD;
+                padding-top: 0.5rem;
+                margin-top: 0.5rem;
+            }
+
+            section .tint-menu input[type=number] {
+                border: 1px solid #333;
+                padding: 0.25rem;
+                width: 2rem;
+                border-radius: 0.25rem;
+                text-align: center;
+            }
+
+            section .tint-options {}
+
+            section .tint-option {
+                display: flex;
+            }
+
+            section .tint-option div:nth-child(1) {
+                width: 1.5rem;
+            }
+
+            section .tint-option div:nth-child(2) {
+                flex: 1;
+            }
+
+            section .tint-option div:nth-child(3) {
+                width: 2rem;
+                text-align: center;
+            }
+
+            section .tint-option div:nth-child(4) {
+                width: 2rem;
+                text-align: center;
+            }
+
+            section .tint-option div:nth-child(5) {
+                width: 2rem;
+                text-align: center;
+            }
+
+            section .tint-off {
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 0.25rem;
+                margin-bottom: 0.5rem;
+            }
+
+            section .tint-info {
+                border-top: 1px solid #ddd;
+                padding-top: 0.25rem;
+                margin-top: 0.5rem;
+            }
+
+            section .fade {
+                display: flex;
+                height: 2.375rem;
+                border-top: 1px solid #999;
+                padding-top: 0.5rem;
+                margin-top: 0.5rem;
+                gap: 0.25rem;
+            }
+
+            section .fade button {
+                display: flex;
+                width: 2.375rem;
+                background: #FFF;
+                border: 2px solid #333;
+                border-radius: 0.25rem;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+            }
+
+            section .fade button.selected {
+                border-color: #0099f8;
+            }
+
+            section .fade button svg {
+                width: 2rem;
+                pointer-events: none;
+            }
+
+            section input[type="radio"] {
+                margin: 0;
             }
 
             ul {
@@ -567,12 +1132,25 @@
                 opacity: 0.6;
             }
 
-            .zoom {
+            .corner {
+                display: flex;
                 grid-column: 2;
                 grid-row: 1;
                 position: absolute;
                 bottom: 1rem;
                 right: 1rem;
+                gap: 0.5rem;
+            }
+
+            .pageBackground {
+                border-radius: 0.25rem;
+                box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+                z-index: 1;
+                outline: 2px solid #FFF;
+                font-size: 1.25rem;
+            }
+
+            .zoom {
                 border-radius: 0.25rem;
                 box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
                 z-index: 1;
@@ -598,7 +1176,8 @@
                 align-items: flex-start;
                 justify-content: flex-end;
             }
-            div>span.arrow > span {
+
+            div>span.arrow>span {
                 transform: rotate(270deg) translate(0, 2px);
                 color: #999;
             }
@@ -617,7 +1196,8 @@
                 align-items: flex-start;
                 justify-content: center;
             }
-            div>span.marker > span {
+
+            div>span.marker>span {
                 color: #999;
                 padding-left: 1rem;
             }
@@ -637,7 +1217,8 @@
                 justify-content: center;
                 transform: rotate(180deg);
             }
-            div>span.config > span {
+
+            div>span.config>span {
                 color: #999;
                 padding-right: 1rem;
             }
@@ -652,6 +1233,7 @@
                 letter-spacing: 0.5rem;
                 cursor: default;
             }
+
             section .fontPreview::before {
                 content: 'Preview';
                 position: absolute;
@@ -660,34 +1242,70 @@
                 font-size: 0.75rem;
                 letter-spacing: 0;
             }
+
             section .fontPreview.disabled {
                 color: #999;
             }
+
             section .fontPreview.disabled::before {
                 color: #999;
-            }
-            section .fontPreview.fontGillSans span {
-                font-family: 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            }
-            section .fontPreview.fontRubikLight span {
-                font-family: 'Rubik';
-                font-weight: 100;
-            }
-            section .fontPreview.fontRubikRegular span {
-                font-family: 'Rubik';
-            }
-            section .fontPreview.fontRubikBold span {
-                font-family: 'Rubik';
-                font-weight: Bold;
             }
         }
     </style>
     <script>
+        // Hardcode a uuid
         let dbCache = null;
-        // Open a DB, these images are large ~6mb+ for
-        // - Cover
-        // - Detail
-        // - Inner (right now this caches a single, but may be more later)
+        // minMaxRGBA
+        const minMaxRGBA = new Map();
+        let tintRed = 170, tintGreen = 170, tintBlue = 170;
+        // Local Storage
+        //   Page Number Font
+        //   - font
+        //   Template Selection
+        //   - cover   = custom | cover/page.png
+        //   - detail  = custom | detail/page.png
+        //   - inner   = custom | inner/page.png
+        //   Template Grid Type
+        //   - cover:custom:gridType   = cm | inch
+        //   - detail:custom:gridType  = cm | inch
+        //   - inner:custom:gridType   = cm | inch
+        //   Printer Offset
+        //   - cover:printerOffset
+        //   - inner:printerOffset
+        //   Paper Color (for preview only)
+        //   - cover:paperColor
+        //   - inner:paperColor
+        //   Inner Page Offset
+        //   - inner:offset
+        //   Total Pages
+        //   - totalPages
+        //   Include Page Numbers on Cover
+        //   - includeCover
+        //   Text Preset Disabled
+        //   - cover:{templateUuid|custom}:presets:disabled
+        //   - detail:{templateUuid|custom}:presets:disabled
+        //   - inner:{templateUuid|custom}:presets:disabled
+        //   Text Preset Lists
+        //   - cover:{templateUuid|custom}:presets = [{...props}, ...]
+        //   - detail:{templateUuid|custom}:presets = [{...props}, ...]
+        //   - inner:{templateUuid|custom}:presets = [{...props}, ...]
+        //   Text Preset Selected
+        //   - cover:{templateUuid|custom}:presets:selected = uuid
+        //   - detail:{templateUuid|custom}:presets:selected = uuid
+        //   - inner:{templateUuid|custom}:presets:selected = uuid
+        //   Tint Color
+        //   - cover:{templateUuid|custom}:tint = 'red:green:blue'
+        //   - detail:{templateUuid|custom}:tint = 'red:green:blue'
+        //   - inner:{templateUuid|custom}:tint = 'red:green:blue'
+        //   Fade Index
+        //   - cover:{templateUuid|custom}:fade = index
+        //   - detail:{templateUuid|custom}:fade = index
+        //   - inner:{templateUuid|custom}:fade = index
+        // IndexedDB
+        //   Open a DB, these images are large ~6mb+ for
+        //   - Cover
+        //   - Detail
+        //   - Inner (right now this caches a single, but may be more later)
         const dbPromise = new Promise((resolve, reject) => {
             const request = indexedDB.open("CachePages", 1);
             request.onerror = (event) => {
@@ -735,30 +1353,997 @@
         let currentIndex = 0;
         // Keep track of pages metaData
         let pages = [];
-        /**
-         * Rarely refresh the page, so this makes it snappy
-         * as you can swap between templates instantly
-         */
-        const cacheTemplate = new Map();
+        // Google Fonts
+        const googleFonts = [
+            'https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap'
+        ];
+        // Icons
+        const iconPageLeft = 'M2,3H19A2,2 0 0,1 21,5V9H19V5H2V19H19V15H21V19A2,2 0 0,1 19,21H2A2,2 0 0,1 0,19V5A2,2 0 0,1 2,3M17,15V13H24V11H17V9L13,12L17,15M4,13H11V11H4V13M4,9H11V7H4V9M4,17H8V15H4V17Z';
+        const iconPageRight = 'M22,3H5A2,2 0 0,0 3,5V9H5V5H22V19H5V15H3V19A2,2 0 0,0 5,21H22A2,2 0 0,0 24,19V5A2,2 0 0,0 22,3M7,15V13H0V11H7V9L11,12L7,15M20,13H13V11H20V13M20,9H13V7H20V9M17,17H13V15H17V17Z';
+        const iconText = 'M21,6V8H3V6H21M3,18H12V16H3V18M3,13H21V11H3V13Z';
+        const iconCopy = 'M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z';
+        const iconTrash = 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z';
+        const iconRevert = 'M14 2H6C4.89 2 4 2.9 4 4V20C4 21.11 4.89 22 6 22H18C19.11 22 20 21.11 20 20V8L14 2M18 20H6V4H13V9H18V20M17 17.61L15.84 18C15.33 16.44 13.86 15.31 12.13 15.31C11.17 15.31 10.31 15.66 9.63 16.23L11.4 18H7V13.6L8.76 15.36C9.66 14.57 10.83 14.09 12.13 14.09C14.4 14.09 16.33 15.57 17 17.61Z';
+        const iconLineHeight = 'M21 22H3V20H21V22M21 4H3V2H21V4M10 13.7H14L12 8.3L10 13.7M11.2 6H12.9L17.6 18H15.6L14.7 15.4H9.4L8.5 18H6.5L11.2 6Z';
+        const iconBlock = 'M17.45,17.55L12,23L6.55,17.55L7.96,16.14L11,19.17V4.83L7.96,7.86L6.55,6.45L12,1L17.45,6.45L16.04,7.86L13,4.83V19.17L16.04,16.14L17.45,17.55Z';
+        const iconInline = 'M6.45,17.45L1,12L6.45,6.55L7.86,7.96L4.83,11H19.17L16.14,7.96L17.55,6.55L23,12L17.55,17.45L16.14,16.04L19.17,13H4.83L7.86,16.04L6.45,17.45Z';
+        const iconFont = 'M17,8H20V20H21V21H17V20H18V17H14L12.5,20H14V21H10V20H11L17,8M18,9L14.5,16H18V9M5,3H10C11.11,3 12,3.89 12,5V16H9V11H6V16H3V5C3,3.89 3.89,3 5,3M6,5V9H9V5H6Z';
+        const iconColor = 'M19,11.5C19,11.5 17,13.67 17,15A2,2 0 0,0 19,17A2,2 0 0,0 21,15C21,13.67 19,11.5 19,11.5M5.21,10L10,5.21L14.79,10M16.56,8.94L7.62,0L6.21,1.41L8.59,3.79L3.44,8.94C2.85,9.5 2.85,10.47 3.44,11.06L8.94,16.56C9.23,16.85 9.62,17 10,17C10.38,17 10.77,16.85 11.06,16.56L16.56,11.06C17.15,10.47 17.15,9.5 16.56,8.94Z';
+        function createIcon(data) {
+            const ns = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(ns, "svg");
+            svg.style = 'width:1rem;height:1rem;';
+            svg.setAttribute('viewBox', '0 0 24 24');
+            const path = document.createElementNS(ns, 'path');
+            path.setAttribute('d', data);
+            path.setAttribute('fill', 'currentColor');
+            svg.appendChild(path);
+            return svg;
+        }
+        function createSelect(options) {
+            const select = document.createElement('select');
+            options.forEach(([value, label]) => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = label;
+                select.appendChild(option);
+            });
+            return select;
+        }
+        function uuid() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+        function getBrightness(r, g, b) {
+            return (0.2126 * (r / 255)) + (0.7152 * (g / 255)) + (0.0722 * (b / 255));
+        }
+        // Tints
+        const tintOptions = [{
+            value: '160:102:28',
+            label: 'Light Brown'
+        }, {
+            value: '3:169:244',
+            label: 'Blue Print'
+        }];
         // Fonts
-        const fonts = {
-            'Gill Sans MT': {
-                font: 'Gill Sans MT',
-                weight: '400'
-            },
-            'Rubik Light': {
-                font: 'Rubik',
-                weight: '100'
-            },
-            'Rubik Regular': {
-                font: 'Rubik',
-                weight: '400'
-            },
-            'Rubik Bold': {
-                font: 'Rubik',
-                weight: '700'
+        const fontOptions = [{
+            value: 'Gill Sans MT:400',
+            style: "font-family: 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size:20px;",
+            label: 'Gill Sans MT',
+            font: 'Gill Sans MT',
+            weight: 400
+        }, {
+            value: 'Rubik:100',
+            style: "font-family: 'Rubik';font-weight:100;font-size:20px;",
+            label: 'Rubik Light',
+            font: 'Rubik',
+            weight: 100
+        }, {
+            value: 'Rubik:400',
+            style: "font-family: 'Rubik';font-size:20px;",
+            label: 'Rubik Regular',
+            font: 'Rubik',
+            weight: 400
+        }, {
+            value: 'Rubik:700',
+            style: "font-family: 'Rubik';font-weight:700;font-size:20px;",
+            label: 'Rubik Bold',
+            font: 'Rubik',
+            weight: 700
+        }];
+        function createFontSelect() {
+            const select = document.createElement('select');
+            fontOptions.forEach(({ value, label, style }) => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = label;
+                option.style = style;
+                select.appendChild(option);
+            });
+            return select;
+        }
+        /**
+         * Since inner pages can be used on the detail page this
+         * should never return the template type!
+         */
+        function getCurrentType() {
+            if (currentIndex === 0) {
+                return 'cover';
             }
-        };
+            if (currentIndex === 1) {
+                return 'detail';
+            }
+            return 'inner';
+        }
+        function getTemplate() {
+            const templateEle = document.getElementById('template');
+            const template = templates.find(t => t.value === templateEle.value);
+            return template;
+        }
+        function getTemplateByUuid(id) {
+            const template = templates.find(t => t.value === id);
+            return template;
+        }
+        function getTemplatePreset() {
+            const presetSelectEle = document.getElementById('presetSelect');
+            const id = presetSelectEle.value;
+            const template = getTemplate();
+            return template
+                ? template.presets
+                    ? structuredClone(template.presets.find(p => p.value === id))
+                    : null
+                : null;
+        }
+        /**
+         * First search built in presets then scan localstorage user defined
+         */
+        function getPresetByUuid(id) {
+            const type = getCurrentType();
+            // Template
+            const template = getTemplate();
+            if (template) {
+                const cache = localStorage.getItem(`${type}:${template.value}:presets`);
+                let cachePresets = cache ? JSON.parse(cache) : [];
+                let cachePreset = cachePresets.find(p => p.value === id);
+                if (cachePreset) {
+                    return cachePreset;
+                }
+                const presets = template.presets ?? [];
+                const preset = presets.find(p => p.value === id);
+                if (preset) {
+                    return preset;
+                }
+                return null;
+            }
+            const key = `${type}:custom:presets`;
+            const item = localStorage.getItem(key);
+            if (item) {
+                const presets = JSON.parse(item);
+                return presets.find(p => p.value === id) ?? null;
+            }
+            // Maybe it got deleted?
+            return null;
+        }
+        const paperColors = [{
+            label: 'White',
+            value: '#ffffff'
+        }, {
+            label: 'Tan',
+            value: '#d2b48c'
+        }, {
+            label: 'Charcoal',
+            value: '#444444'
+        }];
+        function setLocalStoragePaperColor(value) {
+            const defaultColor = paperColors[0].value;
+            let key = 'inner:paperColor';
+            if (currentIndex === 0 || currentIndex === 1) {
+                key = 'cover:paperColor';
+            }
+            const pageBackgroundEle = document.getElementById('pageBackground');
+            if (pageBackgroundEle.value === defaultColor) {
+                localStorage.removeItem(key);
+            } else {
+                localStorage.setItem(key, pageBackgroundEle.value);
+            }
+        }
+        function getLocalStoragePaperColor() {
+            const defaultColor = paperColors[0].value;
+            let key = 'inner:paperColor';
+            if (currentIndex === 0 || currentIndex === 1) {
+                key = 'cover:paperColor';
+            }
+            return localStorage.getItem(key) ?? defaultColor;
+        }
+        function setLocalStoragePrinterOffset() {
+            // Printer Offset, only 'cover:printerOffset' and 'inner:pageOffset'
+            let printerOffsetKey = 'inner:printerOffset';
+            if (currentIndex === 0 || currentIndex === 1) {
+                printerOffsetKey = 'cover:printerOffset';
+            }
+            const value = document.getElementById('offset').value;
+            localStorage.setItem(printerOffsetKey, value);
+        }
+        function getLocalStoragePrinterOffset() {
+            // Printer Offset, only 'cover:printerOffset' and 'inner:pageOffset'
+            let printerOffsetKey = 'inner:printerOffset';
+            if (currentIndex === 0 || currentIndex === 1) {
+                printerOffsetKey = 'cover:printerOffset';
+            }
+            return localStorage.getItem(printerOffsetKey) ?? '0';
+        }
+        function getLocalStorageTint() {
+            const type = getCurrentType();
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:tint`;
+            return localStorage.getItem(key) ?? 'null:null:null';
+        }
+        function setLocalStorageTint(red, green, blue) {
+            const type = getCurrentType();
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:tint`;
+            if (red === null && green === null && blue === null) {
+                localStorage.removeItem(key);
+                return;
+            }
+            if (red === null) {
+                red = getLocalStorageTint().split(':')[0];
+            }
+            if (green === null) {
+                green = getLocalStorageTint().split(':')[1];
+            }
+            if (blue === null) {
+                blue = getLocalStorageTint().split(':')[2];
+            }
+            const value = `${red}:${green}:${blue}`;
+            localStorage.setItem(key, value);
+        }
+        function setLocalStorageFade(value) {
+            const type = getCurrentType();
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:fade`;
+            if (value === -1) {
+                localStorage.removeItem(key);
+            } else {
+                localStorage.setItem(key, `${value}`);
+            }
+        }
+        function getLocalStorageFade() {
+            const type = getCurrentType();
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:fade`;
+            if (localStorage.getItem(key)) {
+                return parseInt(localStorage.getItem(key), 10);
+            }
+            return -1;
+        }
+        /**
+         * Pull user defined from localstorage
+         */
+        function getUserDefinedPresets() {
+            const type = getCurrentType();
+            // Template
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:presets`;
+            const item = localStorage.getItem(key);
+            if (item) {
+                return JSON.parse(item);
+            }
+            return [];
+        }
+        function addUserDefinedPreset(preset) {
+            const type = getCurrentType();
+            // Template
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:presets`;
+            const item = localStorage.getItem(key);
+            const presets = item ? JSON.parse(item) : [];
+            presets.push(preset);
+            localStorage.setItem(key, JSON.stringify(presets));
+            // Automatically select newly created preset
+            localStorage.setItem(`${key}:selected`, preset.value);
+            const isEnabled = getLocalStoragePresetDisabled();
+            if (!isEnabled) {
+                setLocalStoragePresetDisabled(false);
+            }
+            // Update Select
+            updateTemplatePresets();
+        }
+        function setUserDefinedPreset({ value, label, nodes }) {
+            if (!value) {
+                throw new Error('Invalid value, must be a valid uuid');
+            }
+            const type = getCurrentType();
+            // Template
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:presets`;
+            const item = localStorage.getItem(key);
+            const presets = item ? JSON.parse(item) : [];
+            let preset = presets.find(p => p.value === value);
+            if (!preset) {
+                // if not found create a copy
+                const copyPreset = getPresetByUuid(value);
+                copyPreset.label = copyPreset.label;
+                copyPreset.nodes = structuredClone(nodes);
+                presets.push(copyPreset);
+            } else {
+                if (label) {
+                    preset.label = label;
+                }
+                if (nodes) {
+                    preset.nodes = structuredClone(nodes);
+                }
+            }
+            localStorage.setItem(key, JSON.stringify(presets));
+        }
+        function deleteUserDefinedPreset(id) {
+            const type = getCurrentType();
+            // Template
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:presets`;
+            const item = localStorage.getItem(key);
+            const presets = item ? JSON.parse(item) : [];
+            const updatedPresets = presets.filter(p => p.value !== id);
+            if (updatedPresets.length === 0) {
+                localStorage.removeItem(key);
+            } else {
+                localStorage.setItem(key, JSON.stringify(updatedPresets));
+            }
+            // Remove selected
+            localStorage.removeItem(`${key}:selected`);
+            // Update check if no items
+            const templatePresets = template ? template.presets ?? [] : [];
+            const presetDisabledEle = document.getElementById('presetDisabled');
+            if (templatePresets.length === 0 && updatedPresets.length === 0) {
+                presetDisabledEle.checked = false;
+                presetDisabledEle.disabled = true;
+            }
+            // Update Select
+            updateTemplatePresets();
+            // If no items disable
+            const presetSelectEle = document.getElementById('presetSelect')
+            if (presetSelectEle.options.length === 0) {
+                localStorage.removeItem(`${key}:disabled`);
+            }
+        }
+        function getSelectPreset() {
+            const presetSelectEle = document.getElementById('presetSelect');
+            return presetSelectEle.value ?? (
+                presetSelectEle.options.length
+                    ? presetSelectEle.options[0].value
+                    : null
+            );
+        }
+        function getLocalStoragePresetDisabled() {
+            const type = getCurrentType();
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:presets:disabled`;
+            return localStorage.getItem(key) ?? true;
+        }
+        function setLocalStoragePresetDisabled(override) {
+            const presetDisabledEle = document.getElementById('presetDisabled');
+            const value = override === undefined
+                ? !presetDisabledEle.checked
+                : override;
+            const type = getCurrentType();
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:presets:disabled`;
+            if (value) {
+                localStorage.setItem(key, value);
+            } else {
+                localStorage.removeItem(key);
+            }
+        }
+        function getLocalStoragePreset() {
+            const type = getCurrentType();
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:presets:selected`;
+            return localStorage.getItem(key);
+        }
+        function setLocalStoragePreset() {
+            const presetSelectEle = document.getElementById('presetSelect');
+            const id = presetSelectEle.value;
+            const type = getCurrentType();
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:presets:selected`;
+            localStorage.setItem(key, id);
+        }
+        function updateTemplatePresets() {
+            // Template
+            const uuids = new Set();
+            const template = getTemplate();
+            // Actual Select
+            let hasPresets = false;
+            const presetSelectEle = document.getElementById('presetSelect');
+            presetSelectEle.innerHTML = '';
+            if (template) {
+                const presets = template.presets ?? [];
+                hasPresets = presets.length !== 0;
+                const optgroupEle = document.createElement('optgroup');
+                optgroupEle.label = `Presets (${presets.length})`;
+                presets.forEach((preset) => {
+                    const option = document.createElement('option');
+                    option.value = preset.value;
+                    option.textContent = preset.label;
+                    optgroupEle.appendChild(option);
+                    uuids.add(preset.value);
+                });
+                presetSelectEle.appendChild(optgroupEle);
+            }
+            const optgroupEle2 = document.createElement('optgroup');
+            const userDefinedPrests = getUserDefinedPresets();
+            let userdefinedCount = 0;
+            userDefinedPrests.forEach((preset) => {
+                if (uuids.has(preset.value)) { return; }
+                const option = document.createElement('option');
+                option.value = preset.value;
+                option.textContent = preset.label;
+                optgroupEle2.appendChild(option);
+                userdefinedCount++;
+            });
+            optgroupEle2.label = `User Defined (${userdefinedCount})`;
+            presetSelectEle.appendChild(optgroupEle2);
+            presetSelectEle.disabled = false;
+            const presetDisabledEle = document.getElementById('presetDisabled');
+            const id = getLocalStoragePreset() ?? getSelectPreset();
+            if (id) {
+                presetSelectEle.value = id;
+                const currentPreset = getPresetByUuid(id);
+                updateTextList(currentPreset.nodes);
+                // Update with selected
+                presetDisabledEle.checked = getLocalStoragePresetDisabled();
+                presetDisabledEle.disabled = false;
+            } else {
+                presetDisabledEle.checked = false;
+                presetDisabledEle.disabled = true;
+            }
+            // Show the giant add preset button if none
+            const noPresetsEle = document.getElementById('noPresets');
+            const hasPresetsEle = document.getElementById('hasPresets');
+            noPresetsEle.classList.toggle('hide', hasPresets || userDefinedPrests.length !== 0);
+            hasPresetsEle.classList.toggle('hide', !hasPresets && userDefinedPrests.length === 0);
+        }
+        function updateFade() {
+            const selected = getLocalStorageFade();
+            const fadeEle = document.getElementById('fade');
+            const buttons = Array.from(fadeEle.children);
+            buttons.forEach((button) => {
+                button.classList.toggle('selected', button.dataset.index === `${selected}`);
+            });
+        }
+        function updateTextList(nodes) {
+            const templatePreset = getTemplatePreset();
+            const id = getSelectPreset();
+            const preset = getPresetByUuid(id);
+            const textList = document.getElementById('textList');
+            textList.innerHTML = ''; // lazy clear out
+            nodes.forEach((text, i) => {
+                const templateText = templatePreset?.nodes[i];
+                function check(element, prop, value) {
+                    if (templateText) {
+                        element.classList.toggle('change', templateText[prop] !== value);
+                    }
+                }
+                const row = document.createElement('div');
+                row.classList.add('editor-row');
+                // Checkbox
+                const tdCheck = document.createElement('div');
+                tdCheck.classList.add('editor-column');
+                tdCheck.classList.add('editor-column-hideshow');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = text.hidden ?? true;
+                checkbox.addEventListener('change', (e) => {
+                    text.hidden = !e.target.checked;
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    check(checkbox, 'hidden');
+                });
+                check(checkbox, 'hidden');
+                tdCheck.appendChild(checkbox);
+                row.appendChild(tdCheck);
+                // Editor
+                const areaInner = document.createElement('div');
+                areaInner.classList.add('editor-column');
+                // Editor - Left or Right Site
+                // Editor - Textarea
+                const inputDiv = document.createElement('div');
+                inputDiv.classList.add('editor-row');
+                inputDiv.appendChild(createIcon(iconText));
+                const textarea = document.createElement('textarea');
+                textarea.value = text.value;
+                textarea.rows = 3;
+                textarea.addEventListener('input', (e) => {
+                    text.value = e.target.value;
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    check(textarea, 'value', text.value);
+                });
+                check(textarea, 'value', text.value);
+                inputDiv.appendChild(textarea);
+                areaInner.appendChild(inputDiv);
+                const blockDiv = document.createElement('div');
+                blockDiv.classList.add('editor-row');
+                blockDiv.appendChild(createIcon(iconBlock));
+                const blockSelect = createSelect([
+                    ['start', 'Top'],
+                    ['center', 'Center'],
+                    ['end', 'Bottom']
+                ]);
+                blockSelect.classList.add('editor-select-block');
+                blockSelect.value = text.block;
+                blockSelect.addEventListener('change', (e) => {
+                    text.block = e.target.value;
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    check(blockSelect, 'block', text.block);
+                });
+                check(blockSelect, 'block', text.block);
+                blockDiv.appendChild(blockSelect);
+                const blockOffsetInput = document.createElement('input');
+                blockOffsetInput.type = 'number';
+                blockOffsetInput.step = '0.01';
+                blockOffsetInput.value = text.blockOffset;
+                blockOffsetInput.addEventListener('input', (e) => {
+                    text.blockOffset = parseFloat(e.target.value);
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    check(blockOffsetInput, 'blockOffset', text.blockOffset);
+                });
+                check(blockOffsetInput, 'blockOffset', text.blockOffset);
+                blockDiv.appendChild(blockOffsetInput);
+                areaInner.appendChild(blockDiv);
+                const inlineDiv = document.createElement('div');
+                inlineDiv.classList.add('editor-row');
+                inlineDiv.appendChild(createIcon(iconInline));
+                const inlineSelect = createSelect([
+                    ['start', 'Left'],
+                    ['center', 'Center'],
+                    ['end', 'Right']
+                ]);
+                inlineSelect.classList.add('editor-select-inline');
+                inlineSelect.value = text.inline;
+                inlineSelect.addEventListener('change', (e) => {
+                    text.inline = e.target.value;
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    check(inlineSelect, 'inline', text.inline);
+                });
+                check(inlineSelect, 'inline', text.inline);
+                inlineDiv.appendChild(inlineSelect);
+                const inlineOffsetInput = document.createElement('input');
+                inlineOffsetInput.type = 'number';
+                inlineOffsetInput.step = '0.01';
+                inlineOffsetInput.value = text.inlineOffset;
+                inlineOffsetInput.addEventListener('input', (e) => {
+                    text.inlineOffset = parseFloat(e.target.value);
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    check(inlineOffsetInput, 'inlineOffset', text.inlineOffset);
+                });
+                check(inlineOffsetInput, 'inlineOffset', text.inlineOffset);
+                inlineDiv.appendChild(inlineOffsetInput);
+                areaInner.appendChild(inlineDiv);
+                // Color
+                const colorDiv = document.createElement('div');
+                colorDiv.classList.add('editor-row');
+                colorDiv.appendChild(createIcon(iconColor));
+                // Red
+                const red = document.createElement('input');
+                const redDot = document.createElement('div');
+                redDot.classList.add('red-dot');
+                red.classList.add('no-arrows', 'red');
+                red.type = 'number';
+                red.min = 0;
+                red.max = 255;
+                red.value = text.color.red;
+                function checkRed(value) {
+                    if (templateText) {
+                        red.classList.toggle('change', templateText.color.red !== value);
+                    }
+                }
+                red.addEventListener('input', (e) => {
+                    const { value } = e.target;
+                    if (isNaN(value) || value.includes('e')) {
+                        e.target.setCustomValidity('Invalid');
+                    } else {
+                        e.target.setCustomValidity('');
+                        text.color.red = parseInt(value, 10);
+                        setUserDefinedPreset({
+                            value: getLocalStoragePreset() ?? getSelectPreset(),
+                            nodes
+                        });
+                        updateTemplate(currentIndex);
+                        checkRed(text.color.red);
+                    }
+                });
+                checkRed(text.color.red);
+                colorDiv.appendChild(redDot);
+                colorDiv.appendChild(red);
+                // Green
+                const green = document.createElement('input');
+                const greenDot = document.createElement('div');
+                greenDot.classList.add('green-dot');
+                green.classList.add('no-arrows', 'green');
+                green.type = 'number';
+                green.min = 0;
+                green.max = 255;
+                green.value = text.color.green;
+                function checkGreen(value) {
+                    if (templateText) {
+                        green.classList.toggle('change', templateText.color.green !== value);
+                    }
+                }
+                green.addEventListener('input', (e) => {
+                    const { value } = e.target;
+                    if (isNaN(value) || value.includes('e')) {
+                        e.target.setCustomValidity('Invalid');
+                    } else {
+                        e.target.setCustomValidity('');
+                        text.color.green = parseInt(value, 10);
+                        setUserDefinedPreset({
+                            value: getLocalStoragePreset() ?? getSelectPreset(),
+                            nodes
+                        });
+                        updateTemplate(currentIndex);
+                        checkGreen(text.color.green);
+                    }
+                });
+                checkGreen(text.color.green);
+                colorDiv.appendChild(greenDot);
+                colorDiv.appendChild(green);
+                // Blue
+                const blue = document.createElement('input');
+                const blueDot = document.createElement('div');
+                blueDot.classList.add('blue-dot');
+                blue.classList.add('no-arrows', 'blue');
+                blue.type = 'number';
+                blue.min = 0;
+                blue.max = 255;
+                blue.value = text.color.blue;
+                function checkBlue(value) {
+                    if (templateText) {
+                        blue.classList.toggle('change', templateText.color.blue !== value);
+                    }
+                }
+                blue.addEventListener('input', (e) => {
+                    const { value } = e.target;
+                    if (isNaN(value) || value.includes('e')) {
+                        e.target.setCustomValidity('Invalid');
+                    } else {
+                        e.target.setCustomValidity('');
+                        text.color.blue = parseInt(value, 10);
+                        setUserDefinedPreset({
+                            value: getLocalStoragePreset() ?? getSelectPreset(),
+                            nodes
+                        });
+                        updateTemplate(currentIndex);
+                        checkBlue(text.color.blue);
+                    }
+                });
+                checkBlue(text.color.blue);
+                colorDiv.appendChild(blueDot);
+                colorDiv.appendChild(blue);
+                // Alpha
+                const alpha = document.createElement('input');
+                const alphaDot = document.createElement('div');
+                alphaDot.classList.add('alpha-dot');
+                alpha.type = 'number';
+                alpha.classList.add('no-arrows', 'alpha');
+                alpha.min = 0;
+                alpha.max = 1;
+                alpha.step = 0.01;
+                alpha.value = text.color.alpha;
+                function checkAlpha(value) {
+                    if (templateText) {
+                        alpha.classList.toggle('change', templateText.color.alpha !== value);
+                    }
+                }
+                alpha.addEventListener('input', (e) => {
+                    const { value } = e.target;
+                    if (isNaN(value) || value.includes('e')) {
+                        e.target.setCustomValidity('Invalid');
+                    } else {
+                        e.target.setCustomValidity('');
+                        text.color.alpha = parseFloat(value);
+                        setUserDefinedPreset({
+                            value: getLocalStoragePreset() ?? getSelectPreset(),
+                            nodes
+                        });
+                        updateTemplate(currentIndex);
+                        checkAlpha(text.color.alpha);
+                    }
+                });
+                checkAlpha(text.color.alpha);
+                colorDiv.appendChild(alphaDot);
+                colorDiv.appendChild(alpha);
+                areaInner.appendChild(colorDiv);
+                // Font
+                const fontDiv = document.createElement('div');
+                fontDiv.classList.add('editor-row');
+                fontDiv.appendChild(createIcon(iconFont));
+                const fontSelect = createFontSelect();
+                fontSelect.classList.add('editor-select-font');
+                fontSelect.value = `${text.font}:${text.weight}`;
+                fontSelect.addEventListener('change', (e) => {
+                    const [font, weight] = e.target.value.split(':');
+                    text.font = font;
+                    text.weight = parseInt(weight, 10);
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    check(fontSelect, 'font', text.font);
+                    check(fontSelect, 'weight', text.weight);
+                });
+                check(fontSelect, 'font', text.font);
+                check(fontSelect, 'weight', text.weight);
+                fontDiv.appendChild(fontSelect);
+                const sizeSelect = createSelect([
+                    ['0.2', '0.20 Inch'],
+                    ['0.25', '0.25 Inch'],
+                    ['0.3', '0.30 Inch'],
+                    ['0.35', '0.30 Inch'],
+                    ['0.4', '0.40 Inch'],
+                    ['0.45', '0.45 Inch'],
+                    ['0.5', '0.50 Inch'],
+                    ['0.6', '0.60 Inch'],
+                    ['0.7', '0.70 Inch'],
+                    ['0.75', '0.75 Inch'],
+                    ['0.8', '0.8 Inch'],
+                    ['0.9', '0.9 Inch'],
+                    ['1', '1.00 Inch'],
+                    ['1.1', '1.10 Inch'],
+                    ['1.2', '1.20 Inch'],
+                    ['1.25', '1.25 Inch'],
+                    ['1.3', '1.30 Inch'],
+                    ['1.4', '1.40 Inch'],
+                    ['1.5', '1.50 Inch']
+                ]);
+                sizeSelect.classList.add('editor-select-size');
+                sizeSelect.value = text.size;
+                sizeSelect.addEventListener('change', (e) => {
+                    text.size = parseFloat(e.target.value);
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    check(sizeSelect, 'size', text.size);
+                });
+                check(sizeSelect, 'size', text.size);
+                fontDiv.appendChild(sizeSelect);
+                areaInner.appendChild(fontDiv);
+                // Line Height
+                const lineHeightDiv = document.createElement('div');
+                lineHeightDiv.classList.add('editor-row');
+                lineHeightDiv.appendChild(createIcon(iconLineHeight));
+                const lineHeightSelect = createSelect([
+                    ['0', '0.00 Inch'],
+                    ['0.05', '0.05 Inch'],
+                    ['0.1', '0.10 Inch'],
+                    ['0.15', '0.15 Inch'],
+                    ['0.2', '0.20 Inch'],
+                    ['0.25', '0.25 Inch'],
+                    ['0.3', '0.30 Inch'],
+                    ['0.35', '0.35 Inch'],
+                    ['0.4', '0.40 Inch'],
+                    ['0.45', '0.45 Inch'],
+                    ['0.5', '0.50 Inch']
+                ]);
+                lineHeightSelect.value = text.leadingOffset;
+                lineHeightSelect.addEventListener('change', (e) => {
+                    text.leadingOffset = parseFloat(e.target.value);
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    check(lineHeightSelect, 'leadingOffset', text.leadingOffset);
+                });
+                check(lineHeightSelect, 'leadingOffset', text.leadingOffset);
+                lineHeightSelect.classList.add('editor-flex-1');
+                lineHeightDiv.appendChild(lineHeightSelect);
+                // Left + Right Page Buttons
+                const leftButton = document.createElement('button');
+                leftButton.appendChild(createIcon(iconPageLeft));
+                leftButton.classList.add('editor-page-left');
+                if (text.side === 'left') {
+                    leftButton.classList.add('selected');
+                }
+                lineHeightDiv.appendChild(leftButton);
+                const rightButton = document.createElement('button');
+                rightButton.appendChild(createIcon(iconPageRight));
+                rightButton.classList.add('editor-page-right');
+                if (text.side === 'right') {
+                    rightButton.classList.add('selected');
+                }
+                function checkSide(value) {
+                    if (templateText) {
+                        leftButton.classList.toggle('change', templateText.side !== value);
+                        rightButton.classList.toggle('change', templateText.side !== value);
+                    }
+                }
+                leftButton.addEventListener('click', () => {
+                    leftButton.classList.add('selected');
+                    rightButton.classList.remove('selected');
+                    text.side = 'left';
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    checkSide(text.side);
+                });
+                rightButton.addEventListener('click', () => {
+                    leftButton.classList.remove('selected');
+                    rightButton.classList.add('selected');
+                    text.side = 'right';
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTemplate(currentIndex);
+                    checkSide(text.side);
+                });
+                checkSide(text.side);
+                lineHeightDiv.appendChild(rightButton);
+                // Copy Button
+                const copyButton = document.createElement('button');
+                copyButton.appendChild(createIcon(iconCopy));
+                copyButton.addEventListener('click', (e) => {
+                    nodes.splice(i, 0, structuredClone(text));
+                    setUserDefinedPreset({
+                        value: getLocalStoragePreset() ?? getSelectPreset(),
+                        nodes
+                    });
+                    updateTextList(nodes);
+                    updateTemplate(currentIndex);
+                });
+                lineHeightDiv.appendChild(copyButton);
+                // Delete Button
+                const deleteButton = document.createElement('button');
+                deleteButton.appendChild(createIcon(iconTrash));
+                lineHeightDiv.appendChild(deleteButton);
+                areaInner.appendChild(lineHeightDiv);
+                // TD
+                row.appendChild(areaInner);
+                // Append Row
+                textList.appendChild(row);
+            });
+            // Toggle Icon for Remove
+            const presetRemoveIconEle = document.getElementById('presetRemoveIcon');
+            presetRemoveIconEle.setAttribute('d', templatePreset
+                ? iconRevert
+                : iconTrash
+            );
+            const presetRemoveTextEle = document.getElementById('presetRemoveText');
+            presetRemoveTextEle.textContent = templatePreset ? 'Revert' : 'Remove';
+            // Toggle Rename Feature
+            const presetRenameEle = document.getElementById('presetRename');
+            const presetNameEle = document.getElementById('presetName');
+            presetRenameEle.classList.toggle('hide', templatePreset !== undefined);
+        }
+        function textReplace(text, { pageIndex, pageNumber, pageCount, index }) {
+            // Date
+            const date = new Date();
+            const year = date.getFullYear().toString();
+            const shortYear = year.slice(-2);
+            const month = (date.getMonth() + 1).toString();
+            const monthPadded = month.padStart(2, '0'); // Months are 0-indexed
+            const monthFull = date.toLocaleString('default', { month: 'long' });
+            const monthShort = date.toLocaleString('default', { month: 'short' });
+            const day = date.getDate().toString();
+            const dayPadded = day.padStart(2, '0');
+            // Replace values
+            return text.replace('{pageCount}', pageCount)
+                .replace('{pageNumber}', pageNumber)
+                .replace('{pageIndex}', pageIndex)
+                .replace('{year}', year)
+                .replace('{shortYear}', shortYear)
+                .replace('{month}', month)
+                .replace('{monthPadded}', monthPadded)
+                .replace('{monthFull}', monthFull)
+                .replace('{monthShort}', monthShort)
+                .replace('{day}', day)
+                .replace('{dayPadded}', dayPadded)
+                .replace('{index}', index);
+        }
+        function updateTint() {
+            const tintNoneEle = document.getElementById('tintNone');
+            const tintCustomEle = document.getElementById('tintCustom');
+            const tintRedEle = document.getElementById('tintRed');
+            const tintRedValueEle = document.getElementById('tintRedValue');
+            const tintGreenEle = document.getElementById('tintGreen');
+            const tintGreenValueEle = document.getElementById('tintGreenValue');
+            const tintBlueEle = document.getElementById('tintBlue');
+            const tintBlueValueEle = document.getElementById('tintBlueValue');
+            const selected = getLocalStorageTint();
+            let isPreset = false;
+            const preset = document.querySelector(`input[value="${selected}"]`);
+            if (preset) {
+                preset.checked = true;
+                isPreset = true;
+                tintRedEle.value = 170;
+                tintRedValueEle.value = 170;
+                tintGreenEle.value = 170;
+                tintGreenValueEle.value = 170;
+                tintBlueEle.value = 170;
+                tintBlueValueEle.value = 170;
+            } else {
+                if (selected === 'null:null:null') {
+                    tintNoneEle.checked = true;
+                    tintRedEle.value = 170;
+                    tintRedValueEle.value = 170;
+                    tintGreenEle.value = 170;
+                    tintGreenValueEle.value = 170;
+                    tintBlueEle.value = 170;
+                    tintBlueValueEle.value = 170;
+                } else {
+                    tintCustomEle.checked = true;
+                    const [red, green, blue] = selected.split(':');
+                    tintRedEle.value = red;
+                    tintRedValueEle.value = red;
+                    tintGreenEle.value = green;
+                    tintGreenValueEle.value = green;
+                    tintBlueEle.value = blue;
+                    tintBlueValueEle.value = blue;
+                }
+            }
+        }
+        function updateTintList() {
+            const tintOptionsEle = document.getElementById('tintOptions');
+            tintOptionsEle.innerHTML = '';
+            tintOptions.forEach(({ value, label }) => {
+                const [red, green, blue] = value.split(':');
+                const wrapper = document.createElement('div');
+                wrapper.classList.add('tint-option');
+                // input
+                const checkDiv = document.createElement('div');
+                const check = document.createElement('input');
+                check.type = 'radio';
+                check.name = 'tint';
+                check.value = `${red}:${green}:${blue}`;
+                check.addEventListener('change', (e) => {
+                    setLocalStorageTint(red, green, blue);
+                    updateTint();
+                    updateTemplate(currentIndex);
+                });
+                checkDiv.appendChild(check);
+                wrapper.appendChild(checkDiv);
+                // name
+                const nameDiv = document.createElement('div');
+                nameDiv.textContent = label;
+                wrapper.appendChild(nameDiv);
+                // red
+                const redDiv = document.createElement('div');
+                redDiv.textContent = red;
+                wrapper.appendChild(redDiv);
+                // green
+                const greenDiv = document.createElement('div');
+                greenDiv.textContent = green;
+                wrapper.appendChild(greenDiv);
+                // blue
+                const blueDiv = document.createElement('div');
+                blueDiv.textContent = blue;
+                wrapper.appendChild(blueDiv);
+                // Append Wrapper
+                tintOptionsEle.appendChild(wrapper);
+            });
+        }
         /**
          * Utility to take image data and update template
          */
@@ -766,15 +2351,20 @@
             // Updates
             const width = 2478;
             const height = 1650;
+            // Design at 100dpi, so math is easier... for inches
+            const convert = 3;
+            const offsetX = 55 * convert;
+            const offsetY = 27 * convert;
             const widthInner = 2148;
-            const halfWidthInner = 2148 / 2;
+            const halfWidthInner = widthInner / 2;
             const heightInner = 1548;
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = width;
             canvas.height = height;
+            const pageImage = await downloadImage('assets/page.png');
             ctx.drawImage(
-                cacheTemplate.get('page.png'),
+                pageImage,
                 0, 0, width, height,
                 0, 0, width, height
             );
@@ -782,18 +2372,21 @@
             const enabledEle = document.getElementById('enablePageNumbers');
             const isEnabled = enabledEle.checked;
             // Font Preview
-            const fontEle = document.getElementById('font');
+            const fontEle = document.getElementById('font').querySelector('select');
             const fontPreviewEle = document.getElementById('fontPreview');
             fontPreviewEle.classList.toggle('disabled', !isEnabled);
             // Elements
             const templateEle = document.getElementById('template');
             const customTemplateEle = document.getElementById('customTemplate');
+            const tintEle = document.getElementById('tint');
             const uploadEle = document.getElementById('upload');
             const template = templateEle.value || 'custom';
             const customGridTypeEle = document.getElementById('customGridType');
             const customGridType = template === 'custom'
                 ? customGridTypeEle.value
                 : templates.find(x => x.value === template).gridType ?? 'inch';
+            const id = getLocalStoragePreset() ?? getSelectPreset();
+            const preset = getPresetByUuid(id);
             // This is to fix printer alignment
             const printerOffset = document.getElementById('offset').value;
             // This is the offset for nesting pages
@@ -801,26 +2394,27 @@
             const offset = Math.floor(pageNumber / 2) === 0
                 ? 0
                 : Math.floor(pageNumber / 2) * innerOffset;
-            // Draw Text
-            function drawText() {
+            // Draw Page Numbers
+            function drawPageNumbers() {
                 const page = pages.find(x => x.index === pageNumber);
                 // Draw Page Numbers
                 if (isEnabled) {
                     ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+                    const font = fontOptions.find(f => f.value === fontEle.value);
                     if (customGridType === 'inch') {
-                        ctx.font = `${fonts[fontEle.value].weight} 14mm ${fonts[fontEle.value].font}`;
+                        ctx.font = `${font.weight} 14mm ${font.font}`;
                         ctx.textAlign = 'right';
                         page.start && ctx.fillText(page.start, 263, height - 72);
                         ctx.textAlign = 'left';
                         page.end && ctx.fillText(page.end, width - 263, height - 72);
                     } else if (customGridType === 'cm') {
-                        ctx.font = `${fonts[fontEle.value].weight} 14mm ${fonts[fontEle.value].font}`;
+                        ctx.font = `${font.weight} 14mm ${font.font}`;
                         ctx.textAlign = 'left';
                         page.start && ctx.fillText(page.start, 254, height - 96);
                         ctx.textAlign = 'right';
                         page.end && ctx.fillText(page.end, width - 254, height - 96);
                     } else {
-                        ctx.font = `${fonts[fontEle.value].weight} 13mm ${fonts[fontEle.value].font}`;
+                        ctx.font = `${font.weight} 13mm ${font.font}`;
                         ctx.textAlign = 'left';
                         page.start && ctx.fillText(page.start, 246, height - 93);
                         ctx.textAlign = 'right';
@@ -828,15 +2422,217 @@
                     }
                     // Test placement with: ██
                 }
+            }
+            function drawText() {
+                const pageCount = pages.length * 2;
+                const page = pages.find(x => x.index === pageNumber);
                 // Draw Custom Text
-                const customText = document.getElementById('customText');
-                const show = customText.checked;
-                if (!show) {
+                const presetDisabledEle = document.getElementById('presetDisabled');
+                const show = presetDisabledEle.checked;
+                if (!show || !preset) {
                     return;
                 }
+                /**
+                 * Example Config:
+                 *
+                 * value: 'Campaign Notes',
+                 * side: 'back' | 'front'
+                 * block: 'start' | 'center' | 'end',
+                 * blockOffset: 0,
+                 * inline: 'start' | 'center' | 'end',
+                 * inlineOffset: 0,
+                 * size: 0.9, // inch or cm
+                 * color: { red, green, blue, alpha }
+                 * font: 'Rubik',
+                 * weight: 100,
+                 * leadingOffset: 0.25
+                 */
+                const mapX = {
+                    'left': {
+                        'start': () => offsetX + (32 * convert),
+                        'center': () => offsetX + (halfWidthInner / 2) + 12,
+                        'end': () => offsetX - (24 * convert) + halfWidthInner
+                    },
+                    'right': {
+                        'start': () => offsetX + (24 * convert) + halfWidthInner,
+                        'center': () => offsetX + halfWidthInner + (halfWidthInner / 2) - 12,
+                        'end': () => offsetX - (32 * convert) + widthInner
+                    }
+                };
+                const mapY = {
+                    'left': {
+                        'start': () => offsetY + (32 * convert),
+                        'center': (offset) => offsetY + (heightInner / 2) - (offset / 2),
+                        'end': (offset) => offsetY - (32 * convert) + heightInner - offset
+                    },
+                    'right': {
+                        'start': () => offsetY + (32 * convert),
+                        'center': (offset) => offsetY + (heightInner / 2) - (offset / 2),
+                        'end': (offset) => offsetY - (32 * convert) + heightInner - offset
+                    }
+                };
+                const mapAlign = {
+                    'start': 'left',
+                    'center': 'center',
+                    'end': 'right'
+                };
+                const mapBaseline = {
+                    'start': 'top',
+                    'center': 'middle',
+                    'end': 'bottom'
+                };
+                const mapGridType = {
+                    'inch': 100,
+                    'cm': 100 / 2.54
+                };
+                preset.nodes.forEach((text, index) => {
+                    if (text.hidden === true) { return; }
+                    const lines = text.value.split('\n');
+                    const lineCount = lines.length;
+                    const lineHeight = (text.size + (text.leadingOffset ?? 0)) * mapGridType[customGridType];
+                    const offset = lineHeight * (lineCount - 1);
+                    let x = mapX[text.side][text.inline]();
+                    if (text.inlineOffset) {
+                        x += text.inlineOffset * mapGridType[customGridType];
+                    }
+                    let y = mapY[text.side][text.block](offset);
+                    if (text.blockOffset) {
+                        y += text.blockOffset * mapGridType[customGridType];
+                    }
+                    ctx.textBaseline = mapBaseline[text.block];
+                    ctx.textAlign = mapAlign[text.inline];
+                    ctx.font = ` ${text.weight} ${text.size * mapGridType[customGridType]}px ${text.font}`;
+                    const { red, green, blue, alpha } = text.color;
+                    ctx.fillStyle = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+                    for (var i = 0; i < lines.length; i++) {
+                        ctx.fillText(
+                            textReplace(lines[i], {
+                                pageIndex: pageNumber,
+                                pageNumber: text.side === 'left' ? page.start ?? '' : page.end ?? '',
+                                pageCount,
+                                index
+                            }),
+                            x,
+                            y + (i * lineHeight)
+                        );
+                    }
+                });
+            }
+            // Calculate min max RGBA
+            function calculateMinMaxRGBA() {
+                const type = getCurrentType();
+                const template = getTemplate();
+                const key = template
+                    ? `${template.value}:tint`
+                    : `${type}:tint`;
+                if (minMaxRGBA.has(key)) {
+                    return minMaxRGBA.get(key);
+                }
+                const imageData = ctx.getImageData(
+                    offsetX,
+                    offsetY,
+                    canvas.width - (offsetX * 2),
+                    canvas.height - (offsetY + (7 * convert))
+                );
+                const pixels = imageData.data;
+                let first = true,
+                    redMax = 0, blueMax = 0, greenMax = 0, alphaMax = 0
+                redMin = 255, blueMin = 255, greenMin = 255, alphaMin = 255;
+                for (let i = 0; i < pixels.length; i += 4) {
+                    if (pixels[i] === 255 && pixels[i + 1] === 255 && pixels[i + 2] === 255) {
+                        // Ignore White
+                        continue;
+                    }
+                    if (!first) {
+                        redMax = Math.max(redMax, pixels[i]);
+                        greenMax = Math.max(greenMax, pixels[i + 1]);
+                        blueMax = Math.max(blueMax, pixels[i + 2]);
+                        alphaMax = Math.max(alphaMax, pixels[i + 3]);
+                        redMin = Math.min(redMin, pixels[i]);
+                        greenMin = Math.min(greenMin, pixels[i + 1]);
+                        blueMin = Math.min(blueMin, pixels[i + 2]);
+                        alphaMin = Math.min(alphaMin, pixels[i + 3]);
+                    } else {
+                        redMax = redMin = pixels[i];
+                        greenMax = greenMin = pixels[i + 1];
+                        blueMax = blueMin = pixels[i + 2];
+                        alphaMax = alphaMin = pixels[i + 3];
+                        first = false;
+                    }
+                }
+                minMaxRGBA.set(key, `${redMin}:${greenMin}:${blueMin}:${alphaMin}:${redMax}:${greenMax}:${blueMax}:${alphaMax}`);
+            }
+            const fadeOptions = [
+                [
+                    [0.75, 0.80, 230],
+                    [0.80, 0.85, 220],
+                    [0.85, 0.90, 210],
+                    [0.90, 0.95, 200],
+                    [0.95, 1.00, 190]
+                ]
+            ];
+            function levelPixels() {
+                const index = getLocalStorageFade();
+                if (index === -1) {
+                    return;
+                }
+                const imageData = ctx.getImageData(
+                    offsetX,
+                    offsetY,
+                    canvas.width - (offsetX * 2),
+                    canvas.height - (offsetY + (7 * convert))
+                );
+                const pixels = imageData.data;
+                for (let i = 0; i < pixels.length; i += 4) {
+                    if (pixels[i] === 255 && pixels[i + 1] === 255 && pixels[i + 2] === 255) {
+                        pixels[i + 3] = 0;
+                        continue;
+                    }
+                    const fade = fadeOptions[index];
+                    const brightness = getBrightness(pixels[i], pixels[i + 1], pixels[i + 2]);
+                    const item = fade.find(x => brightness >= x[0] && brightness <= x[1]);
+                    if (item) {
+                        pixels[i + 3] -= item[2];
+                    }
+                }
+                ctx.putImageData(imageData, offsetX, offsetY);
+            }
+            function shiftPixels(r, g, b) {
+                const imageData = ctx.getImageData(
+                    offsetX,
+                    offsetY,
+                    canvas.width - (offsetX * 2),
+                    canvas.height - (offsetY + (7 * convert))
+                );
+                const pixels = imageData.data;
+
+                for (let i = 0; i < pixels.length; i += 4) {
+                    if (pixels[i] === 255 && pixels[i + 1] === 255 && pixels[i + 2] === 255) {
+                        continue;
+                    }
+                    pixels[i] = pixels[i] + r - 170; // Red channel
+                    pixels[i + 1] = pixels[i + 1] + g - 170; // Green channel
+                    pixels[i + 2] = pixels[i + 2] + b - 170; // Blue channel
+                }
+                ctx.putImageData(imageData, offsetX, offsetY);
+            }
+            // Draw Empty
+            async function drawEmpty() {
+                const emptyImage = await downloadImage('assets/empty.png');
+                ctx.drawImage(
+                    emptyImage,
+                    0, 0, halfWidthInner - offset, heightInner,
+                    (55 * 3) + offset, 27 * 3, halfWidthInner - offset, heightInner
+                );
+                // Right Page
+                ctx.drawImage(
+                    emptyImage,
+                    halfWidthInner + offset, 0, halfWidthInner - offset, heightInner,
+                    (55 * 3) + halfWidthInner, 27 * 3, halfWidthInner - offset, heightInner
+                );
             }
             // Draw pages
-            function draw(img) {
+            async function draw(img) {
                 if (img) {
                     // Left Page
                     ctx.drawImage(
@@ -851,7 +2647,28 @@
                         (55 * 3) + halfWidthInner, 27 * 3, halfWidthInner - offset, heightInner
                     );
                 }
+                // Level
+                levelPixels();
+                // Draw Page Numbers
+                drawPageNumbers();
+                // Shift Colors
+                const [red, green, blue] = getLocalStorageTint().split(':');
+                if (red === 'null' || green === 'null' || blue === 'null') {
+                    // Disable shift pixels
+                } else {
+                    shiftPixels(
+                        parseInt(red, 10),
+                        parseInt(green, 10),
+                        parseInt(blue, 10)
+                    );
+                }
+                // Draw Text
                 drawText();
+                // Draw Empty
+                if (!img) {
+                    await drawEmpty();
+                }
+                // Update Background Image
                 const pagesOld = [...document.querySelectorAll('div.page')];
                 pagesOld.forEach(page => {
                     page.style.backgroundImage = `url('${canvas.toDataURL("image/png")}')`;
@@ -864,11 +2681,11 @@
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const img = new Image();
-                    img.onload = () => {
+                    img.onload = async () => {
                         if (img.width !== widthInner || img.height !== heightInner) {
                             alert(`Should really only use ${widthInner}x${heightInner} images.`);
                         }
-                        draw(img);
+                        await draw(img);
                         // Create cache
                         const canvas2 = document.createElement('canvas');
                         const ctx2 = canvas2.getContext('2d');
@@ -905,11 +2722,12 @@
                         }
                         if (cachePage === null) {
                             console.info('custom selected, no file or cache');
-                            draw();
+                            await draw();
+                            await drawEmpty();
                         } else {
                             const img2 = document.createElement('img');
-                            img2.onload = () => {
-                                draw(img2);
+                            img2.onload = async () => {
+                                await draw(img2);
                             };
                             img2.src = cachePage;
                         }
@@ -919,7 +2737,8 @@
                 }
             } else {
                 // Use Template Path
-                draw(cacheTemplate.get(template));
+                const templateImage = await downloadTemplate(template);
+                await draw(templateImage);
             }
             // Store selected template in localStorage
             if (pageNumber === 0) {
@@ -937,9 +2756,12 @@
             } else {
                 customGridTypeEle.value = localStorage.getItem('innerGridType') ?? 'inch';
             }
+            // Update Tint Selection
+
             // Custom list
             customTemplateEle.classList.toggle('hide', template !== 'custom');
             templateEle.classList.toggle('custom', template === 'custom');
+            tintEle.classList.toggle('custom', template === 'custom');
             // Front or Back
             const body = document.getElementById('body');
             body.style.setProperty('--config-pageFront', pageNumber % 2 === 0 ? 'true' : 'false');
@@ -949,6 +2771,15 @@
             configElement.textContent = Math.floor(pageNumber / 2) === 0
                 ? `${printerOffset}mm Printer Offset`
                 : `${printerOffset}mm Printer Offset • ${innerOffset} Inner Offset`;
+            const textKey = pageNumber === 0
+                ? 'coverText'
+                : pageNumber === 1
+                    ? 'detailText'
+                    : 'innerText';
+            // Update Offsets
+            const currentOffset = getLocalStoragePrinterOffset();
+            document.getElementById('offset').value = currentOffset;
+            body.style.setProperty('--config-innerOffset', `${currentOffset}mm`);
         }
         /**
          * Utility to visibly show page numbers. Personally find it easier
@@ -985,7 +2816,7 @@
             if (includeCover) {
                 pages.push({ index: 1, name: 'Page 1 Details Back', number: 1, start: 1, end: total });
             } else {
-                pages.push({ index: 1,  name: 'Page 1 Details Back', number: 1, start: null, end: null });
+                pages.push({ index: 1, name: 'Page 1 Details Back', number: 1, start: null, end: null });
             }
             // Need to stop coding at 1am... but it works so don't touch it?
             for (let i = 1; i <= totalPages; i++) {
@@ -1029,6 +2860,7 @@
                 pEle.addEventListener('click', () => {
                     // Update template list
                     if (currentIndex !== page.index) {
+                        // Update templates list
                         updateTemplateList(page.index);
                     }
                     // Update page numbers
@@ -1058,6 +2890,10 @@
                         }
                     }
                     currentIndex = page.index;
+                    // Update Paper Color, cover vs inner
+                    updatePaperColor(getLocalStoragePaperColor());
+                    updateTint();
+                    updateFade();
                 });
                 pageSelect.appendChild(pEle);
                 pageEles.push(pEle);
@@ -1067,17 +2903,21 @@
             } else {
                 pageSelect.firstChild.click();
             }
+            // Toggle Preset Disabled
+            const presetDisabledEle = document.getElementById('presetDisabled');
+            presetDisabledEle.disabled = presetSelect.options.length === 0;
         }
         function updateTemplateList(pageIndex) {
             const templateEle = document.getElementById('template');
             const customTemplateEle = document.getElementById('customTemplate');
+            const tintEle = document.getElementById('tint');
             const newOptions = [];
             const customOption = document.createElement('option');
             customOption.value = 'custom';
             customOption.textContent = 'Custom';
             newOptions.push(customOption);
             templates.filter((template) => {
-                if(pageIndex === 0) {
+                if (pageIndex === 0) {
                     return template.type === templateType.cover;
                 } else if (pageIndex === 1) {
                     return template.type === templateType.detail || template.type === templateType.inner;
@@ -1107,33 +2947,208 @@
             const template = templateEle.value;
             customTemplateEle.classList.toggle('hide', template !== 'custom');
             templateEle.classList.toggle('custom', template === 'custom');
+            tintEle.classList.toggle('custom', template === 'custom');
+            // Update Preset List
+            updateTemplatePresets();
+            // Init Template Text
+
+            // Hide / Show Reset Button
+            const textResetEle = document.getElementById('textReset');
+            textResetEle.classList.toggle('hide', template === 'custom');
         }
         // Set font
-        function setFont(font) {
+        function setFont(font, weight) {
             const fontPreviewEle = document.getElementById('fontPreview');
-            fontPreviewEle.classList.toggle('fontGillSans', font === 'Gill Sans MT');
-            fontPreviewEle.classList.toggle('fontRubikLight', font === 'Rubik Light');
-            fontPreviewEle.classList.toggle('fontRubikRegular', font === 'Rubik Regular');
-            fontPreviewEle.classList.toggle('fontRubikBold', font === 'Rubik Bold');
+            fontPreviewEle.style.font = font;
+            fontPreviewEle.style.fontWeight = `${weight}`;
         }
-        // Create a single edit text node
-        function createEditTextItem() {
-
+        // Verify typos
+        function assertTemplatesData(data) {
+            const uuids = new Set();
+            data.forEach((template) => {
+                if (uuids.has(template.value)) {
+                    alert(`Duplicate uuid ${template.value} in templates.json`);
+                }
+                uuids.add(template.value);
+                if (template.presets) {
+                    template.presets.forEach((preset) => {
+                        if (uuids.has(preset.value)) {
+                            alert(`Duplicate uuid ${preset.value} in templates.json`);
+                        }
+                        uuids.add(preset.value);
+                    });
+                }
+            });
+            console.log('Valid uuid total', uuids.size);
+        }
+        // Download templates.json
+        async function downloadTemplates() {
+            const response = await fetch('templates.json', { cache: 'no-store' });
+            if (!response.ok) {
+                throw new Error(`Handle errors eventually?`);
+            }
+            const data = await response.json();
+            assertTemplatesData(data);
+            return data;
+        }
+        // Download Template Images
+        const cacheTemplate = new Map();
+        async function downloadTemplate(id) {
+            if (cacheTemplate.has(id)) {
+                return cacheTemplate.get(id);
+            }
+            const template = getTemplateByUuid(id);
+            const img = new Image();
+            const promise = new Promise(resolve => {
+                img.addEventListener('load', () => {
+                    console.log(`Completed '${template.src}'`);
+                    cacheTemplate.set(id, img);
+                    resolve(img);
+                });
+            });
+            console.log(`Downloading '${template.src}'...`);
+            img.src = template.src;
+            return promise;
+        }
+        /**
+         * Generic download and cache image asset
+         */
+        async function downloadImage(src) {
+            if (cacheTemplate.has(src)) {
+                return cacheTemplate.get(src);
+            }
+            const img = new Image();
+            const promise = new Promise(resolve => {
+                img.addEventListener('load', () => {
+                    console.log(`Completed '${src}'`);
+                    cacheTemplate.set(src, img);
+                    resolve(img);
+                });
+            });
+            console.log(`Downloading '${src}'...`);
+            img.src = src;
+            return promise;
+        }
+        function updatePaperColor(value) {
+            const pageBackgroundEle = document.getElementById('pageBackground');
+            const bodyEle = document.getElementById('body');
+            bodyEle.style.backgroundColor = value;
+            pageBackgroundEle.value = value;
         }
         // Setup
-        window.addEventListener('load', () => {
+        window.addEventListener('load', async () => {
+            // ToDo Show Loading!!!
+            // ^^^^ do this
+            // DB Init
+            [dbCache] = await Promise.all([dbPromise]);
+            // Download Template Data
+            templates = await downloadTemplates();
+            templateCovers = templates.filter(x => x.type === templateType.cover).map(x => x.value);
+            templateDetails = templates.filter(x => x.type === templateType.detail || x.type === templateType.inner).map(x => x.value);
+            templateInners = templates.filter(x => x.type === templateType.inner).map(x => x.value);
             // Wire up button, input, etc events
             document.getElementById('print').addEventListener('click', () => {
                 window.print();
             });
             document.getElementById('template').addEventListener('change', (e) => {
+                const template = e.target.value;
                 updateTotalPages();
                 // Update visible template
+                updateTemplate(currentIndex);
+                // Update template text list
+                updateTemplatePresets();
+            });
+            let tintMenuHidden = true;
+            const tintEle = document.getElementById('tint');
+            tintEle.addEventListener('click', () => {
+                tintMenuHidden = !tintMenuHidden;
+                const tintMenuEle = document.getElementById('tintMenu');
+                tintMenuEle.classList.toggle('hide', tintMenuHidden);
+            });
+            const tintRedEle = document.getElementById('tintRed');
+            const tintRedValueEle = document.getElementById('tintRedValue');
+            tintRedEle.addEventListener('input', (e) => {
+                tintRed = parseInt(e.target.value, 10);
+                tintRedValueEle.value = tintRed;
+                setLocalStorageTint(tintRed, null, null);
+                updateTemplate(currentIndex);
+            });
+            tintRedValueEle.addEventListener('input', (e) => {
+                tintRed = parseInt(e.target.value, 10);
+                tintRedEle.value = tintRed;
+                setLocalStorageTint(tintRed, null, null);
+                updateTemplate(currentIndex);
+            });
+            const tintGreenEle = document.getElementById('tintGreen');
+            const tintGreenValueEle = document.getElementById('tintGreenValue');
+            tintGreenEle.addEventListener('input', (e) => {
+                tintGreen = parseInt(e.target.value, 10);
+                tintGreenValueEle.value = tintGreen;
+                setLocalStorageTint(null, tintGreen, null);
+                updateTemplate(currentIndex);
+            });
+            tintGreenValueEle.addEventListener('input', (e) => {
+                tintGreen = parseInt(e.target.value, 10);
+                tintGreenEle.value = tintGreen;
+                setLocalStorageTint(null, tintGreen, null);
+                updateTemplate(currentIndex);
+            });
+            const tintBlueEle = document.getElementById('tintBlue');
+            const tintBlueValueEle = document.getElementById('tintBlueValue');
+            tintBlueEle.addEventListener('input', (e) => {
+                tintBlue = parseInt(e.target.value, 10);
+                tintBlueValueEle.value = tintBlue;
+                setLocalStorageTint(null, null, tintBlue);
+                updateTemplate(currentIndex);
+            });
+            tintBlueValueEle.addEventListener('input', (e) => {
+                tintBlue = parseInt(e.target.value, 10);
+                tintBlueEle.value = tintBlue;
+                setLocalStorageTint(null, null, tintBlue);
                 updateTemplate(currentIndex);
             });
             document.getElementById('upload').addEventListener('change', () => {
                 updateTemplate(currentIndex);
             });
+            // Tint None
+            const tintNoneEle = document.getElementById('tintNone');
+            tintNoneEle.addEventListener('change', () => {
+                setLocalStorageTint(null, null, null);
+                updateTemplate(currentIndex);
+            });
+            // Tint Custom
+            const tintCustomEle = document.getElementById('tintCustom');
+            tintCustomEle.addEventListener('change', () => {
+                const red = document.getElementById('tintRedValue').value;
+                const green = document.getElementById('tintGreenValue').value;
+                const blue = document.getElementById('tintBlueValue').value;
+                setLocalStorageTint(red, green, blue);
+                updateTemplate(currentIndex);
+            });
+            // Fade
+            const fadeEle = document.getElementById('fade');
+            fadeEle.addEventListener('click', (e) => {
+                if (e.target.nodeName === 'BUTTON') {
+                    const index = parseInt(e.target.dataset.index, 10);
+                    setLocalStorageFade(index);
+                    updateFade();
+                    updateTemplate(currentIndex);
+                }
+            });
+            // Color
+            const pageBackgroundEle = document.getElementById('pageBackground');
+            paperColors.forEach((item) => {
+                const option = document.createElement('option');
+                option.value = item.value;
+                option.textContent = item.label;
+                pageBackgroundEle.appendChild(option);
+            });
+            pageBackgroundEle.addEventListener('change', (e) => {
+                const { value } = e.target;
+                setLocalStoragePaperColor(value);
+                updatePaperColor(value);
+            });
+            updatePaperColor(getLocalStoragePaperColor());
             // Custom Grid Type
             const customGridTypeEle = document.getElementById('customGridType');
             customGridTypeEle.addEventListener('change', (e) => {
@@ -1170,13 +3185,18 @@
             document.getElementById('totalPages').addEventListener('change', () => {
                 updateTotalPages();
             });
-            document.getElementById('font').addEventListener('change', (e) => {
-                setFont(e.target.value);
-                updateTemplate(currentIndex);
+            const fontSelect = createFontSelect();
+            document.getElementById('font').appendChild(fontSelect);
+            fontSelect.addEventListener('change', (e) => {
+                const [font, weight] = e.target.value.split(':');
+                setFont(font, weight);
                 localStorage.setItem('font', e.target.value);
+                updateTemplate(currentIndex);
             });
-            const currentFont = localStorage.getItem('font') ?? 'Gill Sans MT';
-            setFont(currentFont);
+            const currentFont = localStorage.getItem('font') ?? 'Rubik:400';
+            const [cacheFont, cacheWeight] = currentFont;
+            setFont(cacheFont, cacheWeight);
+            fontSelect.value = currentFont;
             document.getElementById('font').value = currentFont;
             document.getElementById('zoom').addEventListener('change', (e) => {
                 document.getElementById('body').style.zoom = e.target.value;
@@ -1201,7 +3221,7 @@
             });
             document.getElementById('typeInner').addEventListener('click', (e) => {
                 document.getElementById('upload').value = '';
-                if (currentIndex < 2 ) {
+                if (currentIndex < 2) {
                     const pages2 = document.getElementById('pageSelect');
                     pages2.children[2].click();
                     currentIndex = 2;
@@ -1210,18 +3230,12 @@
                 document.getElementById('typeDetail').classList.remove('selected');
                 document.getElementById('typeInner').classList.add('selected');
             });
-            // Offset
+            // Printer Offset
             document.getElementById('offset').addEventListener('change', (e) => {
                 const { value } = e.target;
-                const body = document.getElementById('body');
-                body.style.setProperty('--config-innerOffset', `${value}mm`);
-                localStorage.setItem('offset', value);
+                setLocalStoragePrinterOffset();
                 updateTemplate(currentIndex);
             });
-            const currentOffset = localStorage.getItem('offset') ?? '0';
-            document.getElementById('offset').value = currentOffset;
-            const body = document.getElementById('body');
-            body.style.setProperty('--config-innerOffset', `${currentOffset}mm`);
             // Inner Offset
             document.getElementById('innerOffset').addEventListener('change', (e) => {
                 const { value } = e.target;
@@ -1235,44 +3249,239 @@
             const cacheTotalPages = localStorage.getItem('totalPages') ?? '6';
             totalPagesEle.value = cacheTotalPages;
             // Text Show
-            const customText = document.getElementById('customText');
-            customText.addEventListener('change', (e) => {
-                localStorage.setItem('customText', e.target.checked ? 'true' : 'false');
+            const presetDisabledEle = document.getElementById('presetDisabled');
+            presetDisabledEle.addEventListener('change', (e) => {
+                setLocalStoragePresetDisabled();
                 updateTemplate(currentIndex);
             });
-            const customTextChecked = localStorage.getItem('customText') ?? 'false';
-            customText.checked = customTextChecked === 'true';
             // Clear Cache
             document.getElementById('clearCache').addEventListener('click', (e) => {
-                localStorage.clear();
-                indexedDB.deleteDatabase("CachePages");
-                window.location.reload();
+                const yes = window.confirm('If you do this it resets all config changes and text overlays.')
+                if (yes) {
+                    localStorage.clear();
+                    indexedDB.deleteDatabase("CachePages");
+                    window.location.reload();
+                }
+            });
+            // No Presets - Add Button
+            document.getElementById('noPresetsAdd').addEventListener('click', () => {
+                presetDisabled.checked = true;
+                setLocalStoragePresetDisabled();
+                addUserDefinedPreset({
+                    label: 'New Text Overlay',
+                    value: uuid(),
+                    nodes: [{
+                        "value": "Text",
+                        "side": "right",
+                        "block": "center",
+                        "blockOffset": 0,
+                        "inline": "center",
+                        "inlineOffset": 0,
+                        "size": 1.0,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 100,
+                        "leadingOffset": 0.25
+                    }]
+                });
+                updateTemplate(currentIndex);
+            });
+            document.getElementById('presetAdd').addEventListener('click', () => {
+                presetDisabled.checked = true;
+                setLocalStoragePresetDisabled();
+                addUserDefinedPreset({
+                    label: 'New Text Overlay',
+                    value: uuid(),
+                    nodes: [{
+                        "value": "Text",
+                        "side": "right",
+                        "block": "center",
+                        "blockOffset": 0,
+                        "inline": "center",
+                        "inlineOffset": 0,
+                        "size": 1.0,
+                        "color": { "red": 0, "green": 0, "blue": 0, "alpha": 1 },
+                        "font": "Rubik",
+                        "weight": 100,
+                        "leadingOffset": 0.25
+                    }]
+                });
+                updateTemplate(currentIndex);
+            });
+            document.getElementById('presetCopy').addEventListener('click', () => {
+                presetDisabled.checked = true;
+                const id = getSelectPreset();
+                const preset = getPresetByUuid(id);
+                addUserDefinedPreset({
+                    value: uuid(),
+                    label: preset.label,
+                    nodes: structuredClone(preset.nodes)
+                });
+                updateTemplatePresets();
+                updateTemplate(currentIndex);
+            });
+            document.getElementById('presetRename').addEventListener('click', () => {
+                const presetNameWrapperEle = document.getElementById('presetNameWrapper');
+                const presetNameEle = document.getElementById('presetName');
+                presetNameWrapperEle.classList.toggle('hide', false);
+                const id = getSelectPreset();
+                const preset = getPresetByUuid(id);
+                presetNameEle.value = preset.label;
+                presetNameEle.focus();
+            });
+            document.getElementById('presetImport').addEventListener('click', async () => {
+                const [fileHandle] = await window.showOpenFilePicker({
+                    types: [{
+                        description: 'JSON Files',
+                        accept: {
+                            'application/json': ['.json']
+                        }
+                    }],
+                    multiple: false
+                });
+                const file = await fileHandle.getFile();
+                const content = await file.text();
+                const preset = JSON.parse(content);
+                if (typeof preset === 'object' && !Array.isArray(preset) && preset !== null) {
+                    preset.value = uuid();
+                    if (!preset.label) {
+                        alert(`Invalid file, missing 'label'.`);
+                    }
+                    if (!preset.nodes) {
+                        alert(`Invalid file, missing 'nodes'.`);
+                    }
+                    addUserDefinedPreset(preset);
+                } else {
+                    alert('Invalid file.');
+                }
+            });
+            document.getElementById('presetExport').addEventListener('click', async () => {
+                const fileHandle = await window.showSaveFilePicker({
+                    types: [{
+                        description: 'JSON Files',
+                        accept: {
+                            'application/json': ['.json']
+                        }
+                    }]
+                });
+                const id = getSelectPreset();
+                const dataToSave = structuredClone(getPresetByUuid(id));
+                delete dataToSave.value;
+                const jsonString = JSON.stringify(dataToSave, null, 2);
+                const writableStream = await fileHandle.createWritable();
+                await writableStream.write(jsonString);
+                await writableStream.close();
+            });
+            document.getElementById('presetRemove').addEventListener('click', () => {
+                const templatePreset = getTemplatePreset();
+                if (templatePreset) {
+                    const yes = confirm('Revert text overlay to template configuration?');
+                    if (yes) {
+                        const id = getSelectPreset();
+                        setUserDefinedPreset({
+                            value: id,
+                            label: templatePreset.label,
+                            nodes: structuredClone(templatePreset.nodes)
+                        });
+                        updateTemplatePresets();
+                        updateTemplate(currentIndex);
+                    }
+                } else {
+                    const yes = confirm('Are you sure you want to remove this text overlay?');
+                    if (yes) {
+                        const id = getSelectPreset();
+                        deleteUserDefinedPreset(id);
+                        updateTemplate(currentIndex);
+                    }
+                }
+            });
+            const presetNameWrapperEle = document.getElementById('presetNameWrapper');
+            const presetNameEle = document.getElementById('presetName');
+            let ignoreNext = false;
+            function closePresetName(newValue) {
+                if (newValue && !ignoreNext) {
+                    const id = getSelectPreset();
+                    setUserDefinedPreset({
+                        value: id,
+                        label: newValue
+                    });
+                    updateTemplatePresets();
+                    ignoreNext = false;
+                }
+                presetNameWrapperEle.classList.toggle('hide', true);
+            }
+            presetNameEle.addEventListener('blur', (e) => {
+                closePresetName(e.target.value);
+            });
+            presetNameEle.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closePresetName(null);
+                    ignoreNext = true;
+                } else if (e.key === 'Enter') {
+                    closePresetName(e.target.value);
+                }
+            });
+            const presetMenuEle = document.getElementById('presetMenu');
+            const presetMenuItemsEle = document.getElementById('presetMenuItems');
+            let presetMenuVisible = false;
+            function hideMenu() {
+                presetMenuItemsEle.classList.toggle('hide', true);
+                presetMenuVisible = false;
+                document.removeEventListener('click', hideMenu);
+                document.removeEventListener('keydown', hideMenuEscape);
+            }
+            function hideMenuEscape(e) {
+                if (e.key === 'Escape') {
+                    hideMenu();
+                }
+            }
+            presetMenuEle.addEventListener('click', () => {
+                presetMenuVisible = !presetMenuVisible;
+                presetMenuItemsEle.classList.toggle('hide', !presetMenuVisible);
+                requestAnimationFrame(() => {
+                    document.addEventListener('keydown', hideMenuEscape);
+                    document.addEventListener('click', hideMenu);
+                });
             });
             // Cache all images
-            const promises = [dbPromise];
+            const promises = [];
             const templateEle = document.getElementById('template');
-            const list = ['page.png', ...(templates.map(o => o.value))];
-            list.forEach((value) => {
-                const img = new Image();
-                promises.push(new Promise(resolve => {
-                    img.addEventListener('load', () => {
-                        cacheTemplate.set(value, img);
-                        resolve(img);
-                    }); 
+            const fontPromises = [];
+            googleFonts.forEach((url) => {
+                fontPromises.push(new Promise((resolve) => {
+                    const styleElement = document.createElement('link');
+                    styleElement.setAttribute('rel', 'stylesheet');
+                    styleElement.addEventListener('load', () => {
+                        console.log('Font:', url);
+                        resolve();
+                    });
+                    styleElement.setAttribute('href', url);
+                    document.head.appendChild(styleElement);
                 }));
-                console.log(`Caching '${value}'...`);
-                img.src = value;
             });
-            Promise.all(promises).then((imgs) => {
-                // DB
-                dbCache = imgs.shift();
-                // Images are all Cached
-                console.log('Cached all image templates.');
-                // Enable dropdown
-                templateEle.disabled = false;
-                // Init Template List
-                updateTemplateList(0);
-                // Init Defaults
+            // Enable dropdown
+            templateEle.disabled = false;
+            // Init Template List
+            updateTemplateList(0);
+            // Update Preset Lists
+            const presetSelectEle = document.getElementById('presetSelect');
+            presetSelectEle.addEventListener('change', (e) => {
+                const { nodes } = getPresetByUuid(e.target.value);
+                updateTextList(nodes);
+                setLocalStoragePreset();
+                updateTemplate(currentIndex);
+            });
+            const currentPreset = getLocalStoragePreset() ?? getSelectPreset();
+            if (currentPreset) {
+                presetSelectEle.value = currentPreset;
+                const preset = getPresetByUuid(currentPreset);
+                updateTextList(preset.nodes);
+            }
+            // Init Defaults, this clicks the first page
+            Promise.all(fontPromises).then(() => {
+                // Update Tint
+                updateTintList();
+                // Start Rendering
                 updateTotalPages();
             });
         });
@@ -1287,184 +3496,22 @@
             cm: 'cm',
             mm: 'mm'
         };
-        const templates = [
-            {
-                label: 'Blank',
-                value: 'covers/cover-blank.png',
-                type: templateType.cover
-            },
-            {
-                label: 'Map - Chicago',
-                value: 'covers/cover-chicago.png',
-                type: templateType.cover
-            },
-            {
-                label: 'Map - St. Louis',
-                value: 'covers/cover-st-louis.png',
-                type: templateType.cover
-            },
-            {
-                label: 'Map - Seattle',
-                value: 'covers/cover-seattle.png',
-                type: templateType.cover
-            },
-            {
-                label: 'Map - New York',
-                value: 'covers/cover-new-york.png',
-                type: templateType.cover
-            },
-            {
-                label: 'Map - Kansas',
-                value: 'covers/cover-kansas.png',
-                type: templateType.cover
-            },
-            {
-                label: 'Contour - Boulder, CO',
-                value: 'covers/cover-boulder-contour.png',
-                type: templateType.cover
-            },
-            {
-                label: 'Iso Dungeon',
-                value: 'covers/cover-iso.png',
-                type: templateType.cover
-            },
-            {
-                label: 'D20',
-                value: 'covers/cover-d20.png',
-                type: templateType.cover,
-                text: [
-                    {
-                        value: 'Campaign Notes',
-                        block: 'end',
-                        blockOffset: 0,
-                        inline: 'center',
-                        inlineOffset: 0,
-                    }
-                ]
-            },
-            {
-                label: 'Dice',
-                value: 'covers/cover-dice.png',
-                type: templateType.cover
-            },
-            {
-                label: '1/4" Grid Dice',
-                value: 'covers/cover-grid-dice.png',
-                type: templateType.cover
-            },
-            {
-                label: '1/4" Grid Fallout Survival Guide',
-                value: 'covers/cover-grid-survival-guide.png',
-                type: templateType.cover
-            },
-            {
-                label: '1/4" Grid Elder Scrolls',
-                value: 'covers/cover-grid-elder-scrolls.png',
-                type: templateType.cover
-            },
-            {
-                label: '1/4" Basic - Blank',
-                value: 'details/details-basic-blank.png',
-                type: templateType.detail,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" Basic - Dots',
-                value: 'details/details-basic-dot.png',
-                type: templateType.detail,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" Basic - Grid',
-                value: 'details/details-basic-grid.png',
-                type: templateType.detail,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" Basic - Isometric',
-                value: 'details/details-basic-iso.png',
-                type: templateType.detail,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" Dots',
-                value: 'inner/inner-dot.png',
-                type: templateType.inner,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" Grid',
-                value: 'inner/inner-grid.png',
-                type: templateType.inner,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" Line Rule',
-                value: 'inner/inner-line.png',
-                type: templateType.inner,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" Isometric Grid',
-                value: 'inner/inner-iso.png',
-                type: templateType.inner,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/2" Hexagon',
-                value: 'inner/inner-hex.png',
-                type: templateType.inner,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" Line Rule | Dots',
-                value: 'inner/inner-left-line-right-dot.png',
-                type: templateType.inner,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" Dots | Line Rule',
-                value: 'inner/inner-left-dot-right-line.png',
-                type: templateType.inner,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" Dots + Grid + Cross',
-                value: 'inner/inner-dot-grid-cross.png',
-                type: templateType.inner,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1/4" RPG - Item',
-                value: 'inner/inner-rpg-item.png',
-                type: templateType.inner,
-                gridType: templateGridType.inch
-            },
-            {
-                label: '1cm Dot',
-                value: 'inner/inner-1cm-dot.png',
-                type: templateType.inner,
-                gridType: templateGridType.cm
-            },
-            {
-                label: '5mm Dot',
-                value: 'inner/inner-5mm-dot.png',
-                type: templateType.inner,
-                gridType: templateGridType.mm
-            }
-        ];
-        const templateCovers = templates.filter(x => x.type === templateType.cover).map(x => x.value);
-        const templateDetails = templates.filter(x => x.type === templateType.detail || x.type === templateType.inner).map(x => x.value);
-        const templateInners = templates.filter(x => x.type === templateType.inner).map(x => x.value);
+        let templates = [];
+        let templateCovers = [];
+        let templateDetails = [];
+        let templateInners = [];
     </script>
 </head>
 
 <body>
-    <select class="zoom no-print" id="zoom">
-        <option value="100%">100%</option>
-        <option value="125%">125%</option>
-        <option value="150%">150%</option>
-    </select>
+    <div class="corner no-print">
+        <select class="pageBackground" id="pageBackground"></select>
+        <select class="zoom" id="zoom">
+            <option value="100%">100%</option>
+            <option value="125%">125%</option>
+            <option value="150%">150%</option>
+        </select>
+    </div>
     <section class="no-print">
         <h1>Pocket Journal Generator</h1>
         <div>
@@ -1508,12 +3555,108 @@
             <div>First Sheet</div>
             <div>...</div>
         </div>
-        <div>
-            <label for="template">Template</label>
-            <select id="template" disabled></select>
+        <div style="display: flex;">
+            <div style="flex: 1;">
+                <label for="template">Template</label>
+                <select id="template" class="template" disabled></select>
+            </div>
+            <div style="display: flex;flex-direction: column;position: relative;">
+                <div style="margin-bottom: 0.25rem;">Tint</div>
+                <button id="tint" class="tint">&nbsp;</button>
+                <div id="tintMenu" class="tint-menu hide">
+                    <div class="tint-menu-wrap">
+                        <div class="tint-off">
+                            <div style="display: flex;">
+                                <div style="width: 1.5rem;">
+                                    <input id="tintNone" type="radio" name="tint" />
+                                </div>
+                                <div style="flex: 1;">Disable Tint</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction: row;gap:0.25rem;">
+                            <div style="display: flex;width: 1rem;">
+                                <div style="align-self: center;">
+                                    <input id="tintCustom" type="radio" name="tint" />
+                                </div>
+                            </div>
+                            <div style="display: flex;gap:0.25rem;flex-direction: column;">
+                                <div style="flex:1;display: flex;align-items:center;">
+                                    <div class="tint-red"></div>
+                                </div>
+                                <div style="flex:1;display: flex;align-items:center;">
+                                    <div class="tint-green"></div>
+                                </div>
+                                <div style="flex:1;display: flex;align-items:center;">
+                                    <div class="tint-blue"></div>
+                                </div>
+                            </div>
+                            <div style="display: flex;flex-direction: column;gap:0.125rem;flex:1;">
+                                <div style="flex:1;display: flex;"><input style="width:100%;" id="tintRed" type="range"
+                                        value="170" min="0" max="255" /></div>
+                                <div style="flex:1;display: flex;"><input style="width:100%;" id="tintGreen"
+                                        type="range" value="170" min="0" max="255" /></div>
+                                <div style="flex:1;display: flex;"><input style="width:100%;" id="tintBlue" type="range"
+                                        value="170" min="0" max="255" /></div>
+                            </div>
+                            <div style="display: flex;flex-direction: column;">
+                                <div><input type="number" id="tintRedValue" class="no-arrows" value="170" /></div>
+                                <div><input type="number" id="tintGreenValue" class="no-arrows" value="170" /></div>
+                                <div><input type="number" id="tintBlueValue" class="no-arrows" value="170" /></div>
+                                <!-- Percentage Slider for levels -->
+                            </div>
+                        </div>
+                        <div class="tint-list-header" style="display: flex;flex-direction: row;">
+                            <div style="flex:1;margin-left:1.5rem;font-weight: 500;">Color</div>
+                            <div style="display: flex;width: 2rem;justify-content: center;">
+                                <div class="tint-red"></div>
+                            </div>
+                            <div style="display: flex;width: 2rem;justify-content: center;">
+                                <div class="tint-green"></div>
+                            </div>
+                            <div style="display: flex;width: 2rem;justify-content: center;">
+                                <div class="tint-blue"></div>
+                            </div>
+                        </div>
+                        <div class="tint-options" id="tintOptions"></div>
+                        <p class="tint-info">
+                            <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+                            </svg>
+                            Provided tints are tested, but will vary by each printer's color profile.
+                        </p>
+                        <div class="fade" id="fade">
+                            <button data-index="-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                                    <path
+                                        d="M16 2C23.732 2 30 8.26801 30 16C30 23.732 23.732 30 16 30C8.26801 30 2 23.732 2 16C2 8.26801 8.26801 2 16 2ZM7.65723 10.4873C6.61069 12.0679 6 13.9624 6 16C6 21.5228 10.4772 26 16 26C18.0378 26 19.932 25.3885 21.5127 24.3418L7.65723 10.4873ZM16 6C13.9616 6 12.0663 6.61094 10.4854 7.6582L24.3408 21.5137C25.388 19.9327 26 18.0383 26 16C26 10.4772 21.5228 6 16 6Z"
+                                        fill="#AAAAAA" />
+                                </svg>
+                            </button>
+                            <button data-index="0">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                                    <rect width="32" height="12" fill="black" />
+                                    <rect y="12" width="32" height="4" fill="black" fill-opacity="0.9" />
+                                    <rect y="16" width="32" height="4" fill="black" fill-opacity="0.86" />
+                                    <rect y="20" width="32" height="4" fill="black" fill-opacity="0.82" />
+                                    <rect y="24" width="32" height="4" fill="black" fill-opacity="0.78" />
+                                    <rect y="28" width="32" height="4" fill="black" fill-opacity="0.75" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="tint-info">
+                            <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+                            </svg>
+                            Fade low brightness pixels. Useful for printing on non-white paper.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="customTemplate" class="custom">
-            <input type="file" id="upload"/>
+            <input type="file" id="upload" />
             <select id="customGridType">
                 <option>inch</option>
                 <option>cm</option>
@@ -1521,13 +3664,11 @@
         </div>
         <div>
             <div style="display: flex;gap:0.5rem;align-items: center">
-                <label style="white-space: pre;"><input type="checkbox" id="enablePageNumbers" checked /> Page Numbers</label>
-                <select id="font">
-                    <option value="Gill Sans MT" style="font-family: 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size:20px;">Gill Sans MT</option>
-                    <option value="Rubik Light" style="font-family: 'Rubik';font-weight:100;font-size:20px;">Rubik Light</option>
-                    <option value="Rubik Regular" style="font-family: 'Rubik';font-size:20px;">Rubik Regular</option>
-                    <option value="Rubik Bold" style="font-family: 'Rubik';font-weight:700;font-size:20px;">Rubik Bold</option>
-                </select>
+                <label style="flex:1;">
+                    <input type="checkbox" id="enablePageNumbers" checked />
+                    Page Numbers
+                </label>
+                <div id="font"></div>
             </div>
             <label>
                 <input type="checkbox" id="includeCover" />
@@ -1583,14 +3724,22 @@
                     </select>
                 </div>
                 <div style="color:#666; line-height: 1.2rem;margin-block-start: 0.5rem;">
-                    <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24"><path fill="currentColor" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
-                    Hold your print up to the light. If the front is offset to the right use a negative value. Reprint to verify.
+                    <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+                    </svg>
+                    Hold your print up to the light. If the front is offset to the right use a negative value. Reprint
+                    to verify.
                 </div>
                 <div style="color:#666; line-height: 1.2rem;margin-block-start: 0.5rem;">
-                    <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16" /></svg>
-                    Not all paper is exactly 8.5in width, so this could vary if the cover or inner is using different paper!
+                    <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16" />
+                    </svg>
+                    Not all paper is exactly 8.5in width, so this could vary if the cover or inner is using different
+                    paper!
                 </div>
-                <div style="display: flex; gap: 1rem; padding-top: 0.75rem;margin-top:0.75rem;border-top: 2px solid #999;">
+                <div
+                    style="display: flex; gap: 1rem; padding-top: 0.75rem;margin-top:0.75rem;border-top: 2px solid #999;">
                     <label for="innerOffset" style="white-space: pre;">Inner Offset</label>
                     <select id="innerOffset">
                         <option value="1">1; Office 24lb, 90gsm</option>
@@ -1601,50 +3750,105 @@
                     </select>
                 </div>
                 <div style="color:#666; line-height: 1.2rem;margin-block-start: 0.5rem;">
-                    <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24"><path fill="currentColor" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" /></svg>
-                    Nesting pages causes a gradual offset due to the paper thickness. Ensure inner pages are nested in order.
+                    <svg style="width:1rem;transform:translateY(2px)" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+                    </svg>
+                    Nesting pages causes a gradual offset due to the paper thickness. Ensure inner pages are nested in
+                    order.
                 </div>
             </fieldset>
             <fieldset style="margin-block-start: 1rem;border: 2px solid #999;border-radius: 0.5rem;">
                 <legend style="cursor: default;">
-                    <input type="checkbox" id="customText" style="vertical-align: text-bottom;" />
-                    Custom Text (Coming Soon)
+                    <input type="checkbox" id="presetDisabled" disabled style="vertical-align: text-bottom;" />
+                    Overlay Text
                 </legend>
-                <table>
-                    <thead>
-                        <tr>
-                            <th><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1rem;height:1rem;vertical-align:text-bottom;"><path d="M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z" /></svg></th>
-                            <th>Text</th>
-                            <th><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1rem;height:1rem;vertical-align:text-bottom;"><path d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" /></svg></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="checkbox" />
-                            </th>
-                            <td>
-                                <input type="text" />
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1rem;height:1rem;"><path d="M17.45,17.55L12,23L6.55,17.55L7.96,16.14L11,19.17V4.83L7.96,7.86L6.55,6.45L12,1L17.45,6.45L16.04,7.86L13,4.83V19.17L16.04,16.14L17.45,17.55Z" /></svg>
-                                <select>
-                                    <option>Top</option>
-                                    <option>Center</option>
-                                    <option>Bottom</option>
-                                </select>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:1rem;height:1rem;"><path d="M6.45,17.45L1,12L6.45,6.55L7.86,7.96L4.83,11H19.17L16.14,7.96L17.55,6.55L23,12L17.55,17.45L16.14,16.04L19.17,13H4.83L7.86,16.04L6.45,17.45Z" /></svg>
-                                <select>
-                                    <option>Left</option>
-                                    <option>Center</option>
-                                    <option>Right</option>
-                                </select>
-                            </td>
-                            <td>
-                                <button>X</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button>Add Text</button>
+                <div id="noPresets" class="editor-buttons">
+                    <button id="noPresetsAdd" class="editor-add">Add Overlay Text</button>
+                </div>
+                <div id="hasPresets">
+                    <div class="editor-column">
+                        <div class="editor-row editor-presets">
+                            <select id="presetSelect" disabled></select>
+                            <button id="presetAdd" class="editor-preset-add"><svg xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24" style="width:1rem;height:1rem;vertical-align:text-bottom;">
+                                    <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                                </svg></button>
+                            <button id="presetCopy" class="editor-preset-copy"><svg xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24" style="width:1rem;height:1rem;vertical-align:text-bottom;">
+                                    <path fill="currentColor"
+                                        d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" />
+                                </svg></button>
+                            <div class="editor-preset-menu">
+                                <button class="editor-preset-menu-button" id="presetMenu">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                        style="width:1rem;height:1rem;vertical-align:text-bottom;">
+                                        <path fill="currentColor"
+                                            d="M18,9V10.5L12,16.5L6,10.5V9H18M12,13.67L14.67,11H9.33L12,13.67Z" />
+                                    </svg>
+                                </button>
+                                <div id="presetMenuItems" class="editor-preset-menu-list hide">
+                                    <div class="editor-preset-menu-items">
+                                        <button id="presetRename" class="editor-preset-menu-item">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                style="width:1.5rem;height:1.5rem;vertical-align:text-bottom;">
+                                                <path fill="currentColor"
+                                                    d="M17,7H22V17H17V19A1,1 0 0,0 18,20H20V22H17.5C16.95,22 16,21.55 16,21C16,21.55 15.05,22 14.5,22H12V20H14A1,1 0 0,0 15,19V5A1,1 0 0,0 14,4H12V2H14.5C15.05,2 16,2.45 16,3C16,2.45 16.95,2 17.5,2H20V4H18A1,1 0 0,0 17,5V7M2,7H13V9H4V15H13V17H2V7M20,15V9H17V15H20Z" />
+                                            </svg>
+                                            <span>Rename</span>
+                                        </button>
+                                        <div class="editor-preset-menu-seperator"></div>
+                                        <button id="presetImport" class="editor-preset-menu-item">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                style="width:1.5rem;height:1.5rem;vertical-align:text-bottom;">
+                                                <path fill="currentColor"
+                                                    d="M14 2H6C4.89 2 4 2.9 4 4V20C4 21.11 4.89 22 6 22H18C19.11 22 20 21.11 20 20V8L14 2M18 20H6V4H13V9H18V20M15 11.93V19H7.93L10.05 16.88L7.22 14.05L10.05 11.22L12.88 14.05L15 11.93Z" />
+                                            </svg>
+                                            <span>Import</span>
+                                        </button>
+                                        <button id="presetExport" class="editor-preset-menu-item">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                style="width:1.5rem;height:1.5rem;vertical-align:text-bottom;">
+                                                <path fill="currentColor"
+                                                    d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2M18 20H6V4H13V9H18V20M16 11V18.1L13.9 16L11.1 18.8L8.3 16L11.1 13.2L8.9 11H16Z" />
+                                            </svg>
+                                            <span>Export</span>
+                                        </button>
+                                        <div class="editor-preset-menu-seperator"></div>
+                                        <button id="presetRemove" class="editor-preset-menu-item">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                style="width:1.5rem;height:1.5rem;vertical-align:text-bottom;">
+                                                <path fill="currentColor" id="presetRemoveIcon"
+                                                    d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" />
+                                            </svg>
+                                            <span id="presetRemoveText">Remove</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="presetNameWrapper" class="editor-preset-rename hide">
+                                <input id="presetName" class="editor-name" type="text" placeholder="Preset Name" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="editor-wrapper">
+                        <div class="editor-header-hideshow">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                style="width:1rem;height:1rem;vertical-align:text-bottom;">
+                                <path
+                                    d="M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z" />
+                            </svg>
+                        </div>
+                        <div class="editor-header-text">
+                            Text Items
+                        </div>
+                        <div id="textList" class="editor-list"></div>
+                    </div>
+                    <div class="editor-buttons">
+                        <button id="textReset" class="editor-reset">Reset to Preset</button>
+                        <button id="textAdd" class="editor-add">Add Text</button>
+                    </div>
+                </div>
             </fieldset>
         </div>
         <div>
@@ -1658,23 +3862,52 @@
             <p>Select an existing template or upload your own.</p>
             <h3>How to Print</h3>
             <p>Start by printing the cover page, then decide if your notebook pages will have page numbers.</p>
-
             <h4>Without Page Numbers</h4>
-            <p>Since there are no page numbers each inner sheet will have a standard front and back. Print an info page on the cover back or any template.</p>
+            <p>Since there are no page numbers each inner sheet will have a standard front and back. Print an info page
+                on the cover back or any template.</p>
             <h4>With Page Numbers</h4>
             <p>Use the page selection tool to correctly mark the pages then print them.</p>
             <h3>Page</h3>
             <ul>
-                <li><strong>Cover</strong> - Front page is the right side and left the back of the booklet. 110lb+ (199gsm) Cardstock paper recommended.</li>
-                <li><strong>Detail (Cover Back)</strong> - Optional informational page. This is preferred when the inner pages use a different paper stock. If this is not the case then print the inner page on the back of the cover page.</li>
-                <li><strong>Inner</strong> - This paper stock can vary depending on the usage. 65lb is common. Too many pages can cause a notebook to be difficult to close or staple.</li>
+                <li><strong>Cover</strong> - Front page is the right side and left the back of the booklet. 110lb+
+                    (199gsm) Cardstock paper recommended.</li>
+                <li><strong>Detail (Cover Back)</strong> - Optional informational page. This is preferred when the inner
+                    pages use a different paper stock. If this is not the case then print the inner page on the back of
+                    the cover page.</li>
+                <li><strong>Inner</strong> - This paper stock can vary depending on the usage. 65lb is common. Too many
+                    pages can cause a notebook to be difficult to close or staple.</li>
             </ul>
-            <hr/>
+            <h3>Text Overlays</h3>
+            <p>Some templates ship with presets. These presets can be fully modified. You might also want to pull in
+                dynamic data.</p>
+            <ul>
+                <li><code>{pageNumber}</code> Current page number based on the left or right page placement.</li>
+                <li><code>{pageIndex}</code> Page index</li>
+                <li><code>{year}</code> ex: 2025</li>
+                <li><code>{shortYear}</code> ex: 25</li>
+                <li><code>{month}</code> ex: 1</li>
+                <li><code>{monthPadded}</code> ex: 01</li>
+                <li><code>{monthFull}</code> ex: January</li>
+                <li><code>{monthShort}</code> ex: Jan</li>
+                <li><code>{day}</code> ex: 8</li>
+                <li><code>{dayPadded}</code> ex: 08</li>
+                <li><code>{index}</code> Text entry index</li>
+            </ul>
+            <h4>Export</h4>
+            <p>While templates are cached exporting can let you move templates or better organize your favorites.</p>
+            <h4>Import</h4>
+            <p>All imported text overlays will be stored as a new user defined entry.</p>
+            <h4>Remove / Revert</h4>
+            <p>Changes to text overlay presets can be reverted back to the template default. Additionally any user
+                defined text overlays can be removed.</p>
+            <hr />
             <h2>Source Code</h2>
-            <p><a href="https://github.com/Templarian/journal-generator">https://github.com/Templarian/journal-generator</a></p>
-            <hr/>
+            <p><a
+                    href="https://github.com/Templarian/journal-generator">https://github.com/Templarian/journal-generator</a>
+            </p>
+            <hr />
             <h3>Clear Cache</h3>
-            <p>If something is not working...</p>
+            <p>If something is not working. Note this resets all text and configs.</p>
             <button id="clearCache">Clear Cache</button>
         </div>
     </section>
