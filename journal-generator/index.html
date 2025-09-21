@@ -1570,14 +1570,15 @@
                 localStorage.removeItem(key);
                 return;
             }
+            const current = getLocalStorageTint().split(':');
             if (red === null) {
-                red = getLocalStorageTint().split(':')[0];
+                red = current[0] === 'null' ? 170 : current[0];
             }
             if (green === null) {
-                green = getLocalStorageTint().split(':')[1];
+                green = current[1] === 'null' ? 170 : current[1];
             }
             if (blue === null) {
-                blue = getLocalStorageTint().split(':')[2];
+                blue = current[2] === 'null' ? 170 : current[2];
             }
             const value = `${red}:${green}:${blue}`;
             localStorage.setItem(key, value);
@@ -3072,12 +3073,14 @@
                 tintRedValueEle.value = tintRed;
                 setLocalStorageTint(tintRed, null, null);
                 updateTemplate(currentIndex);
+                updateTint();
             });
             tintRedValueEle.addEventListener('input', (e) => {
                 tintRed = parseInt(e.target.value, 10);
                 tintRedEle.value = tintRed;
                 setLocalStorageTint(tintRed, null, null);
                 updateTemplate(currentIndex);
+                updateTint();
             });
             const tintGreenEle = document.getElementById('tintGreen');
             const tintGreenValueEle = document.getElementById('tintGreenValue');
@@ -3086,12 +3089,14 @@
                 tintGreenValueEle.value = tintGreen;
                 setLocalStorageTint(null, tintGreen, null);
                 updateTemplate(currentIndex);
+                updateTint();
             });
             tintGreenValueEle.addEventListener('input', (e) => {
                 tintGreen = parseInt(e.target.value, 10);
                 tintGreenEle.value = tintGreen;
                 setLocalStorageTint(null, tintGreen, null);
                 updateTemplate(currentIndex);
+                updateTint();
             });
             const tintBlueEle = document.getElementById('tintBlue');
             const tintBlueValueEle = document.getElementById('tintBlueValue');
@@ -3100,12 +3105,14 @@
                 tintBlueValueEle.value = tintBlue;
                 setLocalStorageTint(null, null, tintBlue);
                 updateTemplate(currentIndex);
+                updateTint();
             });
             tintBlueValueEle.addEventListener('input', (e) => {
                 tintBlue = parseInt(e.target.value, 10);
                 tintBlueEle.value = tintBlue;
                 setLocalStorageTint(null, null, tintBlue);
                 updateTemplate(currentIndex);
+                updateTint();
             });
             document.getElementById('upload').addEventListener('change', () => {
                 updateTemplate(currentIndex);
@@ -3115,6 +3122,7 @@
             tintNoneEle.addEventListener('change', () => {
                 setLocalStorageTint(null, null, null);
                 updateTemplate(currentIndex);
+                updateTint();
             });
             // Tint Custom
             const tintCustomEle = document.getElementById('tintCustom');
@@ -3124,6 +3132,7 @@
                 const blue = document.getElementById('tintBlueValue').value;
                 setLocalStorageTint(red, green, blue);
                 updateTemplate(currentIndex);
+                updateTint();
             });
             // Fade
             const fadeEle = document.getElementById('fade');
