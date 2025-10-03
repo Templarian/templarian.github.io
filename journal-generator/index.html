@@ -1350,7 +1350,8 @@
             });
         }
         // Keep track of selected page
-        let currentIndex = 0;
+        // start at -1 to fully rerender 0
+        let currentIndex = -1;
         // Keep track of pages metaData
         let pages = [];
         // Google Fonts
@@ -1404,7 +1405,7 @@
             value: '160:102:28',
             label: 'Light Brown'
         }, {
-            value: '3:169:244',
+            value: '148:170:243',
             label: 'Blue Print'
         }];
         // Fonts
@@ -1603,6 +1604,27 @@
                 return parseInt(localStorage.getItem(key), 10);
             }
             return -1;
+        }
+        function setLocalStorageOpacity(value) {
+            const type = getCurrentType();
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:opacity`;
+            if (value === -1) {
+                localStorage.removeItem(key);
+            } else {
+                localStorage.setItem(key, `${value}`);
+            }
+        }
+        function getLocalStorageOpacity() {
+            const type = getCurrentType();
+            const template = getTemplate();
+            const templateKey = template ? template.value : 'custom';
+            const key = `${type}:${templateKey}:opacity`;
+            if (localStorage.getItem(key)) {
+                return localStorage.getItem(key);
+            }
+            return 1;
         }
         /**
          * Pull user defined from localstorage
@@ -2263,6 +2285,11 @@
                 .replace('{dayPadded}', dayPadded)
                 .replace('{index}', index);
         }
+        function updateOpacity() {
+            const opacityEle = document.getElementById('templateOpacity');
+            const opacity = getLocalStorageOpacity();
+            opacityEle.value = opacity;
+        }
         function updateTint() {
             const tintNoneEle = document.getElementById('tintNone');
             const tintCustomEle = document.getElementById('tintCustom');
@@ -2758,7 +2785,9 @@
                 customGridTypeEle.value = localStorage.getItem('innerGridType') ?? 'inch';
             }
             // Update Tint Selection
-
+            updateTint();
+            updateOpacity();
+            updateFade();
             // Custom list
             customTemplateEle.classList.toggle('hide', template !== 'custom');
             templateEle.classList.toggle('custom', template === 'custom');
@@ -2859,11 +2888,13 @@
                 numPage.classList.add('page-number');
                 pEle.appendChild(numPage);
                 pEle.addEventListener('click', () => {
-                    // Update template list
-                    if (currentIndex !== page.index) {
-                        // Update templates list
-                        updateTemplateList(page.index);
+                    if (currentIndex === page.index) {
+                        return;
                     }
+                    // Update global page index
+                    currentIndex = page.index;
+                    // Update templates list
+                    updateTemplateList(page.index);
                     // Update page numbers
                     document.getElementById('print').textContent = `Print '${page.name}'`;
                     pageEles.forEach(pEle => pEle.classList.remove('selected'));
@@ -2880,17 +2911,13 @@
                         pageNumberEle.textContent = `${page.name}${isEnabled ? ` of ${totalPages + 1} Pages` : ''}`;
                     }
                     updateTemplate(page.index);
-                    if (currentIndex !== page.index) {
-                        currentIndex = page.index;
-                        if (page.index === 0) {
-                            document.getElementById('typeCover').click();
-                        } else if (page.index === 1) {
-                            document.getElementById('typeDetail').click();
-                        } else {
-                            document.getElementById('typeInner').click();
-                        }
+                    if (page.index === 0) {
+                        document.getElementById('typeCover').click();
+                    } else if (page.index === 1) {
+                        document.getElementById('typeDetail').click();
+                    } else {
+                        document.getElementById('typeInner').click();
                     }
-                    currentIndex = page.index;
                     // Update Paper Color, cover vs inner
                     updatePaperColor(getLocalStoragePaperColor());
                     updateTint();
@@ -2899,7 +2926,9 @@
                 pageSelect.appendChild(pEle);
                 pageEles.push(pEle);
             });
-            if (currentIndex < pageSelect.children.length) {
+            if (currentIndex === -1) {
+                pageSelect.children[0].click();
+            } else if (currentIndex < pageSelect.children.length) {
                 pageSelect.children[currentIndex].click();
             } else {
                 pageSelect.firstChild.click();
@@ -3323,7 +3352,7 @@
                 const preset = getPresetByUuid(id);
                 addUserDefinedPreset({
                     value: uuid(),
-                    label: preset.label,
+                    label: `${preset.label} (Copy)`,
                     nodes: structuredClone(preset.nodes)
                 });
                 updateTemplatePresets();
@@ -3634,6 +3663,20 @@
                             </svg>
                             Provided tints are tested, but will vary by each printer's color profile.
                         </p>
+                        <div style="border-top: 1px solid #999;padding-top: 0.5rem;margin-top: 0.5rem;">
+                            <select id="templateOpacity">
+                                <option value="1.0">Opacity 100%</option>
+                                <option value="0.9">Opacity 90%</option>
+                                <option value="0.8">Opacity 80%</option>
+                                <option value="0.7">Opacity 70%</option>
+                                <option value="0.6">Opacity 60%</option>
+                                <option value="0.5">Opacity 50%</option>
+                                <option value="0.4">Opacity 40%</option>
+                                <option value="0.3">Opacity 30%</option>
+                                <option value="0.2">Opacity 20%</option>
+                                <option value="0.1">Opacity 10%</option>
+                            </select>
+                        </div>
                         <div class="fade" id="fade">
                             <button data-index="-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
