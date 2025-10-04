@@ -1610,7 +1610,7 @@
             const template = getTemplate();
             const templateKey = template ? template.value : 'custom';
             const key = `${type}:${templateKey}:opacity`;
-            if (value === -1) {
+            if (value === '1.0') {
                 localStorage.removeItem(key);
             } else {
                 localStorage.setItem(key, `${value}`);
@@ -1624,7 +1624,7 @@
             if (localStorage.getItem(key)) {
                 return localStorage.getItem(key);
             }
-            return 1;
+            return '1.0';
         }
         /**
          * Pull user defined from localstorage
@@ -2625,6 +2625,27 @@
                 }
                 ctx.putImageData(imageData, offsetX, offsetY);
             }
+            function opacityPixels() {
+                const opacity = parseFloat(getLocalStorageOpacity());
+                if (opacity === 1) {
+                    return;
+                }
+                const imageData = ctx.getImageData(
+                    offsetX,
+                    offsetY,
+                    canvas.width - (offsetX * 2),
+                    canvas.height - (offsetY + (7 * convert))
+                );
+                const pixels = imageData.data;
+                for (let i = 0; i < pixels.length; i += 4) {
+                    if (pixels[i] === 255 && pixels[i + 1] === 255 && pixels[i + 2] === 255) {
+                        pixels[i + 3] = 0;
+                        continue;
+                    }
+                    pixels[i + 3] = pixels[i + 3] * opacity;
+                }
+                ctx.putImageData(imageData, offsetX, offsetY);
+            }
             function shiftPixels(r, g, b) {
                 const imageData = ctx.getImageData(
                     offsetX,
@@ -2689,6 +2710,12 @@
                         parseInt(green, 10),
                         parseInt(blue, 10)
                     );
+                }
+                // Apply opacity to the post shifted image!
+                // this is performantly bad as it iterates again
+                const opacity = parseFloat(getLocalStorageOpacity());
+                if (opacity !== 1) {
+                    opacityPixels();
                 }
                 // Draw Text
                 drawText();
@@ -3087,6 +3114,11 @@
                 updateTemplate(currentIndex);
                 // Update template text list
                 updateTemplatePresets();
+            });
+            const templateOpacityEle = document.getElementById('templateOpacity');
+            templateOpacityEle.addEventListener('change', (e) => {
+                setLocalStorageOpacity(e.target.value);
+                updateTemplate(currentIndex);
             });
             let tintMenuHidden = true;
             const tintEle = document.getElementById('tint');
