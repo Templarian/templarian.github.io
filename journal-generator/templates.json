@@ -420,7 +420,7 @@
         "gridType": "inch"
     },
     {
-        "label": "1/4\" Basic - Dots",
+        "label": "1/4\" Basic - Dot",
         "value": "aa6941e9-549a-4d73-9f05-a6c63a0ab4c2",
         "src": "details/details-basic-dot.png",
         "type": "detail",
@@ -441,7 +441,28 @@
         "gridType": "inch"
     },
     {
-        "label": "1/4\" Dots",
+        "label": "Blank Inch",
+        "value": "144fbead-3ddf-4438-9f76-3f3b3faa2b64",
+        "src": "inner/inner-blank.png",
+        "type": "inner",
+        "gridType": "inch"
+    },
+    {
+        "label": "Blank cm",
+        "value": "a41e3413-e047-4496-aab5-84a0b86fa1fd",
+        "src": "inner/inner-blank.png",
+        "type": "inner",
+        "gridType": "cm"
+    },
+    {
+        "label": "Blank mm",
+        "value": "becd40c4-958e-44ff-a122-62739723e1fd",
+        "src": "inner/inner-blank.png",
+        "type": "inner",
+        "gridType": "mm"
+    },
+    {
+        "label": "1/4\" Dot",
         "value": "f1a3a4ab-73b3-4e7d-a034-5f6ec5f211d5",
         "src": "inner/inner-dot.png",
         "type": "inner",
@@ -476,21 +497,21 @@
         "gridType": "inch"
     },
     {
-        "label": "1/4\" Line Rule | Dots",
+        "label": "1/4\" Line Rule | Dot",
         "value": "9b516beb-8c40-4636-b071-5cb8eff0cf40",
         "src": "inner/inner-left-line-right-dot.png",
         "type": "inner",
         "gridType": "inch"
     },
     {
-        "label": "1/4\" Dots | Line Rule",
+        "label": "1/4\" Dot | Line Rule",
         "value": "7b744b03-40f8-4738-9f3a-fee9a0bd41c0",
         "src": "inner/inner-left-dot-right-line.png",
         "type": "inner",
         "gridType": "inch"
     },
     {
-        "label": "1/4\" Dots + Grid + Cross",
+        "label": "1/4\" Dot + Grid + Cross",
         "value": "d532d06f-7529-4d5c-b36f-c8efaff7d729",
         "src": "inner/inner-dot-grid-cross.png",
         "type": "inner",
@@ -511,9 +532,23 @@
         "gridType": "cm"
     },
     {
+        "label": "1cm Grid",
+        "value": "c3c80cac-f578-4eee-8f7f-045b4d6c6802",
+        "src": "inner/inner-1cm-grid.png",
+        "type": "inner",
+        "gridType": "cm"
+    },
+    {
         "label": "5mm Dot",
         "value": "7d6dd2fc-bd34-4f16-a6f0-b407a178d425",
         "src": "inner/inner-5mm-dot.png",
+        "type": "inner",
+        "gridType": "mm"
+    },
+    {
+        "label": "5mm Grid",
+        "value": "e00fabe2-2e24-4b18-aafb-6c448a51152b",
+        "src": "inner/inner-5mm-grid.png",
         "type": "inner",
         "gridType": "mm"
     },

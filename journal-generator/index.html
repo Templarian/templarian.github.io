@@ -2625,6 +2625,13 @@
                 }
                 ctx.putImageData(imageData, offsetX, offsetY);
             }
+            function rgba(r, g, b, a, backgroundR = 255, backgroundG = 255, backgroundB = 255) {
+                return {
+                    r: Math.round((1 - a) * backgroundR + a * r),
+                    g: Math.round((1 - a) * backgroundG + a * g),
+                    b: Math.round((1 - a) * backgroundB + a * b)
+                };
+            }
             function opacityPixels() {
                 const opacity = parseFloat(getLocalStorageOpacity());
                 if (opacity === 1) {
@@ -2639,10 +2646,12 @@
                 const pixels = imageData.data;
                 for (let i = 0; i < pixels.length; i += 4) {
                     if (pixels[i] === 255 && pixels[i + 1] === 255 && pixels[i + 2] === 255) {
-                        pixels[i + 3] = 0;
                         continue;
                     }
-                    pixels[i + 3] = pixels[i + 3] * opacity;
+                    const color = rgba(pixels[i], pixels[i + 1], pixels[i + 2], opacity);
+                    pixels[i] = color.r;
+                    pixels[i + 1] = color.g;
+                    pixels[i + 2] = color.b;
                 }
                 ctx.putImageData(imageData, offsetX, offsetY);
             }
