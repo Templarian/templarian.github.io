@@ -2904,10 +2904,6 @@
             // Render Buttons
             const pageEles = [];
             function clickPage(page) {
-                // Update global page index
-                currentIndex = page.index;
-                // Update templates list
-                updateTemplateList(page.index);
                 // Update page numbers
                 document.getElementById('print').textContent = `Print '${page.name}'`;
                 pageEles.forEach(pEle => pEle.classList.remove('selected'));
@@ -2960,6 +2956,11 @@
                     if (currentIndex === page.index) {
                         return;
                     }
+                    // Update global page index
+                    currentIndex = page.index;
+                    // Update templates list
+                    updateTemplateList(page.index);
+                    // Run page stuff
                     clickPage(page);
                 });
                 pageSelect.appendChild(pEle);
