@@ -2272,7 +2272,7 @@
             const day = date.getDate().toString();
             const dayPadded = day.padStart(2, '0');
             // Replace values
-            return text.replace('{pageCount}', pageCount)
+            return text.replace('{pageCount}', pageCount - 4)
                 .replace('{pageNumber}', pageNumber)
                 .replace('{pageIndex}', pageIndex)
                 .replace('{year}', year)
@@ -2903,6 +2903,39 @@
             }
             // Render Buttons
             const pageEles = [];
+            function clickPage(page) {
+                // Update global page index
+                currentIndex = page.index;
+                // Update templates list
+                updateTemplateList(page.index);
+                // Update page numbers
+                document.getElementById('print').textContent = `Print '${page.name}'`;
+                pageEles.forEach(pEle => pEle.classList.remove('selected'));
+                pageEles[page.index].classList.add('selected');
+                const startNumberEles = [...document.querySelectorAll('.left > span')];
+                startNumberEles.forEach(ele => ele.textContent = page.start);
+                const endNumberEles = [...document.querySelectorAll('.right > span')];
+                endNumberEles.forEach(ele => ele.textContent = page.end);
+                const pageNumberEle = document.getElementById('pageNumber');
+                // Cover pages are generic without page numbers
+                if ([0, 1].includes(page.index) && !includeCover) {
+                    pageNumberEle.textContent = page.name;
+                } else {
+                    pageNumberEle.textContent = `${page.name}${isEnabled ? ` of ${totalPages + 1} Pages` : ''}`;
+                }
+                updateTemplate(page.index);
+                if (page.index === 0) {
+                    document.getElementById('typeCover').click();
+                } else if (page.index === 1) {
+                    document.getElementById('typeDetail').click();
+                } else {
+                    document.getElementById('typeInner').click();
+                }
+                // Update Paper Color, cover vs inner
+                updatePaperColor(getLocalStoragePaperColor());
+                updateTint();
+                updateFade();
+            }
             pages.forEach((page) => {
                 const pEle = document.createElement('button');
                 pEle.classList.add('page-select');
@@ -2923,51 +2956,21 @@
                 numPage.textContent = page.number;
                 numPage.classList.add('page-number');
                 pEle.appendChild(numPage);
-                pEle.addEventListener('click', () => {
+                pEle.addEventListener('click', (e) => {
                     if (currentIndex === page.index) {
                         return;
                     }
-                    // Update global page index
-                    currentIndex = page.index;
-                    // Update templates list
-                    updateTemplateList(page.index);
-                    // Update page numbers
-                    document.getElementById('print').textContent = `Print '${page.name}'`;
-                    pageEles.forEach(pEle => pEle.classList.remove('selected'));
-                    pEle.classList.add('selected');
-                    const startNumberEles = [...document.querySelectorAll('.left > span')];
-                    startNumberEles.forEach(ele => ele.textContent = page.start);
-                    const endNumberEles = [...document.querySelectorAll('.right > span')];
-                    endNumberEles.forEach(ele => ele.textContent = page.end);
-                    const pageNumberEle = document.getElementById('pageNumber');
-                    // Cover pages are generic without page numbers
-                    if ([0, 1].includes(page.index) && !includeCover) {
-                        pageNumberEle.textContent = page.name;
-                    } else {
-                        pageNumberEle.textContent = `${page.name}${isEnabled ? ` of ${totalPages + 1} Pages` : ''}`;
-                    }
-                    updateTemplate(page.index);
-                    if (page.index === 0) {
-                        document.getElementById('typeCover').click();
-                    } else if (page.index === 1) {
-                        document.getElementById('typeDetail').click();
-                    } else {
-                        document.getElementById('typeInner').click();
-                    }
-                    // Update Paper Color, cover vs inner
-                    updatePaperColor(getLocalStoragePaperColor());
-                    updateTint();
-                    updateFade();
+                    clickPage(page);
                 });
                 pageSelect.appendChild(pEle);
                 pageEles.push(pEle);
             });
             if (currentIndex === -1) {
-                pageSelect.children[0].click();
+                clickPage(pages[0]);
             } else if (currentIndex < pageSelect.children.length) {
-                pageSelect.children[currentIndex].click();
+                clickPage(pages[currentIndex]);
             } else {
-                pageSelect.firstChild.click();
+                clickPage(pages[0]);
             }
             // Toggle Preset Disabled
             const presetDisabledEle = document.getElementById('presetDisabled');
@@ -3974,6 +3977,7 @@
             <p>Some templates ship with presets. These presets can be fully modified. You might also want to pull in
                 dynamic data.</p>
             <ul>
+                <li><code>{pageCount}</code> Total page count.</li>
                 <li><code>{pageNumber}</code> Current page number based on the left or right page placement.</li>
                 <li><code>{pageIndex}</code> Page index</li>
                 <li><code>{year}</code> ex: 2025</li>
